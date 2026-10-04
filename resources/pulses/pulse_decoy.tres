@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="PulseProfile" format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/pulse_profile.gd" id="1_o2lvb"]
+
+[resource]
+script = ExtResource("1_o2lvb")
+id = &"decoy"
+energy_cost = 0.0

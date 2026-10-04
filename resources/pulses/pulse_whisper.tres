@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="PulseProfile" format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/pulse_profile.gd" id="1_ltcpi"]
+
+[resource]
+script = ExtResource("1_ltcpi")
+id = &"whisper"
+reveal_radius = 72.0
+noise_mult = 0.6
+loudness = 1.0
+hold_time = 0.6
+fade_time = 0.6
+energy_cost = 6.0
+cooldown = 0.2
+ring_thickness = 1.5
+trail_count = 1
+trail_gap = 10.0
+shake_px = 0.0
+sfx_pitch = 1.2
+sfx_id = &"ping_whisper"

@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="PulseProfile" format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/pulse_profile.gd" id="1_dhahg"]
+
+[resource]
+script = ExtResource("1_dhahg")
+id = &"scream"
+reveal_radius = 560.0
+noise_mult = 1.3
+loudness = 3.0
+hold_time = 2.0
+fade_time = 3.0
+energy_cost = 55.0
+cooldown = 3.5
+ring_thickness = 3.0
+trail_count = 3
+trail_gap = 22.0
+shake_px = 9.0
+zoom_punch = 0.06
+sfx_pitch = 0.7
+ca_strength = 0.012
+sfx_id = &"ping_scream"

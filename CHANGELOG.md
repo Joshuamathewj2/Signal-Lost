@@ -21,4 +21,11 @@ All notable changes to this project will be documented in this file.
 - Created `LevelData` (`scripts/resources/level_data.gd`) for parsed ASCII levels
 - Created `PaletteData` (`scripts/resources/palette_data.gd`) for theme and accessibility palettes
 
+## P0-T4 Resource data files
+- Generated `default_config.tres` with default gameplay values
+- Generated 4 pulse profiles: `pulse_whisper.tres`, `pulse_normal.tres`, `pulse_scream.tres`, `pulse_decoy.tres`
+- Generated 4 enemy profiles: `enemy_listener.tres`, `enemy_sentry.tres`, `enemy_hunter.tres`, `enemy_brute.tres`
+- Generated 2 palette profiles: `palette_default.tres`, `palette_colorblind.tres`
+
+
 

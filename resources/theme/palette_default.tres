@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="PaletteData" format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/palette_data.gd" id="1_32ppo"]
+
+[resource]
+script = ExtResource("1_32ppo")
+far = Color(0.101960786, 0.101960786, 0.101960786, 1)
+mid = Color(0.16862746, 0.16862746, 0.16862746, 1)
+near = Color(0.23921569, 0.23921569, 0.23921569, 1)
+danger = Color(0.8784314, 0, 0, 1)
+smudge = Color(0.3529412, 0, 0, 1)

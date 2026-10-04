@@ -8,7 +8,7 @@ Parse check command (PC): `godot --headless --path . --quit-after 120` (expect n
 - [x] P0-T1 Project settings & repo
 - [x] P0-T2 Input map & layer names
 - [x] P0-T3 Resource class scripts
-- [ ] P0-T4 Resource data files (.tres)
+- [x] P0-T4 Resource data files (.tres)
 - [ ] P0-T5 Core autoloads (config, palette, debug, math)
 - [ ] P0-T6 Stub autoloads (noise, pulses, state, router, save, audio)
 - [ ] P0-T7 Main scene + debug overlay shell

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="EnemyProfile" format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/enemy_profile.gd" id="1_kvgb7"]
+
+[resource]
+script = ExtResource("1_kvgb7")
+walk_speed = 0.0
+run_speed = 0.0
+hearing_threshold = 3.0
+accepted_types = Array[int]([0, 3, 4, 7])
+sight_range = 320.0
+sight_angle_deg = 40.0
+search_time = 0.0
+investigate_wait = 0.0
+awareness_gain = 1.0
+awareness_decay = 0.25
+can_jump = false
+contact_kills = false
+tint = Color(0.8784314, 0, 0, 1)

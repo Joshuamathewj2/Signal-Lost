@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="EnemyProfile" format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/enemy_profile.gd" id="1_efvg5"]
+
+[resource]
+script = ExtResource("1_efvg5")
+walk_speed = 90.0
+run_speed = 230.0
+hearing_threshold = 0.5
+hearing_mult = 1.25
+accepted_types = Array[int]([0, 1, 2, 3, 4, 5, 6, 7])
+sight_range = 240.0
+sight_angle_deg = 90.0
+search_time = 2.5
+investigate_wait = 0.6
+awareness_gain = 0.8
+awareness_decay = 0.1
+tint = Color(0.8784314, 0, 0, 1)
+memory_size = 3
