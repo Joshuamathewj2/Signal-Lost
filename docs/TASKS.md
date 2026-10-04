@@ -12,7 +12,7 @@ Parse check command (PC): `godot --headless --path . --quit-after 120` (expect n
 - [x] P0-T5 Core autoloads (config, palette, debug, math)
 - [x] P0-T6 Stub autoloads (noise, pulses, state, router, save, audio)
 - [x] P0-T7 Main scene + debug overlay shell
-- [ ] P0-T8 Test harness
+- [x] P0-T8 Test harness
 - [ ] P0-T9 Font + UI theme
 - [ ] P1-T1 Player body & motor (run/sneak/gravity)
 - [ ] P1-T2 Jump feel & one-way drop-through

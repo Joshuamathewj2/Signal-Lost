@@ -51,6 +51,12 @@ All notable changes to this project will be documented in this file.
 - Created `scenes/debug/debug_draw.gd` (`DebugDraw`) supporting circle, line, text, and polyline with TTL-based queue drawing
 - Set `application/run/main_scene="res://scenes/main/main.tscn"` in `project.godot`
 
+## P0-T8 Test harness
+- Created `tests/run_tests.gd` headless test runner extending `SceneTree` dynamically discovering and executing `test_*.gd`
+- Created `tests/test_resources.gd` testing all 11 `.tres` resources, whisper/normal/scream pulse noise radii, and MathUtil bubble brightness curves
+- Verified TC runs headlessly and reports `ALL TESTS PASSED`
+
+
 
 
 
