@@ -27,5 +27,13 @@ All notable changes to this project will be documented in this file.
 - Generated 4 enemy profiles: `enemy_listener.tres`, `enemy_sentry.tres`, `enemy_hunter.tres`, `enemy_brute.tres`
 - Generated 2 palette profiles: `palette_default.tres`, `palette_colorblind.tres`
 
+## P0-T5 Core autoloads
+- Created `autoload/game_config.gd` (`GameConfig`) loading config, pulse profiles, and enemy profiles
+- Created `autoload/palette_service.gd` (`Palette`) providing color queries, runtime colorblind toggle, and `palette_changed` signal
+- Created `autoload/debug_flags.gd` (`DebugFlags`) with F1/F2 toggle handling and debug logging
+- Created `scripts/core/math_util.gd` (`MathUtil`) with ease_out_cubic, wave_radius, bubble_brightness, and ring_alpha functions
+- Registered `GameConfig`, `Palette`, and `DebugFlags` in `project.godot`
+
+
 
 
