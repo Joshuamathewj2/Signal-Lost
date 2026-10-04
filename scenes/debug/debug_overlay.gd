@@ -33,6 +33,15 @@ func _process(_delta: float) -> void:
 					state_str = "sneak" if (motor != null and motor.is_sneaking) else ("run" if absf(body.velocity.x) > 5.0 else "idle")
 				var apex_str: String = "%.1f" % motor.max_jump_height if motor != null else "0.0"
 				text += "Player: %s | vx: %.1f | vy: %.1f | apex: %s\n" % [state_str, body.velocity.x, body.velocity.y, apex_str]
+				var battery_node: Battery = body.get_node_or_null("Battery") as Battery
+				var charger_node: PulseCharger = body.get_node_or_null("PulseCharger") as PulseCharger
+				if battery_node != null:
+					text += "Energy: %.1f / %.1f\n" % [battery_node.energy, battery_node.max_energy]
+				if charger_node != null and charger_node.is_charging:
+					var c: float = clampf(charger_node.charge_time / GameConfig.data.charge_full_time, 0.0, 1.0)
+					var t: int = PulseCharger.tier_for_charge(c)
+					text += "Pulse Charging: %.2f | Tier: %d\n" % [c, t]
+
 
 
 		1:

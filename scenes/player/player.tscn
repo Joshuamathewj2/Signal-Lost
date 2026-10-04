@@ -3,6 +3,8 @@
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_ply01"]
 [ext_resource type="PackedScene" path="res://scenes/player/player_visual.tscn" id="2_vis02"]
 [ext_resource type="Script" path="res://scenes/player/player_motor.gd" id="3_mot03"]
+[ext_resource type="Script" path="res://scenes/player/battery.gd" id="4_bat04"]
+[ext_resource type="Script" path="res://scenes/player/pulse_charger.gd" id="5_chg05"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pbody"]
 radius = 7.0
@@ -28,3 +30,11 @@ body = NodePath("..")
 collision_shape = NodePath("../CollisionShape2D")
 ceiling_ray = NodePath("../CeilingRay")
 visual = NodePath("../Visual")
+
+[node name="Battery" type="Node" parent="."]
+script = ExtResource("4_bat04")
+
+[node name="PulseCharger" type="Node" parent="." node_paths=PackedStringArray("player", "battery")]
+script = ExtResource("5_chg05")
+player = NodePath("..")
+battery = NodePath("../Battery")

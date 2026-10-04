@@ -7,8 +7,19 @@ signal player_died(cause: StringName)
 @onready var visual: PlayerVisual = $Visual
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var ceiling_ray: RayCast2D = $CeilingRay
+@onready var battery: Battery = $Battery
+@onready var pulse_charger: PulseCharger = $PulseCharger
 
 var is_alive: bool = true
+
+func _physics_process(_delta: float) -> void:
+	if not is_alive:
+		return
+	if battery != null and pulse_charger != null and motor != null:
+		battery.is_still = absf(velocity.x) < 5.0 and is_on_floor()
+		battery.is_charging = pulse_charger.is_charging
+		motor.is_charging = pulse_charger.is_charging
+
 
 func _ready() -> void:
 	add_to_group(&"player")

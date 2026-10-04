@@ -89,6 +89,14 @@ All notable changes to this project will be documented in this file.
 - Added two layer 2 one-way platforms with drop-through support
 - Instanced Player, CameraRig, DebugOverlay, and DebugDraw in the sandbox
 
+## P1-T5 Battery & pulse charger
+- Created `scenes/player/battery.gd` managing energy expenditure, regen delay (0.8s), still regen (8/s), and moving regen (3/s)
+- Created `scenes/player/pulse_charger.gd` with tier calculation (whisper, normal, scream), energy downgrade logic, and NoiseBus PULSE event emission
+- Added `tests/test_pulse_tiers.gd` validating tier charge thresholds and energy downgrade calculation (passed in test runner)
+- Updated `scenes/player/player.tscn` and `player.gd` wiring Battery and PulseCharger components
+- Added battery energy and charging progress to debug overlay page 0
+
+
 
 
 
