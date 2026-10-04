@@ -1,0 +1,5 @@
+# Godot 4 .gitignore
+.godot/
+export/
+*.tmp
+*.translation
