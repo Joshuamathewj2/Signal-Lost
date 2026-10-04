@@ -96,6 +96,13 @@ All notable changes to this project will be documented in this file.
 - Updated `scenes/player/player.tscn` and `player.gd` wiring Battery and PulseCharger components
 - Added battery energy and charging progress to debug overlay page 0
 
+## P1-T6 Footstep emitter
+- Created `scenes/player/footstep_emitter.gd` listening to `PlayerMotor.landed` and walking movement
+- Emits `FOOTSTEP` noise events (radius 40 px, loudness 0.5) every 0.30s when on floor, not sneaking, and speed > 40 px/s
+- Emits `LAND` noise events (radius 96 px, loudness 1.0) on landing with vertical impact speed > 520 px/s
+- Added FootstepEmitter node to `scenes/player/player.tscn` and wired in `player.gd`
+
+
 
 
 

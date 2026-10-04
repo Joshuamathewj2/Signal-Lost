@@ -9,6 +9,7 @@ signal player_died(cause: StringName)
 @onready var ceiling_ray: RayCast2D = $CeilingRay
 @onready var battery: Battery = $Battery
 @onready var pulse_charger: PulseCharger = $PulseCharger
+@onready var footstep_emitter: FootstepEmitter = $FootstepEmitter
 
 var is_alive: bool = true
 
