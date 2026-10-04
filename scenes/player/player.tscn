@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://cplayer_root_01"]
+
+[ext_resource type="Script" path="res://scenes/player/player.gd" id="1_ply01"]
+[ext_resource type="PackedScene" path="res://scenes/player/player_visual.tscn" id="2_vis02"]
+[ext_resource type="Script" path="res://scenes/player/player_motor.gd" id="3_mot03"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pbody"]
+radius = 7.0
+height = 18.0
+
+[node name="Player" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 19
+script = ExtResource("1_ply01")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_pbody")
+
+[node name="CeilingRay" type="RayCast2D" parent="."]
+target_position = Vector2(0, -10)
+collision_mask = 1
+
+[node name="Visual" parent="." instance=ExtResource("2_vis02")]
+
+[node name="PlayerMotor" type="Node" parent="." node_paths=PackedStringArray("body", "collision_shape", "ceiling_ray", "visual")]
+script = ExtResource("3_mot03")
+body = NodePath("..")
+collision_shape = NodePath("../CollisionShape2D")
+ceiling_ray = NodePath("../CeilingRay")
+visual = NodePath("../Visual")

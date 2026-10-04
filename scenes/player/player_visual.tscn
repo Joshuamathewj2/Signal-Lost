@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://bplayer_visual_01"]
+
+[ext_resource type="Script" path="res://scenes/player/player_visual.gd" id="1_vis01"]
+
+[node name="Visual" type="Node2D"]
+script = ExtResource("1_vis01")
+
+[node name="Body" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-6, -1, 6, -1, 6, 9, -6, 9)
+
+[node name="Head" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-5, -8, 5, -8, 5, -1, -5, -1)
+
+[node name="Antenna" type="Line2D" parent="."]
+points = PackedVector2Array(0, -8, 0, -12)
+width = 1.0
+default_color = Color(1, 1, 1, 1)

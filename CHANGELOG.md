@@ -62,6 +62,13 @@ All notable changes to this project will be documented in this file.
 - Registered `gui/theme/custom="res://resources/theme/ui_theme.tres"` in `project.godot`
 - Extended `tests/test_resources.gd` to validate theme loading and typography variation sizes
 
+## P1-T1 Player body & motor
+- Created `scenes/player/player.tscn` and `player.gd` (CharacterBody2D layer 3, mask 1|2|5) with death handling
+- Created `scenes/player/player_motor.gd` handling run (180 px/s), sneak (70 px/s), ground/air accel, fall gravity multiplier (1.35x), max fall speed (900 px/s), crouch collision adjustment (18 to 12 px), and ceiling raycast detection
+- Created `scenes/player/player_visual.tscn` and `player_visual.gd` with robot silhouette placeholder (head, body, antenna) supporting facing, poses, and palette color binding
+- Added player state and velocity diagnostics to debug overlay page 0
+
+
 
 
 
