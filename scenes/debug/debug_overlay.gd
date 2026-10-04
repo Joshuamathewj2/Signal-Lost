@@ -50,5 +50,11 @@ func _process(_delta: float) -> void:
 		2:
 			text += "--- RENDER ---\n"
 			text += "Lights Off: %s\n" % str(DebugFlags.lights_off)
+			text += "Active Bubbles: %d / 6\n" % PulseRegistry.bubbles.size()
+			for i in range(PulseRegistry.bubbles.size()):
+				var b = PulseRegistry.bubbles[i]
+				if b != null:
+					text += "  [%d] age: %.2fs | r: %.1f | energy: %.2f\n" % [i, b.age, b.radius, b.brightness]
+
 
 	info_label.text = text

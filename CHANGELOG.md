@@ -112,6 +112,14 @@ All notable changes to this project will be documented in this file.
 - Created `scenes/sonar/reveal_texture_factory.gd` generating a cached 512x512 RGBA8 radial falloff light texture with smooth vignette border
 - Created `scenes/sonar/pulse_bubble.tscn` and `pulse_bubble.gd` with PointLight2D (ADD blend, PCF5 shadows, culling masks 1..4) driven by MathUtil wave radius and brightness curves
 
+## P2-T2 SonarSystem pool
+- Created `scenes/sonar/sonar_system.tscn` and `sonar_system.gd` managing pool of 6 PulseBubbles with oldest-recycling policy
+- Added automatic connection to player PulseCharger.pulse_released events
+- Implemented expanding wavefront detection triggering `on_wavefront` on nodes in group `wave_reactive`
+- Implemented shader parameter generation (`pulse_data` and `pulse_style` arrays) for the sonar air material
+- Added active bubble metrics (age, radius, energy) to debug overlay page 2
+
+
 
 
 
