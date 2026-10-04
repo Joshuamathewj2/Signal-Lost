@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://bcam_rig_01"]
+
+[ext_resource type="Script" path="res://scenes/fx/camera_rig.gd" id="1_cam01"]
+
+[node name="CameraRig" type="Node2D"]
+script = ExtResource("1_cam01")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2, 2)
+position_smoothing_enabled = true
+position_smoothing_speed = 6.0

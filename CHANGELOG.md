@@ -75,6 +75,13 @@ All notable changes to this project will be documented in this file.
 - Implemented one-way platform drop-through on crouch+jump by disabling layer 2 mask for 0.20 s
 - Added jump apex tracking to player motor and debug overlay
 
+## P1-T3 Camera rig
+- Created `scenes/fx/camera_rig.tscn` and `camera_rig.gd` with 2x zoom and position smoothing (speed 6.0)
+- Implemented horizontal look-ahead (40 px leading facing direction, lerped at 3.0/s)
+- Implemented vertical deadzone (24 px) and level boundary limit setting (`set_limits`)
+- Added API stubs for trauma shake and zoom punch with warnings
+
+
 
 
 
