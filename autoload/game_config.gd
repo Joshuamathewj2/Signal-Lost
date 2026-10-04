@@ -1,6 +1,9 @@
 extends Node
 
-var cfg: GameConfigData = preload("res://resources/config/default_config.tres")
+var data: GameConfigData = preload("res://resources/config/default_config.tres")
+var cfg: GameConfigData:
+	get:
+		return data
 
 var pulses: Dictionary = {
 	&"whisper": preload("res://resources/pulses/pulse_whisper.tres"),

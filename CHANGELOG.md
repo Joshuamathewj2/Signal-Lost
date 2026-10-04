@@ -81,6 +81,15 @@ All notable changes to this project will be documented in this file.
 - Implemented vertical deadzone (24 px) and level boundary limit setting (`set_limits`)
 - Added API stubs for trauma shake and zoom punch with warnings
 
+## P1-T4 Gray-box player sandbox
+- Created `sandbox/sandbox_player.tscn` and `sandbox_player.gd` (1280x720 room)
+- Implemented 3 floors of StaticBody2D geometry with grey Polygon2D visuals
+- Added 1-tile (32 px) and 2-tile (64 px) steps for verifying jump height
+- Added 3-tile gap (96 px, passable) and 4-tile gap (128 px, impassable)
+- Added two layer 2 one-way platforms with drop-through support
+- Instanced Player, CameraRig, DebugOverlay, and DebugDraw in the sandbox
+
+
 
 
 

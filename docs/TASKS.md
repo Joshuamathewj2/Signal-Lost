@@ -17,7 +17,7 @@ Parse check command (PC): `godot --headless --path . --quit-after 120` (expect n
 - [x] P1-T1 Player body & motor (run/sneak/gravity)
 - [x] P1-T2 Jump feel & one-way drop-through
 - [x] P1-T3 Camera rig (follow)
-- [ ] P1-T4 Gray-box player sandbox
+- [x] P1-T4 Gray-box player sandbox
 - [ ] P1-T5 Battery + pulse charger
 - [ ] P1-T6 Footstep emitter
 - [ ] P1-T7 Early HUD: charge rings + battery bar
