@@ -56,6 +56,13 @@ All notable changes to this project will be documented in this file.
 - Created `tests/test_resources.gd` testing all 11 `.tres` resources, whisper/normal/scream pulse noise radii, and MathUtil bubble brightness curves
 - Verified TC runs headlessly and reports `ALL TESTS PASSED`
 
+## P0-T9 Font & UI theme
+- Bundled Rajdhani fonts (`Rajdhani-Medium.ttf`, `Rajdhani-SemiBold.ttf`) and `OFL.txt` under `assets/fonts/`
+- Created `resources/theme/ui_theme.tres` with default font, sizes, Button StyleBoxes, and type variations (`TitleLabel`, `HudLabel`, `LevelNameLabel`, `MenuButton`)
+- Registered `gui/theme/custom="res://resources/theme/ui_theme.tres"` in `project.godot`
+- Extended `tests/test_resources.gd` to validate theme loading and typography variation sizes
+
+
 
 
 

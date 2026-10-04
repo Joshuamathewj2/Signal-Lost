@@ -67,4 +67,19 @@ func run() -> Array[String]:
 		if absf(b_dead - (-1.0)) > 0.001:
 			failures.append("bubble_brightness when dead expected -1.0, got %f" % b_dead)
 
+	# Verify UI Theme
+	var ui_theme: Theme = load("res://resources/theme/ui_theme.tres") as Theme
+	if ui_theme == null:
+		failures.append("ui_theme.tres is null or failed to load")
+	else:
+		if ui_theme.default_font_size != 22:
+			failures.append("ui_theme default_font_size expected 22, got %d" % ui_theme.default_font_size)
+		if ui_theme.get_font_size(&"font_size", &"TitleLabel") != 96:
+			failures.append("TitleLabel font_size expected 96, got %d" % ui_theme.get_font_size(&"font_size", &"TitleLabel"))
+		if ui_theme.get_font_size(&"font_size", &"HudLabel") != 22:
+			failures.append("HudLabel font_size expected 22, got %d" % ui_theme.get_font_size(&"font_size", &"HudLabel"))
+		if ui_theme.get_font_size(&"font_size", &"LevelNameLabel") != 26:
+			failures.append("LevelNameLabel font_size expected 26, got %d" % ui_theme.get_font_size(&"font_size", &"LevelNameLabel"))
+
 	return failures
+
