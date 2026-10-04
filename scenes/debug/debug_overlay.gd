@@ -31,7 +31,9 @@ func _process(_delta: float) -> void:
 				var state_str: String = "air"
 				if body.is_on_floor():
 					state_str = "sneak" if (motor != null and motor.is_sneaking) else ("run" if absf(body.velocity.x) > 5.0 else "idle")
-				text += "Player: %s | vx: %.1f | vy: %.1f\n" % [state_str, body.velocity.x, body.velocity.y]
+				var apex_str: String = "%.1f" % motor.max_jump_height if motor != null else "0.0"
+				text += "Player: %s | vx: %.1f | vy: %.1f | apex: %s\n" % [state_str, body.velocity.x, body.velocity.y, apex_str]
+
 
 		1:
 			text += "--- GRAPH ---\n"

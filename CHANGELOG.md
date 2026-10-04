@@ -68,6 +68,14 @@ All notable changes to this project will be documented in this file.
 - Created `scenes/player/player_visual.tscn` and `player_visual.gd` with robot silhouette placeholder (head, body, antenna) supporting facing, poses, and palette color binding
 - Added player state and velocity diagnostics to debug overlay page 0
 
+## P1-T2 Jump feel & one-way drop-through
+- Implemented jump impulse (-560 px/s for ~87 px apex) in `scenes/player/player_motor.gd`
+- Added coyote timer (0.10 s) and input jump buffer (0.12 s)
+- Implemented jump cut multiplier (0.45x) on early release of jump key
+- Implemented one-way platform drop-through on crouch+jump by disabling layer 2 mask for 0.20 s
+- Added jump apex tracking to player motor and debug overlay
+
+
 
 
 

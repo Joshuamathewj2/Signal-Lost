@@ -16,6 +16,12 @@ var facing: int = 1
 var is_charging: bool = false
 var input_enabled: bool = true
 
+var coyote_timer: float = 0.0
+var jump_buffer_timer: float = 0.0
+var drop_through_timer: float = 0.0
+var jump_start_y: float = 0.0
+var max_jump_height: float = 0.0
+
 func _ready() -> void:
 	if body != null:
 		body.floor_snap_length = 6.0
@@ -30,18 +36,75 @@ func _physics_process(delta: float) -> void:
 	# Read Input
 	var dir: float = 0.0
 	var want_sneak: bool = false
+	var want_jump: bool = false
+	var jump_released: bool = false
 	if input_enabled:
 		dir = Input.get_axis(&"move_left", &"move_right")
 		want_sneak = Input.is_action_pressed(&"sneak")
+		want_jump = Input.is_action_just_pressed(&"jump")
+		jump_released = Input.is_action_just_released(&"jump")
 
-	# Crouch & Sneak Handling
-	if want_sneak and body.is_on_floor():
-		_set_crouch(true)
-	elif not want_sneak:
-		if ceiling_ray != null and ceiling_ray.is_colliding():
+	# Drop-through one-way platforms (layer 2)
+	if input_enabled and want_sneak and want_jump and body.is_on_floor():
+		var on_one_way: bool = false
+		for i in range(body.get_slide_collision_count()):
+			var col: KinematicCollision2D = body.get_slide_collision(i)
+			var collider: Object = col.get_collider()
+			if collider is CollisionObject2D and (collider as CollisionObject2D).get_collision_layer_value(2):
+				on_one_way = true
+				break
+		if on_one_way:
+			drop_through_timer = cfg.drop_through_time
+			body.set_collision_mask_value(2, false)
+			want_jump = false
+
+	if drop_through_timer > 0.0:
+		drop_through_timer -= delta
+		if drop_through_timer <= 0.0:
+			body.set_collision_mask_value(2, true)
+
+	# Jump timers
+	if input_enabled and want_jump:
+		jump_buffer_timer = cfg.jump_buffer
+	elif jump_buffer_timer > 0.0:
+		jump_buffer_timer -= delta
+
+	if body.is_on_floor():
+		coyote_timer = cfg.coyote_time
+	elif coyote_timer > 0.0:
+		coyote_timer -= delta
+
+	# Execute Jump
+	if jump_buffer_timer > 0.0 and (body.is_on_floor() or coyote_timer > 0.0):
+		body.velocity.y = cfg.jump_velocity
+		jump_buffer_timer = 0.0
+		coyote_timer = 0.0
+		jump_start_y = body.global_position.y
+		max_jump_height = 0.0
+		_set_crouch(false)
+		jumped.emit()
+
+	# Jump-cut on early release
+	if input_enabled and jump_released and body.velocity.y < 0.0:
+		body.velocity.y *= cfg.jump_cut_mult
+
+	# Track jump apex for debug
+	if body.velocity.y < 0.0:
+		var current_h: float = jump_start_y - body.global_position.y
+		if current_h > max_jump_height:
+			max_jump_height = current_h
+
+	# Crouch & Sneak Handling (cancelled when airborne)
+	if body.is_on_floor():
+		if want_sneak:
 			_set_crouch(true)
 		else:
-			_set_crouch(false)
+			if ceiling_ray != null and ceiling_ray.is_colliding():
+				_set_crouch(true)
+			else:
+				_set_crouch(false)
+	else:
+		_set_crouch(false)
 
 	is_sneaking = is_crouching and body.is_on_floor()
 
