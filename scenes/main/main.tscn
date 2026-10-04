@@ -1,0 +1,24 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/main/main.gd" id="1_main"]
+[ext_resource type="Script" path="res://scenes/main/boot.gd" id="2_boot"]
+[ext_resource type="PackedScene" path="res://scenes/debug/debug_overlay.tscn" id="3_dbg"]
+
+[node name="Main" type="Node"]
+script = ExtResource("1_main")
+
+[node name="LevelHost" type="Node2D" parent="."]
+
+[node name="PostFx" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="HUD" type="CanvasLayer" parent="."]
+layer = 20
+
+[node name="Menus" type="CanvasLayer" parent="."]
+layer = 30
+
+[node name="DebugOverlay" parent="." instance=ExtResource("3_dbg")]
+
+[node name="Boot" type="Node" parent="."]
+script = ExtResource("2_boot")

@@ -44,6 +44,14 @@ All notable changes to this project will be documented in this file.
 - Created `autoload/audio_manager.gd` (`AudioManager`) with SFX playback and reverb methods
 - Registered all 9 autoloads in `project.godot` in exact ARCH §7 order
 
+## P0-T7 Main scene & debug overlay shell
+- Created `scenes/main/main.tscn` and `main.gd` with node hierarchy per ARCH §9
+- Created `scenes/main/boot.gd` logging game, engine, and platform versions
+- Created `scenes/debug/debug_overlay.tscn` and `debug_overlay.gd` displaying FPS and page indicators toggled via F1/F2
+- Created `scenes/debug/debug_draw.gd` (`DebugDraw`) supporting circle, line, text, and polyline with TTL-based queue drawing
+- Set `application/run/main_scene="res://scenes/main/main.tscn"` in `project.godot`
+
+
 
 
 
