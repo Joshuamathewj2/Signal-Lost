@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://cpulse_bubble_01"]
+
+[ext_resource type="Script" path="res://scenes/sonar/pulse_bubble.gd" id="1_pb01"]
+
+[node name="PulseBubble" type="Node2D"]
+script = ExtResource("1_pb01")
+
+[node name="Light" type="PointLight2D" parent="."]
+blend_mode = 2
+range_item_cull_mask = 15
+shadow_enabled = true
+shadow_filter = 2
+shadow_filter_smooth = 1.5
+shadow_item_cull_mask = 1

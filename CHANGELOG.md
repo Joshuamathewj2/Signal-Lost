@@ -108,6 +108,11 @@ All notable changes to this project will be documented in this file.
 - Created `scenes/ui/hud.tscn` and `hud.gd` binding player battery and pulse charger to the UI
 - Instanced ChargeRings in `scenes/player/player.tscn` and HUD in `sandbox/sandbox_player.tscn`
 
+## P2-T1 Reveal texture & PulseBubble
+- Created `scenes/sonar/reveal_texture_factory.gd` generating a cached 512x512 RGBA8 radial falloff light texture with smooth vignette border
+- Created `scenes/sonar/pulse_bubble.tscn` and `pulse_bubble.gd` with PointLight2D (ADD blend, PCF5 shadows, culling masks 1..4) driven by MathUtil wave radius and brightness curves
+
+
 
 
 
