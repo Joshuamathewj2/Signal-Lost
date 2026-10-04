@@ -34,6 +34,17 @@ All notable changes to this project will be documented in this file.
 - Created `scripts/core/math_util.gd` (`MathUtil`) with ease_out_cubic, wave_radius, bubble_brightness, and ring_alpha functions
 - Registered `GameConfig`, `Palette`, and `DebugFlags` in `project.godot`
 
+## P0-T6 Stub autoloads
+- Created `scripts/core/noise_event.gd` (`NoiseEvent`) with NoiseType enum and factory method
+- Created `autoload/noise_bus.gd` (`NoiseBus`) with `noise_emitted` signal and debug log
+- Created `autoload/pulse_registry.gd` (`PulseRegistry`) with `reveal_at`, `player_revealed`, and bubble tracking
+- Created `autoload/game_state.gd` (`GameState`) with run stats, detections, fragment tracking, and level signals
+- Created `autoload/scene_router.gd` (`SceneRouter`) with scene transitions, level loading, and restart methods
+- Created `autoload/save_data.gd` (`SaveData`) managing settings and persistence with `user://save.cfg`
+- Created `autoload/audio_manager.gd` (`AudioManager`) with SFX playback and reverb methods
+- Registered all 9 autoloads in `project.godot` in exact ARCH §7 order
+
+
 
 
 
