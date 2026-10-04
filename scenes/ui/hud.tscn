@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://chud_root_01"]
+
+[ext_resource type="Script" path="res://scenes/ui/hud.gd" id="1_hud01"]
+[ext_resource type="Theme" path="res://resources/theme/ui_theme.tres" id="2_thm01"]
+[ext_resource type="Script" path="res://scenes/ui/battery_bar.gd" id="3_bar01"]
+
+[node name="HUD" type="CanvasLayer"]
+layer = 20
+script = ExtResource("1_hud01")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("2_thm01")
+
+[node name="SafeArea" type="MarginContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 29
+theme_override_constants/margin_top = 29
+theme_override_constants/margin_right = 29
+theme_override_constants/margin_bottom = 29
+
+[node name="BottomLeft" type="VBoxContainer" parent="Root/SafeArea"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_constants/separation = 6
+
+[node name="BatteryBar" type="Control" parent="Root/SafeArea/BottomLeft"]
+custom_minimum_size = Vector2(180, 10)
+layout_mode = 2
+script = ExtResource("3_bar01")

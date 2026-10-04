@@ -20,7 +20,7 @@ Parse check command (PC): `godot --headless --path . --quit-after 120` (expect n
 - [x] P1-T4 Gray-box player sandbox
 - [x] P1-T5 Battery + pulse charger
 - [x] P1-T6 Footstep emitter
-- [ ] P1-T7 Early HUD: charge rings + battery bar
+- [x] P1-T7 Early HUD: charge rings + battery bar
 - [ ] P2-T1 Reveal texture + PulseBubble
 - [ ] P2-T2 SonarSystem pool
 - [ ] P2-T3 flat_reveal + sonar_air shaders

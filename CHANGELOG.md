@@ -102,6 +102,13 @@ All notable changes to this project will be documented in this file.
 - Emits `LAND` noise events (radius 96 px, loudness 1.0) on landing with vertical impact speed > 520 px/s
 - Added FootstepEmitter node to `scenes/player/player.tscn` and wired in `player.gd`
 
+## P1-T7 Early HUD: charge rings & battery bar
+- Created `scenes/sonar/charge_rings.gd` unshaded Node2D component drawing full/dashed reveal rings and rotating dashed red noise warning rings
+- Created `scenes/ui/battery_bar.gd` custom Control with 1 px outline, red fill, ghost segments, drain flash remnants, and low battery blinks
+- Created `scenes/ui/hud.tscn` and `hud.gd` binding player battery and pulse charger to the UI
+- Instanced ChargeRings in `scenes/player/player.tscn` and HUD in `sandbox/sandbox_player.tscn`
+
+
 
 
 

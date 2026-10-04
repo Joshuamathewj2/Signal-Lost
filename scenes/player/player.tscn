@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://scenes/player/battery.gd" id="4_bat04"]
 [ext_resource type="Script" path="res://scenes/player/pulse_charger.gd" id="5_chg05"]
 [ext_resource type="Script" path="res://scenes/player/footstep_emitter.gd" id="6_fst06"]
+[ext_resource type="Script" path="res://scenes/sonar/charge_rings.gd" id="7_cr07"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pbody"]
 radius = 7.0
@@ -24,6 +25,10 @@ target_position = Vector2(0, -10)
 collision_mask = 1
 
 [node name="Visual" parent="." instance=ExtResource("2_vis02")]
+
+[node name="ChargeRings" type="Node2D" parent="." node_paths=PackedStringArray("charger")]
+script = ExtResource("7_cr07")
+charger = NodePath("../PulseCharger")
 
 [node name="PlayerMotor" type="Node" parent="." node_paths=PackedStringArray("body", "collision_shape", "ceiling_ray", "visual")]
 script = ExtResource("3_mot03")

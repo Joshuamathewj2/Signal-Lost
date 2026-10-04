@@ -5,6 +5,8 @@
 [ext_resource type="PackedScene" path="res://scenes/fx/camera_rig.tscn" id="3_cam01"]
 [ext_resource type="PackedScene" path="res://scenes/debug/debug_overlay.tscn" id="4_dbg01"]
 [ext_resource type="Script" path="res://scenes/debug/debug_draw.gd" id="5_drw01"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="6_hud01"]
+
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_l"]
 size = Vector2(32, 720)
@@ -181,3 +183,6 @@ position = Vector2(80, 630)
 
 [node name="DebugDraw" type="Node2D" parent="."]
 script = ExtResource("5_drw01")
+
+[node name="HUD" parent="." instance=ExtResource("6_hud01")]
+
