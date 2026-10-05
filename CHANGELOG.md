@@ -176,6 +176,11 @@ All notable changes to this project will be documented in this file.
 ## Checkpoint: Phase 3 Hearing and Listener
 - Complete hearing and enemy state machine architecture functional; Listener patrols in darkness, ignores whisper, investigates normal/scream pulses, searches, and chases player with red smudge presence cues
 
+## P4-T1 ASCII LevelParser
+- Created `scenes/level/level_parser.gd` (`LevelParser`) parsing ASCII header lines and grid matrices into `LevelData`
+- Created `levels/level_test.txt` 20x8 map containing all 24 legend characters and metadata headers
+- Created `tests/test_level_parser.gd` validating header extraction, grid dimensions, spawn/exit coordinates, and legend cell registries
+
 
 
 
