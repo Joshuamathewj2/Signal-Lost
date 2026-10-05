@@ -206,4 +206,9 @@ All notable changes to this project will be documented in this file.
 - Updated `autoload/scene_router.gd` with level loading, instant restart, next level transition with screen fade, and F3 debug level-skip key
 - Configured `scenes/main/main.gd` to boot directly into Level 1
 
-
+## P5-T1 Base Interactables, Fragment, Keycard, and ExitTerminal
+- Created `scenes/interactables/interactable.gd` (`Interactable`) and `interactable.tscn` providing layer 5 Area2D collision, player/enemy virtual handlers, and noise emission helpers
+- Created `scenes/interactables/fragment.gd` (`Fragment`) and `fragment.tscn` with diamond polygon, bob animation, and `GameState.collect_fragment` integration
+- Created `scenes/interactables/keycard.gd` (`Keycard`) and `keycard.tscn` with card visual and `GameState.has_keycard` trigger
+- Created `scenes/interactables/exit_terminal.gd` (`ExitTerminal`) and `exit_terminal.tscn` with stand, unshaded blinking beacon dot, "SIGNAL RESTORED" sequence, and `GameState.complete_level` / `SceneRouter.next_level` transitions
+- Updated `EntitySpawner` to spawn Fragments, Keycards, and Exit Terminals into the level interactables tree
