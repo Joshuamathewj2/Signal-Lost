@@ -26,7 +26,7 @@ Parse check command (PC): `godot --headless --path . --quit-after 120` (expect n
 - [x] P2-T3 flat_reveal + sonar_air shaders
 - [x] P2-T4 Rough edge lines
 - [x] P2-T5 Parallax background silhouettes
-- [ ] P2-T6 PulseRegistry.reveal_at + RippleRings
+- [x] P2-T6 PulseRegistry.reveal_at + RippleRings
 - [ ] P2-T7 sandbox_sonar (vertical slice)
 - [ ] P3-T1 StateMachine/State
 - [ ] P3-T2 NoiseBus + HearingComponent

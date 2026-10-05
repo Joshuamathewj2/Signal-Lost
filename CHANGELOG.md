@@ -131,6 +131,12 @@ All notable changes to this project will be documented in this file.
 - Created `scenes/world/bg_prop_factory.gd` generating pipes, pillars, gantries, hanging cables, lamps, vents, and machine blocks on render layer 2
 - Created `scenes/world/background_builder.gd` creating 3 Parallax2D layers (Far, Mid, Near) with palette tints and scroll factors (0.35, 0.60, 0.85)
 
+## P2-T6 Reveal query & ripple rings
+- Implemented `PulseRegistry.reveal_at(pos)` querying active bubbles with direct space state line-of-sight raycasts
+- Created `scenes/sonar/ripple_rings.gd` unshaded Node2D drawing expanding 3-concentric arc ripples for noise events
+- Added RippleRings child node into `scenes/sonar/sonar_system.tscn`
+
+
 
 
 

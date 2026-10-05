@@ -1,6 +1,10 @@
 [gd_scene format=3 uid="uid://csonar_sys_01"]
 
 [ext_resource type="Script" path="res://scenes/sonar/sonar_system.gd" id="1_snr01"]
+[ext_resource type="Script" path="res://scenes/sonar/ripple_rings.gd" id="2_rip02"]
 
 [node name="SonarSystem" type="Node2D"]
 script = ExtResource("1_snr01")
+
+[node name="RippleRings" type="Node2D" parent="."]
+script = ExtResource("2_rip02")
