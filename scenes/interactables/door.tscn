@@ -1,0 +1,72 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/interactables/door.gd" id="1_door"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door"]
+size = Vector2(10, 64)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_door"]
+closed = true
+cull_mode = 0
+polygon = PackedVector2Array(-5, 0, 5, 0, 5, 64, -5, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sensor"]
+size = Vector2(28, 64)
+
+[node name="Door" type="StaticBody2D"]
+collision_layer = 1
+collision_mask = 0
+script = ExtResource("1_door")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 32)
+shape = SubResource("RectangleShape2D_door")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_door")
+occluder_light_mask = 1
+
+[node name="Sensor" type="Area2D" parent="."]
+position = Vector2(0, 32)
+collision_layer = 0
+collision_mask = 12
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sensor"]
+shape = SubResource("RectangleShape2D_sensor")
+
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="DoorRect" type="Polygon2D" parent="Visual"]
+color = Color(0.15, 0.15, 0.15, 1)
+polygon = PackedVector2Array(-5, 0, 5, 0, 5, 64, -5, 64)
+
+[node name="DoorBorder" type="Line2D" parent="Visual"]
+points = PackedVector2Array(-5, 0, 5, 0, 5, 64, -5, 64, -5, 0)
+width = 1.0
+default_color = Color(0.8, 0.8, 0.8, 1)
+
+[node name="GlyphKey" type="Node2D" parent="Visual"]
+position = Vector2(0, 32)
+
+[node name="Notch" type="Line2D" parent="Visual/GlyphKey"]
+points = PackedVector2Array(0, -6, 0, 6, 3, 2, 0, 2)
+width = 1.5
+default_color = Color(1, 0.9, 0.2, 1)
+
+[node name="GlyphPlate" type="Node2D" parent="Visual"]
+position = Vector2(0, 32)
+
+[node name="Bar1" type="Line2D" parent="Visual/GlyphPlate"]
+points = PackedVector2Array(-3, -6, 3, -6)
+width = 1.5
+default_color = Color(0.3, 0.8, 1, 1)
+
+[node name="Bar2" type="Line2D" parent="Visual/GlyphPlate"]
+points = PackedVector2Array(-3, 0, 3, 0)
+width = 1.5
+default_color = Color(0.3, 0.8, 1, 1)
+
+[node name="Bar3" type="Line2D" parent="Visual/GlyphPlate"]
+points = PackedVector2Array(-3, 6, 3, 6)
+width = 1.5
+default_color = Color(0.3, 0.8, 1, 1)
