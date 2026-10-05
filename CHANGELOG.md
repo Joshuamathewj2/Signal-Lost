@@ -134,7 +134,13 @@ All notable changes to this project will be documented in this file.
 ## P2-T6 Reveal query & ripple rings
 - Implemented `PulseRegistry.reveal_at(pos)` querying active bubbles with direct space state line-of-sight raycasts
 - Created `scenes/sonar/ripple_rings.gd` unshaded Node2D drawing expanding 3-concentric arc ripples for noise events
-- Added RippleRings child node into `scenes/sonar/sonar_system.tscn`
+## P2-T7 Sonar vertical slice sandbox
+- Created `sandbox/sandbox_sonar.gd` with debug pulse spawners (1/2/3), CanvasModulate toggle (C), multi-bubble stress test (L), and quality toggle (Q)
+- Created `sandbox/sandbox_sonar.tscn` 40x22 dark room with 3 floors, pillars, ceiling overhang, 2 one-way catwalks, occluders, procedural jagged edges, SonarAir, SonarSystem, CameraRig, HUD, and 3 dummy silhouettes
+- Equipped Player with radial GlowLight PointLight2D with shadow casting
+
+## Checkpoint: Phase 2 Sonar Vertical Slice
+- Full sonar mechanic playable with expanding domes, trailing wavefront arcs, dynamic shadow casting, 3-depth parallax industrial silhouettes, white jagged edge lines, noise ripples, and flat red actor silhouettes
 
 
 

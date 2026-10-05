@@ -26,6 +26,15 @@ collision_mask = 1
 
 [node name="Visual" parent="." instance=ExtResource("2_vis02")]
 
+[node name="GlowLight" type="PointLight2D" parent="."]
+energy = 0.6
+range_item_cull_mask = 7
+shadow_enabled = true
+shadow_filter = 2
+shadow_filter_smooth = 1.5
+shadow_item_cull_mask = 1
+texture_scale = 0.156
+
 [node name="ChargeRings" type="Node2D" parent="." node_paths=PackedStringArray("charger")]
 script = ExtResource("7_cr07")
 charger = NodePath("../PulseCharger")

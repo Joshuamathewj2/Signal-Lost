@@ -1,0 +1,391 @@
+[gd_scene format=3 uid="uid://csandbox_sonar_01"]
+
+[ext_resource type="Script" path="res://sandbox/sandbox_sonar.gd" id="1_sb01"]
+[ext_resource type="Shader" path="res://shaders/sonar_air.gdshader" id="2_air02"]
+[ext_resource type="Shader" path="res://shaders/flat_reveal.gdshader" id="3_rev03"]
+[ext_resource type="PackedScene" path="res://scenes/sonar/sonar_system.tscn" id="4_snr04"]
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="5_ply05"]
+[ext_resource type="PackedScene" path="res://scenes/fx/camera_rig.tscn" id="6_cam06"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="7_hud07"]
+[ext_resource type="PackedScene" path="res://scenes/debug/debug_overlay.tscn" id="8_dbg08"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_air"]
+shader = ExtResource("2_air02")
+shader_parameter/pulse_count = 0
+shader_parameter/pulse_data = PackedVector4Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+shader_parameter/pulse_style = PackedVector4Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+shader_parameter/arc_color = Color(1, 1, 1, 0.85)
+shader_parameter/rect_origin = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_solid"]
+shader = ExtResource("3_rev03")
+shader_parameter/tint = Color(0.05, 0.05, 0.05, 1)
+shader_parameter/rim_softness = 0.25
+shader_parameter/max_brightness = 1.0
+shader_parameter/hatch = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dummy"]
+shader = ExtResource("3_rev03")
+shader_parameter/tint = Color(1, 0.15, 0.15, 1)
+shader_parameter/rim_softness = 0.25
+shader_parameter/max_brightness = 1.0
+shader_parameter/hatch = false
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_l"]
+size = Vector2(32, 720)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_wall_l"]
+polygon = PackedVector2Array(0, 0, 32, 0, 32, 720, 0, 720)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_r"]
+size = Vector2(32, 720)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_wall_r"]
+polygon = PackedVector2Array(1248, 0, 1280, 0, 1280, 720, 1248, 720)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ceil"]
+size = Vector2(1280, 32)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_ceil"]
+polygon = PackedVector2Array(0, 0, 1280, 0, 1280, 32, 0, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fl1"]
+size = Vector2(500, 48)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_fl1"]
+polygon = PackedVector2Array(0, 672, 500, 672, 500, 720, 0, 720)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fl2"]
+size = Vector2(300, 48)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_fl2"]
+polygon = PackedVector2Array(580, 672, 880, 672, 880, 720, 580, 720)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fl3"]
+size = Vector2(320, 48)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_fl3"]
+polygon = PackedVector2Array(960, 672, 1280, 672, 1280, 720, 960, 720)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_step1"]
+size = Vector2(64, 32)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_step1"]
+polygon = PackedVector2Array(90, 640, 154, 640, 154, 672, 90, 672)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_step2"]
+size = Vector2(64, 64)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_step2"]
+polygon = PackedVector2Array(154, 608, 218, 608, 218, 672, 154, 672)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mid1"]
+size = Vector2(360, 24)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_mid1"]
+polygon = PackedVector2Array(120, 480, 480, 480, 480, 504, 120, 504)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pillar1"]
+size = Vector2(32, 168)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_pillar1"]
+polygon = PackedVector2Array(440, 504, 472, 504, 472, 672, 440, 672)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mid2"]
+size = Vector2(320, 24)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_mid2"]
+polygon = PackedVector2Array(640, 440, 960, 440, 960, 464, 640, 464)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pillar2"]
+size = Vector2(32, 208)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_pillar2"]
+polygon = PackedVector2Array(780, 464, 812, 464, 812, 672, 780, 672)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_upper1"]
+size = Vector2(400, 24)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_upper1"]
+polygon = PackedVector2Array(200, 260, 600, 260, 600, 284, 200, 284)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_upper2"]
+size = Vector2(388, 24)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_upper2"]
+polygon = PackedVector2Array(860, 220, 1248, 220, 1248, 244, 860, 244)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_overhang"]
+size = Vector2(160, 120)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_overhang"]
+polygon = PackedVector2Array(700, 32, 860, 32, 860, 152, 700, 152)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ow1"]
+size = Vector2(160, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ow2"]
+size = Vector2(260, 10)
+
+[node name="SandboxSonar" type="Node2D"]
+script = ExtResource("1_sb01")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0, 0, 0, 1)
+
+[node name="BackgroundRoot" type="Node2D" parent="."]
+z_index = -35
+
+[node name="SonarAir" type="ColorRect" parent="."]
+light_mask = 4
+material = SubResource("ShaderMaterial_air")
+offset_right = 1280.0
+offset_bottom = 720.0
+color = Color(1, 1, 1, 1)
+
+[node name="Solids" type="StaticBody2D" parent="."]
+collision_mask = 0
+
+[node name="WallLeft" type="CollisionShape2D" parent="Solids"]
+position = Vector2(16, 360)
+shape = SubResource("RectangleShape2D_wall_l")
+
+[node name="PolyWallL" type="Polygon2D" parent="Solids"]
+light_mask = 1
+material = SubResource("ShaderMaterial_solid")
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(0, 0, 32, 0, 32, 720, 0, 720)
+
+[node name="OccWallL" type="LightOccluder2D" parent="Solids"]
+occluder = SubResource("OccluderPolygon2D_wall_l")
+
+[node name="WallRight" type="CollisionShape2D" parent="Solids"]
+position = Vector2(1264, 360)
+shape = SubResource("RectangleShape2D_wall_r")
+
+[node name="PolyWallR" type="Polygon2D" parent="Solids"]
+light_mask = 1
+material = SubResource("ShaderMaterial_solid")
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(1248, 0, 1280, 0, 1280, 720, 1248, 720)
+
+[node name="OccWallR" type="LightOccluder2D" parent="Solids"]
+occluder = SubResource("OccluderPolygon2D_wall_r")
+
+[node name="Ceiling" type="CollisionShape2D" parent="Solids"]
+position = Vector2(640, 16)
+shape = SubResource("RectangleShape2D_ceil")
+
+[node name="PolyCeil" type="Polygon2D" parent="Solids"]
+light_mask = 1
+material = SubResource("ShaderMaterial_solid")
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(0, 0, 1280, 0, 1280, 32, 0, 32)
+
+[node name="OccCeil" type="LightOccluder2D" parent="Solids"]
+occluder = SubResource("OccluderPolygon2D_ceil")
+
+[node name="Floor1" type="CollisionShape2D" parent="Solids"]
+position = Vector2(250, 696)
+shape = SubResource("RectangleShape2D_fl1")
+
+[node name="PolyFl1" type="Polygon2D" parent="Solids"]
+light_mask = 1
+material = SubResource("ShaderMaterial_solid")
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(0, 672, 500, 672, 500, 720, 0, 720)
+
+[node name="OccFl1" type="LightOccluder2D" parent="Solids"]
+occluder = SubResource("OccluderPolygon2D_fl1")
+
+[node name="Floor2" type="CollisionShape2D" parent="Solids"]
+position = Vector2(730, 696)
+shape = SubResource("RectangleShape2D_fl2")
+
+[node name="PolyFl2" type="Polygon2D" parent="Solids"]
+light_mask = 1
+material = SubResource("ShaderMaterial_solid")
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(580, 672, 880, 672, 880, 720, 580, 720)
+
+[node name="OccFl2" type="LightOccluder2D" parent="Solids"]
+occluder = SubResource("OccluderPolygon2D_fl2")
+
+[node name="Floor3" type="CollisionShape2D" parent="Solids"]
+position = Vector2(1120, 696)
+shape = SubResource("RectangleShape2D_fl3")
+
+[node name="PolyFl3" type="Polygon2D" parent="Solids"]
+light_mask = 1
+material = SubResource("ShaderMaterial_solid")
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(960, 672, 1280, 672, 1280, 720, 960, 720)
+
+[node name="OccFl3" type="LightOccluder2D" parent="Solids"]
+occluder = SubResource("OccluderPolygon2D_fl3")
+
+[node name="Step1" type="CollisionShape2D" parent="Solids"]
+position = Vector2(122, 656)
+shape = SubResource("RectangleShape2D_step1")
+
+[node name="PolyStep1" type="Polygon2D" parent="Solids"]
+light_mask = 1
+material = SubResource("ShaderMaterial_solid")
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(90, 640, 154, 640, 154, 672, 90, 672)
+
+[node name="OccStep1" type="LightOccluder2D" parent="Solids"]
+occluder = SubResource("OccluderPolygon2D_step1")
+
+[node name="Step2" type="CollisionShape2D" parent="Solids"]
+position = Vector2(186, 640)
+shape = SubResource("RectangleShape2D_step2")
+
+[node name="PolyStep2" type="Polygon2D" parent="Solids"]
+light_mask = 1
+material = SubResource("ShaderMaterial_solid")
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(154, 608, 218, 608, 218, 672, 154, 672)
+
+[node name="OccStep2" type="LightOccluder2D" parent="Solids"]
+occluder = SubResource("OccluderPolygon2D_step2")
+
+[node name="MidPlatform1" type="CollisionShape2D" parent="Solids"]
+position = Vector2(300, 492)
+shape = SubResource("RectangleShape2D_mid1")
+
+[node name="PolyMid1" type="Polygon2D" parent="Solids"]
+light_mask = 1
+material = SubResource("ShaderMaterial_solid")
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(120, 480, 480, 480, 480, 504, 120, 504)
+
+[node name="OccMid1" type="LightOccluder2D" parent="Solids"]
+occluder = SubResource("OccluderPolygon2D_mid1")
+
+[node name="Pillar1" type="CollisionShape2D" parent="Solids"]
+position = Vector2(456, 588)
+shape = SubResource("RectangleShape2D_pillar1")
+
+[node name="PolyPillar1" type="Polygon2D" parent="Solids"]
+light_mask = 1
+material = SubResource("ShaderMaterial_solid")
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(440, 504, 472, 504, 472, 672, 440, 672)
+
+[node name="OccPillar1" type="LightOccluder2D" parent="Solids"]
+occluder = SubResource("OccluderPolygon2D_pillar1")
+
+[node name="MidPlatform2" type="CollisionShape2D" parent="Solids"]
+position = Vector2(800, 452)
+shape = SubResource("RectangleShape2D_mid2")
+
+[node name="PolyMid2" type="Polygon2D" parent="Solids"]
+light_mask = 1
+material = SubResource("ShaderMaterial_solid")
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(640, 440, 960, 440, 960, 464, 640, 464)
+
+[node name="OccMid2" type="LightOccluder2D" parent="Solids"]
+occluder = SubResource("OccluderPolygon2D_mid2")
+
+[node name="Pillar2" type="CollisionShape2D" parent="Solids"]
+position = Vector2(796, 568)
+shape = SubResource("RectangleShape2D_pillar2")
+
+[node name="PolyPillar2" type="Polygon2D" parent="Solids"]
+light_mask = 1
+material = SubResource("ShaderMaterial_solid")
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(780, 464, 812, 464, 812, 672, 780, 672)
+
+[node name="OccPillar2" type="LightOccluder2D" parent="Solids"]
+occluder = SubResource("OccluderPolygon2D_pillar2")
+
+[node name="UpperPlatform" type="CollisionShape2D" parent="Solids"]
+position = Vector2(400, 272)
+shape = SubResource("RectangleShape2D_upper1")
+
+[node name="PolyUpper1" type="Polygon2D" parent="Solids"]
+light_mask = 1
+material = SubResource("ShaderMaterial_solid")
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(200, 260, 600, 260, 600, 284, 200, 284)
+
+[node name="OccUpper1" type="LightOccluder2D" parent="Solids"]
+occluder = SubResource("OccluderPolygon2D_upper1")
+
+[node name="UpperLedge" type="CollisionShape2D" parent="Solids"]
+position = Vector2(1054, 232)
+shape = SubResource("RectangleShape2D_upper2")
+
+[node name="PolyUpper2" type="Polygon2D" parent="Solids"]
+light_mask = 1
+material = SubResource("ShaderMaterial_solid")
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(860, 220, 1248, 220, 1248, 244, 860, 244)
+
+[node name="OccUpper2" type="LightOccluder2D" parent="Solids"]
+occluder = SubResource("OccluderPolygon2D_upper2")
+
+[node name="CeilingOverhang" type="CollisionShape2D" parent="Solids"]
+position = Vector2(780, 92)
+shape = SubResource("RectangleShape2D_overhang")
+
+[node name="PolyOverhang" type="Polygon2D" parent="Solids"]
+light_mask = 1
+material = SubResource("ShaderMaterial_solid")
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(700, 32, 860, 32, 860, 152, 700, 152)
+
+[node name="OccOverhang" type="LightOccluder2D" parent="Solids"]
+occluder = SubResource("OccluderPolygon2D_overhang")
+
+[node name="OneWays" type="StaticBody2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Catwalk1" type="CollisionShape2D" parent="OneWays"]
+position = Vector2(560, 460)
+shape = SubResource("RectangleShape2D_ow1")
+one_way_collision = true
+
+[node name="Catwalk2" type="CollisionShape2D" parent="OneWays"]
+position = Vector2(730, 260)
+shape = SubResource("RectangleShape2D_ow2")
+one_way_collision = true
+
+[node name="Dummies" type="Node2D" parent="."]
+
+[node name="Dummy1" type="Polygon2D" parent="Dummies"]
+light_mask = 1
+material = SubResource("ShaderMaterial_dummy")
+position = Vector2(280, 480)
+color = Color(1, 0.15, 0.15, 1)
+polygon = PackedVector2Array(-8, -28, 8, -28, 8, 0, -8, 0)
+
+[node name="Dummy2" type="Polygon2D" parent="Dummies"]
+light_mask = 1
+material = SubResource("ShaderMaterial_dummy")
+position = Vector2(1050, 220)
+color = Color(1, 0.15, 0.15, 1)
+polygon = PackedVector2Array(-8, -28, 8, -28, 8, 0, -8, 0)
+
+[node name="Dummy3" type="Polygon2D" parent="Dummies"]
+light_mask = 1
+material = SubResource("ShaderMaterial_dummy")
+position = Vector2(720, 672)
+color = Color(1, 0.15, 0.15, 1)
+polygon = PackedVector2Array(-8, -28, 8, -28, 8, 0, -8, 0)
+
+[node name="SonarSystem" parent="." instance=ExtResource("4_snr04")]
+
+[node name="Player" parent="." instance=ExtResource("5_ply05")]
+position = Vector2(80, 630)
+
+[node name="CameraRig" parent="." node_paths=PackedStringArray("target") instance=ExtResource("6_cam06")]
+target = NodePath("../Player")
+
+[node name="HUD" parent="." instance=ExtResource("7_hud07")]
+
+[node name="DebugOverlay" parent="." instance=ExtResource("8_dbg08")]

@@ -31,6 +31,9 @@ func _ready() -> void:
 	set_collision_mask_value(1, true)
 	set_collision_mask_value(2, true)
 	set_collision_mask_value(5, true)
+	var glow: PointLight2D = get_node_or_null("GlowLight") as PointLight2D
+	if glow != null and glow.texture == null:
+		glow.texture = RevealTextureFactory.get_texture()
 
 func die(cause: StringName) -> void:
 	if not is_alive:
