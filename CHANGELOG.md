@@ -198,19 +198,9 @@ All notable changes to this project will be documented in this file.
 - Created `scenes/level/level_validator.gd` (`LevelValidator`) verifying map dimensions, borders, entity constraints, door pairing, vent pairs, and exit path reachability
 - Created `tests/test_validator.gd` asserting all map files pass validation while synthetic broken maps trigger appropriate failures
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+## P4-T6 EntitySpawner & LevelRoot
+- Created `scenes/level/entity_spawner.gd` (`EntitySpawner`) instantiating player, enemies, bounds, and logging stub warnings for unimplemented entities
+- Created `scenes/level/level_root.tscn` and `level_root.gd` (`LevelRoot`) assembling full level pipeline: parsing, validation, background, level builder, platform graph, entity spawner, camera rig limits, and sonar air sizing
 
 
 
