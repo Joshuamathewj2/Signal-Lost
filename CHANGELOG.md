@@ -185,6 +185,10 @@ All notable changes to this project will be documented in this file.
 - Created `scenes/level/solid_merger.gd` (`SolidMerger`) performing horizontal run grouping and vertical rectangle merging on grid data
 - Created `scenes/level/level_builder.gd` (`LevelBuilder`) generating StaticBody2D layer 1 solids with CollisionShape2D, LightOccluder2D, black Polygon2D, and layer 2 one-way platforms
 
+## P4-T3 EdgeBuilder from Grid
+- Created `scenes/world/edge_builder.gd` (`EdgeBuilder`) extracting exposed solid cell edges, merging collinear runs, and adding jagged top lines with specks and one-way platform top edges
+- Integrated EdgeBuilder into `LevelBuilder.build`
+
 
 
 

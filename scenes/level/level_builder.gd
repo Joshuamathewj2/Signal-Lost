@@ -73,9 +73,13 @@ static func build(data: LevelData, root: Node2D) -> Dictionary:
 		col.position = px_pos + Vector2(px_w * 0.5, 4.0)
 		one_ways_body.add_child(col)
 
+	# 3. Build edge lines
+	var edge_lines: Node2D = EdgeBuilder.build(data, root)
+
 	return {
 		"solids": solids_body,
 		"one_ways": one_ways_body,
+		"edge_lines": edge_lines,
 		"solid_rects": solid_rects,
 		"ow_rects": ow_rects
 	}
