@@ -144,6 +144,11 @@ All notable changes to this project will be documented in this file.
 - Created `scripts/core/state_machine.gd` (`StateMachine`) managing child State nodes and state transitions with payload and force flags
 - Created `tests/test_state_machine.gd` unit tests verifying state enter/exit sequencing and payload routing
 
+## P3-T2 NoiseBus & HearingComponent
+- Updated `autoload/noise_bus.gd` to dispatch noise events to the `listeners` group
+- Created `scenes/enemies/hearing_component.gd` with wall count raycasting, attenuation math, and sound propagation delay timer
+- Created `tests/test_hearing.gd` testing hearing threshold, wall attenuation penalty, distance checks, and enemy profile type filters
+
 
 
 
