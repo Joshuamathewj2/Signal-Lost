@@ -181,6 +181,10 @@ All notable changes to this project will be documented in this file.
 - Created `levels/level_test.txt` 20x8 map containing all 24 legend characters and metadata headers
 - Created `tests/test_level_parser.gd` validating header extraction, grid dimensions, spawn/exit coordinates, and legend cell registries
 
+## P4-T2 SolidsBuilder & SolidMerger
+- Created `scenes/level/solid_merger.gd` (`SolidMerger`) performing horizontal run grouping and vertical rectangle merging on grid data
+- Created `scenes/level/level_builder.gd` (`LevelBuilder`) generating StaticBody2D layer 1 solids with CollisionShape2D, LightOccluder2D, black Polygon2D, and layer 2 one-way platforms
+
 
 
 

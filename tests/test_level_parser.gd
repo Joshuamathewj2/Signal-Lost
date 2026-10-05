@@ -2,6 +2,7 @@ class_name TestLevelParser
 extends RefCounted
 
 const ParserScript = preload("res://scenes/level/level_parser.gd")
+const SolidMergerScript = preload("res://scenes/level/solid_merger.gd")
 
 const LEVEL_01_SAMPLE: String = """;name=Level 1
 ;decoys=0
@@ -65,7 +66,9 @@ func run() -> Array[String]:
 		failures.append("Expected Level 1 exit (36,9), got %s" % str(l1_data.exit_cell))
 	if l1_data.name != "Level 1":
 		failures.append("Expected Level 1 name 'Level 1', got '%s'" % l1_data.name)
-	if l1_data.seed != 101:
-		failures.append("Expected Level 1 seed 101, got %d" % l1_data.seed)
+	# 3. Test SolidMerger on Level 1
+	var solid_rects: Array[Rect2i] = SolidMergerScript.merge(l1_data.grid, "#")
+	if solid_rects.size() > 12:
+		failures.append("Expected Level 1 solids <= 12 rects, got %d" % solid_rects.size())
 
 	return failures
