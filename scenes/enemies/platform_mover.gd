@@ -6,11 +6,16 @@ signal path_failed
 
 @export var body: EnemyBase
 
-var graph: RefCounted = null
+var graph: PlatformGraph = null
 var bounds: Array[float] = []
 var target_pos: Vector2 = Vector2.ZERO
 var current_speed: float = 0.0
 var is_moving: bool = false
+
+var current_path: PackedVector2Array = PackedVector2Array()
+var current_path_types: Array[int] = []
+var current_path_idx: int = 0
+var repath_timer: float = 0.0
 
 func _ready() -> void:
 	if body == null and get_parent() is EnemyBase:
@@ -21,9 +26,22 @@ func move_to(target: Vector2, speed: float) -> void:
 	current_speed = speed
 	is_moving = true
 
+	if graph != null and body != null:
+		var can_j: bool = body.profile.can_jump if body.profile != null else true
+		var path_res: Dictionary = graph.find_path(body.global_position, target, can_j)
+		current_path = path_res.get("points", PackedVector2Array())
+		current_path_types = path_res.get("types", [])
+		current_path_idx = 1 if current_path.size() > 1 else 0
+		if current_path.is_empty():
+			stop()
+			path_failed.emit()
+
 func stop() -> void:
 	is_moving = false
 	current_speed = 0.0
+	current_path.clear()
+	current_path_types.clear()
+	current_path_idx = 0
 	if body != null:
 		body.velocity.x = 0.0
 
@@ -32,11 +50,59 @@ func _physics_process(_delta: float) -> void:
 		return
 
 	if graph != null:
-		# Graph mode added in Phase 4 (P4-T4)
-		push_warning("PlatformMover: graph mode STUB")
+		_process_graph_mode()
+	else:
+		_process_flat_mode()
+
+func _process_graph_mode() -> void:
+	if current_path.is_empty() or current_path_idx >= current_path.size():
+		stop()
+		arrived.emit()
 		return
 
-	# Flat mode: horizontal movement on current floor
+	var wp: Vector2 = current_path[current_path_idx]
+	var edge_type: int = current_path_types[current_path_idx] if current_path_idx < current_path_types.size() else 0
+	var dx: float = wp.x - body.global_position.x
+	var dy: float = body.global_position.y - wp.y
+
+	# Check waypoint arrival
+	var arrived_wp: bool = false
+	if edge_type == 0: # WALK
+		arrived_wp = absf(dx) < 6.0
+	else: # JUMP or DROP
+		arrived_wp = absf(dx) < 10.0 and absf(dy) < 16.0 and body.is_on_floor()
+
+	if arrived_wp:
+		current_path_idx += 1
+		if current_path_idx >= current_path.size():
+			stop()
+			arrived.emit()
+			return
+		wp = current_path[current_path_idx]
+		edge_type = current_path_types[current_path_idx] if current_path_idx < current_path_types.size() else 0
+		dx = wp.x - body.global_position.x
+		dy = body.global_position.y - wp.y
+
+	var move_dir: int = 1 if dx > 0.0 else -1
+	body.face(move_dir)
+	body.velocity.x = float(move_dir) * current_speed
+
+	if edge_type == 1: # JUMP
+		if body.is_on_floor() and absf(dx) < 32.0:
+			var g: float = GameConfig.data.gravity if (GameConfig != null and GameConfig.data != null) else 1800.0
+			var rise_px: float = maxf(dy, 0.0) + 20.0
+			body.velocity.y = -sqrt(2.0 * g * rise_px)
+	elif edge_type == 2: # DROP
+		if body.is_on_floor() and absf(dx) < 12.0:
+			body.set_collision_mask_value(2, false)
+			get_tree().create_timer(0.2).timeout.connect(func() -> void:
+				if is_instance_valid(body):
+					body.set_collision_mask_value(2, true)
+			)
+
+	body.move_and_slide()
+
+func _process_flat_mode() -> void:
 	var dx: float = target_pos.x - body.global_position.x
 	if absf(dx) < 6.0:
 		stop()
@@ -46,7 +112,6 @@ func _physics_process(_delta: float) -> void:
 	var move_dir: int = 1 if dx > 0.0 else -1
 	body.face(move_dir)
 
-	# Check custom bounds
 	if bounds.size() >= 2:
 		if move_dir < 0 and body.global_position.x <= bounds[0]:
 			stop()
@@ -57,7 +122,6 @@ func _physics_process(_delta: float) -> void:
 			path_failed.emit()
 			return
 
-	# Check wall collision
 	if body.is_on_wall():
 		var wall_n: Vector2 = body.get_wall_normal()
 		if (move_dir > 0 and wall_n.x < -0.5) or (move_dir < 0 and wall_n.x > 0.5):
@@ -65,7 +129,6 @@ func _physics_process(_delta: float) -> void:
 			path_failed.emit()
 			return
 
-	# Check ledge (downward raycast 20 px ahead at feet)
 	if body.is_on_floor():
 		var space_state: PhysicsDirectSpaceState2D = body.get_world_2d().direct_space_state
 		if space_state != null:
@@ -94,17 +157,14 @@ func patrol_segment() -> Vector2:
 
 	var space_state: PhysicsDirectSpaceState2D = body.get_world_2d().direct_space_state
 	if space_state != null:
-		# Probe left for wall or ledge
 		var step: float = 16.0
 		var cur_x: float = start_x
 		while cur_x > start_x - 400.0:
 			var next_x: float = cur_x - step
-			# Wall query
 			var q_wall := PhysicsRayQueryParameters2D.create(Vector2(cur_x, body.global_position.y), Vector2(next_x, body.global_position.y), 1)
 			if not space_state.intersect_ray(q_wall).is_empty():
 				min_x = cur_x
 				break
-			# Floor query
 			var q_floor := PhysicsRayQueryParameters2D.create(Vector2(next_x, body.global_position.y), Vector2(next_x, body.global_position.y + 32.0), 3)
 			if space_state.intersect_ray(q_floor).is_empty():
 				min_x = cur_x
@@ -112,16 +172,13 @@ func patrol_segment() -> Vector2:
 			cur_x = next_x
 			min_x = cur_x
 
-		# Probe right for wall or ledge
 		cur_x = start_x
 		while cur_x < start_x + 400.0:
 			var next_x: float = cur_x + step
-			# Wall query
 			var q_wall := PhysicsRayQueryParameters2D.create(Vector2(cur_x, body.global_position.y), Vector2(next_x, body.global_position.y), 1)
 			if not space_state.intersect_ray(q_wall).is_empty():
 				max_x = cur_x
 				break
-			# Floor query
 			var q_floor := PhysicsRayQueryParameters2D.create(Vector2(next_x, body.global_position.y), Vector2(next_x, body.global_position.y + 32.0), 3)
 			if space_state.intersect_ray(q_floor).is_empty():
 				max_x = cur_x

@@ -189,6 +189,11 @@ All notable changes to this project will be documented in this file.
 - Created `scenes/world/edge_builder.gd` (`EdgeBuilder`) extracting exposed solid cell edges, merging collinear runs, and adding jagged top lines with specks and one-way platform top edges
 - Integrated EdgeBuilder into `LevelBuilder.build`
 
+## P4-T4 PlatformGraph & Mover Graph Mode
+- Created `scenes/level/platform_graph.gd` (`PlatformGraph`) building AStar2D waypoint networks from ASCII grids with WALK, JUMP (rise <= 2, dx <= 3), and DROP semantics
+- Updated `scenes/enemies/platform_mover.gd` to execute graph-based path navigation, jump impulses, and one-way drop-throughs
+- Created `tests/test_platform_graph.gd` validating Level 1 pathing, Level 2 jump connectivity, and height clearance restrictions
+
 
 
 
