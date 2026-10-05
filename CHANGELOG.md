@@ -127,6 +127,11 @@ All notable changes to this project will be documented in this file.
 - Created `shaders/edge_line.gdshader` for soft line bloom falloff on platform borders
 - Created `scenes/world/edge_line_factory.gd` generating procedural jagged white Line2Ds with FastNoiseLite jitter, glow outlines, and top-edge tufts/specks
 
+## P2-T5 Parallax background silhouettes
+- Created `scenes/world/bg_prop_factory.gd` generating pipes, pillars, gantries, hanging cables, lamps, vents, and machine blocks on render layer 2
+- Created `scenes/world/background_builder.gd` creating 3 Parallax2D layers (Far, Mid, Near) with palette tints and scroll factors (0.35, 0.60, 0.85)
+
+
 
 
 
