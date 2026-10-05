@@ -30,11 +30,16 @@ func show_tell(type: StringName) -> void:
 	tell_label.visible = true
 	tell_timer = 0.6
 
-func set_alert(_val: float) -> void:
-	pass
+func set_alert(val: float) -> void:
+	if poly != null and poly.material is ShaderMaterial:
+		(poly.material as ShaderMaterial).set_shader_parameter(&"alert", clampf(val, 0.0, 1.0))
 
 func flash() -> void:
-	if poly != null:
-		poly.modulate = Color(2.0, 2.0, 2.0, 1.0)
+	if poly != null and poly.material is ShaderMaterial:
+		var mat: ShaderMaterial = poly.material as ShaderMaterial
+		mat.set_shader_parameter(&"flash", 1.0)
 		var t: Tween = create_tween()
-		t.tween_property(poly, "modulate", Color.WHITE, 0.2)
+		t.tween_method(func(v: float) -> void:
+			if poly != null and poly.material != null:
+				(poly.material as ShaderMaterial).set_shader_parameter(&"flash", v)
+		, 1.0, 0.0, 0.2)

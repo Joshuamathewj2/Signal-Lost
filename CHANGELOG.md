@@ -163,6 +163,12 @@ All notable changes to this project will be documented in this file.
 - Created `scenes/enemies/visuals/listener_visual.tscn` and `listener_visual.gd` with silhouette, antenna, and alert tell overlays
 - Created `scenes/enemies/listener.tscn` integrating enemy base, listener profile, visual, and 5-state StateMachine
 
+## P3-T6 Enemy Shaders & Smudge
+- Created `shaders/enemy_silhouette.gdshader` with danger color, alert 12Hz flicker, and state change flash
+- Created `shaders/smudge_blur.gdshader` with domain-warped soft radial blob
+- Created `scenes/enemies/smudge.tscn` and `smudge.gd` (`Smudge`) spawning in SenseLayer to render unrevealed presence cues with 1.2s fade-out
+- Hooked enemy awareness alert updates, state flashes, and smudge triggers into `EnemyBase` and `ListenerVisual`
+
 
 
 

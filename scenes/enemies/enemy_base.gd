@@ -15,6 +15,8 @@ extends CharacterBody2D
 var facing: int = 1
 var last_noise: Dictionary = {}
 var last_seen: Vector2 = Vector2.ZERO
+var smudge: Smudge = null
+var smudge_scene: PackedScene = preload("res://scenes/enemies/smudge.tscn")
 
 func _ready() -> void:
 	add_to_group(&"enemies")
@@ -41,8 +43,21 @@ func _ready() -> void:
 	if vision != null:
 		vision.player_spotted.connect(_on_player_spotted)
 		vision.player_lost.connect(_on_player_lost)
+	if awareness != null:
+		awareness.awareness_changed.connect(_on_awareness_changed)
+	if state_machine != null:
+		state_machine.state_changed.connect(_on_state_changed)
 	if hitbox != null:
 		hitbox.body_entered.connect(_on_hitbox_body_entered)
+
+	call_deferred(&"_setup_smudge")
+
+func _setup_smudge() -> void:
+	var sense_layer: Node = get_tree().get_first_node_in_group(&"sense_layer")
+	if sense_layer != null:
+		smudge = smudge_scene.instantiate() as Smudge
+		sense_layer.add_child(smudge)
+		smudge.visible = false
 
 func face(dir: int) -> void:
 	if dir == 0:
@@ -57,6 +72,10 @@ func _physics_process(delta: float) -> void:
 		var g: float = GameConfig.data.gravity if (GameConfig != null and GameConfig.data != null) else 1800.0
 		velocity.y += g * delta
 
+func trigger_smudge() -> void:
+	if smudge != null and PulseRegistry != null and PulseRegistry.reveal_at(global_position) <= 0.25:
+		smudge.show_at(global_position, self)
+
 func _on_heard(event: NoiseEvent, strength: float) -> void:
 	last_noise = {
 		"pos": event.position,
@@ -68,6 +87,7 @@ func _on_heard(event: NoiseEvent, strength: float) -> void:
 		awareness.on_heard(event, strength)
 	if memory != null:
 		memory.push_noise(event, strength)
+	trigger_smudge()
 
 func _on_player_spotted(pos: Vector2) -> void:
 	last_seen = pos
@@ -76,6 +96,16 @@ func _on_player_spotted(pos: Vector2) -> void:
 
 func _on_player_lost() -> void:
 	pass
+
+func _on_awareness_changed(new_val: float, _old_val: float) -> void:
+	var vis: Node = get_node_or_null("Visual")
+	if vis != null and vis.has_method("set_alert"):
+		vis.call("set_alert", new_val)
+
+func _on_state_changed(_actor: Node, _from: StringName, _to: StringName) -> void:
+	var vis: Node = get_node_or_null("Visual")
+	if vis != null and vis.has_method("flash"):
+		vis.call("flash")
 
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	if profile != null and not profile.contact_kills:

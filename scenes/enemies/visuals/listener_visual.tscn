@@ -1,14 +1,15 @@
 [gd_scene format=3 uid="uid://clistener_vis_01"]
 
 [ext_resource type="Script" path="res://scenes/enemies/visuals/listener_visual.gd" id="1_lvis01"]
-[ext_resource type="Shader" path="res://shaders/flat_reveal.gdshader" id="2_rev02"]
+[ext_resource type="Shader" path="res://shaders/enemy_silhouette.gdshader" id="2_es02"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lvis"]
-shader = ExtResource("2_rev02")
-shader_parameter/tint = Color(0.878431, 0, 0, 1)
-shader_parameter/rim_softness = 0.25
-shader_parameter/max_brightness = 1.0
+shader = ExtResource("2_es02")
+shader_parameter/danger_color = Color(0.878431, 0, 0, 1)
+shader_parameter/alert = 0.0
+shader_parameter/flash = 0.0
 shader_parameter/hatch = false
+shader_parameter/rim_softness = 0.25
 
 [node name="ListenerVisual" type="Node2D"]
 script = ExtResource("1_lvis01")
