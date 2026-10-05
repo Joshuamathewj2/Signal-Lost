@@ -149,6 +149,12 @@ All notable changes to this project will be documented in this file.
 - Created `scenes/enemies/hearing_component.gd` with wall count raycasting, attenuation math, and sound propagation delay timer
 - Created `tests/test_hearing.gd` testing hearing threshold, wall attenuation penalty, distance checks, and enemy profile type filters
 
+## P3-T3 EnemyBase & Core Perception Components
+- Created `scenes/enemies/awareness.gd` (`Awareness`) tracking alert accumulation on noise/sight and decay over time
+- Created `scenes/enemies/noise_memory.gd` (`NoiseMemory`) ring buffer with time-based 20s expiry
+- Created `scenes/enemies/vision_component.gd` (`VisionComponent`) checking reveal threshold, sight cone, and line-of-sight raycasts
+- Created `scenes/enemies/enemy_base.tscn` and `enemy_base.gd` (`EnemyBase`) coordinating perception components, gravity, facing, and contact hitbox
+
 
 
 

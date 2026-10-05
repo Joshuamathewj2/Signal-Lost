@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://cenemy_base_01"]
+
+[ext_resource type="Script" path="res://scenes/enemies/enemy_base.gd" id="1_eb01"]
+[ext_resource type="Script" path="res://scenes/enemies/hearing_component.gd" id="2_hear02"]
+[ext_resource type="Script" path="res://scenes/enemies/vision_component.gd" id="3_vis03"]
+[ext_resource type="Script" path="res://scenes/enemies/awareness.gd" id="4_awr04"]
+[ext_resource type="Script" path="res://scenes/enemies/noise_memory.gd" id="5_mem05"]
+[ext_resource type="Script" path="res://scripts/core/state_machine.gd" id="6_sm06"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ebody"]
+radius = 8.0
+height = 24.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hitbox"]
+size = Vector2(16, 24)
+
+[node name="EnemyBase" type="CharacterBody2D"]
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("1_eb01")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_ebody")
+
+[node name="HearingComponent" type="Node2D" parent="."]
+script = ExtResource("2_hear02")
+
+[node name="VisionComponent" type="Node2D" parent="."]
+script = ExtResource("3_vis03")
+
+[node name="Awareness" type="Node" parent="."]
+script = ExtResource("4_awr04")
+
+[node name="NoiseMemory" type="Node" parent="."]
+script = ExtResource("5_mem05")
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("RectangleShape2D_hitbox")
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("6_sm06")
