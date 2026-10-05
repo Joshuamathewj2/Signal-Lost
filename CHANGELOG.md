@@ -119,6 +119,11 @@ All notable changes to this project will be documented in this file.
 - Implemented shader parameter generation (`pulse_data` and `pulse_style` arrays) for the sonar air material
 - Added active bubble metrics (age, radius, energy) to debug overlay page 2
 
+## P2-T3 flat_reveal & sonar_air shaders
+- Created `shaders/flat_reveal.gdshader` turning point light coverage into crisp silhouette reveals with soft rim and hatch support
+- Created `shaders/sonar_air.gdshader` rendering distance-field wavefront arcs and trailing rings occluded by point lights
+
+
 
 
 
