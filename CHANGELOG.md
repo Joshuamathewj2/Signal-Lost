@@ -139,8 +139,10 @@ All notable changes to this project will be documented in this file.
 - Created `sandbox/sandbox_sonar.tscn` 40x22 dark room with 3 floors, pillars, ceiling overhang, 2 one-way catwalks, occluders, procedural jagged edges, SonarAir, SonarSystem, CameraRig, HUD, and 3 dummy silhouettes
 - Equipped Player with radial GlowLight PointLight2D with shadow casting
 
-## Checkpoint: Phase 2 Sonar Vertical Slice
-- Full sonar mechanic playable with expanding domes, trailing wavefront arcs, dynamic shadow casting, 3-depth parallax industrial silhouettes, white jagged edge lines, noise ripples, and flat red actor silhouettes
+## P3-T1 Node-based StateMachine & State
+- Created `scripts/core/state.gd` (`State`) with enter, exit, update, physics_update, and transition helper
+- Created `scripts/core/state_machine.gd` (`StateMachine`) managing child State nodes and state transitions with payload and force flags
+- Created `tests/test_state_machine.gd` unit tests verifying state enter/exit sequencing and payload routing
 
 
 
