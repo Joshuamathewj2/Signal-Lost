@@ -5,7 +5,8 @@
 [ext_resource type="Script" path="res://scenes/enemies/vision_component.gd" id="3_vis03"]
 [ext_resource type="Script" path="res://scenes/enemies/awareness.gd" id="4_awr04"]
 [ext_resource type="Script" path="res://scenes/enemies/noise_memory.gd" id="5_mem05"]
-[ext_resource type="Script" path="res://scripts/core/state_machine.gd" id="6_sm06"]
+[ext_resource type="Script" path="res://scenes/enemies/platform_mover.gd" id="6_mov06"]
+[ext_resource type="Script" path="res://scripts/core/state_machine.gd" id="7_sm07"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ebody"]
 radius = 8.0
@@ -42,4 +43,7 @@ collision_mask = 4
 shape = SubResource("RectangleShape2D_hitbox")
 
 [node name="StateMachine" type="Node" parent="."]
-script = ExtResource("6_sm06")
+script = ExtResource("7_sm07")
+
+[node name="PlatformMover" type="Node" parent="."]
+script = ExtResource("6_mov06")

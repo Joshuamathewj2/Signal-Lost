@@ -9,6 +9,7 @@ extends CharacterBody2D
 @onready var awareness: Awareness = $Awareness
 @onready var memory: NoiseMemory = $NoiseMemory
 @onready var state_machine: StateMachine = $StateMachine
+@onready var mover: PlatformMover = $PlatformMover
 @onready var hitbox: Area2D = $Hitbox
 
 var facing: int = 1

@@ -155,6 +155,9 @@ All notable changes to this project will be documented in this file.
 - Created `scenes/enemies/vision_component.gd` (`VisionComponent`) checking reveal threshold, sight cone, and line-of-sight raycasts
 - Created `scenes/enemies/enemy_base.tscn` and `enemy_base.gd` (`EnemyBase`) coordinating perception components, gravity, facing, and contact hitbox
 
+## P3-T4 PlatformMover Flat Mode
+- Created `scenes/enemies/platform_mover.gd` (`PlatformMover`) with flat mode horizontal navigation, wall collision stop, ledge raycast detection, and patrol segment floor probing
+
 
 
 
