@@ -123,6 +123,11 @@ All notable changes to this project will be documented in this file.
 - Created `shaders/flat_reveal.gdshader` turning point light coverage into crisp silhouette reveals with soft rim and hatch support
 - Created `shaders/sonar_air.gdshader` rendering distance-field wavefront arcs and trailing rings occluded by point lights
 
+## P2-T4 Rough edge lines
+- Created `shaders/edge_line.gdshader` for soft line bloom falloff on platform borders
+- Created `scenes/world/edge_line_factory.gd` generating procedural jagged white Line2Ds with FastNoiseLite jitter, glow outlines, and top-edge tufts/specks
+
+
 
 
 
