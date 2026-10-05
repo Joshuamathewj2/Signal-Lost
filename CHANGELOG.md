@@ -169,6 +169,13 @@ All notable changes to this project will be documented in this file.
 - Created `scenes/enemies/smudge.tscn` and `smudge.gd` (`Smudge`) spawning in SenseLayer to render unrevealed presence cues with 1.2s fade-out
 - Hooked enemy awareness alert updates, state flashes, and smudge triggers into `EnemyBase` and `ListenerVisual`
 
+## P3-T7 Enemy Debug Page & Sandbox Enemy
+- Updated `scenes/debug/debug_overlay.gd` to display enemy telemetry, states, awareness, vision cones, mover paths, and memory markers on Page 0
+- Created `sandbox/sandbox_enemy.gd` and `sandbox/sandbox_enemy.tscn` featuring an active Listener enemy on patrol, right-click target steering, SenseLayer, unrevealed red smudge cues, and pulse interaction
+
+## Checkpoint: Phase 3 Hearing and Listener
+- Complete hearing and enemy state machine architecture functional; Listener patrols in darkness, ignores whisper, investigates normal/scream pulses, searches, and chases player with red smudge presence cues
+
 
 
 
