@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://clistener_enemy_01"]
+
+[ext_resource type="PackedScene" path="res://scenes/enemies/enemy_base.tscn" id="1_eb01"]
+[ext_resource type="Resource" path="res://resources/enemies/enemy_listener.tres" id="2_prof02"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/visuals/listener_visual.tscn" id="3_vis03"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_patrol.gd" id="4_pat04"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_investigate.gd" id="5_inv05"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_search.gd" id="6_src06"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_chase.gd" id="7_chs07"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_return.gd" id="8_ret08"]
+
+[node name="Listener" instance=ExtResource("1_eb01")]
+profile = ExtResource("2_prof02")
+kind = &"listener"
+
+[node name="Visual" parent="." index="2" instance=ExtResource("3_vis03")]
+
+[node name="StateMachine" parent="." index="7" node_paths=PackedStringArray("initial")]
+initial = NodePath("Patrol")
+
+[node name="Patrol" type="Node" parent="StateMachine" index="0"]
+script = ExtResource("4_pat04")
+
+[node name="Investigate" type="Node" parent="StateMachine" index="1"]
+script = ExtResource("5_inv05")
+
+[node name="Search" type="Node" parent="StateMachine" index="2"]
+script = ExtResource("6_src06")
+
+[node name="Chase" type="Node" parent="StateMachine" index="3"]
+script = ExtResource("7_chs07")
+
+[node name="Return" type="Node" parent="StateMachine" index="4"]
+script = ExtResource("8_ret08")

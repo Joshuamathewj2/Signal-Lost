@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://clistener_vis_01"]
+
+[ext_resource type="Script" path="res://scenes/enemies/visuals/listener_visual.gd" id="1_lvis01"]
+[ext_resource type="Shader" path="res://shaders/flat_reveal.gdshader" id="2_rev02"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lvis"]
+shader = ExtResource("2_rev02")
+shader_parameter/tint = Color(0.878431, 0, 0, 1)
+shader_parameter/rim_softness = 0.25
+shader_parameter/max_brightness = 1.0
+shader_parameter/hatch = false
+
+[node name="ListenerVisual" type="Node2D"]
+script = ExtResource("1_lvis01")
+
+[node name="Silhouette" type="Polygon2D" parent="."]
+light_mask = 3
+material = SubResource("ShaderMaterial_lvis")
+color = Color(0.878431, 0, 0, 1)
+polygon = PackedVector2Array(-8, -26, -4, -28, 4, -28, 8, -26, 8, -14, 6, -10, 6, 0, 2, 0, 2, -10, -2, -10, -2, 0, -6, 0, -6, -10, -8, -14)
+
+[node name="Antenna" type="Line2D" parent="."]
+light_mask = 3
+points = PackedVector2Array(0, -28, 0, -36)
+width = 1.5
+default_color = Color(0.878431, 0, 0, 1)
+
+[node name="AntennaTip" type="Polygon2D" parent="."]
+light_mask = 3
+position = Vector2(0, -36)
+color = Color(1, 0.2, 0.2, 1)
+polygon = PackedVector2Array(-2, -2, 2, -2, 2, 0, -2, 0)
+
+[node name="TellLabel" type="Label" parent="."]
+offset_left = -10.0
+offset_top = -54.0
+offset_right = 10.0
+offset_bottom = -34.0
+theme_override_font_sizes/font_size = 14
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1

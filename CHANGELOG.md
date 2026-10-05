@@ -158,6 +158,11 @@ All notable changes to this project will be documented in this file.
 ## P3-T4 PlatformMover Flat Mode
 - Created `scenes/enemies/platform_mover.gd` (`PlatformMover`) with flat mode horizontal navigation, wall collision stop, ledge raycast detection, and patrol segment floor probing
 
+## P3-T5 Listener FSM & Visual
+- Created 5 listener state scripts (`st_patrol.gd`, `st_investigate.gd`, `st_search.gd`, `st_chase.gd`, `st_return.gd`) implementing patrol segment navigation, noise investigation, visual search, and detection chasing
+- Created `scenes/enemies/visuals/listener_visual.tscn` and `listener_visual.gd` with silhouette, antenna, and alert tell overlays
+- Created `scenes/enemies/listener.tscn` integrating enemy base, listener profile, visual, and 5-state StateMachine
+
 
 
 
