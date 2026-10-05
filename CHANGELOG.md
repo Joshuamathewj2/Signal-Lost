@@ -201,10 +201,9 @@ All notable changes to this project will be documented in this file.
 ## P4-T6 EntitySpawner & LevelRoot
 - Created `scenes/level/entity_spawner.gd` (`EntitySpawner`) instantiating player, enemies, bounds, and logging stub warnings for unimplemented entities
 - Created `scenes/level/level_root.tscn` and `level_root.gd` (`LevelRoot`) assembling full level pipeline: parsing, validation, background, level builder, platform graph, entity spawner, camera rig limits, and sonar air sizing
-
-
-
-
-
+## P4-T7 SceneRouter & Levels 1-2
+- Created `levels/level_01.txt` (Wake) and `levels/level_02.txt` (Listen) per LVL §4
+- Updated `autoload/scene_router.gd` with level loading, instant restart, next level transition with screen fade, and F3 debug level-skip key
+- Configured `scenes/main/main.gd` to boot directly into Level 1
 
 

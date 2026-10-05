@@ -9,3 +9,4 @@ extends Node
 
 func _ready() -> void:
 	DebugFlags.log(&"main", "Main scene initialized")
+	SceneRouter.load_level(1)

@@ -2,18 +2,87 @@ extends Node
 
 signal level_loaded(level_root: Node)
 
-var current_scene_path: String = ""
+const LEVEL_ROOT_SCENE: PackedScene = preload("res://scenes/level/level_root.tscn")
 
-func goto_scene(path: String) -> void:
-	current_scene_path = path
-	DebugFlags.log(&"router", "goto_scene: %s" % path)
+var current_level_index: int = 1
+var current_level_root: LevelRoot = null
+var is_transitioning: bool = false
+var fade_rect: ColorRect = null
 
-func restart_level() -> void:
-	DebugFlags.log(&"router", "restart_level")
+func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("restart"):
+		restart_level()
+	elif OS.is_debug_build() and event is InputEventKey:
+		var key_event: InputEventKey = event as InputEventKey
+		if key_event.pressed and not key_event.echo and key_event.keycode == KEY_F3:
+			next_level()
+
+func _ensure_fade_rect() -> ColorRect:
+	if fade_rect != null and is_instance_valid(fade_rect):
+		return fade_rect
+	var menus: CanvasLayer = get_tree().root.get_node_or_null("Main/Menus") as CanvasLayer
+	if menus != null:
+		fade_rect = ColorRect.new()
+		fade_rect.color = Color(0, 0, 0, 0)
+		fade_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
+		fade_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		menus.add_child(fade_rect)
+	return fade_rect
 
 func load_level(index: int) -> void:
+	if is_transitioning:
+		return
+	var path := "res://levels/level_%02d.txt" % index
+	if not FileAccess.file_exists(path):
+		DebugFlags.log(&"router", "Level file not found: %s" % path)
+		return
+
+	current_level_index = index
 	GameState.level_index = index
-	DebugFlags.log(&"router", "load_level %d" % index)
+	DebugFlags.log(&"router", "load_level %d (%s)" % [index, path])
+
+	var f_rect: ColorRect = _ensure_fade_rect()
+	if f_rect != null:
+		is_transitioning = true
+		var tween := create_tween()
+		tween.tween_property(f_rect, "color:a", 1.0, 0.12)
+		tween.tween_callback(func() -> void:
+			_spawn_level_instant(path)
+		)
+		tween.tween_property(f_rect, "color:a", 0.0, 0.13)
+		tween.tween_callback(func() -> void:
+			is_transitioning = false
+		)
+	else:
+		_spawn_level_instant(path)
+
+func restart_level() -> void:
+	var path := "res://levels/level_%02d.txt" % current_level_index
+	if not FileAccess.file_exists(path):
+		path = "res://levels/level_test.txt"
+	DebugFlags.log(&"router", "restart_level %d" % current_level_index)
+	_spawn_level_instant(path)
 
 func next_level() -> void:
-	load_level(GameState.level_index + 1)
+	load_level(current_level_index + 1)
+
+func _spawn_level_instant(path: String) -> void:
+	var host: Node = get_tree().root.get_node_or_null("Main/LevelHost")
+	if host == null:
+		host = get_tree().current_scene
+
+	if current_level_root != null and is_instance_valid(current_level_root):
+		current_level_root.queue_free()
+		current_level_root = null
+
+	for child in host.get_children():
+		child.queue_free()
+
+	var new_root: LevelRoot = LEVEL_ROOT_SCENE.instantiate() as LevelRoot
+	new_root.level_path = path
+	host.add_child(new_root)
+	current_level_root = new_root
+	level_loaded.emit(new_root)
