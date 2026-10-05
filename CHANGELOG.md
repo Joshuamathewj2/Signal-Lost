@@ -194,6 +194,10 @@ All notable changes to this project will be documented in this file.
 - Updated `scenes/enemies/platform_mover.gd` to execute graph-based path navigation, jump impulses, and one-way drop-throughs
 - Created `tests/test_platform_graph.gd` validating Level 1 pathing, Level 2 jump connectivity, and height clearance restrictions
 
+## P4-T5 LevelValidator
+- Created `scenes/level/level_validator.gd` (`LevelValidator`) verifying map dimensions, borders, entity constraints, door pairing, vent pairs, and exit path reachability
+- Created `tests/test_validator.gd` asserting all map files pass validation while synthetic broken maps trigger appropriate failures
+
 
 
 
