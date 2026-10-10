@@ -157,3 +157,18 @@ func play_sfx(id: StringName, pos: Vector2 = Vector2.INF, pitch: float = 1.0) ->
 		stolen.stream = stream
 		stolen.pitch_scale = pitch
 		stolen.play()
+
+var is_paused_audio: bool = false
+var _pre_pause_volumes: Dictionary = {}
+
+func set_pause_mute(paused: bool) -> void:
+	is_paused_audio = paused
+	var buses: Array[StringName] = [&"Music", &"SFX", &"Pulse", &"Ambience"]
+	for b in buses:
+		var idx: int = AudioServer.get_bus_index(b)
+		if idx != -1:
+			if paused:
+				_pre_pause_volumes[b] = AudioServer.get_bus_volume_db(idx)
+				AudioServer.set_bus_volume_db(idx, _pre_pause_volumes[b] - 10.0)
+			elif _pre_pause_volumes.has(b):
+				AudioServer.set_bus_volume_db(idx, float(_pre_pause_volumes[b]))

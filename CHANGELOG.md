@@ -333,3 +333,9 @@ All notable changes to this project will be documented in this file.
 - Updated `autoload/save_data.gd` (`SaveData`) with `has_save()`, `get_continue_level()`, and `set_continue_level()`.
 - Updated `scenes/main/main.gd`: boots into `MainMenu` on layer 30, instantiating `HUD` and deferring level load until play/continue selection.
 - Created `tests/test_main_menu.gd` verifying title labels, button hierarchy, and keyboard focus wrapping; 100% test suite passing.
+
+## P7-T4 Pause Menu
+- Created `scenes/ui/pause_menu.gd` and `scenes/ui/pause_menu.tscn` (`PauseMenu` extends `Control`): `process_mode = PROCESS_MODE_ALWAYS` with black alpha 0.6 backdrop, paused title, and vertical button group (`RESUME`, `RESTART`, `SETTINGS`, `QUIT TO MENU`).
+- Updated `autoload/audio_manager.gd`: added `set_pause_mute(paused: bool)` fading Music, SFX, Pulse, and Ambience buses by -10 dB while preserving UI bus levels.
+- Updated `scenes/main/main.gd`: added persistent `PauseMenu` instance in `$Menus` layer, toggled via Escape / `pause` action during active levels with tree pause and audio attenuation.
+- Created `tests/test_pause_menu.gd` verifying tree pause toggling, audio state tracking, and process mode; 100% test suite passing.
