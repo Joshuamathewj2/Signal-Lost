@@ -263,3 +263,9 @@ All notable changes to this project will be documented in this file.
 - Created `scenes/enemies/brute.tscn` inheriting `enemy_base.tscn` with `brute` group, Wander initial state, and deaf vibration profile
 - Updated `st_search.gd` and `st_return.gd` to route to Charge and Wander for Brute state transitions
 - Updated `scenes/level/entity_spawner.gd` to spawn Brute enemies from `B` cells
+
+## P5-T10 GameState Rules & Medals
+- Updated `autoload/game_state.gd` with complete run statistics tracking (`time`, `pulses` dictionary by tier, `loudest`, `detections`, `fragments`, `level_index`), run reset on level load, and `compute_medal` evaluating Ghost, Quiet, and Loud medals per GDD §8
+- Updated `scenes/player/player.gd` with death handling (input disable, velocity zeroing, visual hide), delayed restart via `SceneRouter.restart_level()`, fall-out kill (`y > map_bottom + 200`), and automatic pulse registration via `PulseCharger`
+- Updated `scenes/level/level_root.gd` to assign `map_bottom` to player instance from level data height
+- Created `tests/test_medals.gd` covering all medal calculation rules and edge cases

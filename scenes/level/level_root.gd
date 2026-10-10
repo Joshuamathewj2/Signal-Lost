@@ -58,9 +58,12 @@ func load_level(path: String) -> void:
 
 	# 6. Camera Rig limits & target
 	var player_inst: Node2D = spawned.get("player") as Node2D
-	if camera_rig != null and player_inst != null:
-		camera_rig.target = player_inst
-		camera_rig.set_limits(Rect2i(0, 0, int(map_px.size.x), int(map_px.size.y)))
+	if player_inst != null:
+		if player_inst is Player:
+			(player_inst as Player).map_bottom = map_px.size.y
+		if camera_rig != null:
+			camera_rig.target = player_inst
+			camera_rig.set_limits(Rect2i(0, 0, int(map_px.size.x), int(map_px.size.y)))
 
 	# 7. Notify SceneRouter
 	if SceneRouter != null and SceneRouter.has_signal("level_loaded"):

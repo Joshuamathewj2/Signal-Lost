@@ -12,15 +12,8 @@ signal player_died(cause: StringName)
 @onready var footstep_emitter: FootstepEmitter = $FootstepEmitter
 
 var is_alive: bool = true
-
-func _physics_process(_delta: float) -> void:
-	if not is_alive:
-		return
-	if battery != null and pulse_charger != null and motor != null:
-		battery.is_still = absf(velocity.x) < 5.0 and is_on_floor()
-		battery.is_charging = pulse_charger.is_charging
-		motor.is_charging = pulse_charger.is_charging
-
+var death_time: float = 0.6
+var map_bottom: float = 2000.0
 
 func _ready() -> void:
 	add_to_group(&"player")
@@ -35,6 +28,24 @@ func _ready() -> void:
 	if glow != null and glow.texture == null:
 		glow.texture = RevealTextureFactory.get_texture()
 
+	if pulse_charger != null:
+		pulse_charger.pulse_released.connect(func(profile: PulseProfile, _pos: Vector2) -> void:
+			GameState.register_pulse(profile)
+		)
+
+func _physics_process(_delta: float) -> void:
+	if not is_alive:
+		return
+
+	if global_position.y > map_bottom + 200.0:
+		die(&"fell")
+		return
+
+	if battery != null and pulse_charger != null and motor != null:
+		battery.is_still = absf(velocity.x) < 5.0 and is_on_floor()
+		battery.is_charging = pulse_charger.is_charging
+		motor.is_charging = pulse_charger.is_charging
+
 func die(cause: StringName) -> void:
 	if not is_alive:
 		return
@@ -48,3 +59,11 @@ func die(cause: StringName) -> void:
 
 	if visual != null:
 		visual.play_death()
+	else:
+		hide()
+
+	var timer := get_tree().create_timer(death_time)
+	timer.timeout.connect(func() -> void:
+		if SceneRouter != null:
+			SceneRouter.restart_level()
+	)
