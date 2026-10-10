@@ -382,5 +382,13 @@ All notable changes to this project will be documented in this file.
 - Updated `scenes/ui/hud.gd` and `scenes/ui/hud.tscn` (`HUD`): added bottom-centre unshaded controls hint text on Level 1 start, fading out smoothly over 0.5s upon player's first movement.
 - Created `tests/test_hint_signs.gd`: verified HintSign rendering material, Level 1 & 2 parsing/validation with `?`, and InteractableSpawner instantiation; 100% test suite passing (16 test suites).
 
+## P8-T3 Levels 3–5
+- Created `levels/level_03.txt` (Floors): 3-floor map teaching drop-through catwalks, keycard retrieval on bottom floor, and locked door bypassing middle floor Listener to reach exit.
+- Created `levels/level_04.txt` (Crossfire): high Sentry balcony with overhead cover blocks, glass floor pit housing a signal fragment, and floor Listener patrol.
+- Created `levels/level_05.txt` (Heavy): Deaf Brute encounter with hanging lanterns, sneak catwalk routing to recover a signal fragment, and pressure plate opening plate door.
+- Updated `scenes/level/platform_graph.gd` (`PlatformGraph`): fixed bidirectional edge connection handling in AStar2D, enabled door cell node registration with default disabled state, and expanded `set_door_open` to span full door height runs.
+- Verified all level files with `LevelValidator` and automated test suites; 100% passing across all 16 test suites.
+
+
 
 

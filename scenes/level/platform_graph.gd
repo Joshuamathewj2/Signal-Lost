@@ -42,10 +42,12 @@ func build(data: LevelData, custom_solid_fn: Callable = Callable()) -> void:
 		var ch: String = data.grid[r][c]
 		return ch == "#" or ch == "=" or ch == "G" or ch == "D" or ch == "R"
 
-	# 1. Register standable cells (empty cell with ground below)
+	# 1. Register standable cells (empty or door cell with ground below)
 	for r in range(height - 1):
 		for c in range(width):
-			if not is_solid_fn.call(c, r) and is_ground_fn.call(c, r + 1):
+			var ch: String = data.grid[r][c]
+			var is_door: bool = (ch == "D" or ch == "R")
+			if (not is_solid_fn.call(c, r) or is_door) and is_ground_fn.call(c, r + 1):
 				var cell := Vector2i(c, r)
 				var id: int = r * width + c
 				var pos := Vector2((float(c) + 0.5) * 32.0, (float(r) + 1.0) * 32.0)
@@ -53,6 +55,9 @@ func build(data: LevelData, custom_solid_fn: Callable = Callable()) -> void:
 				node_positions[id] = pos
 				astar_all.add_point(id, pos)
 				astar_no_jump.add_point(id, pos)
+				if is_door:
+					astar_all.set_point_disabled(id, true)
+					astar_no_jump.set_point_disabled(id, true)
 
 	# 2. Add edges
 	for cell in standable_cells.keys():
@@ -64,7 +69,11 @@ func build(data: LevelData, custom_solid_fn: Callable = Callable()) -> void:
 		for dc in [-1, 1]:
 			var nc: int = c + dc
 			var n_cell := Vector2i(nc, r)
-			if standable_cells.has(n_cell) and not is_solid_fn.call(nc, r):
+			var n_is_door: bool = false
+			if nc >= 0 and nc < width:
+				var nch: String = data.grid[r][nc]
+				n_is_door = (nch == "D" or nch == "R")
+			if standable_cells.has(n_cell) and (not is_solid_fn.call(nc, r) or n_is_door):
 				var ch_cur: String = data.grid[r][c]
 				var ch_nxt: String = data.grid[r][nc]
 				var blocked: bool = false
@@ -149,13 +158,15 @@ func _add_edge(from_id: int, to_id: int, type: EdgeType, weight: float, both_way
 	if not astar_all.has_point(from_id) or not astar_all.has_point(to_id):
 		return
 
-	if not astar_all.are_points_connected(from_id, to_id):
+	var conns: PackedInt64Array = astar_all.get_point_connections(from_id)
+	if not conns.has(to_id):
 		astar_all.connect_points(from_id, to_id, both_ways)
 		astar_all.set_point_weight_scale(to_id, weight)
 
 	if type != EdgeType.JUMP:
 		if astar_no_jump.has_point(from_id) and astar_no_jump.has_point(to_id):
-			if not astar_no_jump.are_points_connected(from_id, to_id):
+			var no_conns: PackedInt64Array = astar_no_jump.get_point_connections(from_id)
+			if not no_conns.has(to_id):
 				astar_no_jump.connect_points(from_id, to_id, both_ways)
 				astar_no_jump.set_point_weight_scale(to_id, weight)
 
@@ -205,11 +216,12 @@ func path_length(a_px: Vector2, b_px: Vector2) -> float:
 	return total
 
 func set_door_open(cell: Vector2i, open: bool) -> void:
-	var id: int = cell.y * width + cell.x
-	if astar_all.has_point(id):
-		astar_all.set_point_disabled(id, not open)
-	if astar_no_jump.has_point(id):
-		astar_no_jump.set_point_disabled(id, not open)
+	for dy in [0, 1, -1]:
+		var id: int = (cell.y + dy) * width + cell.x
+		if astar_all.has_point(id):
+			astar_all.set_point_disabled(id, not open)
+		if astar_no_jump.has_point(id):
+			astar_no_jump.set_point_disabled(id, not open)
 
 func set_standable(cell: Vector2i, standable: bool) -> void:
 	var id: int = cell.y * width + cell.x
