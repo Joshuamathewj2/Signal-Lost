@@ -6,15 +6,19 @@ extends Node2D
 
 var current_lookahead: float = 0.0
 var target_y: float = 0.0
-var warned_trauma: bool = false
-var warned_zoom: bool = false
+var trauma: float = 0.0
+var shake_time: float = 0.0
+var zoom_tween: Tween = null
+var base_zoom: float = 2.0
 
 func _ready() -> void:
+	add_to_group(&"camera_rig")
 	var cfg: GameConfigData = GameConfig.data
+	base_zoom = cfg.camera_zoom if cfg != null else 2.0
 	if camera != null:
-		camera.zoom = Vector2(cfg.camera_zoom, cfg.camera_zoom)
+		camera.zoom = Vector2(base_zoom, base_zoom)
 		camera.position_smoothing_enabled = true
-		camera.position_smoothing_speed = cfg.camera_smoothing
+		camera.position_smoothing_speed = cfg.camera_smoothing if cfg != null else 6.0
 
 	if target == null:
 		target = get_tree().get_first_node_in_group(&"player") as Node2D
@@ -22,6 +26,47 @@ func _ready() -> void:
 	if target != null:
 		global_position = target.global_position
 		target_y = target.global_position.y
+		_connect_player(target)
+
+	if GameState != null and GameState.has_signal("detected"):
+		GameState.detected.connect(_on_detected)
+
+	if SceneRouter != null and SceneRouter.has_signal("level_loaded"):
+		SceneRouter.level_loaded.connect(_on_level_loaded)
+
+func _on_level_loaded(_root: Node) -> void:
+	var p: Node2D = get_tree().get_first_node_in_group(&"player") as Node2D
+	if p != null:
+		target = p
+		global_position = p.global_position
+		target_y = p.global_position.y
+		_connect_player(p)
+
+func _connect_player(p: Node) -> void:
+	var charger: PulseCharger = p.get_node_or_null("PulseCharger") as PulseCharger
+	if charger != null and not charger.pulse_released.is_connected(_on_pulse_released):
+		charger.pulse_released.connect(_on_pulse_released)
+
+	if p is Player:
+		var pl: Player = p as Player
+		if not pl.player_died.is_connected(_on_player_died):
+			pl.player_died.connect(_on_player_died)
+
+func _on_pulse_released(profile: PulseProfile, _origin: Vector2) -> void:
+	if profile == null:
+		return
+	if profile.id == &"normal":
+		add_trauma(0.2)
+	elif profile.id == &"scream":
+		add_trauma(0.9)
+		zoom_punch(base_zoom * 1.06, 0.15, 0.5)
+
+func _on_detected() -> void:
+	zoom_punch(base_zoom * 1.03, 0.15, 0.15)
+
+func _on_player_died(_cause: StringName) -> void:
+	add_trauma(0.6)
+	HitStop.freeze(get_tree(), 0.08)
 
 func _process(delta: float) -> void:
 	if target == null:
@@ -29,10 +74,11 @@ func _process(delta: float) -> void:
 		if target == null:
 			return
 		target_y = target.global_position.y
+		_connect_player(target)
 
 	var cfg: GameConfigData = GameConfig.data
 
-	# Determine target facing direction
+	# Look-ahead (40 px, lerp 3.0/s)
 	var facing: int = 1
 	var motor: PlayerMotor = target.get_node_or_null("PlayerMotor") as PlayerMotor
 	if motor != null:
@@ -40,8 +86,8 @@ func _process(delta: float) -> void:
 	elif "facing" in target:
 		facing = target.get("facing")
 
-	# Look-ahead (40 px, lerp 3.0/s)
-	var desired_lookahead: float = float(facing) * cfg.camera_lookahead
+	var lookahead_dist: float = cfg.camera_lookahead if cfg != null else 40.0
+	var desired_lookahead: float = float(facing) * lookahead_dist
 	current_lookahead = lerpf(current_lookahead, desired_lookahead, 3.0 * delta)
 
 	# Vertical deadzone (24 px)
@@ -51,6 +97,19 @@ func _process(delta: float) -> void:
 
 	global_position = Vector2(target.global_position.x + current_lookahead, target_y)
 
+	# Shake calculation
+	if trauma > 0.0:
+		trauma = maxf(0.0, trauma - 1.5 * delta)
+		shake_time += delta * 25.0
+		var shake_amount: float = trauma * trauma
+		var offset_x: float = sin(shake_time) * 10.0 * shake_amount
+		var offset_y: float = cos(shake_time * 1.3) * 10.0 * shake_amount
+		if camera != null:
+			camera.offset = Vector2(offset_x, offset_y)
+	else:
+		if camera != null and camera.offset != Vector2.ZERO:
+			camera.offset = Vector2.ZERO
+
 func set_limits(rect: Rect2i) -> void:
 	if camera == null:
 		return
@@ -59,12 +118,15 @@ func set_limits(rect: Rect2i) -> void:
 	camera.limit_right = rect.position.x + rect.size.x
 	camera.limit_bottom = rect.position.y + rect.size.y
 
-func add_trauma(_a: float) -> void:
-	if not warned_trauma:
-		warned_trauma = true
-		push_warning("CameraRig.add_trauma is a stub until P6-T2")
+func add_trauma(amount: float) -> void:
+	trauma = clampf(trauma + amount, 0.0, 1.0)
 
-func zoom_punch(_amount: float, _t_in: float, _t_out: float) -> void:
-	if not warned_zoom:
-		warned_zoom = true
-		push_warning("CameraRig.zoom_punch is a stub until P6-T2")
+func zoom_punch(target_zoom_val: float, t_in: float, t_out: float) -> void:
+	if camera == null:
+		return
+	if zoom_tween != null and zoom_tween.is_valid():
+		zoom_tween.kill()
+
+	zoom_tween = create_tween()
+	zoom_tween.tween_property(camera, "zoom", Vector2(target_zoom_val, target_zoom_val), t_in).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	zoom_tween.tween_property(camera, "zoom", Vector2(base_zoom, base_zoom), t_out).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)

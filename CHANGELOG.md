@@ -274,3 +274,7 @@ All notable changes to this project will be documented in this file.
 - Created `shaders/post_fx.gdshader` per SHD §10 implementing screen vignette, pseudo-random film grain, 5-tap cross blur bright-pass bloom, monochromatic chromatic aberration offset, and detection flash
 - Created `scenes/fx/post_fx.gd` (`PostFx`) and `post_fx.tscn` listening to scream pulses (triggering 0.012 CA burst decaying over 0.4s), enemy detections (triggering 0.35 flash and 0.008 CA burst), and debug key `P`
 - Instanced `post_fx.tscn` into `Main/PostFx` CanvasLayer (layer 10) in `scenes/main/main.tscn`
+
+## P6-T2 Camera Juice & Hit-Stop
+- Created `scenes/fx/hitstop.gd` (`HitStop`) static helper freezing `Engine.time_scale` to 0.05 for 0.08s real-time duration
+- Updated `scenes/fx/camera_rig.gd` (`CameraRig`) joining `camera_rig` group, implementing trauma quadratic shake model (decaying at 1.5/s with 10px amplitude), scream zoom punch (2.0 -> 2.12 -> 2.0), detection zoom punch (2.0 -> 2.06 -> 2.0), and death hit-stop + trauma trigger
