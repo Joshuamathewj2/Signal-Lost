@@ -387,8 +387,8 @@ All notable changes to this project will be documented in this file.
 - Created `levels/level_04.txt` (Crossfire): high Sentry balcony with overhead cover blocks, glass floor pit housing a signal fragment, and floor Listener patrol.
 - Created `levels/level_05.txt` (Heavy): Deaf Brute encounter with hanging lanterns, sneak catwalk routing to recover a signal fragment, and pressure plate opening plate door.
 - Updated `scenes/level/platform_graph.gd` (`PlatformGraph`): fixed bidirectional edge connection handling in AStar2D, enabled door cell node registration with default disabled state, and expanded `set_door_open` to span full door height runs.
-- Verified all level files with `LevelValidator` and automated test suites; 100% passing across all 16 test suites.
-
-
-
-
+## P8-T4 Levels 6–8
+- Created `levels/level_06.txt` (Pack): 2-floor map featuring vent intake `V` paired to amplified outlet `v` across floors, mute vent `M` for safe reconnaissance pulses, and Hunter enemy `H` requiring acoustic redirection.
+- Created `levels/level_07.txt` (Gates): directional one-way doors `>` locking forward player commitment, high Sentry `S` overlooking keycard `K`, Listener `L` floor patrol, Decoy pickup and usage to redirect patrols, and Deaf Brute `B` guarding locked door `D`.
+- Created `levels/level_08.txt` (Signal): 3-floor grand finale integrating all gameplay mechanics — hanging lanterns `~`, glass floors `G`, mute vent `M`, Sentry `S`, Hunter `H`, Listener `L`, Deaf Brute `B`, paired vents `V` and `v`, one-way drops, keycard `K`, pressure plate `_`, and dual plate/key doors `R` and `D`.
+- Validated all 8 levels through `LevelValidator` and automated test suites; 100% passing across all 16 test suites.
