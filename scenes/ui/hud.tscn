@@ -2,7 +2,11 @@
 
 [ext_resource type="Script" path="res://scenes/ui/hud.gd" id="1_hud01"]
 [ext_resource type="Theme" path="res://resources/theme/ui_theme.tres" id="2_thm01"]
-[ext_resource type="Script" path="res://scenes/ui/battery_bar.gd" id="3_bar01"]
+[ext_resource type="Script" path="res://scenes/ui/fragment_counter.gd" id="3_frag01"]
+[ext_resource type="PackedScene" path="res://scenes/ui/ability_slot.tscn" id="4_slot01"]
+[ext_resource type="Script" path="res://scenes/ui/pip_row.gd" id="5_pips01"]
+[ext_resource type="Script" path="res://scenes/ui/battery_bar.gd" id="6_bar01"]
+[ext_resource type="Script" path="res://scenes/ui/level_label.gd" id="7_lvl01"]
 
 [node name="HUD" type="CanvasLayer"]
 layer = 20
@@ -25,10 +29,28 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 29
 theme_override_constants/margin_top = 29
 theme_override_constants/margin_right = 29
 theme_override_constants/margin_bottom = 29
+
+[node name="TopLeft" type="HBoxContainer" parent="Root/SafeArea"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/separation = 8
+script = ExtResource("3_frag01")
+
+[node name="FragIcon" type="Control" parent="Root/SafeArea/TopLeft"]
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="FragCount" type="Label" parent="Root/SafeArea/TopLeft"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "0"
 
 [node name="BottomLeft" type="VBoxContainer" parent="Root/SafeArea"]
 layout_mode = 2
@@ -36,7 +58,44 @@ size_flags_horizontal = 0
 size_flags_vertical = 8
 theme_override_constants/separation = 6
 
+[node name="AbilityRow" type="HBoxContainer" parent="Root/SafeArea/BottomLeft"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="PrimarySlot" parent="Root/SafeArea/BottomLeft/AbilityRow" instance=ExtResource("4_slot01")]
+layout_mode = 2
+ability_name = "decoy"
+key_badge_text = "F"
+
+[node name="SecondarySlot" parent="Root/SafeArea/BottomLeft/AbilityRow" instance=ExtResource("4_slot01")]
+layout_mode = 2
+ability_name = "emp"
+key_badge_text = "G"
+is_locked = true
+
+[node name="Pips" type="HBoxContainer" parent="Root/SafeArea/BottomLeft"]
+layout_mode = 2
+script = ExtResource("5_pips01")
+
 [node name="BatteryBar" type="Control" parent="Root/SafeArea/BottomLeft"]
 custom_minimum_size = Vector2(180, 10)
 layout_mode = 2
-script = ExtResource("3_bar01")
+script = ExtResource("6_bar01")
+
+[node name="BottomCentre" type="VBoxContainer" parent="Root/SafeArea"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+alignment = 1
+script = ExtResource("7_lvl01")
+
+[node name="LevelName" type="Label" parent="Root/SafeArea/BottomCentre"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "Level 1"
+horizontal_alignment = 1
+
+[node name="Progress" type="Control" parent="Root/SafeArea/BottomCentre"]
+custom_minimum_size = Vector2(220, 2)
+layout_mode = 2
+mouse_filter = 2

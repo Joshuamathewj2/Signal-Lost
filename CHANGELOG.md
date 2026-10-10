@@ -307,3 +307,14 @@ All notable changes to this project will be documented in this file.
 - Created `audio/music_layers.gd` (`MusicLayers`) with 4 synchronized procedural 8s loops (L0 ambient drone, L1 heartbeat pulse, L2 detuned tension pad, L3 120 BPM chase beat) dynamically fading based on alert level
 - Updated `autoload/game_state.gd` with 10 Hz awareness sampling and 1.5s smoothed `alert_level` tracking
 - Integrated player death low-pass muffle effect dropping Music bus filter cutoff to 800 Hz for 0.6s
+
+## P7-T1 Full HUD
+- Created `scenes/ui/ui_button.gd` (`UiButton` extends `Button`): plays `ui_move` on hover/focus and `ui_select` on press via `AudioManager`, with theme red highlight on hover/focus.
+- Created `scenes/ui/fragment_counter.gd` (`FragmentCounter` extends `HBoxContainer`): displays broadcast glyph (18x18 `_draw` dot + 2 arcs, white 1.5 px) and collected count with pop-scale animation (1.3 -> 1.0) on pickup.
+- Created `scenes/ui/ability_slot.gd` and `scenes/ui/ability_slot.tscn` (`AbilitySlot` extends `Control`): 44x44 icon box with silhouette rendering (decoy beacon in red, EMP in track gray) and 14x14 top-right key badge with 1 px outline and centered key glyph.
+- Created `scenes/ui/pip_row.gd` (`PipRow` extends `HBoxContainer`): displays up to 3 8x8 diamond pips (filled white = charge, hollow 1 px = used).
+- Created `scenes/ui/level_label.gd` (`LevelLabel` extends `VBoxContainer`): displays level title (size 26) and 220x2 progress line computed via `PlatformGraph.path_length` distance ratio `1 - clamp(path_dist(player->exit)/path_dist(spawn->exit), 0, 1)` updated every 0.5s with 0.3s tween.
+- Updated `scenes/ui/hud.gd` and `scenes/ui/hud.tscn` (`HUD` on CanvasLayer 20): complete hierarchy in `SafeArea` MarginContainer with dynamic safe margin calculation (4% of min screen dimension: 29 px at 720p, 43 px at 1080p).
+- Created `sandbox/sandbox_ui.tscn` and `sandbox/sandbox_ui.gd`: interactive test harness driving HUD with mock signals for energy, charging, fragments, decoy pips, and progress.
+- Verified responsive layout across 1280x720, 1920x1080, and 2560x1080 (ultrawide) resolutions with screenshots saved in `res://screenshots/`.
+- Created `tests/test_hud.gd` verifying all HUD components and interactions; 100% test suite passing.

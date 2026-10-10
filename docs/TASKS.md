@@ -59,7 +59,7 @@ Parse check command (PC): `godot --headless --path . --quit-after 120` (expect n
 - [x] P6-T5 Particles factory
 - [x] P6-T6 Synth SFX + AudioManager + buses
 - [x] P6-T7 Music layers
-- [ ] P7-T1 Full HUD
+- [x] P7-T1 Full HUD
 - [ ] P7-T2 Awareness bars + reticles
 - [ ] P7-T3 Main menu + title
 - [ ] P7-T4 Pause menu
