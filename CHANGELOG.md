@@ -231,3 +231,9 @@ All notable changes to this project will be documented in this file.
 ## P5-T5 Lantern
 - Created `scenes/interactables/lantern.gd` (`Lantern`) and `lantern.tscn` featuring damped angular spring dynamics, tier-based wavefront impulse reactions, and throttled CLINK noise emission
 - Updated `EntitySpawner` to instantiate suspended ceiling lanterns for `~` cells
+
+## P5-T6 Vents
+- Created `scenes/interactables/vent.gd` (`Vent`) and `vent.tscn` supporting INTAKE, OUTLET, and MUTE modes with grate visual and area monitoring
+- Updated `autoload/noise_bus.gd` with resonance rerouting from intake vents to paired outlet vents with amplified radius, loudness, and 0.2s propagation delay
+- Integrated pulse charger noise dampening (0.3x) when player is inside mute vent zone
+- Updated `EntitySpawner` to pair i-th intake `V` with i-th outlet `v` in reading order and spawn mute vents `M`

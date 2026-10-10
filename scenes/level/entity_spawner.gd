@@ -11,6 +11,7 @@ const PLATE_SCENE: PackedScene = preload("res://scenes/interactables/pressure_pl
 const ONE_WAY_DOOR_SCENE: PackedScene = preload("res://scenes/interactables/one_way_door.tscn")
 const GLASS_SCENE: PackedScene = preload("res://scenes/interactables/glass_floor.tscn")
 const LANTERN_SCENE: PackedScene = preload("res://scenes/interactables/lantern.tscn")
+const VENT_SCENE: PackedScene = preload("res://scenes/interactables/vent.tscn")
 
 static var _warned_stubs: Dictionary = {}
 
@@ -172,7 +173,55 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 			lantern_inst.cell = cell_vec
 			interactables_node.add_child(lantern_inst)
 
-	# 12. Extract bounds for enemies
+	# 12. Spawn Vents (V, v, M)
+	var spawned_intakes: Array[Vent] = []
+	var spawned_outlets: Array[Vent] = []
+
+	if data.cells.has("V"):
+		var v_cells: Array = data.cells["V"].duplicate()
+		v_cells.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:
+			return (a.y * data.width + a.x) < (b.y * data.width + b.x)
+		)
+		for cell in v_cells:
+			var cell_vec: Vector2i = cell
+			var v_pos := Vector2(float(cell_vec.x) * 32.0, float(cell_vec.y) * 32.0)
+			var vent_inst: Vent = VENT_SCENE.instantiate() as Vent
+			vent_inst.mode = "INTAKE"
+			vent_inst.cell = cell_vec
+			vent_inst.position = v_pos
+			interactables_node.add_child(vent_inst)
+			spawned_intakes.append(vent_inst)
+
+	if data.cells.has("v"):
+		var v_cells: Array = data.cells["v"].duplicate()
+		v_cells.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:
+			return (a.y * data.width + a.x) < (b.y * data.width + b.x)
+		)
+		for cell in v_cells:
+			var cell_vec: Vector2i = cell
+			var v_pos := Vector2(float(cell_vec.x) * 32.0, float(cell_vec.y) * 32.0)
+			var vent_inst: Vent = VENT_SCENE.instantiate() as Vent
+			vent_inst.mode = "OUTLET"
+			vent_inst.cell = cell_vec
+			vent_inst.position = v_pos
+			interactables_node.add_child(vent_inst)
+			spawned_outlets.append(vent_inst)
+
+	var pair_count: int = mini(spawned_intakes.size(), spawned_outlets.size())
+	for i in range(pair_count):
+		spawned_intakes[i].outlet = spawned_outlets[i]
+
+	if data.cells.has("M"):
+		for cell in data.cells["M"]:
+			var cell_vec: Vector2i = cell
+			var v_pos := Vector2(float(cell_vec.x) * 32.0, float(cell_vec.y) * 32.0)
+			var vent_inst: Vent = VENT_SCENE.instantiate() as Vent
+			vent_inst.mode = "MUTE"
+			vent_inst.cell = cell_vec
+			vent_inst.position = v_pos
+			interactables_node.add_child(vent_inst)
+
+	# 13. Extract bounds for enemies
 	var bounds_per_row: Dictionary = {}
 	if data.cells.has("|"):
 		for bound_cell in data.cells["|"]:
@@ -182,7 +231,7 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 				bounds_per_row[r] = []
 			(bounds_per_row[r] as Array).append(float(b_vec.x * 32))
 
-	# 13. Spawn Listener enemies
+	# 14. Spawn Listener enemies
 	if data.cells.has("L"):
 		for cell in data.cells["L"]:
 			var cell_vec: Vector2i = cell
@@ -202,9 +251,9 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 			enemies_node.add_child(listener_inst)
 			(result["enemies"] as Array).append(listener_inst)
 
-	# 14. Stub warnings for unimplemented entities
+	# 15. Stub warnings for unimplemented entities
 	for ch in data.cells.keys():
-		if ch != "#" and ch != "=" and ch != "P" and ch != "L" and ch != "|" and ch != "." and ch != "F" and ch != "K" and ch != "E" and ch != "D" and ch != "R" and ch != "_" and ch != ">" and ch != "<" and ch != "G" and ch != "~":
+		if ch != "#" and ch != "=" and ch != "P" and ch != "L" and ch != "|" and ch != "." and ch != "F" and ch != "K" and ch != "E" and ch != "D" and ch != "R" and ch != "_" and ch != ">" and ch != "<" and ch != "G" and ch != "~" and ch != "V" and ch != "v" and ch != "M":
 			if not _warned_stubs.has(ch):
 				_warned_stubs[ch] = true
 				push_warning("STUB: spawn " + ch)
