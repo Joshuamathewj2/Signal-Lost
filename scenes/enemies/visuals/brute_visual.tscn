@@ -1,0 +1,43 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/enemies/visuals/brute_visual.gd" id="1_bvis"]
+[ext_resource type="Shader" path="res://shaders/enemy_silhouette.gdshader" id="2_es"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bvis"]
+shader = ExtResource("2_es")
+shader_parameter/danger_color = Color(0.9, 0.2, 0.2, 1)
+shader_parameter/alert = 0.0
+shader_parameter/flash = 0.0
+shader_parameter/hatch = false
+shader_parameter/rim_softness = 0.25
+
+[node name="BruteVisual" type="Node2D"]
+script = ExtResource("1_bvis")
+
+[node name="Silhouette" type="Polygon2D" parent="."]
+light_mask = 3
+material = SubResource("ShaderMaterial_bvis")
+color = Color(0.9, 0.2, 0.2, 1)
+polygon = PackedVector2Array(-14, -2, -16, -10, -18, -18, -10, -26, 10, -26, 18, -18, 16, -10, 14, -2, 8, 0, -8, 0)
+
+[node name="Brow" type="Line2D" parent="."]
+light_mask = 3
+points = PackedVector2Array(-10, -20, 10, -20)
+width = 2.0
+default_color = Color(0.9, 0.2, 0.2, 1)
+
+[node name="Eye" type="Polygon2D" parent="."]
+light_mask = 3
+position = Vector2(8, -16)
+color = Color(1, 0.3, 0.3, 1)
+polygon = PackedVector2Array(-3, -2, 3, -2, 3, 1, -3, 1)
+
+[node name="TellLabel" type="Label" parent="."]
+offset_left = -10.0
+offset_top = -48.0
+offset_right = 10.0
+offset_bottom = -28.0
+theme_override_font_sizes/font_size = 14
+text = "!"
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -27,6 +27,8 @@ func update(delta: float) -> void:
 		actor.last_noise.clear()
 		if machine != null and machine.has_node("Track"):
 			transition(&"Track", {"pos": n_pos})
+		elif machine != null and machine.has_node("Charge"):
+			transition(&"Charge", {"pos": n_pos})
 		else:
 			transition(&"Investigate", {"pos": n_pos})
 		return

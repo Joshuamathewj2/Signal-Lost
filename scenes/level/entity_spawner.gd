@@ -5,6 +5,7 @@ const PLAYER_SCENE: PackedScene = preload("res://scenes/player/player.tscn")
 const LISTENER_SCENE: PackedScene = preload("res://scenes/enemies/listener.tscn")
 const SENTRY_SCENE: PackedScene = preload("res://scenes/enemies/sentry.tscn")
 const HUNTER_SCENE: PackedScene = preload("res://scenes/enemies/hunter.tscn")
+const BRUTE_SCENE: PackedScene = preload("res://scenes/enemies/brute.tscn")
 
 static var _warned_stubs: Dictionary = {}
 
@@ -78,9 +79,21 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 			enemies_node.add_child(hunter_inst)
 			(result["enemies"] as Array).append(hunter_inst)
 
-	# 7. Stub warnings for unimplemented entities
+	# 7. Spawn Brute enemies (B)
+	if data.cells.has("B"):
+		for cell in data.cells["B"]:
+			var cell_vec: Vector2i = cell
+			var b_pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, (float(cell_vec.y) + 1.0) * 32.0)
+			var brute_inst: EnemyBase = BRUTE_SCENE.instantiate() as EnemyBase
+			brute_inst.position = b_pos
+			brute_inst.set_meta("spawn_pos", b_pos)
+			_setup_mover(brute_inst, graph, bounds_per_row, cell_vec.y)
+			enemies_node.add_child(brute_inst)
+			(result["enemies"] as Array).append(brute_inst)
+
+	# 8. Stub warnings for unimplemented entities
 	for ch in data.cells.keys():
-		if ch != "#" and ch != "=" and ch != "P" and ch != "L" and ch != "|" and ch != "." and ch != "F" and ch != "K" and ch != "E" and ch != "D" and ch != "R" and ch != "_" and ch != ">" and ch != "<" and ch != "G" and ch != "~" and ch != "V" and ch != "v" and ch != "M" and ch != "S" and ch != "H":
+		if ch != "#" and ch != "=" and ch != "P" and ch != "L" and ch != "|" and ch != "." and ch != "F" and ch != "K" and ch != "E" and ch != "D" and ch != "R" and ch != "_" and ch != ">" and ch != "<" and ch != "G" and ch != "~" and ch != "V" and ch != "v" and ch != "M" and ch != "S" and ch != "H" and ch != "B":
 			if not _warned_stubs.has(ch):
 				_warned_stubs[ch] = true
 				push_warning("STUB: spawn " + ch)

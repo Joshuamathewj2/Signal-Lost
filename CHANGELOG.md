@@ -254,3 +254,12 @@ All notable changes to this project will be documented in this file.
 - Updated `st_patrol.gd`, `st_search.gd`, `st_return.gd`, and `st_chase.gd` to integrate Hunter `Track` state transitions and 1.0s red ripple double-ping during chase
 - Created `scenes/level/interactable_spawner.gd` to maintain strict single responsibility and keep `entity_spawner.gd` well under 250 lines
 - Updated `scenes/level/entity_spawner.gd` to spawn Hunter enemies from `H` cells
+
+## P5-T9 Brute
+- Created `scenes/enemies/states/st_brute_wander.gd` (`StBruteWander`) implementing segment patrol, 0.7s step thud ripples (ENEMY type, loudness 0), and camera shake trauma (+0.03) when within 160 px of player
+- Created `scenes/enemies/states/st_brute_charge.gd` (`StBruteCharge`) with exclamation tell, red flash, run speed rushing, and arrival / wall collision transitions to Stunned
+- Created `scenes/enemies/states/st_stunned.gd` (`StStunned`) with 1.2s head shake and transition to Search
+- Created `scenes/enemies/visuals/brute_visual.gd` (`BruteVisual`) and `brute_visual.tscn` featuring bulky silhouette, tell label, flash shader, and sinusoidal head shake stun animation
+- Created `scenes/enemies/brute.tscn` inheriting `enemy_base.tscn` with `brute` group, Wander initial state, and deaf vibration profile
+- Updated `st_search.gd` and `st_return.gd` to route to Charge and Wander for Brute state transitions
+- Updated `scenes/level/entity_spawner.gd` to spawn Brute enemies from `B` cells

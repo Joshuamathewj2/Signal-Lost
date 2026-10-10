@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://cbrute_enemy_01"]
+
+[ext_resource type="PackedScene" path="res://scenes/enemies/enemy_base.tscn" id="1_eb01"]
+[ext_resource type="Resource" path="res://resources/enemies/enemy_brute.tres" id="2_prof02"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/visuals/brute_visual.tscn" id="3_bvis"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_brute_wander.gd" id="4_wnd04"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_brute_charge.gd" id="5_chg05"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_stunned.gd" id="6_stn06"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_search.gd" id="7_src07"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_return.gd" id="8_ret08"]
+
+[node name="Brute" groups=["brute"] instance=ExtResource("1_eb01")]
+profile = ExtResource("2_prof02")
+kind = &"brute"
+
+[node name="Visual" parent="." index="2" instance=ExtResource("3_bvis")]
+
+[node name="StateMachine" parent="." index="7" node_paths=PackedStringArray("initial")]
+initial = NodePath("Wander")
+
+[node name="Wander" type="Node" parent="StateMachine" index="0"]
+script = ExtResource("4_wnd04")
+
+[node name="Charge" type="Node" parent="StateMachine" index="1"]
+script = ExtResource("5_chg05")
+
+[node name="Stunned" type="Node" parent="StateMachine" index="2"]
+script = ExtResource("6_stn06")
+
+[node name="Search" type="Node" parent="StateMachine" index="3"]
+script = ExtResource("7_src07")
+
+[node name="Return" type="Node" parent="StateMachine" index="4"]
+script = ExtResource("8_ret08")

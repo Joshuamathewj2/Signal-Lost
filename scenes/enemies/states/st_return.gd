@@ -23,10 +23,15 @@ func update(_delta: float) -> void:
 		actor.last_noise.clear()
 		if machine != null and machine.has_node("Track"):
 			transition(&"Track", {"pos": n_pos})
+		elif machine != null and machine.has_node("Charge"):
+			transition(&"Charge", {"pos": n_pos})
 		else:
 			transition(&"Investigate", {"pos": n_pos})
 		return
 
 	var mover_ref: PlatformMover = actor.get_node_or_null("PlatformMover") as PlatformMover
 	if mover_ref != null and not mover_ref.is_moving:
-		transition(&"Patrol")
+		if machine != null and machine.has_node("Wander"):
+			transition(&"Wander")
+		else:
+			transition(&"Patrol")
