@@ -69,10 +69,22 @@ func restart_level() -> void:
 func next_level() -> void:
 	load_level(current_level_index + 1)
 
+func return_to_main_menu() -> void:
+	if current_level_root != null and is_instance_valid(current_level_root):
+		current_level_root.queue_free()
+		current_level_root = null
+	var main_node: Node = get_tree().root.get_node_or_null("Main")
+	if main_node != null and main_node.has_method("show_main_menu"):
+		main_node.call("show_main_menu")
+
 func _spawn_level_instant(path: String) -> void:
 	var host: Node = get_tree().root.get_node_or_null("Main/LevelHost")
 	if host == null:
 		host = get_tree().current_scene
+	if host == null:
+		host = get_tree().root
+	if host == null:
+		return
 
 	if current_level_root != null and is_instance_valid(current_level_root):
 		current_level_root.queue_free()

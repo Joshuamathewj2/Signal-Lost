@@ -48,7 +48,3 @@ func _on_player_entered(p: Player) -> void:
 	tween.tween_callback(func() -> void:
 		GameState.complete_level()
 	)
-	tween.tween_interval(0.6)
-	tween.tween_callback(func() -> void:
-		SceneRouter.next_level()
-	)

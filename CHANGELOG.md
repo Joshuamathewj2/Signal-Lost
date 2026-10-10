@@ -348,3 +348,18 @@ All notable changes to this project will be documented in this file.
 - Updated `scenes/player/pulse_charger.gd` (`PulseCharger`): added quick scream double-tap option releasing Scream tier within < 0.25s of second pulse press.
 - Connected settings modal dialog to both `MainMenu` and `PauseMenu`.
 - Created `tests/test_settings.gd` verifying setting persistence, volume updates, colorblind propagation, and quick-scream enablement; 100% test suite passing.
+
+## P7-T6 Level Complete, Level Select, & Medals Save
+- Created `scenes/ui/level_select_box.gd` (`LevelSelectBox` extends `Button`): 120x80 px box with 1 px outline (`#3D3D3D` locked, `#E0E0E0` unlocked, red on hover/focus), level number, fragments count, and best medal glyph (Ghost: hollow circle, Quiet: half circle, Loud: filled circle).
+- Created `scenes/ui/level_select.gd` and `scenes/ui/level_select.tscn` (`LevelSelect` extends `Control`): 4x2 grid of 8 level boxes with keyboard/gamepad arrow grid navigation, unlocked progression, and BACK button returning to `MainMenu`.
+- Created `scenes/ui/level_complete.gd` and `scenes/ui/level_complete.tscn` (`LevelComplete` extends `Control`): "SIGNAL RESTORED" typewriter animation (0.03 s/char), 2-column stats table (Time, Pulses W/N/S, Loudest, Detected, Fragments), animated medal sonar ring wipe reveal with "NEW BEST" highlight, decrypted audio log lore lines, and NEXT/RETRY/MENU buttons.
+- Updated `autoload/save_data.gd` (`SaveData`): added `save_level_result()`, `get_level_data()`, `clear_level_data()`, `is_level_unlocked()`, `get_highest_unlocked_level()`, `medal_rank()` (Ghost > Quiet > Loud), and persisted `best_time`, `best_medal`, `fragments`, and `fragments_mask`.
+- Updated `autoload/scene_router.gd` (`SceneRouter`): added `return_to_main_menu()` and ensured headless test fallback safety.
+- Updated `scenes/main/main.gd`: connected `GameState.level_completed` signal to automatically persist run stats via `SaveData` and display `LevelComplete` on `$Menus`.
+- Updated `scenes/ui/main_menu.gd`: connected PLAY button to launch `LevelSelect` modal.
+- Updated `scenes/interactables/exit_terminal.gd`: transitioned level completion flow to `LevelComplete` screen.
+- Created `tests/test_level_select_complete.gd`: full test coverage for medal rankings, save overwrites, level unlocking, level select UI, and level complete flow. All 14 test suites passing.
+
+## Checkpoint: Phase 7 UI
+- Complete UI and menus implementation: Full HUD with safe area scaling, unshaded world awareness bars and 1px reticles, glitched main menu with title sonar wipes, pause menu with audio ducking, full accessibility settings with live preview and ConfigFile persistence, 4x2 mission select grid, and level completion summary screen with typewriter header and sonar ring medal reveal.
+

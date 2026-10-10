@@ -1,0 +1,155 @@
+[gd_scene format=3 uid="uid://clevel_complete_01"]
+
+[ext_resource type="Theme" path="res://resources/theme/ui_theme.tres" id="1_thm"]
+[ext_resource type="Script" path="res://scenes/ui/level_complete.gd" id="2_cmp"]
+[ext_resource type="Script" path="res://scenes/ui/ui_button.gd" id="3_btn"]
+
+[node name="LevelComplete" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_thm")
+script = ExtResource("2_cmp")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.92)
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "SIGNAL RESTORED"
+horizontal_alignment = 1
+
+[node name="MedalContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="MedalGlyph" type="Control" parent="CenterContainer/VBoxContainer/MedalContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="MedalNameLabel" type="Label" parent="CenterContainer/VBoxContainer/MedalContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "GHOST"
+horizontal_alignment = 1
+
+[node name="NewBestLabel" type="Label" parent="CenterContainer/VBoxContainer/MedalContainer"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+text = "★ NEW BEST ★"
+horizontal_alignment = 1
+
+[node name="StatsPanel" type="PanelContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="StatsGrid" type="GridContainer" parent="CenterContainer/VBoxContainer/StatsPanel"]
+layout_mode = 2
+theme_override_constants/h_separation = 32
+theme_override_constants/v_separation = 8
+columns = 2
+
+[node name="TimeLabel" type="Label" parent="CenterContainer/VBoxContainer/StatsPanel/StatsGrid"]
+layout_mode = 2
+text = "TIME"
+
+[node name="TimeVal" type="Label" parent="CenterContainer/VBoxContainer/StatsPanel/StatsGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "00:00.00"
+horizontal_alignment = 2
+
+[node name="PulsesLabel" type="Label" parent="CenterContainer/VBoxContainer/StatsPanel/StatsGrid"]
+layout_mode = 2
+text = "PULSES"
+
+[node name="PulsesVal" type="Label" parent="CenterContainer/VBoxContainer/StatsPanel/StatsGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "W: 0  N: 0  S: 0"
+horizontal_alignment = 2
+
+[node name="LoudestLabel" type="Label" parent="CenterContainer/VBoxContainer/StatsPanel/StatsGrid"]
+layout_mode = 2
+text = "LOUDEST"
+
+[node name="LoudestVal" type="Label" parent="CenterContainer/VBoxContainer/StatsPanel/StatsGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "WHISPER"
+horizontal_alignment = 2
+
+[node name="DetectedLabel" type="Label" parent="CenterContainer/VBoxContainer/StatsPanel/StatsGrid"]
+layout_mode = 2
+text = "DETECTED"
+
+[node name="DetectedVal" type="Label" parent="CenterContainer/VBoxContainer/StatsPanel/StatsGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0"
+horizontal_alignment = 2
+
+[node name="FragmentsLabel" type="Label" parent="CenterContainer/VBoxContainer/StatsPanel/StatsGrid"]
+layout_mode = 2
+text = "FRAGMENTS"
+
+[node name="FragmentsVal" type="Label" parent="CenterContainer/VBoxContainer/StatsPanel/StatsGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0 / 3"
+horizontal_alignment = 2
+
+[node name="LoreContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="ButtonGroup" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="NextButton" type="Button" parent="CenterContainer/VBoxContainer/ButtonGroup"]
+custom_minimum_size = Vector2(130, 36)
+layout_mode = 2
+text = "NEXT"
+script = ExtResource("3_btn")
+
+[node name="RetryButton" type="Button" parent="CenterContainer/VBoxContainer/ButtonGroup"]
+custom_minimum_size = Vector2(110, 36)
+layout_mode = 2
+text = "RETRY"
+script = ExtResource("3_btn")
+
+[node name="MenuButton" type="Button" parent="CenterContainer/VBoxContainer/ButtonGroup"]
+custom_minimum_size = Vector2(110, 36)
+layout_mode = 2
+text = "MENU"
+script = ExtResource("3_btn")

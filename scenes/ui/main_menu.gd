@@ -56,10 +56,19 @@ func _on_continue_pressed() -> void:
 		lvl = SaveData.get_continue_level()
 	_start_level(lvl)
 
-func _on_play_pressed() -> void:
-	_start_level(1)
-
+const LEVEL_SELECT_SCENE: PackedScene = preload("res://scenes/ui/level_select.tscn")
 const SETTINGS_SCENE: PackedScene = preload("res://scenes/ui/settings_menu.tscn")
+
+func _on_play_pressed() -> void:
+	var lvl_sel: LevelSelect = LEVEL_SELECT_SCENE.instantiate() as LevelSelect
+	add_child(lvl_sel)
+	lvl_sel.closed.connect(func() -> void:
+		if play_btn != null and play_btn.is_visible_in_tree():
+			play_btn.grab_focus()
+	)
+	lvl_sel.level_selected.connect(func(_idx: int) -> void:
+		queue_free()
+	)
 
 func _on_settings_pressed() -> void:
 	var settings: SettingsMenu = SETTINGS_SCENE.instantiate() as SettingsMenu

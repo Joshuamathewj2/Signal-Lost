@@ -3,6 +3,7 @@ extends Node
 const MAIN_MENU_SCENE: PackedScene = preload("res://scenes/ui/main_menu.tscn")
 const HUD_SCENE: PackedScene = preload("res://scenes/ui/hud.tscn")
 const PAUSE_MENU_SCENE: PackedScene = preload("res://scenes/ui/pause_menu.tscn")
+const LEVEL_COMPLETE_SCENE: PackedScene = preload("res://scenes/ui/level_complete.tscn")
 
 @onready var level_host: Node2D = $LevelHost
 @onready var post_fx: CanvasLayer = $PostFx
@@ -17,7 +18,20 @@ func _ready() -> void:
 	DebugFlags.log(&"main", "Main scene initialized")
 	_ensure_hud()
 	_ensure_pause_menu()
+	if GameState != null and GameState.has_signal("level_completed"):
+		GameState.level_completed.connect(_on_level_completed)
 	show_main_menu()
+
+func _on_level_completed(stats: Dictionary) -> void:
+	var lvl_idx: int = int(stats.get("level_index", 1))
+	var save_res: Dictionary = {}
+	if SaveData != null and SaveData.has_method("save_level_result"):
+		save_res = SaveData.save_level_result(lvl_idx, stats)
+
+	if menus != null:
+		var complete_inst: LevelComplete = LEVEL_COMPLETE_SCENE.instantiate() as LevelComplete
+		menus.add_child(complete_inst)
+		complete_inst.setup(stats, save_res)
 
 func _ensure_hud() -> void:
 	var existing_hud: Node = get_tree().get_first_node_in_group(&"hud")
