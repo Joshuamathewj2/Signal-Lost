@@ -325,3 +325,11 @@ All notable changes to this project will be documented in this file.
 - Updated `scenes/enemies/projectile.gd` (`Projectile`): replaced temporary circle with instantiated `WorldReticle(PROJECTILE)`.
 - Updated `scenes/enemies/enemy_base.gd` (`EnemyBase`): dynamically spawns its `AwarenessBar` and `WorldReticle` into `SenseLayer` upon ready, connects awareness changes, displays `NOISE_ORIGIN` reticle on noise events/investigation, and frees world UI on exit.
 - Created `tests/test_awareness_reticles.gd` verifying AwarenessBar transparency, WorldReticle modes, and Projectile integration; 100% test suite passing.
+
+## P7-T3 Main Menu & Title
+- Created `shaders/title_glitch.gdshader`: implemented sonar wipe circular expansion (`reveal` 0 -> 1 over 1.2s) with white outer edge ring and horizontal glitch slice displacement (`glitch` 0 -> 1 spikes).
+- Created `scenes/ui/title_logo.gd` (`TitleLogo` extends `Control`): title banner with "SIGNAL" in white and "LOST" in danger red, automated 1.2s entrance sonar wipe, 0.08s glitch spikes every 3–6s, and unshaded expanding sonar rings (r 0 -> 260 px) every 4s.
+- Created `scenes/ui/main_menu.gd` and `scenes/ui/main_menu.tscn` (`MainMenu` extends `Control`): solid black menu featuring `TitleLogo`, keyboard/gamepad navigation with circular focus wrapping across vertical `UiButton` array (`CONTINUE` hidden if no save, `PLAY`, `SETTINGS`, `QUIT`), and level launch integration.
+- Updated `autoload/save_data.gd` (`SaveData`) with `has_save()`, `get_continue_level()`, and `set_continue_level()`.
+- Updated `scenes/main/main.gd`: boots into `MainMenu` on layer 30, instantiating `HUD` and deferring level load until play/continue selection.
+- Created `tests/test_main_menu.gd` verifying title labels, button hierarchy, and keyboard focus wrapping; 100% test suite passing.

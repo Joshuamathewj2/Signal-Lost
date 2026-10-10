@@ -21,3 +21,13 @@ func set_setting(key: String, value: Variant) -> void:
 	_config.set_value("settings", key, value)
 	_config.save(SAVE_PATH)
 	settings_changed.emit()
+
+func has_save() -> bool:
+	return _config.has_section("levels") or int(_config.get_value("progress", "continue_level", 0)) > 1
+
+func get_continue_level() -> int:
+	return int(_config.get_value("progress", "continue_level", 1))
+
+func set_continue_level(level_index: int) -> void:
+	_config.set_value("progress", "continue_level", level_index)
+	_config.save(SAVE_PATH)

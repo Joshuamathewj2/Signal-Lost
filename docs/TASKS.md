@@ -61,7 +61,7 @@ Parse check command (PC): `godot --headless --path . --quit-after 120` (expect n
 - [x] P6-T7 Music layers
 - [x] P7-T1 Full HUD
 - [x] P7-T2 Awareness bars + reticles
-- [ ] P7-T3 Main menu + title
+- [x] P7-T3 Main menu + title
 - [ ] P7-T4 Pause menu
 - [ ] P7-T5 Settings + SaveData settings
 - [ ] P7-T6 Level complete + level select + medals save
