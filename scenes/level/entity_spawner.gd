@@ -3,6 +3,7 @@ extends RefCounted
 
 const PLAYER_SCENE: PackedScene = preload("res://scenes/player/player.tscn")
 const LISTENER_SCENE: PackedScene = preload("res://scenes/enemies/listener.tscn")
+const SENTRY_SCENE: PackedScene = preload("res://scenes/enemies/sentry.tscn")
 const FRAGMENT_SCENE: PackedScene = preload("res://scenes/interactables/fragment.tscn")
 const KEYCARD_SCENE: PackedScene = preload("res://scenes/interactables/keycard.tscn")
 const EXIT_SCENE: PackedScene = preload("res://scenes/interactables/exit_terminal.tscn")
@@ -251,9 +252,20 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 			enemies_node.add_child(listener_inst)
 			(result["enemies"] as Array).append(listener_inst)
 
-	# 15. Stub warnings for unimplemented entities
+	# 15. Spawn Sentry enemies (S)
+	if data.cells.has("S"):
+		for cell in data.cells["S"]:
+			var cell_vec: Vector2i = cell
+			var s_pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, (float(cell_vec.y) + 1.0) * 32.0)
+			var sentry_inst: EnemyBase = SENTRY_SCENE.instantiate() as EnemyBase
+			sentry_inst.position = s_pos
+			sentry_inst.set_meta("spawn_pos", s_pos)
+			enemies_node.add_child(sentry_inst)
+			(result["enemies"] as Array).append(sentry_inst)
+
+	# 16. Stub warnings for unimplemented entities
 	for ch in data.cells.keys():
-		if ch != "#" and ch != "=" and ch != "P" and ch != "L" and ch != "|" and ch != "." and ch != "F" and ch != "K" and ch != "E" and ch != "D" and ch != "R" and ch != "_" and ch != ">" and ch != "<" and ch != "G" and ch != "~" and ch != "V" and ch != "v" and ch != "M":
+		if ch != "#" and ch != "=" and ch != "P" and ch != "L" and ch != "|" and ch != "." and ch != "F" and ch != "K" and ch != "E" and ch != "D" and ch != "R" and ch != "_" and ch != ">" and ch != "<" and ch != "G" and ch != "~" and ch != "V" and ch != "v" and ch != "M" and ch != "S":
 			if not _warned_stubs.has(ch):
 				_warned_stubs[ch] = true
 				push_warning("STUB: spawn " + ch)

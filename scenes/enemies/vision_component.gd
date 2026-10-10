@@ -6,6 +6,7 @@ signal player_lost()
 
 @export var profile: EnemyProfile
 
+var facing_direction: Vector2 = Vector2.ZERO
 var is_spotted: bool = false
 var last_known_pos: Vector2 = Vector2.ZERO
 var tick_timer: float = 0.0
@@ -42,10 +43,14 @@ func _check_vision() -> void:
 
 	# Check vision cone angle
 	var parent_node: Node = get_parent()
-	var facing_val: int = 1
-	if parent_node != null and "facing" in parent_node:
-		facing_val = int(parent_node.get("facing"))
-	var forward: Vector2 = Vector2.RIGHT if facing_val >= 0 else Vector2.LEFT
+	var forward: Vector2 = Vector2.RIGHT
+	if facing_direction != Vector2.ZERO:
+		forward = facing_direction.normalized()
+	elif parent_node != null and "facing_direction" in parent_node and (parent_node.get("facing_direction") as Vector2) != Vector2.ZERO:
+		forward = (parent_node.get("facing_direction") as Vector2).normalized()
+	elif parent_node != null and "facing" in parent_node:
+		var facing_val: int = int(parent_node.get("facing"))
+		forward = Vector2.RIGHT if facing_val >= 0 else Vector2.LEFT
 
 	var to_target: Vector2 = (p_pos - global_position).normalized()
 	var ang_deg: float = rad_to_deg(absf(forward.angle_to(to_target)))

@@ -12,7 +12,9 @@ extends CharacterBody2D
 @onready var mover: PlatformMover = $PlatformMover
 @onready var hitbox: Area2D = $Hitbox
 
+@export var has_gravity: bool = true
 var facing: int = 1
+var facing_direction: Vector2 = Vector2.ZERO
 var last_noise: Dictionary = {}
 var last_seen: Vector2 = Vector2.ZERO
 var smudge: Smudge = null
@@ -68,7 +70,7 @@ func face(dir: int) -> void:
 		(vis as Node2D).scale.x = float(facing)
 
 func _physics_process(delta: float) -> void:
-	if not is_on_floor():
+	if has_gravity and not is_on_floor():
 		var g: float = GameConfig.data.gravity if (GameConfig != null and GameConfig.data != null) else 1800.0
 		velocity.y += g * delta
 

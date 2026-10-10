@@ -237,3 +237,11 @@ All notable changes to this project will be documented in this file.
 - Updated `autoload/noise_bus.gd` with resonance rerouting from intake vents to paired outlet vents with amplified radius, loudness, and 0.2s propagation delay
 - Integrated pulse charger noise dampening (0.3x) when player is inside mute vent zone
 - Updated `EntitySpawner` to pair i-th intake `V` with i-th outlet `v` in reading order and spawn mute vents `M`
+
+## P5-T7 Sentry & Projectile
+- Created `scenes/enemies/projectile.gd` (`Projectile`) and `projectile.tscn` with unshaded reticle ring, 420 px/s speed, player lethal impact, and wall IMPACT noise
+- Created `scenes/enemies/visuals/sentry_visual.gd` (`SentryVisual`) and `sentry_visual.tscn` with rotating head and dashed red laser line
+- Created `scenes/enemies/states/st_sentry_idle.gd` (`StSentryIdle`), `st_sentry_aim.gd` (`StSentryAim`), and `st_sentry_fire.gd` (`StSentryFire`) implementing sweep, aim/track, and projectile burst routines
+- Created `scenes/enemies/sentry.tscn` without gravity and with disabled contact hitbox
+- Updated `scenes/enemies/vision_component.gd` and `enemy_base.gd` with omnidirectional `facing_direction` support
+- Updated `EntitySpawner` to spawn Sentry turrets from `S` cells

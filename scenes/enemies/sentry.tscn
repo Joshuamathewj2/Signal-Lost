@@ -1,0 +1,30 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/enemies/enemy_base.tscn" id="1_eb01"]
+[ext_resource type="Resource" path="res://resources/enemies/enemy_sentry.tres" id="2_prof"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/visuals/sentry_visual.tscn" id="3_vis"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_sentry_idle.gd" id="4_idle"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_sentry_aim.gd" id="5_aim"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_sentry_fire.gd" id="6_fire"]
+
+[node name="Sentry" instance=ExtResource("1_eb01")]
+profile = ExtResource("2_prof")
+kind = &"sentry"
+has_gravity = false
+
+[node name="CollisionShape2D" parent="Hitbox" index="0"]
+disabled = true
+
+[node name="Visual" parent="." index="7" instance=ExtResource("3_vis")]
+
+[node name="StateMachine" parent="." index="5" node_paths=PackedStringArray("initial")]
+initial = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine" index="0"]
+script = ExtResource("4_idle")
+
+[node name="Aim" type="Node" parent="StateMachine" index="1"]
+script = ExtResource("5_aim")
+
+[node name="Fire" type="Node" parent="StateMachine" index="2"]
+script = ExtResource("6_fire")

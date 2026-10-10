@@ -1,0 +1,28 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/enemies/visuals/sentry_visual.gd" id="1_vis"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_unshaded"]
+light_mode = 1
+
+[node name="SentryVisual" type="Node2D"]
+material = SubResource("CanvasItemMaterial_unshaded")
+script = ExtResource("1_vis")
+
+[node name="Base" type="Polygon2D" parent="."]
+color = Color(0.2, 0.2, 0.25, 1)
+polygon = PackedVector2Array(-8, 8, 8, 8, 6, -2, -6, -2)
+
+[node name="Head" type="Node2D" parent="."]
+
+[node name="Dome" type="Polygon2D" parent="Head"]
+color = Color(0.4, 0.4, 0.45, 1)
+polygon = PackedVector2Array(-5, -5, 5, -5, 6, 4, -6, 4)
+
+[node name="Barrel" type="Polygon2D" parent="Head"]
+color = Color(0.7, 0.7, 0.75, 1)
+polygon = PackedVector2Array(0, -2.5, 14, -1.5, 14, 1.5, 0, 2.5)
+
+[node name="Lens" type="Polygon2D" parent="Head"]
+color = Color(1, 0.2, 0.2, 1)
+polygon = PackedVector2Array(4, -2, 7, -2, 7, 2, 4, 2)
