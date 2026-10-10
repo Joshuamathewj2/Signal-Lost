@@ -30,6 +30,10 @@ SceneRouter="*res://autoload/scene_router.gd"
 SaveData="*res://autoload/save_data.gd"
 DebugFlags="*res://autoload/debug_flags.gd"
 
+[audio]
+
+buses/default_bus_layout="res://default_bus_layout.tres"
+
 [display]
 
 window/size/viewport_width=1280

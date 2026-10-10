@@ -296,3 +296,9 @@ All notable changes to this project will be documented in this file.
 - Implemented static particle creators for Landing dust (6 particles), Glass shatter (24 particles), Fragment pickup (16 unshaded particles), Terminal signal restoration stream (40 particles), and Projectile wall impact (8 particles)
 - Integrated factory calls into `fragment.gd`, `glass_floor.gd`, `exit_terminal.gd`, `projectile.gd`, and `player_motor.gd` (hard landings > 250 px/s)
 - Displayed active particle count in `DebugOverlay` HUD
+
+## P6-T6 Synth SFX & Audio Manager
+- Created `default_bus_layout.tres` with Master Limiter (-1 dB), Music LPF, SFX bus, Pulse bus with Reverb, Ambience bus with Reverb, and UI bus
+- Created `audio/synth.gd` (`Synth`) providing static DSP primitives (`sine`, `saw`, `square`, `noise`, `env_exp`, `glide`, `echo`, `lowpass_onepole`, and 16-bit little-endian mono 44.1 kHz `to_wav`)
+- Created `audio/sfx_library.gd` (`SfxLibrary`) procedurally generating all 20 game audio effects at boot in ~200 ms (< 1500 ms spec limit)
+- Updated `autoload/audio_manager.gd` (`AudioManager`) with a pool of 12 non-positional players, 8 positional players, dedicated Pulse player, dynamic Pulse reverb control, and automatic NoiseBus / pulse cue playback
