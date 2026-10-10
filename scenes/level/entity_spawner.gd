@@ -4,15 +4,7 @@ extends RefCounted
 const PLAYER_SCENE: PackedScene = preload("res://scenes/player/player.tscn")
 const LISTENER_SCENE: PackedScene = preload("res://scenes/enemies/listener.tscn")
 const SENTRY_SCENE: PackedScene = preload("res://scenes/enemies/sentry.tscn")
-const FRAGMENT_SCENE: PackedScene = preload("res://scenes/interactables/fragment.tscn")
-const KEYCARD_SCENE: PackedScene = preload("res://scenes/interactables/keycard.tscn")
-const EXIT_SCENE: PackedScene = preload("res://scenes/interactables/exit_terminal.tscn")
-const DOOR_SCENE: PackedScene = preload("res://scenes/interactables/door.tscn")
-const PLATE_SCENE: PackedScene = preload("res://scenes/interactables/pressure_plate.tscn")
-const ONE_WAY_DOOR_SCENE: PackedScene = preload("res://scenes/interactables/one_way_door.tscn")
-const GLASS_SCENE: PackedScene = preload("res://scenes/interactables/glass_floor.tscn")
-const LANTERN_SCENE: PackedScene = preload("res://scenes/interactables/lantern.tscn")
-const VENT_SCENE: PackedScene = preload("res://scenes/interactables/vent.tscn")
+const HUNTER_SCENE: PackedScene = preload("res://scenes/enemies/hunter.tscn")
 
 static var _warned_stubs: Dictionary = {}
 
@@ -38,191 +30,10 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 	root.add_child(player_inst)
 	result["player"] = player_inst
 
-	# 2. Spawn Exit Terminal
-	var e_cell: Vector2i = data.exit_cell
-	var e_pos := Vector2((float(e_cell.x) + 0.5) * 32.0, (float(e_cell.y) + 1.0) * 32.0)
-	var exit_inst: ExitTerminal = EXIT_SCENE.instantiate() as ExitTerminal
-	exit_inst.position = e_pos
-	exit_inst.cell = e_cell
-	interactables_node.add_child(exit_inst)
+	# 2. Spawn Interactables via InteractableSpawner
+	InteractableSpawner.spawn_interactables(data, interactables_node, graph)
 
-	# 3. Spawn Fragments
-	if data.cells.has("F"):
-		var frag_id: int = 0
-		for cell in data.cells["F"]:
-			var cell_vec: Vector2i = cell
-			var f_pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, (float(cell_vec.y) + 0.5) * 32.0)
-			var frag_inst: Fragment = FRAGMENT_SCENE.instantiate() as Fragment
-			frag_inst.position = f_pos
-			frag_inst.cell = cell_vec
-			frag_inst.fragment_id = frag_id
-			frag_id += 1
-			interactables_node.add_child(frag_inst)
-
-	# 4. Spawn Keycards
-	if data.cells.has("K"):
-		for cell in data.cells["K"]:
-			var cell_vec: Vector2i = cell
-			var k_pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, (float(cell_vec.y) + 0.5) * 32.0)
-			var key_inst: Keycard = KEYCARD_SCENE.instantiate() as Keycard
-			key_inst.position = k_pos
-			key_inst.cell = cell_vec
-			interactables_node.add_child(key_inst)
-
-	# 5. Spawn Key Doors (D)
-	if data.cells.has("D"):
-		var processed_d: Dictionary = {}
-		for cell in data.cells["D"]:
-			var cell_vec: Vector2i = cell
-			if processed_d.has(cell_vec):
-				continue
-			var lower_cell: Vector2i = cell_vec + Vector2i(0, 1)
-			if (data.cells["D"] as Array).has(lower_cell):
-				processed_d[cell_vec] = true
-				processed_d[lower_cell] = true
-				var d_pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, float(cell_vec.y) * 32.0)
-				var door_inst: Door = DOOR_SCENE.instantiate() as Door
-				door_inst.mode = "KEY"
-				door_inst.cell = cell_vec
-				door_inst.position = d_pos
-				door_inst.graph_ref = graph
-				interactables_node.add_child(door_inst)
-
-	# 6. Spawn Plate Doors (R)
-	if data.cells.has("R"):
-		var processed_r: Dictionary = {}
-		for cell in data.cells["R"]:
-			var cell_vec: Vector2i = cell
-			if processed_r.has(cell_vec):
-				continue
-			var lower_cell: Vector2i = cell_vec + Vector2i(0, 1)
-			if (data.cells["R"] as Array).has(lower_cell):
-				processed_r[cell_vec] = true
-				processed_r[lower_cell] = true
-				var r_pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, float(cell_vec.y) * 32.0)
-				var door_inst: Door = DOOR_SCENE.instantiate() as Door
-				door_inst.mode = "PLATE"
-				door_inst.cell = cell_vec
-				door_inst.position = r_pos
-				door_inst.graph_ref = graph
-				interactables_node.add_child(door_inst)
-
-	# 7. Spawn One-Way Doors (>)
-	if data.cells.has(">"):
-		var processed_owd_right: Dictionary = {}
-		for cell in data.cells[">"]:
-			var cell_vec: Vector2i = cell
-			if processed_owd_right.has(cell_vec):
-				continue
-			var lower_cell: Vector2i = cell_vec + Vector2i(0, 1)
-			if (data.cells[">"] as Array).has(lower_cell):
-				processed_owd_right[cell_vec] = true
-				processed_owd_right[lower_cell] = true
-				var owd_pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, float(cell_vec.y) * 32.0)
-				var owd_inst: OneWayDoor = ONE_WAY_DOOR_SCENE.instantiate() as OneWayDoor
-				owd_inst.dir = 1
-				owd_inst.cell = cell_vec
-				owd_inst.position = owd_pos
-				interactables_node.add_child(owd_inst)
-
-	# 8. Spawn One-Way Doors (<)
-	if data.cells.has("<"):
-		var processed_owd_left: Dictionary = {}
-		for cell in data.cells["<"]:
-			var cell_vec: Vector2i = cell
-			if processed_owd_left.has(cell_vec):
-				continue
-			var lower_cell: Vector2i = cell_vec + Vector2i(0, 1)
-			if (data.cells["<"] as Array).has(lower_cell):
-				processed_owd_left[cell_vec] = true
-				processed_owd_left[lower_cell] = true
-				var owd_pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, float(cell_vec.y) * 32.0)
-				var owd_inst: OneWayDoor = ONE_WAY_DOOR_SCENE.instantiate() as OneWayDoor
-				owd_inst.dir = -1
-				owd_inst.cell = cell_vec
-				owd_inst.position = owd_pos
-				interactables_node.add_child(owd_inst)
-
-	# 9. Spawn Pressure Plates (_)
-	if data.cells.has("_"):
-		for cell in data.cells["_"]:
-			var cell_vec: Vector2i = cell
-			var p_pos_plate := Vector2((float(cell_vec.x) + 0.5) * 32.0, (float(cell_vec.y) + 1.0) * 32.0)
-			var plate_inst: PressurePlate = PLATE_SCENE.instantiate() as PressurePlate
-			plate_inst.position = p_pos_plate
-			plate_inst.cell = cell_vec
-			interactables_node.add_child(plate_inst)
-
-	# 10. Spawn Glass Floors (G)
-	if data.cells.has("G"):
-		for cell in data.cells["G"]:
-			var cell_vec: Vector2i = cell
-			var g_pos := Vector2(float(cell_vec.x) * 32.0, float(cell_vec.y) * 32.0)
-			var glass_inst: GlassFloor = GLASS_SCENE.instantiate() as GlassFloor
-			glass_inst.position = g_pos
-			glass_inst.cell = cell_vec
-			glass_inst.graph_ref = graph
-			interactables_node.add_child(glass_inst)
-
-	# 11. Spawn Lanterns (~)
-	if data.cells.has("~"):
-		for cell in data.cells["~"]:
-			var cell_vec: Vector2i = cell
-			var lantern_pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, float(cell_vec.y) * 32.0)
-			var lantern_inst: Lantern = LANTERN_SCENE.instantiate() as Lantern
-			lantern_inst.position = lantern_pos
-			lantern_inst.cell = cell_vec
-			interactables_node.add_child(lantern_inst)
-
-	# 12. Spawn Vents (V, v, M)
-	var spawned_intakes: Array[Vent] = []
-	var spawned_outlets: Array[Vent] = []
-
-	if data.cells.has("V"):
-		var v_cells: Array = data.cells["V"].duplicate()
-		v_cells.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:
-			return (a.y * data.width + a.x) < (b.y * data.width + b.x)
-		)
-		for cell in v_cells:
-			var cell_vec: Vector2i = cell
-			var v_pos := Vector2(float(cell_vec.x) * 32.0, float(cell_vec.y) * 32.0)
-			var vent_inst: Vent = VENT_SCENE.instantiate() as Vent
-			vent_inst.mode = "INTAKE"
-			vent_inst.cell = cell_vec
-			vent_inst.position = v_pos
-			interactables_node.add_child(vent_inst)
-			spawned_intakes.append(vent_inst)
-
-	if data.cells.has("v"):
-		var v_cells: Array = data.cells["v"].duplicate()
-		v_cells.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:
-			return (a.y * data.width + a.x) < (b.y * data.width + b.x)
-		)
-		for cell in v_cells:
-			var cell_vec: Vector2i = cell
-			var v_pos := Vector2(float(cell_vec.x) * 32.0, float(cell_vec.y) * 32.0)
-			var vent_inst: Vent = VENT_SCENE.instantiate() as Vent
-			vent_inst.mode = "OUTLET"
-			vent_inst.cell = cell_vec
-			vent_inst.position = v_pos
-			interactables_node.add_child(vent_inst)
-			spawned_outlets.append(vent_inst)
-
-	var pair_count: int = mini(spawned_intakes.size(), spawned_outlets.size())
-	for i in range(pair_count):
-		spawned_intakes[i].outlet = spawned_outlets[i]
-
-	if data.cells.has("M"):
-		for cell in data.cells["M"]:
-			var cell_vec: Vector2i = cell
-			var v_pos := Vector2(float(cell_vec.x) * 32.0, float(cell_vec.y) * 32.0)
-			var vent_inst: Vent = VENT_SCENE.instantiate() as Vent
-			vent_inst.mode = "MUTE"
-			vent_inst.cell = cell_vec
-			vent_inst.position = v_pos
-			interactables_node.add_child(vent_inst)
-
-	# 13. Extract bounds for enemies
+	# 3. Extract bounds for patrol enemies
 	var bounds_per_row: Dictionary = {}
 	if data.cells.has("|"):
 		for bound_cell in data.cells["|"]:
@@ -232,7 +43,7 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 				bounds_per_row[r] = []
 			(bounds_per_row[r] as Array).append(float(b_vec.x * 32))
 
-	# 14. Spawn Listener enemies
+	# 4. Spawn Listener enemies (L)
 	if data.cells.has("L"):
 		for cell in data.cells["L"]:
 			var cell_vec: Vector2i = cell
@@ -240,19 +51,11 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 			var listener_inst: EnemyBase = LISTENER_SCENE.instantiate() as EnemyBase
 			listener_inst.position = l_pos
 			listener_inst.set_meta("spawn_pos", l_pos)
-			if listener_inst.mover != null:
-				listener_inst.mover.graph = graph
-				if bounds_per_row.has(cell_vec.y):
-					var b_arr: Array = bounds_per_row[cell_vec.y]
-					b_arr.sort()
-					var b_floats: Array[float] = []
-					for b in b_arr:
-						b_floats.append(float(b))
-					listener_inst.mover.bounds = b_floats
+			_setup_mover(listener_inst, graph, bounds_per_row, cell_vec.y)
 			enemies_node.add_child(listener_inst)
 			(result["enemies"] as Array).append(listener_inst)
 
-	# 15. Spawn Sentry enemies (S)
+	# 5. Spawn Sentry enemies (S)
 	if data.cells.has("S"):
 		for cell in data.cells["S"]:
 			var cell_vec: Vector2i = cell
@@ -263,11 +66,35 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 			enemies_node.add_child(sentry_inst)
 			(result["enemies"] as Array).append(sentry_inst)
 
-	# 16. Stub warnings for unimplemented entities
+	# 6. Spawn Hunter enemies (H)
+	if data.cells.has("H"):
+		for cell in data.cells["H"]:
+			var cell_vec: Vector2i = cell
+			var h_pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, (float(cell_vec.y) + 1.0) * 32.0)
+			var hunter_inst: EnemyBase = HUNTER_SCENE.instantiate() as EnemyBase
+			hunter_inst.position = h_pos
+			hunter_inst.set_meta("spawn_pos", h_pos)
+			_setup_mover(hunter_inst, graph, bounds_per_row, cell_vec.y)
+			enemies_node.add_child(hunter_inst)
+			(result["enemies"] as Array).append(hunter_inst)
+
+	# 7. Stub warnings for unimplemented entities
 	for ch in data.cells.keys():
-		if ch != "#" and ch != "=" and ch != "P" and ch != "L" and ch != "|" and ch != "." and ch != "F" and ch != "K" and ch != "E" and ch != "D" and ch != "R" and ch != "_" and ch != ">" and ch != "<" and ch != "G" and ch != "~" and ch != "V" and ch != "v" and ch != "M" and ch != "S":
+		if ch != "#" and ch != "=" and ch != "P" and ch != "L" and ch != "|" and ch != "." and ch != "F" and ch != "K" and ch != "E" and ch != "D" and ch != "R" and ch != "_" and ch != ">" and ch != "<" and ch != "G" and ch != "~" and ch != "V" and ch != "v" and ch != "M" and ch != "S" and ch != "H":
 			if not _warned_stubs.has(ch):
 				_warned_stubs[ch] = true
 				push_warning("STUB: spawn " + ch)
 
 	return result
+
+static func _setup_mover(enemy: EnemyBase, graph: PlatformGraph, bounds_per_row: Dictionary, row_y: int) -> void:
+	if enemy.mover == null:
+		return
+	enemy.mover.graph = graph
+	if bounds_per_row.has(row_y):
+		var b_arr: Array = bounds_per_row[row_y]
+		b_arr.sort()
+		var b_floats: Array[float] = []
+		for b in b_arr:
+			b_floats.append(float(b))
+		enemy.mover.bounds = b_floats

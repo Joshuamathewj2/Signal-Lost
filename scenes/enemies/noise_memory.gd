@@ -20,11 +20,24 @@ func push_noise(event: NoiseEvent, strength: float) -> void:
 		"type": event.type
 	}
 
+	for e in entries:
+		if (e["pos"] as Vector2).distance_to(event.position) < 48.0:
+			e["time"] = now_sec
+			e["strength"] = strength
+			e["loudness"] = event.loudness
+			return
+
 	entries.append(new_entry)
 
 	var max_size: int = profile.memory_size if profile != null else 1
 	while entries.size() > max_size:
 		entries.pop_front()
+
+func pop_oldest() -> Dictionary:
+	_cleanup_expired()
+	if entries.is_empty():
+		return {}
+	return entries.pop_front()
 
 func _cleanup_expired() -> void:
 	var now_sec: float = float(Time.get_ticks_msec()) / 1000.0

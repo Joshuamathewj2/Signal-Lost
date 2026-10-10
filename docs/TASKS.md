@@ -42,14 +42,14 @@ Parse check command (PC): `godot --headless --path . --quit-after 120` (expect n
 - [ ] P4-T5 LevelValidator
 - [ ] P4-T6 EntitySpawner + LevelRoot
 - [ ] P4-T7 SceneRouter + levels 1–2
-- [ ] P5-T1 Interactable base, fragment, keycard, exit
-- [ ] P5-T2 Doors + pressure plate
-- [ ] P5-T3 One-way door
-- [ ] P5-T4 Glass floor
-- [ ] P5-T5 Lantern
-- [ ] P5-T6 Vents
-- [ ] P5-T7 Sentry + projectile
-- [ ] P5-T8 Hunter
+- [x] P5-T1 Interactable base, fragment, keycard, exit
+- [x] P5-T2 Doors + pressure plate
+- [x] P5-T3 One-way door
+- [x] P5-T4 Glass floor
+- [x] P5-T5 Lantern
+- [x] P5-T6 Vents
+- [x] P5-T7 Sentry + projectile
+- [x] P5-T8 Hunter
 - [ ] P5-T9 Brute
 - [ ] P5-T10 GameState: death, win, restart, stats, medals
 - [ ] P6-T1 Post FX

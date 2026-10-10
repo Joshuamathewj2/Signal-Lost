@@ -30,7 +30,10 @@ func update(delta: float) -> void:
 	if actor.hearing != null and not actor.last_noise.is_empty():
 		var n_pos: Vector2 = actor.last_noise.get("pos", actor.global_position)
 		actor.last_noise.clear()
-		transition(&"Investigate", {"pos": n_pos})
+		if machine != null and machine.has_node("Track"):
+			transition(&"Track", {"pos": n_pos})
+		else:
+			transition(&"Investigate", {"pos": n_pos})
 		return
 
 	if pause_timer > 0.0:

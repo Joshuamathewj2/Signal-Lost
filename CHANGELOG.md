@@ -245,3 +245,12 @@ All notable changes to this project will be documented in this file.
 - Created `scenes/enemies/sentry.tscn` without gravity and with disabled contact hitbox
 - Updated `scenes/enemies/vision_component.gd` and `enemy_base.gd` with omnidirectional `facing_direction` support
 - Updated `EntitySpawner` to spawn Sentry turrets from `S` cells
+
+## P5-T8 Hunter
+- Created `scenes/enemies/states/st_hunter_track.gd` (`StHunterTrack`) implementing FIFO noise memory inspection, sprint acceleration on loudness >= 3, and 1.2s periodic ENEMY ripple tell
+- Created `scenes/enemies/visuals/hunter_visual.gd` (`HunterVisual`) and `hunter_visual.tscn` with predatory silhouette, sensor ears, and alert/flash shaders
+- Created `scenes/enemies/hunter.tscn` inheriting `enemy_base.tscn` with `Track` state and Hunter enemy profile
+- Updated `scenes/enemies/noise_memory.gd` with 48px spatial deduplication and `pop_oldest()`
+- Updated `st_patrol.gd`, `st_search.gd`, `st_return.gd`, and `st_chase.gd` to integrate Hunter `Track` state transitions and 1.0s red ripple double-ping during chase
+- Created `scenes/level/interactable_spawner.gd` to maintain strict single responsibility and keep `entity_spawner.gd` well under 250 lines
+- Updated `scenes/level/entity_spawner.gd` to spawn Hunter enemies from `H` cells
