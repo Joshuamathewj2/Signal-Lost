@@ -23,7 +23,7 @@ func _process(_delta: float) -> void:
 	match page_idx:
 		0:
 			text += "--- GAMEPLAY ---\n"
-			text += "Level: %d | Detections: %d\n" % [GameState.level_index, GameState.stats.get("detections", 0)]
+			text += "Level: %d | Detections: %d | Particles: %d\n" % [GameState.level_index, GameState.stats.get("detections", 0), ParticlesFactory.get_alive_count()]
 			var player_node: Node = get_tree().get_first_node_in_group(&"player")
 			if player_node != null and player_node is CharacterBody2D:
 				var body: CharacterBody2D = player_node as CharacterBody2D

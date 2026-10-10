@@ -60,8 +60,7 @@ func break_glass() -> void:
 	if visual != null:
 		visual.visible = false
 
-	if particles != null:
-		particles.emitting = true
+	ParticlesFactory.spawn_glass_shatter(get_parent(), global_position + Vector2(16.0, 16.0))
 
 	var noise_ev := NoiseEvent.make(global_position, 360.0, 3.0, NoiseEvent.NoiseType.GLASS, self)
 	NoiseBus.emit_noise_event(noise_ev)

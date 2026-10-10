@@ -16,4 +16,5 @@ func _process(_delta: float) -> void:
 func _on_player_entered(_p: Player) -> void:
 	GameState.collect_fragment(fragment_id)
 	emit_noise(0.0, 0.0, NoiseEvent.NoiseType.CLINK)
+	ParticlesFactory.spawn_fragment_pickup(get_parent(), global_position)
 	queue_free()

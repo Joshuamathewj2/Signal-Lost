@@ -37,4 +37,5 @@ func _on_body_entered(body: Node2D) -> void:
 	else:
 		var noise_ev := NoiseEvent.make(global_position, 120.0, 1.5, NoiseEvent.NoiseType.IMPACT, null)
 		NoiseBus.emit_noise_event(noise_ev)
+		ParticlesFactory.spawn_projectile_impact(get_parent(), global_position)
 		queue_free()

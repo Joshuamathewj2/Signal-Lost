@@ -34,6 +34,8 @@ func _on_player_entered(p: Player) -> void:
 	if restored_label != null:
 		restored_label.visible = true
 
+	ParticlesFactory.spawn_terminal_restore(get_parent(), global_position + Vector2(0.0, -16.0))
+
 	var tween := create_tween()
 	if screen_fill != null:
 		screen_fill.modulate = Color(1, 1, 1, 0)

@@ -146,6 +146,8 @@ func _physics_process(delta: float) -> void:
 	is_on_floor = body.is_on_floor()
 	if not was_on_floor and is_on_floor:
 		landed.emit(pre_vy)
+		if pre_vy > 250.0:
+			ParticlesFactory.spawn_landing_dust(body.get_parent(), body.global_position)
 
 	# Update visual
 	if visual != null:

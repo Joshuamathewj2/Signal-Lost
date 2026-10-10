@@ -290,3 +290,9 @@ All notable changes to this project will be documented in this file.
 - Implemented Sentry 3px weapon recoil on fire and dashed aiming laser
 - Implemented Hunter ear flattening in Track mode and sprint body stretch
 - Implemented Brute 10 Hz ±8° head shake stun animation and flash synchronization
+
+## P6-T5 Particles Factory
+- Created `scenes/fx/particles_factory.gd` (`ParticlesFactory`) static particle manager with global alive cap <= 300
+- Implemented static particle creators for Landing dust (6 particles), Glass shatter (24 particles), Fragment pickup (16 unshaded particles), Terminal signal restoration stream (40 particles), and Projectile wall impact (8 particles)
+- Integrated factory calls into `fragment.gd`, `glass_floor.gd`, `exit_terminal.gd`, `projectile.gd`, and `player_motor.gd` (hard landings > 250 px/s)
+- Displayed active particle count in `DebugOverlay` HUD
