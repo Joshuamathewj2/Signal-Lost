@@ -5,4 +5,18 @@
 [resource]
 script = ExtResource("1_o2lvb")
 id = &"decoy"
+reveal_radius = 200.0
+noise_mult = 1.0
+loudness = 2.0
+hold_time = 1.2
+fade_time = 1.6
 energy_cost = 0.0
+cooldown = 0.0
+ring_thickness = 2.0
+trail_count = 2
+trail_gap = 14.0
+shake_px = 2.0
+zoom_punch = 0.0
+sfx_pitch = 1.0
+ca_strength = 0.0
+sfx_id = &"ping_normal"

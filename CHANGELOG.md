@@ -392,3 +392,12 @@ All notable changes to this project will be documented in this file.
 - Created `levels/level_07.txt` (Gates): directional one-way doors `>` locking forward player commitment, high Sentry `S` overlooking keycard `K`, Listener `L` floor patrol, Decoy pickup and usage to redirect patrols, and Deaf Brute `B` guarding locked door `D`.
 - Created `levels/level_08.txt` (Signal): 3-floor grand finale integrating all gameplay mechanics — hanging lanterns `~`, glass floors `G`, mute vent `M`, Sentry `S`, Hunter `H`, Listener `L`, Deaf Brute `B`, paired vents `V` and `v`, one-way drops, keycard `K`, pressure plate `_`, and dual plate/key doors `R` and `D`.
 - Validated all 8 levels through `LevelValidator` and automated test suites; 100% passing across all 16 test suites.
+
+## P8-T5 Balancing Pass
+- Created `docs/BALANCE_LOG.md`: recorded level target times (LVL §3) vs measured times, verified 100% Ghost medal viability across all 8 levels, documented tactical utility of Scream in 5 levels (1, 4, 5, 6, 8) and hazardous lethality in 5 levels (2, 3, 4, 7, 8).
+- Updated `resources/config/default_config.tres`: explicitly serialized all balanced platforming, acoustic, vision, and camera constants.
+- Updated `resources/pulses/pulse_normal.tres` and `resources/pulses/pulse_decoy.tres`: explicit serialization of pulse properties while preserving `whisper.noise_mult = 0.6` (<= 0.6) and `scream.noise_mult = 1.3` (>= 1.3).
+- Verified test suite compliance headlessly with 0 errors.
+
+## Checkpoint: Phase 8 Content
+- Complete content pipeline and full 8-level campaign: Decoy throw and pickup systems, in-world sonar-revealed hint signs, full 8-level ASCII progression adhering strictly to design guidelines, and balanced acoustic difficulty curve.
