@@ -417,3 +417,12 @@ All notable changes to this project will be documented in this file.
 - Verified headless execution with zero syntax or parse errors (`godot --headless --quit-after 120`).
 - Verified 17 test suites passing in `tests/run_tests.gd`.
 
+## P9-T3 Export Presets & README
+- Created `export_presets.cfg`: configured "Windows Desktop" (`export/SignalLost.exe`) and "Linux/X11" (`export/SignalLost.x86_64`) presets with embedded PCK packaging.
+- Updated `README.md`: complete player and developer guide with game pitch, core mechanics breakdown, full keyboard and gamepad controls mapping, build and run instructions, project layout index, and credits.
+- Built and validated standalone PCK bundle (`export/SignalLost.pck`) executing headlessly with 100% test suite pass rate.
+
+## Checkpoint: Phase 9 Release 1.0
+- Complete shippable build of **SIGNAL LOST**: all 10 phases (Foundation through Ship) fully implemented, 8-level campaign, verified 60+ FPS on target hardware, 0 open P1/P2 bugs, export presets configured, and 17 automated test suites passing.
+
+
