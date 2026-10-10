@@ -38,7 +38,12 @@ func _ready() -> void:
 				pulse_reverb_fx = fx as AudioEffectReverb
 				break
 
-	# 5. Connect signals
+	# 5. Add MusicLayers child
+	var music_layers := MusicLayers.new()
+	music_layers.name = "MusicLayers"
+	add_child(music_layers)
+
+	# 6. Connect signals
 	if NoiseBus != null and NoiseBus.has_signal("noise_emitted"):
 		NoiseBus.noise_emitted.connect(_on_noise_emitted)
 

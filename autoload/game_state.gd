@@ -37,9 +37,35 @@ func _ready() -> void:
 	if SceneRouter != null and SceneRouter.has_signal("level_loaded"):
 		SceneRouter.level_loaded.connect(_on_level_loaded)
 
+var is_any_enemy_chasing: bool = false
+var alert_tick_timer: float = 0.0
+var _target_alert: float = 0.0
+
 func _process(delta: float) -> void:
 	if is_level_active:
 		stats["time"] += delta
+
+	alert_tick_timer -= delta
+	if alert_tick_timer <= 0.0:
+		alert_tick_timer = 0.1
+		_sample_enemies_alert()
+
+	alert_level = move_toward(alert_level, _target_alert, delta / 1.5)
+
+func _sample_enemies_alert() -> void:
+	var enemies: Array[Node] = get_tree().get_nodes_in_group(&"enemies")
+	var max_aw: float = 0.0
+	var chasing: bool = false
+	for e in enemies:
+		if e is EnemyBase:
+			var eb: EnemyBase = e as EnemyBase
+			if eb.awareness != null:
+				max_aw = maxf(max_aw, eb.awareness.value)
+			if eb.state_machine != null and eb.state_machine.current != null:
+				if eb.state_machine.current.name == "Chase":
+					chasing = true
+	_target_alert = max_aw
+	is_any_enemy_chasing = chasing
 
 func _on_level_loaded(_level_root: Node) -> void:
 	reset_run()

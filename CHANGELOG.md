@@ -302,3 +302,8 @@ All notable changes to this project will be documented in this file.
 - Created `audio/synth.gd` (`Synth`) providing static DSP primitives (`sine`, `saw`, `square`, `noise`, `env_exp`, `glide`, `echo`, `lowpass_onepole`, and 16-bit little-endian mono 44.1 kHz `to_wav`)
 - Created `audio/sfx_library.gd` (`SfxLibrary`) procedurally generating all 20 game audio effects at boot in ~200 ms (< 1500 ms spec limit)
 - Updated `autoload/audio_manager.gd` (`AudioManager`) with a pool of 12 non-positional players, 8 positional players, dedicated Pulse player, dynamic Pulse reverb control, and automatic NoiseBus / pulse cue playback
+
+## P6-T7 Music Layers
+- Created `audio/music_layers.gd` (`MusicLayers`) with 4 synchronized procedural 8s loops (L0 ambient drone, L1 heartbeat pulse, L2 detuned tension pad, L3 120 BPM chase beat) dynamically fading based on alert level
+- Updated `autoload/game_state.gd` with 10 Hz awareness sampling and 1.5s smoothed `alert_level` tracking
+- Integrated player death low-pass muffle effect dropping Music bus filter cutoff to 800 Hz for 0.6s
