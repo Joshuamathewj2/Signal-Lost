@@ -5,6 +5,8 @@ var cfg: GameConfigData:
 	get:
 		return data
 
+var sonar_quality: int = 1 # 0: LOW, 1: HIGH
+
 var pulses: Dictionary = {
 	&"whisper": preload("res://resources/pulses/pulse_whisper.tres"),
 	&"normal": preload("res://resources/pulses/pulse_normal.tres"),
@@ -29,3 +31,6 @@ func pulse_for_tier(tier: int) -> PulseProfile:
 			return pulses[&"scream"]
 		_:
 			return pulses[&"normal"]
+
+func set_sonar_quality(q: int) -> void:
+	sonar_quality = q

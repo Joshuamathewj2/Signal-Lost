@@ -1,0 +1,154 @@
+[gd_scene format=3 uid="uid://csettings_menu_01"]
+
+[ext_resource type="Theme" path="res://resources/theme/ui_theme.tres" id="1_thm01"]
+[ext_resource type="Script" path="res://scenes/ui/settings_menu.gd" id="2_set02"]
+[ext_resource type="Script" path="res://scenes/ui/ui_button.gd" id="3_btn03"]
+
+[node name="SettingsMenu" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_thm01")
+script = ExtResource("2_set02")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.88)
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="CenterContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Title" type="Label" parent="CenterContainer/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "SETTINGS"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CenterContainer/Panel/VBoxContainer"]
+custom_minimum_size = Vector2(460, 360)
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="CenterContainer/Panel/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 30
+theme_override_constants/v_separation = 12
+columns = 2
+
+[node name="MasterLabel" type="Label" parent="CenterContainer/Panel/VBoxContainer/ScrollContainer/GridContainer"]
+layout_mode = 2
+text = "Master Volume"
+
+[node name="MasterSlider" type="HSlider" parent="CenterContainer/Panel/VBoxContainer/ScrollContainer/GridContainer"]
+custom_minimum_size = Vector2(180, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+value = 80.0
+
+[node name="MusicLabel" type="Label" parent="CenterContainer/Panel/VBoxContainer/ScrollContainer/GridContainer"]
+layout_mode = 2
+text = "Music Volume"
+
+[node name="MusicSlider" type="HSlider" parent="CenterContainer/Panel/VBoxContainer/ScrollContainer/GridContainer"]
+custom_minimum_size = Vector2(180, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+value = 70.0
+
+[node name="SfxLabel" type="Label" parent="CenterContainer/Panel/VBoxContainer/ScrollContainer/GridContainer"]
+layout_mode = 2
+text = "SFX Volume"
+
+[node name="SfxSlider" type="HSlider" parent="CenterContainer/Panel/VBoxContainer/ScrollContainer/GridContainer"]
+custom_minimum_size = Vector2(180, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+value = 80.0
+
+[node name="ShakeLabel" type="Label" parent="CenterContainer/Panel/VBoxContainer/ScrollContainer/GridContainer"]
+layout_mode = 2
+text = "Screen Shake"
+
+[node name="ShakeSlider" type="HSlider" parent="CenterContainer/Panel/VBoxContainer/ScrollContainer/GridContainer"]
+custom_minimum_size = Vector2(180, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+value = 100.0
+
+[node name="GrainLabel" type="Label" parent="CenterContainer/Panel/VBoxContainer/ScrollContainer/GridContainer"]
+layout_mode = 2
+text = "Film Grain"
+
+[node name="GrainCheck" type="CheckButton" parent="CenterContainer/Panel/VBoxContainer/ScrollContainer/GridContainer"]
+layout_mode = 2
+button_pressed = true
+
+[node name="CaLabel" type="Label" parent="CenterContainer/Panel/VBoxContainer/ScrollContainer/GridContainer"]
+layout_mode = 2
+text = "Chromatic Aberration"
+
+[node name="CaCheck" type="CheckButton" parent="CenterContainer/Panel/VBoxContainer/ScrollContainer/GridContainer"]
+layout_mode = 2
+button_pressed = true
+
+[node name="ColorblindLabel" type="Label" parent="CenterContainer/Panel/VBoxContainer/ScrollContainer/GridContainer"]
+layout_mode = 2
+text = "Colour-Blind Palette"
+
+[node name="ColorblindCheck" type="CheckButton" parent="CenterContainer/Panel/VBoxContainer/ScrollContainer/GridContainer"]
+layout_mode = 2
+
+[node name="PerfLabel" type="Label" parent="CenterContainer/Panel/VBoxContainer/ScrollContainer/GridContainer"]
+layout_mode = 2
+text = "Performance Mode"
+
+[node name="PerfCheck" type="CheckButton" parent="CenterContainer/Panel/VBoxContainer/ScrollContainer/GridContainer"]
+layout_mode = 2
+
+[node name="FullscreenLabel" type="Label" parent="CenterContainer/Panel/VBoxContainer/ScrollContainer/GridContainer"]
+layout_mode = 2
+text = "Fullscreen"
+
+[node name="FullscreenCheck" type="CheckButton" parent="CenterContainer/Panel/VBoxContainer/ScrollContainer/GridContainer"]
+layout_mode = 2
+
+[node name="QuickScreamLabel" type="Label" parent="CenterContainer/Panel/VBoxContainer/ScrollContainer/GridContainer"]
+layout_mode = 2
+text = "Quick Scream"
+
+[node name="QuickScreamCheck" type="CheckButton" parent="CenterContainer/Panel/VBoxContainer/ScrollContainer/GridContainer"]
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="CenterContainer/Panel/VBoxContainer"]
+custom_minimum_size = Vector2(240, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"MenuButton"
+text = "BACK"
+script = ExtResource("3_btn03")

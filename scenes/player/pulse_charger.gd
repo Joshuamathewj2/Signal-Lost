@@ -14,6 +14,18 @@ var is_charging: bool = false
 var charge_time: float = 0.0
 var cooldowns: Dictionary = { 0: 0.0, 1: 0.0, 2: 0.0 }
 
+var quick_scream_enabled: bool = false
+var last_press_time: float = -10.0
+
+func _ready() -> void:
+	if SaveData != null:
+		quick_scream_enabled = bool(SaveData.get_setting("quick_scream", false))
+		SaveData.settings_changed.connect(_on_settings_changed)
+
+func _on_settings_changed() -> void:
+	if SaveData != null:
+		quick_scream_enabled = bool(SaveData.get_setting("quick_scream", false))
+
 static func tier_for_charge(c: float, normal_at: float = 0.35, scream_at: float = 0.85) -> int:
 	if c < normal_at:
 		return 0
@@ -36,10 +48,20 @@ func _process(delta: float) -> void:
 
 	var cfg: GameConfigData = GameConfig.data
 
-	if Input.is_action_just_pressed(&"pulse") and not is_charging:
-		is_charging = true
-		charge_time = 0.0
-		charge_started.emit()
+	if Input.is_action_just_pressed(&"pulse"):
+		var now: float = float(Time.get_ticks_msec()) / 1000.0
+		if quick_scream_enabled and (now - last_press_time) < 0.25:
+			is_charging = false
+			charge_time = cfg.charge_full_time
+			_release_pulse()
+			last_press_time = -10.0
+			return
+		last_press_time = now
+
+		if not is_charging:
+			is_charging = true
+			charge_time = 0.0
+			charge_started.emit()
 
 	if is_charging:
 		if Input.is_action_pressed(&"pulse"):

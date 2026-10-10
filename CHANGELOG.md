@@ -339,3 +339,12 @@ All notable changes to this project will be documented in this file.
 - Updated `autoload/audio_manager.gd`: added `set_pause_mute(paused: bool)` fading Music, SFX, Pulse, and Ambience buses by -10 dB while preserving UI bus levels.
 - Updated `scenes/main/main.gd`: added persistent `PauseMenu` instance in `$Menus` layer, toggled via Escape / `pause` action during active levels with tree pause and audio attenuation.
 - Created `tests/test_pause_menu.gd` verifying tree pause toggling, audio state tracking, and process mode; 100% test suite passing.
+
+## P7-T5 Settings Menu & Persistence
+- Created `scenes/ui/settings_menu.gd` and `scenes/ui/settings_menu.tscn` (`SettingsMenu` extends `Control`): full accessibility and game configuration menu with volume sliders (Master, Music, SFX), screen shake, film grain, chromatic aberration, colour-blind palette, performance mode, fullscreen, and quick scream toggle.
+- Updated `autoload/save_data.gd` (`SaveData`): added `apply_all_settings()` which boots and applies audio bus volumes, display mode, sonar quality, and colorblind palette on startup.
+- Updated `autoload/palette_service.gd` (`Palette`): added `is_colorblind` state and recursive `update_tree_hatch` ensuring `hatch` uniform applies at runtime across all materials on `palette_changed`.
+- Updated `autoload/game_config.gd` (`GameConfig`): added `sonar_quality` and `set_sonar_quality(q)`.
+- Updated `scenes/player/pulse_charger.gd` (`PulseCharger`): added quick scream double-tap option releasing Scream tier within < 0.25s of second pulse press.
+- Connected settings modal dialog to both `MainMenu` and `PauseMenu`.
+- Created `tests/test_settings.gd` verifying setting persistence, volume updates, colorblind propagation, and quick-scream enablement; 100% test suite passing.

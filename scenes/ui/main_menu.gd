@@ -59,9 +59,15 @@ func _on_continue_pressed() -> void:
 func _on_play_pressed() -> void:
 	_start_level(1)
 
+const SETTINGS_SCENE: PackedScene = preload("res://scenes/ui/settings_menu.tscn")
+
 func _on_settings_pressed() -> void:
-	# In P7-T5 settings menu will be hooked up
-	pass
+	var settings: SettingsMenu = SETTINGS_SCENE.instantiate() as SettingsMenu
+	add_child(settings)
+	settings.closed.connect(func() -> void:
+		if settings_btn != null and settings_btn.is_visible_in_tree():
+			settings_btn.grab_focus()
+	)
 
 func _on_quit_pressed() -> void:
 	get_tree().quit()

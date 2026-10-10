@@ -73,8 +73,15 @@ func _on_restart_pressed() -> void:
 	if SceneRouter != null and SceneRouter.has_method("restart_level"):
 		SceneRouter.restart_level()
 
+const SETTINGS_SCENE: PackedScene = preload("res://scenes/ui/settings_menu.tscn")
+
 func _on_settings_pressed() -> void:
-	pass
+	var settings: SettingsMenu = SETTINGS_SCENE.instantiate() as SettingsMenu
+	add_child(settings)
+	settings.closed.connect(func() -> void:
+		if settings_btn != null and settings_btn.is_visible_in_tree():
+			settings_btn.grab_focus()
+	)
 
 func _on_quit_pressed() -> void:
 	resume()
