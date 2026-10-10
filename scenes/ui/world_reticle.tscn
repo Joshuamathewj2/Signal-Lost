@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cworld_reticle_01"]
+
+[ext_resource type="Script" path="res://scenes/ui/world_reticle.gd" id="1_ret01"]
+
+[node name="WorldReticle" type="Node2D"]
+script = ExtResource("1_ret01")

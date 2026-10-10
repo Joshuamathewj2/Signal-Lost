@@ -318,3 +318,10 @@ All notable changes to this project will be documented in this file.
 - Created `sandbox/sandbox_ui.tscn` and `sandbox/sandbox_ui.gd`: interactive test harness driving HUD with mock signals for energy, charging, fragments, decoy pips, and progress.
 - Verified responsive layout across 1280x720, 1920x1080, and 2560x1080 (ultrawide) resolutions with screenshots saved in `res://screenshots/`.
 - Created `tests/test_hud.gd` verifying all HUD components and interactions; 100% test suite passing.
+
+## P7-T2 Awareness Bars & Reticles
+- Created `scenes/ui/awareness_bar.gd` and `scenes/ui/awareness_bar.tscn` (`AwarenessBar` extends `Node2D`): 24x3 px red fill on `#5A0000` track, positioned 14 px above enemy head in `SenseLayer`, visible only when `reveal_at(enemy) > 0.25` with 0.15s alpha fade.
+- Created `scenes/ui/world_reticle.gd` and `scenes/ui/world_reticle.tscn` (`WorldReticle` extends `Node2D`): 1 px crisp white circle (r 10 px) with 4 cardinal tick marks. Supports `PROJECTILE` (red tick marks), `NOISE_ORIGIN` (pulses r 10->14 at 2 Hz, shown while enemy is revealed or for 1s following noise), and `DECOY` modes.
+- Updated `scenes/enemies/projectile.gd` (`Projectile`): replaced temporary circle with instantiated `WorldReticle(PROJECTILE)`.
+- Updated `scenes/enemies/enemy_base.gd` (`EnemyBase`): dynamically spawns its `AwarenessBar` and `WorldReticle` into `SenseLayer` upon ready, connects awareness changes, displays `NOISE_ORIGIN` reticle on noise events/investigation, and frees world UI on exit.
+- Created `tests/test_awareness_reticles.gd` verifying AwarenessBar transparency, WorldReticle modes, and Projectile integration; 100% test suite passing.

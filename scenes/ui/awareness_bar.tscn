@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://cawareness_bar_01"]
+
+[ext_resource type="Script" path="res://scenes/ui/awareness_bar.gd" id="1_awr01"]
+
+[node name="AwarenessBar" type="Node2D"]
+modulate = Color(1, 1, 1, 0)
+script = ExtResource("1_awr01")

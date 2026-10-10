@@ -5,6 +5,8 @@ extends Area2D
 @export var lifetime: float = 2.5
 
 var direction: Vector2 = Vector2.RIGHT
+var reticle_scene: PackedScene = preload("res://scenes/ui/world_reticle.tscn")
+var reticle: WorldReticle = null
 
 func _ready() -> void:
 	collision_layer = 0
@@ -15,6 +17,10 @@ func _ready() -> void:
 
 	body_entered.connect(_on_body_entered)
 
+	reticle = reticle_scene.instantiate() as WorldReticle
+	reticle.reticle_type = WorldReticle.Type.PROJECTILE
+	add_child(reticle)
+
 func _physics_process(delta: float) -> void:
 	position += direction * speed * delta
 	lifetime -= delta
@@ -22,12 +28,10 @@ func _physics_process(delta: float) -> void:
 		queue_free()
 
 func _draw() -> void:
-	# Unshaded white reticle ring (radius 10 px, width 1 px)
-	draw_arc(Vector2.ZERO, 10.0, 0.0, TAU, 24, Color(1, 1, 1, 0.9), 1.0)
 	# 6x2 red streak
 	var p_start := -direction * 3.0
 	var p_end := direction * 3.0
-	draw_line(p_start, p_end, Color(1, 0.2, 0.2, 1), 2.0)
+	draw_line(p_start, p_end, Palette.color(&"danger"), 2.0)
 
 func _on_body_entered(body: Node2D) -> void:
 	if body is Player or body.is_in_group(&"player"):
