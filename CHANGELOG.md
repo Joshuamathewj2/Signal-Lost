@@ -410,3 +410,10 @@ All notable changes to this project will be documented in this file.
 - Updated `scenes/fx/post_fx.gd`: shut down film grain under LOW mode and bound runtime shader updates to `settings_changed`.
 - Created `tests/test_performance_mode.gd`: automated headless test suite verifying shadow filters, bubble clamping, and settings toggling.
 - Created `docs/PERF_REPORT.md`: stress-tested Level 8 under 6 concurrent screams, documenting 61.4 FPS in HIGH and 92.8 FPS in LOW (+51.1% gain).
+
+## P9-T2 Bug-Bash
+- Completed full regression sweep against test plan (TP §1–§5).
+- Created `docs/BUGS.md`: documented 6 resolved defects across pathfinding, door registration, decoy group lookup, hint sign masking, and headless test tree guards; verified 0 open P1/P2 issues.
+- Verified headless execution with zero syntax or parse errors (`godot --headless --quit-after 120`).
+- Verified 17 test suites passing in `tests/run_tests.gd`.
+
