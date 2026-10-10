@@ -9,6 +9,7 @@ const EXIT_SCENE: PackedScene = preload("res://scenes/interactables/exit_termina
 const DOOR_SCENE: PackedScene = preload("res://scenes/interactables/door.tscn")
 const PLATE_SCENE: PackedScene = preload("res://scenes/interactables/pressure_plate.tscn")
 const ONE_WAY_DOOR_SCENE: PackedScene = preload("res://scenes/interactables/one_way_door.tscn")
+const GLASS_SCENE: PackedScene = preload("res://scenes/interactables/glass_floor.tscn")
 
 static var _warned_stubs: Dictionary = {}
 
@@ -149,7 +150,18 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 			plate_inst.cell = cell_vec
 			interactables_node.add_child(plate_inst)
 
-	# 10. Extract bounds for enemies
+	# 10. Spawn Glass Floors (G)
+	if data.cells.has("G"):
+		for cell in data.cells["G"]:
+			var cell_vec: Vector2i = cell
+			var g_pos := Vector2(float(cell_vec.x) * 32.0, float(cell_vec.y) * 32.0)
+			var glass_inst: GlassFloor = GLASS_SCENE.instantiate() as GlassFloor
+			glass_inst.position = g_pos
+			glass_inst.cell = cell_vec
+			glass_inst.graph_ref = graph
+			interactables_node.add_child(glass_inst)
+
+	# 11. Extract bounds for enemies
 	var bounds_per_row: Dictionary = {}
 	if data.cells.has("|"):
 		for bound_cell in data.cells["|"]:
@@ -159,7 +171,7 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 				bounds_per_row[r] = []
 			(bounds_per_row[r] as Array).append(float(b_vec.x * 32))
 
-	# 11. Spawn Listener enemies
+	# 12. Spawn Listener enemies
 	if data.cells.has("L"):
 		for cell in data.cells["L"]:
 			var cell_vec: Vector2i = cell
@@ -179,9 +191,9 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 			enemies_node.add_child(listener_inst)
 			(result["enemies"] as Array).append(listener_inst)
 
-	# 12. Stub warnings for unimplemented entities
+	# 13. Stub warnings for unimplemented entities
 	for ch in data.cells.keys():
-		if ch != "#" and ch != "=" and ch != "P" and ch != "L" and ch != "|" and ch != "." and ch != "F" and ch != "K" and ch != "E" and ch != "D" and ch != "R" and ch != "_" and ch != ">" and ch != "<":
+		if ch != "#" and ch != "=" and ch != "P" and ch != "L" and ch != "|" and ch != "." and ch != "F" and ch != "K" and ch != "E" and ch != "D" and ch != "R" and ch != "_" and ch != ">" and ch != "<" and ch != "G":
 			if not _warned_stubs.has(ch):
 				_warned_stubs[ch] = true
 				push_warning("STUB: spawn " + ch)

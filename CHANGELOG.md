@@ -222,3 +222,8 @@ All notable changes to this project will be documented in this file.
 - Created `scenes/interactables/one_way_door.gd` (`OneWayDoor`) and `one_way_door.tscn` with directional player pass-through sensor, chevron visuals, and non-occluding collision
 - Updated `scenes/level/platform_graph.gd` to constrain horizontal WALK graph edges to the permitted direction through `>` and `<` cells
 - Updated `EntitySpawner` to instantiate directional one-way doors for `>` and `<` map runs
+
+## P5-T4 Glass Floor
+- Created `shaders/glass_crack.gdshader` rendering cellular Voronoi cracks with flat reveal lighting
+- Created `scenes/interactables/glass_floor.gd` (`GlassFloor`) and `glass_floor.tscn` with wave reactive crack/shatter, brute step detection, shard particles, GLASS noise emission, and platform graph standable updates
+- Updated `EntitySpawner` to instantiate glass floor blocks from ASCII `G` cells

@@ -210,3 +210,10 @@ func set_door_open(cell: Vector2i, open: bool) -> void:
 		astar_all.set_point_disabled(id, not open)
 	if astar_no_jump.has_point(id):
 		astar_no_jump.set_point_disabled(id, not open)
+
+func set_standable(cell: Vector2i, standable: bool) -> void:
+	var id: int = cell.y * width + cell.x
+	if astar_all.has_point(id):
+		astar_all.set_point_disabled(id, not standable)
+	if astar_no_jump.has_point(id):
+		astar_no_jump.set_point_disabled(id, not standable)
