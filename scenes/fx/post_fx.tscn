@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://cpost_fx_01"]
+
+[ext_resource type="Shader" path="res://shaders/post_fx.gdshader" id="1_pfxs"]
+[ext_resource type="Script" path="res://scenes/fx/post_fx.gd" id="2_pfxg"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pfx"]
+shader = ExtResource("1_pfxs")
+shader_parameter/vignette_strength = 0.45
+shader_parameter/vignette_radius = 0.75
+shader_parameter/grain_amount = 0.06
+shader_parameter/ca_amount = 0.0
+shader_parameter/flash = 0.0
+shader_parameter/bloom_amount = 0.25
+shader_parameter/ca_mono = true
+
+[node name="PostFx" type="ColorRect"]
+material = SubResource("ShaderMaterial_pfx")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2_pfxg")

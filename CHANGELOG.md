@@ -269,3 +269,8 @@ All notable changes to this project will be documented in this file.
 - Updated `scenes/player/player.gd` with death handling (input disable, velocity zeroing, visual hide), delayed restart via `SceneRouter.restart_level()`, fall-out kill (`y > map_bottom + 200`), and automatic pulse registration via `PulseCharger`
 - Updated `scenes/level/level_root.gd` to assign `map_bottom` to player instance from level data height
 - Created `tests/test_medals.gd` covering all medal calculation rules and edge cases
+
+## P6-T1 Post FX
+- Created `shaders/post_fx.gdshader` per SHD §10 implementing screen vignette, pseudo-random film grain, 5-tap cross blur bright-pass bloom, monochromatic chromatic aberration offset, and detection flash
+- Created `scenes/fx/post_fx.gd` (`PostFx`) and `post_fx.tscn` listening to scream pulses (triggering 0.012 CA burst decaying over 0.4s), enemy detections (triggering 0.35 flash and 0.008 CA burst), and debug key `P`
+- Instanced `post_fx.tscn` into `Main/PostFx` CanvasLayer (layer 10) in `scenes/main/main.tscn`

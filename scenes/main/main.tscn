@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://scenes/main/main.gd" id="1_main"]
 [ext_resource type="Script" path="res://scenes/main/boot.gd" id="2_boot"]
 [ext_resource type="PackedScene" path="res://scenes/debug/debug_overlay.tscn" id="3_dbg"]
+[ext_resource type="PackedScene" path="res://scenes/fx/post_fx.tscn" id="4_pfx"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_main")
@@ -11,6 +12,8 @@ script = ExtResource("1_main")
 
 [node name="PostFx" type="CanvasLayer" parent="."]
 layer = 10
+
+[node name="PostFx" parent="PostFx" instance=ExtResource("4_pfx")]
 
 [node name="HUD" type="CanvasLayer" parent="."]
 layer = 20
