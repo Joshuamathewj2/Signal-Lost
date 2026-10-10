@@ -55,7 +55,7 @@ Parse check command (PC): `godot --headless --path . --quit-after 120` (expect n
 - [x] P6-T1 Post FX
 - [x] P6-T2 Camera juice + hit-stop
 - [x] P6-T3 Robot procedural animation + death burst
-- [ ] P6-T4 Enemy animations + alert glyphs
+- [x] P6-T4 Enemy animations + alert glyphs
 - [ ] P6-T5 Particles factory
 - [ ] P6-T6 Synth SFX + AudioManager + buses
 - [ ] P6-T7 Music layers

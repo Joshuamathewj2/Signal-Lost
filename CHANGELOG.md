@@ -283,3 +283,10 @@ All notable changes to this project will be documented in this file.
 - Created `scenes/player/death_burst.gd` (`DeathBurst`) and `death_burst.tscn` with 60 explosive square particles (180° spread, 300 gravity, 0.9s lifetime) auto-freeing on completion
 - Updated `scenes/player/player_visual.tscn` with articulated body, head, unshaded eye dot, antenna with tip, 2-segment legs, and arms
 - Updated `scenes/player/player_visual.gd` (`PlayerVisual`) implementing procedural animations for Idle (bob + wobble), Run (scissor legs, body bob, forward lean), Sneak (lowered squat, folded antenna), Jump/Fall, Land (squash recovery), Charge vibration, and Death disintegration with lingering eye pop
+
+## P6-T4 Enemy Animations & Alert Glyphs
+- Updated all enemy visual controllers (`listener_visual.gd`, `sentry_visual.gd`, `hunter_visual.gd`, `brute_visual.gd`) with unshaded Rajdhani-SemiBold 14 alert glyphs ("!" on chase, "?" on investigate) featuring pop-scale (0 -> 1.3 -> 1.0 in 0.18s), 0.6s hold, and 0.2s fade
+- Implemented Listener 360° dish spin on alert and idle wobble
+- Implemented Sentry 3px weapon recoil on fire and dashed aiming laser
+- Implemented Hunter ear flattening in Track mode and sprint body stretch
+- Implemented Brute 10 Hz ±8° head shake stun animation and flash synchronization
