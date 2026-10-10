@@ -10,6 +10,10 @@ extends CanvasLayer
 @onready var primary_slot: AbilitySlot = $Root/SafeArea/BottomLeft/AbilityRow/PrimarySlot
 @onready var secondary_slot: AbilitySlot = $Root/SafeArea/BottomLeft/AbilityRow/SecondarySlot
 @onready var level_label: LevelLabel = $Root/SafeArea/BottomCentre
+@onready var controls_hint: Label = get_node_or_null("Root/SafeArea/BottomCentre/ControlsHint") as Label
+
+var _has_moved: bool = false
+var _player_node: CharacterBody2D = null
 
 func _ready() -> void:
 	layer = 20
@@ -20,6 +24,14 @@ func _ready() -> void:
 	var router: Node = get_node_or_null("/root/SceneRouter") if is_inside_tree() else null
 	if router != null and router.has_signal("level_loaded"):
 		router.connect("level_loaded", Callable(self, "_on_level_loaded"))
+
+func _process(_delta: float) -> void:
+	if controls_hint != null and controls_hint.visible and not _has_moved:
+		if _player_node != null and (_player_node.velocity.length() > 10.0 or Input.get_axis("move_left", "move_right") != 0.0):
+			_has_moved = true
+			var tween := create_tween()
+			tween.tween_property(controls_hint, "modulate:a", 0.0, 0.5)
+			tween.tween_callback(func() -> void: controls_hint.visible = false)
 
 	if GameState != null:
 		if not GameState.decoy_count_changed.is_connected(_on_decoy_count_changed):
@@ -47,9 +59,16 @@ func _on_level_loaded(_level_root: Node) -> void:
 	_find_and_bind_player()
 	if level_label != null:
 		level_label._recompute_progress()
+	if controls_hint != null:
+		var is_lvl1: bool = (GameState != null and GameState.level_index == 1)
+		controls_hint.visible = is_lvl1
+		controls_hint.modulate.a = 1.0 if is_lvl1 else 0.0
+		_has_moved = false
 
 func _find_and_bind_player() -> void:
 	var player: Node = get_tree().get_first_node_in_group(&"player")
+	if player is CharacterBody2D:
+		_player_node = player as CharacterBody2D
 	if player != null and battery_bar != null:
 		var battery: Battery = player.get_node_or_null("Battery") as Battery
 		var charger: PulseCharger = player.get_node_or_null("PulseCharger") as PulseCharger

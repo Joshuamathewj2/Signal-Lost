@@ -11,6 +11,7 @@ const GLASS_SCENE: PackedScene = preload("res://scenes/interactables/glass_floor
 const LANTERN_SCENE: PackedScene = preload("res://scenes/interactables/lantern.tscn")
 const VENT_SCENE: PackedScene = preload("res://scenes/interactables/vent.tscn")
 const DECOY_PICKUP_SCENE: PackedScene = preload("res://scenes/interactables/decoy_pickup.tscn")
+const HINT_SIGN_SCENE: PackedScene = preload("res://scenes/interactables/hint_sign.tscn")
 
 static func spawn_interactables(data: LevelData, parent: Node2D, graph: PlatformGraph) -> void:
 	# 1. Exit Terminal
@@ -95,6 +96,21 @@ static func spawn_interactables(data: LevelData, parent: Node2D, graph: Platform
 			decoy_inst.position = c_pos
 			decoy_inst.cell = cell_vec
 			parent.add_child(decoy_inst)
+
+	# 11. Hint Signs (?)
+	if data.cells.has("?"):
+		var hint_idx: int = 0
+		for cell in data.cells["?"]:
+			var cell_vec: Vector2i = cell
+			var h_pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, (float(cell_vec.y) + 0.5) * 32.0)
+			var hint_inst: HintSign = HINT_SIGN_SCENE.instantiate() as HintSign
+			hint_inst.position = h_pos
+			var text_val: String = str(data.headers.get("hint_%d" % hint_idx, ""))
+			if text_val.is_empty():
+				text_val = str(data.headers.get("hint_0", "HINT"))
+			hint_inst.set_text(text_val)
+			hint_idx += 1
+			parent.add_child(hint_inst)
 
 static func _spawn_doors(data: LevelData, key: String, mode: String, parent: Node2D, graph: PlatformGraph) -> void:
 	if not data.cells.has(key):

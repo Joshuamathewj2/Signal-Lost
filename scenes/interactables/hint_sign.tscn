@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://chint_sign_01"]
+
+[ext_resource type="Script" path="res://scenes/interactables/hint_sign.gd" id="1_hint"]
+
+[node name="HintSign" type="Node2D"]
+script = ExtResource("1_hint")

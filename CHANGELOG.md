@@ -373,4 +373,14 @@ All notable changes to this project will be documented in this file.
 - Updated `scenes/sonar/sonar_system.gd`: joined `sonar_system` node group for reliable beacon lookup.
 - Created `tests/test_decoy.gd`: verified decoy count clamping, pickup interaction, throwing mechanics, landing detection, noise event emission, and HUD response; 100% test suite passing (15 test suites).
 
+## P8-T2 Hint Signs
+- Created `scenes/interactables/hint_sign.gd` and `scenes/interactables/hint_sign.tscn` (`HintSign` extends `Node2D`): lit-only key glyph boxes rendered with `flat_reveal.gdshader` (1 px white outline, black fill, Rajdhani 14 text) revealed dynamically by sonar wavefronts and player glow.
+- Updated `scenes/level/interactable_spawner.gd` (`InteractableSpawner`): added detection and spawning of `?` tiles into `HintSign` instances reading hint headers (`hint_0`, etc.).
+- Updated `scenes/level/entity_spawner.gd` (`EntitySpawner`): added `C` and `?` to recognized level symbols to suppress stub warnings.
+- Updated `levels/level_01.txt`: added `?` at (5, 9) with `;hint_0=HOLD [K] / LMB`.
+- Updated `levels/level_02.txt`: added `?` near low catwalk with `;hint_0=[SHIFT] SNEAK`.
+- Updated `scenes/ui/hud.gd` and `scenes/ui/hud.tscn` (`HUD`): added bottom-centre unshaded controls hint text on Level 1 start, fading out smoothly over 0.5s upon player's first movement.
+- Created `tests/test_hint_signs.gd`: verified HintSign rendering material, Level 1 & 2 parsing/validation with `?`, and InteractableSpawner instantiation; 100% test suite passing (16 test suites).
+
+
 

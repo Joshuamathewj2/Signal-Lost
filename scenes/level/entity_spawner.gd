@@ -93,7 +93,7 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 
 	# 8. Stub warnings for unimplemented entities
 	for ch in data.cells.keys():
-		if ch != "#" and ch != "=" and ch != "P" and ch != "L" and ch != "|" and ch != "." and ch != "F" and ch != "K" and ch != "E" and ch != "D" and ch != "R" and ch != "_" and ch != ">" and ch != "<" and ch != "G" and ch != "~" and ch != "V" and ch != "v" and ch != "M" and ch != "S" and ch != "H" and ch != "B":
+		if ch != "#" and ch != "=" and ch != "P" and ch != "L" and ch != "|" and ch != "." and ch != "F" and ch != "K" and ch != "E" and ch != "D" and ch != "R" and ch != "_" and ch != ">" and ch != "<" and ch != "G" and ch != "~" and ch != "V" and ch != "v" and ch != "M" and ch != "S" and ch != "H" and ch != "B" and ch != "C" and ch != "?":
 			if not _warned_stubs.has(ch):
 				_warned_stubs[ch] = true
 				push_warning("STUB: spawn " + ch)
