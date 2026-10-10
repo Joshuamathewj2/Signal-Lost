@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://cdeath_burst_01"]
+
+[ext_resource type="Script" path="res://scenes/player/death_burst.gd" id="1_dbgd"]
+
+[node name="DeathBurst" type="CPUParticles2D"]
+emitting = false
+amount = 60
+lifetime = 0.9
+one_shot = true
+explosiveness = 1.0
+direction = Vector2(0, -1)
+spread = 180.0
+gravity = Vector2(0, 300)
+initial_velocity_min = 60.0
+initial_velocity_max = 180.0
+scale_amount_min = 1.5
+scale_amount_max = 2.5
+color = Color(1, 1, 1, 1)
+script = ExtResource("1_dbgd")

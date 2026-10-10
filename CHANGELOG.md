@@ -278,3 +278,8 @@ All notable changes to this project will be documented in this file.
 ## P6-T2 Camera Juice & Hit-Stop
 - Created `scenes/fx/hitstop.gd` (`HitStop`) static helper freezing `Engine.time_scale` to 0.05 for 0.08s real-time duration
 - Updated `scenes/fx/camera_rig.gd` (`CameraRig`) joining `camera_rig` group, implementing trauma quadratic shake model (decaying at 1.5/s with 10px amplitude), scream zoom punch (2.0 -> 2.12 -> 2.0), detection zoom punch (2.0 -> 2.06 -> 2.0), and death hit-stop + trauma trigger
+
+## P6-T3 Robot Procedural Animation & Death Burst
+- Created `scenes/player/death_burst.gd` (`DeathBurst`) and `death_burst.tscn` with 60 explosive square particles (180° spread, 300 gravity, 0.9s lifetime) auto-freeing on completion
+- Updated `scenes/player/player_visual.tscn` with articulated body, head, unshaded eye dot, antenna with tip, 2-segment legs, and arms
+- Updated `scenes/player/player_visual.gd` (`PlayerVisual`) implementing procedural animations for Idle (bob + wobble), Run (scissor legs, body bob, forward lean), Sneak (lowered squat, folded antenna), Jump/Fall, Land (squash recovery), Charge vibration, and Death disintegration with lingering eye pop

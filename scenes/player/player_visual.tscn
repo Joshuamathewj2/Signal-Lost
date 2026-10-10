@@ -2,16 +2,52 @@
 
 [ext_resource type="Script" path="res://scenes/player/player_visual.gd" id="1_vis01"]
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_eye"]
+light_mode = 1
+
 [node name="Visual" type="Node2D"]
 script = ExtResource("1_vis01")
 
 [node name="Body" type="Polygon2D" parent="."]
-polygon = PackedVector2Array(-6, -1, 6, -1, 6, 9, -6, 9)
+color = Color(1, 1, 1, 1)
+polygon = PackedVector2Array(-6, -19, 6, -19, 6, -9, -6, -9)
 
 [node name="Head" type="Polygon2D" parent="."]
-polygon = PackedVector2Array(-5, -8, 5, -8, 5, -1, -5, -1)
+color = Color(1, 1, 1, 1)
+polygon = PackedVector2Array(-5, -26, 5, -26, 5, -19, -5, -19)
+
+[node name="Eye" type="Polygon2D" parent="."]
+material = SubResource("CanvasItemMaterial_eye")
+position = Vector2(2, -23)
+color = Color(1, 1, 1, 1)
+polygon = PackedVector2Array(-1, -1, 1, -1, 1, 1, -1, 1)
 
 [node name="Antenna" type="Line2D" parent="."]
-points = PackedVector2Array(0, -8, 0, -12)
-width = 1.0
+points = PackedVector2Array(0, -26, 0, -32)
+width = 1.5
+default_color = Color(1, 1, 1, 1)
+
+[node name="AntennaTip" type="Polygon2D" parent="Antenna"]
+position = Vector2(0, -32)
+color = Color(1, 1, 1, 1)
+polygon = PackedVector2Array(-1, -1, 1, -1, 1, 1, -1, 1)
+
+[node name="LegL" type="Line2D" parent="."]
+points = PackedVector2Array(-3, -9, -4, -4, -4, 0)
+width = 2.0
+default_color = Color(1, 1, 1, 1)
+
+[node name="LegR" type="Line2D" parent="."]
+points = PackedVector2Array(3, -9, 4, -4, 4, 0)
+width = 2.0
+default_color = Color(1, 1, 1, 1)
+
+[node name="ArmL" type="Line2D" parent="."]
+points = PackedVector2Array(-5, -17, -7, -12)
+width = 2.0
+default_color = Color(1, 1, 1, 1)
+
+[node name="ArmR" type="Line2D" parent="."]
+points = PackedVector2Array(5, -17, 7, -12)
+width = 2.0
 default_color = Color(1, 1, 1, 1)
