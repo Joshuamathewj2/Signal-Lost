@@ -1,5 +1,7 @@
 extends Node
 
+signal quality_changed(new_quality: int)
+
 var data: GameConfigData = preload("res://resources/config/default_config.tres")
 var cfg: GameConfigData:
 	get:
@@ -21,6 +23,11 @@ var enemies: Dictionary = {
 	&"brute": preload("res://resources/enemies/enemy_brute.tres"),
 }
 
+func _ready() -> void:
+	if SaveData != null:
+		var perf_on: bool = bool(SaveData.get_setting("performance_mode", false))
+		set_sonar_quality(0 if perf_on else 1)
+
 func pulse_for_tier(tier: int) -> PulseProfile:
 	match tier:
 		0:
@@ -34,3 +41,7 @@ func pulse_for_tier(tier: int) -> PulseProfile:
 
 func set_sonar_quality(q: int) -> void:
 	sonar_quality = q
+	if data != null:
+		data.sonar_quality = (q as GameConfigData.Quality)
+		data.max_bubbles = 4 if q == 0 else 6
+	quality_changed.emit(q)

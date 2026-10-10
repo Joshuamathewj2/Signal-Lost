@@ -15,6 +15,8 @@ static func build(parent: Node2D, map_rect: Rect2, seed_val: int) -> void:
 	var step_x: float = tile_size * 3.0 # ~1 prop every 3 tiles horizontally
 
 	for cfg in layer_configs:
+		if cfg["name"] == "NearLayer" and GameConfig != null and GameConfig.sonar_quality == 0:
+			continue # ARCH §14 degrade order: parallax near layer off in LOW quality
 		var p_layer: Parallax2D = Parallax2D.new()
 		p_layer.name = cfg["name"]
 		p_layer.scroll_scale = cfg["scroll"]

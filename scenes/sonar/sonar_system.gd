@@ -25,11 +25,27 @@ func _ready() -> void:
 	if PulseRegistry != null and PulseRegistry.has_method("set_space_provider"):
 		PulseRegistry.call("set_space_provider", self)
 
+	if GameConfig != null and GameConfig.has_signal("quality_changed"):
+		GameConfig.quality_changed.connect(_on_quality_changed)
+
+func _on_quality_changed(_q: int) -> void:
+	var limit: int = 4 if (GameConfig != null and GameConfig.sonar_quality == 0) else pool.size()
+	for i in range(limit, pool.size()):
+		if pool[i].active:
+			pool[i].active = false
+			pool[i].visible = false
+			pool[i].finished.emit(pool[i])
+
 func _on_level_loaded(_level_root: Node) -> void:
 	_connect_player()
 
 func _connect_player() -> void:
-	var p: Node = get_tree().get_first_node_in_group(&"player")
+	if not is_inside_tree():
+		return
+	var tree: SceneTree = get_tree()
+	if tree == null:
+		return
+	var p: Node = tree.get_first_node_in_group(&"player")
 	if p != null:
 		var charger: PulseCharger = p.get_node_or_null("PulseCharger") as PulseCharger
 		if charger != null and not charger.pulse_released.is_connected(spawn):
@@ -37,17 +53,20 @@ func _connect_player() -> void:
 
 func spawn(profile: PulseProfile, origin: Vector2) -> PulseBubble:
 	var chosen: PulseBubble = null
+	var limit: int = mini(4, pool.size()) if (GameConfig != null and GameConfig.sonar_quality == 0) else pool.size()
 
-	# 1. Look for inactive bubble
-	for b in pool:
+	# 1. Look for inactive bubble within limit
+	for i in range(limit):
+		var b: PulseBubble = pool[i]
 		if not b.active:
 			chosen = b
 			break
 
-	# 2. If all active, recycle oldest (highest age)
+	# 2. If all active, recycle oldest (highest age) within limit
 	if chosen == null:
 		var oldest_age: float = -1.0
-		for b in pool:
+		for i in range(limit):
+			var b: PulseBubble = pool[i]
 			if b.age > oldest_age:
 				oldest_age = b.age
 				chosen = b

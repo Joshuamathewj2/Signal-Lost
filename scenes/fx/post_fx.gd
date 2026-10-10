@@ -21,6 +21,11 @@ func _ready() -> void:
 	if SceneRouter != null and SceneRouter.has_signal("level_loaded"):
 		SceneRouter.level_loaded.connect(_on_level_loaded)
 
+	if SaveData != null and SaveData.has_signal("settings_changed"):
+		SaveData.settings_changed.connect(_apply_settings)
+	if GameConfig != null and GameConfig.has_signal("quality_changed"):
+		GameConfig.quality_changed.connect(func(_q: int) -> void: _apply_settings())
+
 	_apply_settings()
 
 func _on_level_loaded(root: Node) -> void:
@@ -65,10 +70,17 @@ func flash_frame(amount: float, duration: float) -> void:
 func _apply_settings() -> void:
 	if mat == null:
 		return
+	var grain_enabled: bool = bool(SaveData.get_setting("film_grain", true)) if SaveData != null else true
+	var is_low: bool = (GameConfig != null and GameConfig.sonar_quality == 0)
+	var final_grain: float = 0.0 if (not grain_enabled or is_low) else default_grain_amount
+	var ca_enabled: bool = bool(SaveData.get_setting("chromatic_aberration", true)) if SaveData != null else true
+
 	mat.set_shader_parameter(&"vignette_strength", default_vignette_strength)
 	mat.set_shader_parameter(&"vignette_radius", default_vignette_radius)
-	mat.set_shader_parameter(&"grain_amount", default_grain_amount)
+	mat.set_shader_parameter(&"grain_amount", final_grain)
 	mat.set_shader_parameter(&"bloom_amount", default_bloom_amount)
+	if not ca_enabled:
+		mat.set_shader_parameter(&"ca_amount", 0.0)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if OS.is_debug_build() and event is InputEventKey:

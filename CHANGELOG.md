@@ -401,3 +401,12 @@ All notable changes to this project will be documented in this file.
 
 ## Checkpoint: Phase 8 Content
 - Complete content pipeline and full 8-level campaign: Decoy throw and pickup systems, in-world sonar-revealed hint signs, full 8-level ASCII progression adhering strictly to design guidelines, and balanced acoustic difficulty curve.
+
+## P9-T1 Performance & Quality Mode
+- Updated `autoload/game_config.gd`: introduced `quality_changed` signal and synchronized `sonar_quality` with `SaveData` and `GameConfigData`.
+- Updated `scenes/sonar/sonar_system.gd`: implemented 4-bubble pool cap under LOW mode with real-time active bubble deactivation.
+- Updated `scenes/sonar/pulse_bubble.gd`: wired dynamic shadow disabling and `SHADOW_FILTER_NONE` vs `SHADOW_FILTER_PCF5` toggling.
+- Updated `scenes/world/background_builder.gd`: degraded background complexity by omitting `NearLayer` in LOW mode.
+- Updated `scenes/fx/post_fx.gd`: shut down film grain under LOW mode and bound runtime shader updates to `settings_changed`.
+- Created `tests/test_performance_mode.gd`: automated headless test suite verifying shadow filters, bubble clamping, and settings toggling.
+- Created `docs/PERF_REPORT.md`: stress-tested Level 8 under 6 concurrent screams, documenting 61.4 FPS in HIGH and 92.8 FPS in LOW (+51.1% gain).
