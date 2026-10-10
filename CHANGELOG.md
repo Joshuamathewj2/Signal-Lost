@@ -212,3 +212,8 @@ All notable changes to this project will be documented in this file.
 - Created `scenes/interactables/keycard.gd` (`Keycard`) and `keycard.tscn` with card visual and `GameState.has_keycard` trigger
 - Created `scenes/interactables/exit_terminal.gd` (`ExitTerminal`) and `exit_terminal.tscn` with stand, unshaded blinking beacon dot, "SIGNAL RESTORED" sequence, and `GameState.complete_level` / `SceneRouter.next_level` transitions
 - Updated `EntitySpawner` to spawn Fragments, Keycards, and Exit Terminals into the level interactables tree
+
+## P5-T2 Doors & Pressure Plates
+- Created `scenes/interactables/door.gd` (`Door`) and `door.tscn` supporting KEY and PLATE unlock modes, StaticBody2D layer 1 collision, LightOccluder2D, visual glyphs, platform graph node opening, and upward tween animation
+- Created `scenes/interactables/pressure_plate.gd` (`PressurePlate`) and `pressure_plate.tscn` triggering the `plate_doors` group upon player or enemy contact with PLATE noise emission
+- Updated `EntitySpawner` to pair vertical door cells into unified door instances and instantiate pressure plates

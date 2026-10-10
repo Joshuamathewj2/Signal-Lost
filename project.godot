@@ -1,10 +1,34 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
 config_version=5
+
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 [application]
 
 config/name="SIGNAL LOST"
 run/main_scene="res://scenes/main/main.tscn"
-config/features=PackedStringArray("4.4", "GL Compatibility")
+config/features=PackedStringArray("4.7", "GL Compatibility")
+
+[autoload]
+
+GameConfig="*res://autoload/game_config.gd"
+Palette="*res://autoload/palette_service.gd"
+NoiseBus="*res://autoload/noise_bus.gd"
+PulseRegistry="*res://autoload/pulse_registry.gd"
+GameState="*res://autoload/game_state.gd"
+AudioManager="*res://autoload/audio_manager.gd"
+SceneRouter="*res://autoload/scene_router.gd"
+SaveData="*res://autoload/save_data.gd"
+DebugFlags="*res://autoload/debug_flags.gd"
 
 [display]
 
@@ -12,37 +36,10 @@ window/size/viewport_width=1280
 window/size/viewport_height=720
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
-window/vsync/vsync_mode=1
 
 [gui]
 
 theme/custom="res://resources/theme/ui_theme.tres"
-
-
-[physics]
-
-common/physics_ticks_per_second=60
-
-[rendering]
-
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
-textures/canvas_textures/default_texture_filter=1
-2d/shadow_atlas/size=2048
-
-[layer_names]
-
-2d_physics/layer_1="world"
-2d_physics/layer_2="one_way"
-2d_physics/layer_3="player"
-2d_physics/layer_4="enemy"
-2d_physics/layer_5="interactable"
-2d_physics/layer_6="projectile"
-2d_physics/layer_7="hazard_kill"
-2d_render/layer_1="world_fg"
-2d_render/layer_2="world_bg"
-2d_render/layer_3="actors"
-2d_render/layer_4="air"
 
 [input]
 
@@ -122,15 +119,21 @@ debug_next_page={
 ]
 }
 
-[autoload]
+[layer_names]
 
-GameConfig="*res://autoload/game_config.gd"
-Palette="*res://autoload/palette_service.gd"
-NoiseBus="*res://autoload/noise_bus.gd"
-PulseRegistry="*res://autoload/pulse_registry.gd"
-GameState="*res://autoload/game_state.gd"
-AudioManager="*res://autoload/audio_manager.gd"
-SceneRouter="*res://autoload/scene_router.gd"
-SaveData="*res://autoload/save_data.gd"
-DebugFlags="*res://autoload/debug_flags.gd"
+2d_render/layer_1="world_fg"
+2d_render/layer_2="world_bg"
+2d_render/layer_3="actors"
+2d_render/layer_4="air"
+2d_physics/layer_1="world"
+2d_physics/layer_2="one_way"
+2d_physics/layer_3="player"
+2d_physics/layer_4="enemy"
+2d_physics/layer_5="interactable"
+2d_physics/layer_6="projectile"
+2d_physics/layer_7="hazard_kill"
 
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
