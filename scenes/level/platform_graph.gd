@@ -65,8 +65,23 @@ func build(data: LevelData, custom_solid_fn: Callable = Callable()) -> void:
 			var nc: int = c + dc
 			var n_cell := Vector2i(nc, r)
 			if standable_cells.has(n_cell) and not is_solid_fn.call(nc, r):
-				var nid: int = standable_cells[n_cell]
-				_add_edge(id, nid, EdgeType.WALK, 1.0, true)
+				var ch_cur: String = data.grid[r][c]
+				var ch_nxt: String = data.grid[r][nc]
+				var blocked: bool = false
+				if (ch_cur == ">" or ch_nxt == ">") and dc < 0:
+					blocked = true
+				elif (ch_cur == "<" or ch_nxt == "<") and dc > 0:
+					blocked = true
+				if not blocked and r > 0:
+					var ch_cur_above: String = data.grid[r - 1][c]
+					var ch_nxt_above: String = data.grid[r - 1][nc]
+					if (ch_cur_above == ">" or ch_nxt_above == ">") and dc < 0:
+						blocked = true
+					elif (ch_cur_above == "<" or ch_nxt_above == "<") and dc > 0:
+						blocked = true
+				if not blocked:
+					var nid: int = standable_cells[n_cell]
+					_add_edge(id, nid, EdgeType.WALK, 1.0, false)
 
 		# 2.2 DROP: walk off edge left/right and fall down 1..8 tiles
 		for dc in [-1, 1]:

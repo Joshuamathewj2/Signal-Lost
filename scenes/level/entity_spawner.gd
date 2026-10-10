@@ -8,6 +8,7 @@ const KEYCARD_SCENE: PackedScene = preload("res://scenes/interactables/keycard.t
 const EXIT_SCENE: PackedScene = preload("res://scenes/interactables/exit_terminal.tscn")
 const DOOR_SCENE: PackedScene = preload("res://scenes/interactables/door.tscn")
 const PLATE_SCENE: PackedScene = preload("res://scenes/interactables/pressure_plate.tscn")
+const ONE_WAY_DOOR_SCENE: PackedScene = preload("res://scenes/interactables/one_way_door.tscn")
 
 static var _warned_stubs: Dictionary = {}
 
@@ -102,7 +103,43 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 				door_inst.graph_ref = graph
 				interactables_node.add_child(door_inst)
 
-	# 7. Spawn Pressure Plates (_)
+	# 7. Spawn One-Way Doors (>)
+	if data.cells.has(">"):
+		var processed_owd_right: Dictionary = {}
+		for cell in data.cells[">"]:
+			var cell_vec: Vector2i = cell
+			if processed_owd_right.has(cell_vec):
+				continue
+			var lower_cell: Vector2i = cell_vec + Vector2i(0, 1)
+			if (data.cells[">"] as Array).has(lower_cell):
+				processed_owd_right[cell_vec] = true
+				processed_owd_right[lower_cell] = true
+				var owd_pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, float(cell_vec.y) * 32.0)
+				var owd_inst: OneWayDoor = ONE_WAY_DOOR_SCENE.instantiate() as OneWayDoor
+				owd_inst.dir = 1
+				owd_inst.cell = cell_vec
+				owd_inst.position = owd_pos
+				interactables_node.add_child(owd_inst)
+
+	# 8. Spawn One-Way Doors (<)
+	if data.cells.has("<"):
+		var processed_owd_left: Dictionary = {}
+		for cell in data.cells["<"]:
+			var cell_vec: Vector2i = cell
+			if processed_owd_left.has(cell_vec):
+				continue
+			var lower_cell: Vector2i = cell_vec + Vector2i(0, 1)
+			if (data.cells["<"] as Array).has(lower_cell):
+				processed_owd_left[cell_vec] = true
+				processed_owd_left[lower_cell] = true
+				var owd_pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, float(cell_vec.y) * 32.0)
+				var owd_inst: OneWayDoor = ONE_WAY_DOOR_SCENE.instantiate() as OneWayDoor
+				owd_inst.dir = -1
+				owd_inst.cell = cell_vec
+				owd_inst.position = owd_pos
+				interactables_node.add_child(owd_inst)
+
+	# 9. Spawn Pressure Plates (_)
 	if data.cells.has("_"):
 		for cell in data.cells["_"]:
 			var cell_vec: Vector2i = cell
@@ -112,7 +149,7 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 			plate_inst.cell = cell_vec
 			interactables_node.add_child(plate_inst)
 
-	# 8. Extract bounds for enemies
+	# 10. Extract bounds for enemies
 	var bounds_per_row: Dictionary = {}
 	if data.cells.has("|"):
 		for bound_cell in data.cells["|"]:
@@ -122,7 +159,7 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 				bounds_per_row[r] = []
 			(bounds_per_row[r] as Array).append(float(b_vec.x * 32))
 
-	# 9. Spawn Listener enemies
+	# 11. Spawn Listener enemies
 	if data.cells.has("L"):
 		for cell in data.cells["L"]:
 			var cell_vec: Vector2i = cell
@@ -142,9 +179,9 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 			enemies_node.add_child(listener_inst)
 			(result["enemies"] as Array).append(listener_inst)
 
-	# 10. Stub warnings for unimplemented entities
+	# 12. Stub warnings for unimplemented entities
 	for ch in data.cells.keys():
-		if ch != "#" and ch != "=" and ch != "P" and ch != "L" and ch != "|" and ch != "." and ch != "F" and ch != "K" and ch != "E" and ch != "D" and ch != "R" and ch != "_":
+		if ch != "#" and ch != "=" and ch != "P" and ch != "L" and ch != "|" and ch != "." and ch != "F" and ch != "K" and ch != "E" and ch != "D" and ch != "R" and ch != "_" and ch != ">" and ch != "<":
 			if not _warned_stubs.has(ch):
 				_warned_stubs[ch] = true
 				push_warning("STUB: spawn " + ch)

@@ -1,0 +1,48 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/interactables/one_way_door.gd" id="1_owd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door"]
+size = Vector2(6, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sensor"]
+size = Vector2(28, 64)
+
+[node name="OneWayDoor" type="StaticBody2D"]
+collision_layer = 1
+collision_mask = 0
+script = ExtResource("1_owd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 32)
+shape = SubResource("RectangleShape2D_door")
+
+[node name="Sensor" type="Area2D" parent="."]
+position = Vector2(0, 32)
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sensor"]
+shape = SubResource("RectangleShape2D_sensor")
+
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="Line" type="Line2D" parent="Visual"]
+points = PackedVector2Array(0, 0, 0, 64)
+width = 1.5
+default_color = Color(0.9, 0.9, 0.9, 0.9)
+
+[node name="Chevron1" type="Line2D" parent="Visual"]
+points = PackedVector2Array(-3, 12, 3, 16, -3, 20)
+width = 1.5
+default_color = Color(0.3, 0.8, 1, 1)
+
+[node name="Chevron2" type="Line2D" parent="Visual"]
+points = PackedVector2Array(-3, 28, 3, 32, -3, 36)
+width = 1.5
+default_color = Color(0.3, 0.8, 1, 1)
+
+[node name="Chevron3" type="Line2D" parent="Visual"]
+points = PackedVector2Array(-3, 44, 3, 48, -3, 52)
+width = 1.5
+default_color = Color(0.3, 0.8, 1, 1)

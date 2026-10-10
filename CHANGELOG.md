@@ -217,3 +217,8 @@ All notable changes to this project will be documented in this file.
 - Created `scenes/interactables/door.gd` (`Door`) and `door.tscn` supporting KEY and PLATE unlock modes, StaticBody2D layer 1 collision, LightOccluder2D, visual glyphs, platform graph node opening, and upward tween animation
 - Created `scenes/interactables/pressure_plate.gd` (`PressurePlate`) and `pressure_plate.tscn` triggering the `plate_doors` group upon player or enemy contact with PLATE noise emission
 - Updated `EntitySpawner` to pair vertical door cells into unified door instances and instantiate pressure plates
+
+## P5-T3 One-Way Doors
+- Created `scenes/interactables/one_way_door.gd` (`OneWayDoor`) and `one_way_door.tscn` with directional player pass-through sensor, chevron visuals, and non-occluding collision
+- Updated `scenes/level/platform_graph.gd` to constrain horizontal WALK graph edges to the permitted direction through `>` and `<` cells
+- Updated `EntitySpawner` to instantiate directional one-way doors for `>` and `<` map runs
