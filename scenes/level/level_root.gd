@@ -65,6 +65,9 @@ func load_level(path: String) -> void:
 			camera_rig.target = player_inst
 			camera_rig.set_limits(Rect2i(0, 0, int(map_px.size.x), int(map_px.size.y)))
 
-	# 7. Notify SceneRouter
+	# 7. Initialize level state & Notify SceneRouter
+	if GameState != null:
+		GameState.decoy_count = data.decoys
+
 	if SceneRouter != null and SceneRouter.has_signal("level_loaded"):
 		SceneRouter.level_loaded.emit(self)

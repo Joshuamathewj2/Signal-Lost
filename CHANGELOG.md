@@ -363,3 +363,14 @@ All notable changes to this project will be documented in this file.
 ## Checkpoint: Phase 7 UI
 - Complete UI and menus implementation: Full HUD with safe area scaling, unshaded world awareness bars and 1px reticles, glitched main menu with title sonar wipes, pause menu with audio ducking, full accessibility settings with live preview and ConfigFile persistence, 4x2 mission select grid, and level completion summary screen with typewriter header and sonar ring medal reveal.
 
+## P8-T1 Decoy Beacon
+- Created `scenes/interactables/decoy_beacon.gd` and `scenes/interactables/decoy_beacon.tscn` (`DecoyBeacon` extends `AnimatableBody2D`): physics projectile thrown at 380 px/s in facing 45° arc with manual gravity (980 px/s²); on floor impact stops and triggers a 0.5s countdown before spawning `pulse_decoy` through `SonarSystem` and emitting a DECOY `NoiseEvent` (radius 200 px, loudness 2.0); equipped with a `WorldReticle(DECOY)` and fade-out animation.
+- Created `scenes/interactables/decoy_pickup.gd` and `scenes/interactables/decoy_pickup.tscn` (`DecoyPickup` extends `Interactable`): collectible item mapped to `'C'` in level grid adding +1 decoy charge (capped at 3) with `key_pickup` audio feedback.
+- Updated `scenes/level/interactable_spawner.gd` (`InteractableSpawner`): added parsing and instantiation for `'C'` cells into `DecoyPickup` instances.
+- Updated `scenes/level/level_root.gd` (`LevelRoot`): initialized `GameState.decoy_count` from `data.decoys` level header.
+- Updated `scenes/player/player.gd` (`Player`): mapped `ability_primary` (key F / gamepad button 3) to throw decoy beacons if `GameState.decoy_count > 0`.
+- Updated `scenes/ui/hud.gd` (`HUD`): bound `GameState.decoy_count_changed` to update `pip_row` filled count and `primary_slot` active status.
+- Updated `scenes/sonar/sonar_system.gd`: joined `sonar_system` node group for reliable beacon lookup.
+- Created `tests/test_decoy.gd`: verified decoy count clamping, pickup interaction, throwing mechanics, landing detection, noise event emission, and HUD response; 100% test suite passing (15 test suites).
+
+

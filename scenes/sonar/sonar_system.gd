@@ -10,6 +10,7 @@ var pool: Array[PulseBubble] = []
 var hit_nodes_per_bubble: Dictionary = {}
 
 func _ready() -> void:
+	add_to_group(&"sonar_system")
 	var max_b: int = GameConfig.data.max_bubbles if (GameConfig != null and GameConfig.data != null) else 6
 	for i in range(max_b):
 		var b: PulseBubble = bubble_packed.instantiate() as PulseBubble

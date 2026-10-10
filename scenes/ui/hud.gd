@@ -21,6 +21,17 @@ func _ready() -> void:
 	if router != null and router.has_signal("level_loaded"):
 		router.connect("level_loaded", Callable(self, "_on_level_loaded"))
 
+	if GameState != null:
+		if not GameState.decoy_count_changed.is_connected(_on_decoy_count_changed):
+			GameState.decoy_count_changed.connect(_on_decoy_count_changed)
+		_on_decoy_count_changed(GameState.decoy_count)
+
+func _on_decoy_count_changed(n: int) -> void:
+	if pip_row != null:
+		pip_row.set_pips(n)
+	if primary_slot != null:
+		primary_slot.set_active(n > 0)
+
 func _update_safe_margins() -> void:
 	if safe_area == null:
 		return

@@ -33,6 +33,24 @@ func _ready() -> void:
 			GameState.register_pulse(profile)
 		)
 
+const DECOY_BEACON_SCENE: PackedScene = preload("res://scenes/interactables/decoy_beacon.tscn")
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not is_alive:
+		return
+	if event.is_action_pressed("ability_primary"):
+		throw_decoy()
+
+func throw_decoy() -> void:
+	if GameState == null or GameState.decoy_count <= 0:
+		return
+	GameState.decoy_count -= 1
+	var beacon: DecoyBeacon = DECOY_BEACON_SCENE.instantiate() as DecoyBeacon
+	beacon.global_position = global_position + Vector2(0.0, -12.0)
+	var facing_dir: float = float(motor.facing) if motor != null else 1.0
+	beacon.velocity = Vector2(facing_dir * 380.0 * 0.7071, -380.0 * 0.7071)
+	get_parent().add_child(beacon)
+
 func _physics_process(_delta: float) -> void:
 	if not is_alive:
 		return

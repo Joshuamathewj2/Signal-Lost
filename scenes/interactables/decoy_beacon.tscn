@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cdecoy_beacon_01"]
+
+[ext_resource type="Script" path="res://scenes/interactables/decoy_beacon.gd" id="1_dcb"]
+
+[node name="DecoyBeacon" type="AnimatableBody2D"]
+script = ExtResource("1_dcb")

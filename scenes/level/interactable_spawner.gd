@@ -10,6 +10,7 @@ const ONE_WAY_DOOR_SCENE: PackedScene = preload("res://scenes/interactables/one_
 const GLASS_SCENE: PackedScene = preload("res://scenes/interactables/glass_floor.tscn")
 const LANTERN_SCENE: PackedScene = preload("res://scenes/interactables/lantern.tscn")
 const VENT_SCENE: PackedScene = preload("res://scenes/interactables/vent.tscn")
+const DECOY_PICKUP_SCENE: PackedScene = preload("res://scenes/interactables/decoy_pickup.tscn")
 
 static func spawn_interactables(data: LevelData, parent: Node2D, graph: PlatformGraph) -> void:
 	# 1. Exit Terminal
@@ -84,6 +85,16 @@ static func spawn_interactables(data: LevelData, parent: Node2D, graph: Platform
 
 	# 9. Vents (V, v, M)
 	_spawn_vents(data, parent)
+
+	# 10. Decoy Pickups (C)
+	if data.cells.has("C"):
+		for cell in data.cells["C"]:
+			var cell_vec: Vector2i = cell
+			var c_pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, (float(cell_vec.y) + 0.5) * 32.0)
+			var decoy_inst: DecoyPickup = DECOY_PICKUP_SCENE.instantiate() as DecoyPickup
+			decoy_inst.position = c_pos
+			decoy_inst.cell = cell_vec
+			parent.add_child(decoy_inst)
 
 static func _spawn_doors(data: LevelData, key: String, mode: String, parent: Node2D, graph: PlatformGraph) -> void:
 	if not data.cells.has(key):
