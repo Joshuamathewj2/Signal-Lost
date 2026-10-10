@@ -227,3 +227,7 @@ All notable changes to this project will be documented in this file.
 - Created `shaders/glass_crack.gdshader` rendering cellular Voronoi cracks with flat reveal lighting
 - Created `scenes/interactables/glass_floor.gd` (`GlassFloor`) and `glass_floor.tscn` with wave reactive crack/shatter, brute step detection, shard particles, GLASS noise emission, and platform graph standable updates
 - Updated `EntitySpawner` to instantiate glass floor blocks from ASCII `G` cells
+
+## P5-T5 Lantern
+- Created `scenes/interactables/lantern.gd` (`Lantern`) and `lantern.tscn` featuring damped angular spring dynamics, tier-based wavefront impulse reactions, and throttled CLINK noise emission
+- Updated `EntitySpawner` to instantiate suspended ceiling lanterns for `~` cells
