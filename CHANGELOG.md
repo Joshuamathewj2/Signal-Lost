@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## Recovery Step 0: Verification Loop & Before Audit
+- Installed Godot 4.7.2 official export templates and configured Web export preset in `export_presets.cfg`.
+- Exported headless Web build to `build/web/index.html`.
+- Implemented static server with COOP/COEP isolation headers in `tools/serve.py` and `tools/serve.js`.
+- Configured automated test runner `tools/run_web.sh`.
+- Established Playwright MCP driving loop in 1920x1080 resolution.
+- Captured "before" screenshots of the broken state into `qa/shots/before/`.
+- Logged root cause audit in `qa/ERROR_LIST.md` and initialized `qa/QA_REPORT.md`.
+
 ## P0-T1 Project settings & repo
 - Initialized local Git repository
 - Created `.gitignore` ignoring `.godot/`, `export/`, and `*.tmp`

@@ -3,3 +3,5 @@
 export/
 *.tmp
 *.translation
+build/
+.playwright-mcp/
