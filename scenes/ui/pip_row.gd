@@ -20,7 +20,7 @@ func _rebuild_pips() -> void:
 	# Clear existing children if count changed
 	while _pip_controls.size() < max_pips:
 		var pip := Control.new()
-		pip.custom_minimum_size = Vector2(8, 8)
+		pip.custom_minimum_size = Vector2(10, 10)
 		pip.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		var idx: int = _pip_controls.size()
 		pip.draw.connect(func() -> void: _draw_pip(pip, idx))
@@ -39,14 +39,14 @@ func _draw_pip(pip: Control, index: int) -> void:
 	var white_col: Color = Palette.color(&"white")
 	var is_filled: bool = index < current_pips
 	var pts := PackedVector2Array([
-		Vector2(4.0, 0.0),
-		Vector2(8.0, 4.0),
-		Vector2(4.0, 8.0),
-		Vector2(0.0, 4.0)
+		Vector2(5.0, 0.0),
+		Vector2(10.0, 5.0),
+		Vector2(5.0, 10.0),
+		Vector2(0.0, 5.0)
 	])
 
 	if is_filled:
 		pip.draw_colored_polygon(pts, white_col)
 	else:
 		pts.append(pts[0])
-		pip.draw_polyline(pts, white_col, 1.0)
+		pip.draw_polyline(pts, white_col, 1.2)

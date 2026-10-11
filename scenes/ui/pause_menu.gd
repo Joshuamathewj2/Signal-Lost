@@ -76,12 +76,13 @@ func _on_restart_pressed() -> void:
 const SETTINGS_SCENE: PackedScene = preload("res://scenes/ui/settings_menu.tscn")
 
 func _on_settings_pressed() -> void:
-	var settings: SettingsMenu = SETTINGS_SCENE.instantiate() as SettingsMenu
+	var settings: Node = SETTINGS_SCENE.instantiate()
 	add_child(settings)
-	settings.closed.connect(func() -> void:
-		if settings_btn != null and settings_btn.is_visible_in_tree():
-			settings_btn.grab_focus()
-	)
+	if settings.has_signal("closed"):
+		settings.connect("closed", func() -> void:
+			if settings_btn != null and settings_btn.is_visible_in_tree():
+				settings_btn.grab_focus()
+		)
 
 func _on_quit_pressed() -> void:
 	resume()

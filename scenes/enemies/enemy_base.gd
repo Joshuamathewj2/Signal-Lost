@@ -18,13 +18,13 @@ var facing_direction: Vector2 = Vector2.ZERO
 var last_noise: Dictionary = {}
 var last_seen: Vector2 = Vector2.ZERO
 
-var smudge: Smudge = null
+var smudge: Node2D = null
 var smudge_scene: PackedScene = preload("res://scenes/enemies/smudge.tscn")
 
-var awareness_bar: AwarenessBar = null
+var awareness_bar: Node2D = null
 var awareness_bar_scene: PackedScene = preload("res://scenes/ui/awareness_bar.tscn")
 
-var noise_reticle: WorldReticle = null
+var noise_reticle: Node2D = null
 var world_reticle_scene: PackedScene = preload("res://scenes/ui/world_reticle.tscn")
 
 func _ready() -> void:
@@ -64,17 +64,19 @@ func _ready() -> void:
 func _setup_sense_ui() -> void:
 	var sense_layer: Node = get_tree().get_first_node_in_group(&"sense_layer")
 	if sense_layer != null:
-		smudge = smudge_scene.instantiate() as Smudge
+		smudge = smudge_scene.instantiate() as Node2D
 		sense_layer.add_child(smudge)
 		smudge.visible = false
 
-		awareness_bar = awareness_bar_scene.instantiate() as AwarenessBar
+		awareness_bar = awareness_bar_scene.instantiate() as Node2D
 		sense_layer.add_child(awareness_bar)
-		awareness_bar.setup(self)
+		if awareness_bar.has_method("setup"):
+			awareness_bar.setup(self)
 
-		noise_reticle = world_reticle_scene.instantiate() as WorldReticle
+		noise_reticle = world_reticle_scene.instantiate() as Node2D
 		sense_layer.add_child(noise_reticle)
-		noise_reticle.deactivate()
+		if noise_reticle.has_method("deactivate"):
+			noise_reticle.deactivate()
 
 func _exit_tree() -> void:
 	if smudge != null and is_instance_valid(smudge):

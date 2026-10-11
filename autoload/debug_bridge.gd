@@ -68,6 +68,36 @@ func _handle_command(cmd_name: String, cmd_args: Dictionary) -> void:
 				p = get_tree().root.find_child("Player", true, false)
 			if p != null:
 				p.set_meta("god_mode", bool(cmd_args.get("enabled", true)))
+		"pause_game":
+			var pause_node = get_tree().root.get_node_or_null("Main/Menus/PauseMenu")
+			if pause_node != null and pause_node.has_method("pause"):
+				pause_node.call("pause")
+		"resume_game":
+			var pause_node = get_tree().root.get_node_or_null("Main/Menus/PauseMenu")
+			if pause_node != null and pause_node.has_method("resume"):
+				pause_node.call("resume")
+		"show_level_complete":
+			var menus_node = get_tree().root.get_node_or_null("Main/Menus")
+			if menus_node != null:
+				var complete_scene: PackedScene = preload("res://scenes/ui/level_complete.tscn")
+				var cmp = complete_scene.instantiate()
+				menus_node.add_child(cmp)
+				if cmp.has_method("setup"):
+					cmp.call("setup", {
+						"level_index": int(cmd_args.get("level", 1)),
+						"time": float(cmd_args.get("time", 24.5)),
+						"pulses": {"whisper": 2, "normal": 4, "scream": 1},
+						"loudest": 2,
+						"detections": 0,
+						"fragments": [Vector2i(1, 1)],
+						"medal": &"ghost"
+					}, {})
+		"show_settings":
+			var menus_node = get_tree().root.get_node_or_null("Main/Menus")
+			if menus_node != null:
+				var settings_scene: PackedScene = preload("res://scenes/ui/settings_menu.tscn")
+				var s = settings_scene.instantiate()
+				menus_node.add_child(s)
 
 func _process(delta: float) -> void:
 	if not OS.has_feature("web"):

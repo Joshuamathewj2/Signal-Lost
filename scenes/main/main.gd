@@ -12,7 +12,7 @@ const LEVEL_COMPLETE_SCENE: PackedScene = preload("res://scenes/ui/level_complet
 @onready var debug_overlay: CanvasLayer = $DebugOverlay
 @onready var boot: Node = $Boot
 
-var pause_menu: PauseMenu = null
+var pause_menu: Node = null
 
 func _ready() -> void:
 	DebugFlags.log(&"main", "Main scene initialized")
@@ -29,9 +29,10 @@ func _on_level_completed(stats: Dictionary) -> void:
 		save_res = SaveData.save_level_result(lvl_idx, stats)
 
 	if menus != null:
-		var complete_inst: LevelComplete = LEVEL_COMPLETE_SCENE.instantiate() as LevelComplete
+		var complete_inst: Node = LEVEL_COMPLETE_SCENE.instantiate()
 		menus.add_child(complete_inst)
-		complete_inst.setup(stats, save_res)
+		if complete_inst.has_method("setup"):
+			complete_inst.call("setup", stats, save_res)
 
 func _ensure_hud() -> void:
 	var existing_hud: Node = get_tree().get_first_node_in_group(&"hud")
@@ -43,8 +44,9 @@ func _ensure_hud() -> void:
 		hud = hud_inst
 
 func _ensure_pause_menu() -> void:
-	if menus != null and pause_menu == null:
-		pause_menu = PAUSE_MENU_SCENE.instantiate() as PauseMenu
+	if menus != null and (pause_menu == null or not is_instance_valid(pause_menu)):
+		pause_menu = PAUSE_MENU_SCENE.instantiate()
+		pause_menu.name = "PauseMenu"
 		menus.add_child(pause_menu)
 
 func show_main_menu() -> void:

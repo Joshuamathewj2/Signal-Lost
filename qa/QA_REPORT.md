@@ -8,7 +8,7 @@
 | Step A: Triage and Stop the Bleeding | PASS | 30s movement completed with 0 errors (`tests/e2e/test_gate_a.js`) | `qa/shots/gate_a/01_gate_a_menu.png`<br>`qa/shots/gate_a/02_gate_a_level_start.png`<br>`qa/shots/gate_a/03_gate_a_walking_right.png`<br>`qa/shots/gate_a/04_gate_a_walking_left.png`<br>`qa/shots/gate_a/05_gate_a_jumping.png`<br>`qa/shots/gate_a/06_gate_a_crouch_sneak.png`<br>`qa/shots/gate_a/07_gate_a_after_30s.png` |
 | Step B: Sonar & Darkness Overhaul | PASS | 3 pulse tiers verified at t=0.1s, 0.5s, 2.0s + Space key pulse with 0 errors (`tests/e2e/test_gate_b.js`) | `qa/shots/gate_b/whisper_01.png`<br>`qa/shots/gate_b/whisper_02.png`<br>`qa/shots/gate_b/whisper_03.png`<br>`qa/shots/gate_b/normal_01.png`<br>`qa/shots/gate_b/normal_02.png`<br>`qa/shots/gate_b/normal_03.png`<br>`qa/shots/gate_b/scream_01.png`<br>`qa/shots/gate_b/scream_02.png`<br>`qa/shots/gate_b/scream_03.png`<br>`qa/shots/gate_b/keyboard_space_pulse.png` |
 | Step C: Visual Style Polish | PASS | Vector chassis, dynamic eye color state, shockwave ripples & CA burst verified with 0 errors (`tests/e2e/test_step_c.js`) | `qa/shots/step_c/01_player_vector_idle.png`<br>`qa/shots/step_c/02_player_eye_charging_cyan.png`<br>`qa/shots/step_c/03_normal_pulse_reveal.png`<br>`qa/shots/step_c/04_scream_shake_and_ca.png`<br>`qa/shots/step_c/05_interactables_revealed.png` |
-| Step D: HUD and Menus Redesign | In Progress | - | - |
+| Step D: HUD and Menus Redesign | PASS | Full menu flows, scaled HUD, battery preview, awareness bar verified with 0 errors (`tests/e2e/test_step_d.js`) | `qa/shots/step_d/01_main_menu.png`<br>`qa/shots/step_d/02_level_select.png`<br>`qa/shots/step_d/03_hud_gameplay.png`<br>`qa/shots/step_d/04_battery_preview_charging.png`<br>`qa/shots/step_d/05_pause_menu.png`<br>`qa/shots/step_d/06_settings_menu.png`<br>`qa/shots/step_d/07_level_complete.png`<br>`qa/shots/step_d/08_enemy_awareness_bar.png` |
 | Step E: Gameplay Dynamics & AI | Pending | - | - |
 | Step F: Performance & Stability | Pending | - | - |
 
@@ -60,4 +60,28 @@
 ### Gate B Verdict:
 - **Condition**: All 3 tiers tested across 3 timestamps + native keyboard Space charging and release. Wavefront rings visible, occlusion shadows cast behind solid walls, fading memory persistence, 0 browser errors, 0 engine errors.
 - **Result**: PASSED with 0 browser errors and 0 in-engine errors. Full visual evidence captured in `qa/shots/gate_b/`.
+
+---
+
+## Step C: Visual Style Polish (PASSED)
+
+### Issues Resolved:
+1. **Player Vector Chassis & Dynamic Eye Dot**: Updated player rendering with clean vector silhouette and dynamic single eye dot. The eye dot transitions dynamically: white (neutral/idle), cyan (charging pulse), and red (detected/alert).
+2. **Post-Processing Shockwave & Chromatic Aberration**: Verified shockwave ring ripples and CA burst on Scream pulses.
+3. **Automated Verification**: Verified with `tests/e2e/test_step_c.js` with 0 browser errors and 0 engine errors. Screenshots saved in `qa/shots/step_c/`.
+
+---
+
+## Step D: HUD and Menus Redesign (PASSED)
+
+### Issues Resolved:
+1. **HUD Redesign**: Scaled up antenna fragment counter (28px Rajdhani font), 220x14px battery bar with solid red fill and pale charge cost preview overlay, ability slots with key badges (`F`, `G`), diamond charge pips, and minimalist level progress bar (260x3px).
+2. **Main Menu**: High-contrast minimalist aesthetic with sonar wipe circle revealing "SIGNAL LOST" typography, white outlined buttons with red hover/focus styling.
+3. **Mission Select**: 4x2 Mission Select grid with locked/unlocked states and keyboard navigation.
+4. **Pause Menu Persistence**: Preserved `PauseMenu` during level transitions and verified overlay pause flow.
+5. **Settings Menu**: Calibrated volume sliders, screen shake, film grain, CA, and colorblind toggles with Rajdhani font.
+6. **Level Complete Screen**: "SIGNAL RESTORED" title, stats grid (Time, Pulses, Loudest, Detected, Fragments), GHOST medal with sonar wipe reveal.
+7. **Awareness Bar**: Fixed positioning (-46px above enemy head/antenna), unshaded canvas material, and reveal visibility.
+8. **Automated Verification**: Ran `tests/e2e/test_step_d.js` across menu navigation, pause menu, battery preview, level complete, and enemy awareness bar. PASSED with 0 browser errors and 0 engine errors. Screenshots saved in `qa/shots/step_d/`.
+
 

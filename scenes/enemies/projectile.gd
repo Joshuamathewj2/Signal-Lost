@@ -6,7 +6,7 @@ extends Area2D
 
 var direction: Vector2 = Vector2.RIGHT
 var reticle_scene: PackedScene = preload("res://scenes/ui/world_reticle.tscn")
-var reticle: WorldReticle = null
+var reticle: Node2D = null
 
 func _ready() -> void:
 	collision_layer = 0
@@ -17,9 +17,11 @@ func _ready() -> void:
 
 	body_entered.connect(_on_body_entered)
 
-	reticle = reticle_scene.instantiate() as WorldReticle
-	reticle.reticle_type = WorldReticle.Type.PROJECTILE
-	add_child(reticle)
+	reticle = reticle_scene.instantiate() as Node2D
+	if reticle != null:
+		if "reticle_type" in reticle:
+			reticle.reticle_type = 0 # Type.PROJECTILE
+		add_child(reticle)
 
 func _physics_process(delta: float) -> void:
 	position += direction * speed * delta

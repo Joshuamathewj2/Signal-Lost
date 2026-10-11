@@ -106,7 +106,7 @@ func _animate_medal(stats: Dictionary, result: Dictionary) -> void:
 	if is_new_best and new_best_label != null:
 		tween.parallel().tween_property(new_best_label, "modulate:a", 1.0, 0.4)
 
-	if medal_glyph_control != null:
+	if medal_glyph_control != null and not medal_glyph_control.draw.is_connected(_on_draw_medal_glyph):
 		medal_glyph_control.draw.connect(_on_draw_medal_glyph)
 
 func _process(_delta: float) -> void:

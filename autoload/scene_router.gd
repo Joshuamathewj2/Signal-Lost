@@ -93,7 +93,7 @@ func _spawn_level_instant(path: String) -> void:
 	var menus: Node = get_tree().root.get_node_or_null("Main/Menus")
 	if menus != null:
 		for child in menus.get_children():
-			if child != null and child != fade_rect:
+			if child != null and child != fade_rect and child.name != "PauseMenu" and not (child is PauseMenu):
 				child.queue_free()
 
 	var new_root = LEVEL_ROOT_SCENE.instantiate()

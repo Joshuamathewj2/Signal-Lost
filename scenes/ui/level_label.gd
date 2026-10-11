@@ -64,26 +64,26 @@ func _recompute_progress() -> void:
 	if not is_inside_tree():
 		return
 	var player: Node2D = get_tree().get_first_node_in_group(&"player") as Node2D
-	var level_root: LevelRoot = null
+	var level_root: Node = null
 	var router: Node = get_node_or_null("/root/SceneRouter")
 	if router != null and "current_level_root" in router:
-		level_root = router.get("current_level_root") as LevelRoot
+		level_root = router.get("current_level_root") as Node
 	if level_root == null and player != null:
-		level_root = player.get_parent() as LevelRoot
+		level_root = player.get_parent()
 	if level_root == null:
-		level_root = get_tree().root.find_child("LevelRoot", true, false) as LevelRoot
+		level_root = get_tree().root.find_child("LevelRoot", true, false)
 
-	if level_root != null and level_root.current_level_data != null:
-		var data: LevelData = level_root.current_level_data
+	if level_root != null and "current_level_data" in level_root and level_root.current_level_data != null:
+		var data: Variant = level_root.current_level_data
 		if level_name_label != null:
-			if not data.name.is_empty():
-				level_name_label.text = data.name
+			if "name" in data and not String(data.name).is_empty():
+				level_name_label.text = String(data.name)
 			else:
 				var lvl_idx: int = GameState.level_index if GameState != null else 1
 				level_name_label.text = "Level %d" % lvl_idx
 
-		if player != null and level_root.platform_graph != null:
-			var graph: PlatformGraph = level_root.platform_graph
+		if player != null and "platform_graph" in level_root and level_root.platform_graph != null:
+			var graph: Variant = level_root.platform_graph
 			var spawn_px := (Vector2(data.player_spawn) + Vector2(0.5, 1.0)) * 32.0
 			var exit_px := (Vector2(data.exit_cell) + Vector2(0.5, 1.0)) * 32.0
 

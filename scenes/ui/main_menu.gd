@@ -60,23 +60,26 @@ const LEVEL_SELECT_SCENE: PackedScene = preload("res://scenes/ui/level_select.ts
 const SETTINGS_SCENE: PackedScene = preload("res://scenes/ui/settings_menu.tscn")
 
 func _on_play_pressed() -> void:
-	var lvl_sel: LevelSelect = LEVEL_SELECT_SCENE.instantiate() as LevelSelect
+	var lvl_sel: Node = LEVEL_SELECT_SCENE.instantiate()
 	add_child(lvl_sel)
-	lvl_sel.closed.connect(func() -> void:
-		if play_btn != null and play_btn.is_visible_in_tree():
-			play_btn.grab_focus()
-	)
-	lvl_sel.level_selected.connect(func(_idx: int) -> void:
-		queue_free()
-	)
+	if lvl_sel.has_signal("closed"):
+		lvl_sel.connect("closed", func() -> void:
+			if play_btn != null and play_btn.is_visible_in_tree():
+				play_btn.grab_focus()
+		)
+	if lvl_sel.has_signal("level_selected"):
+		lvl_sel.connect("level_selected", func(_idx: int) -> void:
+			queue_free()
+		)
 
 func _on_settings_pressed() -> void:
-	var settings: SettingsMenu = SETTINGS_SCENE.instantiate() as SettingsMenu
+	var settings: Node = SETTINGS_SCENE.instantiate()
 	add_child(settings)
-	settings.closed.connect(func() -> void:
-		if settings_btn != null and settings_btn.is_visible_in_tree():
-			settings_btn.grab_focus()
-	)
+	if settings.has_signal("closed"):
+		settings.connect("closed", func() -> void:
+			if settings_btn != null and settings_btn.is_visible_in_tree():
+				settings_btn.grab_focus()
+		)
 
 func _on_quit_pressed() -> void:
 	get_tree().quit()

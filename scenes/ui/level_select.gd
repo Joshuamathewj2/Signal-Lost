@@ -10,7 +10,7 @@ const LEVEL_BOX_SCRIPT: Script = preload("res://scenes/ui/level_select_box.gd")
 @onready var back_button: UiButton = $CenterContainer/VBoxContainer/BackButton
 @onready var title_label: Label = $CenterContainer/VBoxContainer/TitleLabel
 
-var _boxes: Array[LevelSelectBox] = []
+var _boxes: Array[Control] = []
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -33,19 +33,20 @@ func _populate_grid() -> void:
 	_boxes.clear()
 
 	for i in range(1, 9):
-		var box: LevelSelectBox = LEVEL_BOX_SCRIPT.new() as LevelSelectBox
+		var box: Control = LEVEL_BOX_SCRIPT.new()
 		box.name = "LevelBox_%d" % i
-		box.level_index = i
+		box.set("level_index", i)
 
 		var data: Dictionary = {}
 		if SaveData != null and SaveData.has_method("get_level_data"):
 			data = SaveData.get_level_data(i)
 
-		box.is_unlocked = bool(data.get("unlocked", i == 1))
-		box.medal = StringName(data.get("best_medal", &"none"))
-		box.fragments_count = int(data.get("fragments", 0))
+		box.set("is_unlocked", bool(data.get("unlocked", i == 1)))
+		box.set("medal", StringName(data.get("best_medal", &"none")))
+		box.set("fragments_count", int(data.get("fragments", 0)))
 
-		box.level_chosen.connect(_on_level_chosen)
+		if box.has_signal("level_chosen"):
+			box.connect("level_chosen", Callable(self, "_on_level_chosen"))
 		grid.add_child(box)
 		_boxes.append(box)
 
@@ -53,7 +54,7 @@ func _setup_focus_navigation() -> void:
 	if not is_inside_tree():
 		return
 
-	var first_unlocked: LevelSelectBox = null
+	var first_unlocked: Control = null
 
 	# Setup 4x2 grid neighbors
 	for row in range(2):
@@ -61,8 +62,8 @@ func _setup_focus_navigation() -> void:
 			var idx: int = row * 4 + col
 			if idx >= _boxes.size():
 				continue
-			var box: LevelSelectBox = _boxes[idx]
-			if not box.is_unlocked:
+			var box: Control = _boxes[idx]
+			if not box.get("is_unlocked"):
 				continue
 
 			if first_unlocked == null:
@@ -70,28 +71,28 @@ func _setup_focus_navigation() -> void:
 
 			# Left neighbor
 			for c in range(col - 1, -1, -1):
-				var left_box: LevelSelectBox = _boxes[row * 4 + c]
-				if left_box.is_unlocked:
+				var left_box: Control = _boxes[row * 4 + c]
+				if left_box.get("is_unlocked"):
 					box.focus_neighbor_left = box.get_path_to(left_box)
 					break
 
 			# Right neighbor
 			for c in range(col + 1, 4):
-				var right_box: LevelSelectBox = _boxes[row * 4 + c]
-				if right_box.is_unlocked:
+				var right_box: Control = _boxes[row * 4 + c]
+				if right_box.get("is_unlocked"):
 					box.focus_neighbor_right = box.get_path_to(right_box)
 					break
 
 			# Up neighbor
 			if row == 1:
-				var up_box: LevelSelectBox = _boxes[col]
-				if up_box.is_unlocked:
+				var up_box: Control = _boxes[col]
+				if up_box.get("is_unlocked"):
 					box.focus_neighbor_top = box.get_path_to(up_box)
 
 			# Down neighbor
 			if row == 0:
-				var down_box: LevelSelectBox = _boxes[4 + col]
-				if down_box.is_unlocked:
+				var down_box: Control = _boxes[4 + col]
+				if down_box.get("is_unlocked"):
 					box.focus_neighbor_bottom = box.get_path_to(down_box)
 				elif back_button != null:
 					box.focus_neighbor_bottom = box.get_path_to(back_button)

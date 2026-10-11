@@ -3,13 +3,13 @@ extends CanvasLayer
 
 @onready var root: Control = $Root
 @onready var safe_area: MarginContainer = $Root/SafeArea
-@onready var top_left: FragmentCounter = $Root/SafeArea/TopLeft
+@onready var top_left: Control = $Root/SafeArea/TopLeft
 @onready var bottom_left: VBoxContainer = $Root/SafeArea/BottomLeft
-@onready var battery_bar: BatteryBar = $Root/SafeArea/BottomLeft/BatteryBar
-@onready var pip_row: PipRow = $Root/SafeArea/BottomLeft/Pips
-@onready var primary_slot: AbilitySlot = $Root/SafeArea/BottomLeft/AbilityRow/PrimarySlot
-@onready var secondary_slot: AbilitySlot = $Root/SafeArea/BottomLeft/AbilityRow/SecondarySlot
-@onready var level_label: LevelLabel = $Root/SafeArea/BottomCentre
+@onready var battery_bar: Control = $Root/SafeArea/BottomLeft/BatteryBar
+@onready var pip_row: Control = $Root/SafeArea/BottomLeft/Pips
+@onready var primary_slot: Control = $Root/SafeArea/BottomLeft/AbilityRow/PrimarySlot
+@onready var secondary_slot: Control = $Root/SafeArea/BottomLeft/AbilityRow/SecondarySlot
+@onready var level_label: Control = $Root/SafeArea/BottomCentre
 @onready var controls_hint: Label = get_node_or_null("Root/SafeArea/BottomCentre/ControlsHint") as Label
 
 var _has_moved: bool = false

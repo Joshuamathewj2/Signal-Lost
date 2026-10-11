@@ -1,18 +1,23 @@
 class_name AwarenessBar
 extends Node2D
 
-var enemy: EnemyBase = null
+var enemy: Node2D = null
 var current_val: float = 0.0
 var is_revealed: bool = false
 var fade_tween: Tween = null
 
 func _ready() -> void:
 	modulate.a = 0.0
+	z_index = 50
+	var mat := CanvasItemMaterial.new()
+	mat.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	material = mat
 
-func setup(p_enemy: EnemyBase) -> void:
+func setup(p_enemy: Node2D) -> void:
 	enemy = p_enemy
-	if enemy != null and enemy.awareness != null:
-		enemy.awareness.awareness_changed.connect(_on_awareness_changed)
+	if enemy != null and "awareness" in enemy and enemy.awareness != null:
+		if not enemy.awareness.awareness_changed.is_connected(_on_awareness_changed):
+			enemy.awareness.awareness_changed.connect(_on_awareness_changed)
 		current_val = enemy.awareness.value
 
 func _on_awareness_changed(new_val: float, _old_val: float) -> void:
@@ -24,14 +29,14 @@ func _process(_delta: float) -> void:
 		queue_free()
 		return
 
-	# 14 px above enemy head (top of 24px capsule is at -12, so -26)
-	global_position = enemy.global_position + Vector2(0.0, -26.0)
+	# Position above enemy antenna / head
+	global_position = enemy.global_position + Vector2(0.0, -46.0)
 
 	var reveal: float = 0.0
 	if PulseRegistry != null:
 		reveal = PulseRegistry.reveal_at(enemy.global_position)
 
-	var should_reveal: bool = reveal > 0.25 and current_val > 0.01
+	var should_reveal: bool = reveal > 0.05
 	if should_reveal != is_revealed:
 		is_revealed = should_reveal
 		if fade_tween != null and fade_tween.is_valid():

@@ -51,7 +51,7 @@ func _on_frag_icon_draw() -> void:
 	if frag_icon == null:
 		return
 	var white: Color = Palette.color(&"white")
-	var dot_center := Vector2(6.0, 12.0)
-	frag_icon.draw_circle(dot_center, 1.75, white)
-	frag_icon.draw_arc(dot_center, 5.5, -PI * 0.5, 0.0, 16, white, 1.5)
-	frag_icon.draw_arc(dot_center, 10.0, -PI * 0.5, 0.0, 16, white, 1.5)
+	var dot_center := Vector2(6.0, 16.0)
+	frag_icon.draw_circle(dot_center, 2.2, white)
+	frag_icon.draw_arc(dot_center, 7.0, -PI * 0.5, 0.0, 16, white, 1.5)
+	frag_icon.draw_arc(dot_center, 13.0, -PI * 0.5, 0.0, 16, white, 1.5)
