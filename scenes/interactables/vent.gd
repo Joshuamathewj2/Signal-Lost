@@ -34,14 +34,14 @@ func _ready() -> void:
 			mute_area.body_entered.connect(_on_mute_body_entered)
 			mute_area.body_exited.connect(_on_mute_body_exited)
 
-func _on_mute_body_entered(body: Node2D) -> void:
-	if body is Player:
-		var p: Player = body as Player
-		if p.pulse_charger != null:
-			p.pulse_charger.noise_scale = 0.3
+func _on_mute_body_entered(body: Node) -> void:
+	if body != null and body.is_in_group(&"player"):
+		var charger = body.get_node_or_null("PulseCharger")
+		if charger != null and "noise_scale" in charger:
+			charger.noise_scale = 0.3
 
-func _on_mute_body_exited(body: Node2D) -> void:
-	if body is Player:
-		var p: Player = body as Player
-		if p.pulse_charger != null:
-			p.pulse_charger.noise_scale = 1.0
+func _on_mute_body_exited(body: Node) -> void:
+	if body != null and body.is_in_group(&"player"):
+		var charger = body.get_node_or_null("PulseCharger")
+		if charger != null and "noise_scale" in charger:
+			charger.noise_scale = 1.0

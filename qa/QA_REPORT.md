@@ -7,8 +7,8 @@
 | Step 0: Tooling Setup & Before State | PASS | Web build exported, served on :8000 with COOP/COEP, Playwright driver active | `qa/shots/before/01_main_menu.png`<br>`qa/shots/before/02_gameplay_start.png`<br>`qa/shots/before/03_moving_right.png`<br>`qa/shots/before/04_pulse_attempt.png` |
 | Step A: Triage and Stop the Bleeding | PASS | 30s movement completed with 0 errors (`tests/e2e/test_gate_a.js`) | `qa/shots/gate_a/01_gate_a_menu.png`<br>`qa/shots/gate_a/02_gate_a_level_start.png`<br>`qa/shots/gate_a/03_gate_a_walking_right.png`<br>`qa/shots/gate_a/04_gate_a_walking_left.png`<br>`qa/shots/gate_a/05_gate_a_jumping.png`<br>`qa/shots/gate_a/06_gate_a_crouch_sneak.png`<br>`qa/shots/gate_a/07_gate_a_after_30s.png` |
 | Step B: Sonar & Darkness Overhaul | PASS | 3 pulse tiers verified at t=0.1s, 0.5s, 2.0s + Space key pulse with 0 errors (`tests/e2e/test_gate_b.js`) | `qa/shots/gate_b/whisper_01.png`<br>`qa/shots/gate_b/whisper_02.png`<br>`qa/shots/gate_b/whisper_03.png`<br>`qa/shots/gate_b/normal_01.png`<br>`qa/shots/gate_b/normal_02.png`<br>`qa/shots/gate_b/normal_03.png`<br>`qa/shots/gate_b/scream_01.png`<br>`qa/shots/gate_b/scream_02.png`<br>`qa/shots/gate_b/scream_03.png`<br>`qa/shots/gate_b/keyboard_space_pulse.png` |
-| Step C: Visual Style Polish | In Progress | - | - |
-| Step D: HUD and Menus Redesign | Pending | - | - |
+| Step C: Visual Style Polish | PASS | Vector chassis, dynamic eye color state, shockwave ripples & CA burst verified with 0 errors (`tests/e2e/test_step_c.js`) | `qa/shots/step_c/01_player_vector_idle.png`<br>`qa/shots/step_c/02_player_eye_charging_cyan.png`<br>`qa/shots/step_c/03_normal_pulse_reveal.png`<br>`qa/shots/step_c/04_scream_shake_and_ca.png`<br>`qa/shots/step_c/05_interactables_revealed.png` |
+| Step D: HUD and Menus Redesign | In Progress | - | - |
 | Step E: Gameplay Dynamics & AI | Pending | - | - |
 | Step F: Performance & Stability | Pending | - | - |
 

@@ -18,9 +18,11 @@ func set_text(text: String) -> void:
 	hint_text = text
 	queue_redraw()
 
+const RAJDHANI_FONT: Font = preload("res://assets/fonts/Rajdhani-SemiBold.ttf")
+
 func _draw() -> void:
-	var font: Font = ThemeDB.fallback_font
-	var font_size: int = 14
+	var font: Font = RAJDHANI_FONT
+	var font_size: int = 15
 	var text_sz: Vector2 = font.get_string_size(hint_text, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size)
 
 	var pad_x: float = 8.0

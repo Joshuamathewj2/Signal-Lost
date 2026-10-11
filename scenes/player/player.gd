@@ -29,8 +29,18 @@ func _ready() -> void:
 		glow.texture = RevealTextureFactory.get_texture()
 
 	if pulse_charger != null:
+		pulse_charger.charge_started.connect(func() -> void:
+			if visual != null and visual.has_method("set_eye_state"):
+				visual.set_eye_state(&"charge")
+		)
 		pulse_charger.pulse_released.connect(func(profile: PulseProfile, _pos: Vector2) -> void:
 			GameState.register_pulse(profile)
+			if visual != null and visual.has_method("set_eye_state"):
+				visual.set_eye_state(&"normal")
+		)
+		pulse_charger.pulse_failed.connect(func() -> void:
+			if visual != null and visual.has_method("set_eye_state"):
+				visual.set_eye_state(&"normal")
 		)
 
 const DECOY_BEACON_SCENE: PackedScene = preload("res://scenes/interactables/decoy_beacon.tscn")

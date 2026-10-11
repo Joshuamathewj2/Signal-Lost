@@ -24,6 +24,30 @@ func _ready() -> void:
 	update_colors()
 	if Palette != null and Palette.has_signal("palette_changed"):
 		Palette.palette_changed.connect(update_colors)
+	if GameState != null and GameState.has_signal("detected"):
+		GameState.detected.connect(func() -> void:
+			set_eye_state(&"detected")
+		)
+
+var eye_state: StringName = &"normal"
+
+func set_eye_state(state: StringName) -> void:
+	eye_state = state
+	if eye_polygon == null:
+		return
+	match state:
+		&"charge":
+			eye_polygon.color = Palette.color(&"arc") if Palette != null else Color(0.2, 0.9, 1.0, 1.0)
+		&"detected":
+			eye_polygon.color = Palette.color(&"danger") if Palette != null else Color(1.0, 0.2, 0.2, 1.0)
+			var t := create_tween()
+			t.tween_interval(1.5)
+			t.tween_callback(func() -> void:
+				if eye_state == &"detected":
+					set_eye_state(&"normal")
+			)
+		_:
+			eye_polygon.color = Palette.color(&"white") if Palette != null else Color.WHITE
 
 func update_colors() -> void:
 	var c: Color = Palette.color(&"white") if Palette != null else Color.WHITE
@@ -31,8 +55,7 @@ func update_colors() -> void:
 		body_polygon.color = c
 	if head_polygon != null:
 		head_polygon.color = c
-	if eye_polygon != null:
-		eye_polygon.color = c
+	set_eye_state(eye_state)
 	if antenna_line != null:
 		antenna_line.default_color = c
 	if antenna_tip != null:
