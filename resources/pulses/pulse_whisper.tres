@@ -5,11 +5,11 @@
 [resource]
 script = ExtResource("1_ltcpi")
 id = &"whisper"
-reveal_radius = 72.0
+reveal_radius = 150.0
 noise_mult = 0.6
 loudness = 1.0
-hold_time = 0.6
-fade_time = 0.6
+hold_time = 0.5
+fade_time = 1.0
 energy_cost = 6.0
 cooldown = 0.2
 ring_thickness = 1.5

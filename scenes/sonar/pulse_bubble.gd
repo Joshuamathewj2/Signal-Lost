@@ -1,7 +1,7 @@
 class_name PulseBubble
 extends Node2D
 
-signal finished(bubble: PulseBubble)
+signal finished(bubble: Node2D)
 
 @onready var light: PointLight2D = $Light
 

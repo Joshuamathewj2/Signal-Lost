@@ -29,10 +29,12 @@ func _ready() -> void:
 	_apply_settings()
 
 func _on_level_loaded(root: Node) -> void:
-	var player: Node = root.get_tree().get_first_node_in_group(&"player")
+	var player: Node = root.find_child("Player", true, false) if root != null else null
+	if player == null and root != null and root.get_tree() != null:
+		player = root.get_tree().get_first_node_in_group(&"player")
 	if player != null:
-		var charger: PulseCharger = player.get_node_or_null("PulseCharger") as PulseCharger
-		if charger != null and not charger.pulse_released.is_connected(_on_pulse_released):
+		var charger = player.get_node_or_null("PulseCharger")
+		if charger != null and charger.has_signal("pulse_released") and not charger.pulse_released.is_connected(_on_pulse_released):
 			charger.pulse_released.connect(_on_pulse_released)
 
 func _on_pulse_released(profile: PulseProfile, _origin: Vector2) -> void:

@@ -6,8 +6,8 @@
 |---|---|---|---|
 | Step 0: Tooling Setup & Before State | PASS | Web build exported, served on :8000 with COOP/COEP, Playwright driver active | `qa/shots/before/01_main_menu.png`<br>`qa/shots/before/02_gameplay_start.png`<br>`qa/shots/before/03_moving_right.png`<br>`qa/shots/before/04_pulse_attempt.png` |
 | Step A: Triage and Stop the Bleeding | PASS | 30s movement completed with 0 errors (`tests/e2e/test_gate_a.js`) | `qa/shots/gate_a/01_gate_a_menu.png`<br>`qa/shots/gate_a/02_gate_a_level_start.png`<br>`qa/shots/gate_a/03_gate_a_walking_right.png`<br>`qa/shots/gate_a/04_gate_a_walking_left.png`<br>`qa/shots/gate_a/05_gate_a_jumping.png`<br>`qa/shots/gate_a/06_gate_a_crouch_sneak.png`<br>`qa/shots/gate_a/07_gate_a_after_30s.png` |
-| Step B: Sonar & Darkness Overhaul | In Progress | - | Pending Gate B verification |
-| Step C: Visual Style Polish | Pending | - | - |
+| Step B: Sonar & Darkness Overhaul | PASS | 3 pulse tiers verified at t=0.1s, 0.5s, 2.0s + Space key pulse with 0 errors (`tests/e2e/test_gate_b.js`) | `qa/shots/gate_b/whisper_01.png`<br>`qa/shots/gate_b/whisper_02.png`<br>`qa/shots/gate_b/whisper_03.png`<br>`qa/shots/gate_b/normal_01.png`<br>`qa/shots/gate_b/normal_02.png`<br>`qa/shots/gate_b/normal_03.png`<br>`qa/shots/gate_b/scream_01.png`<br>`qa/shots/gate_b/scream_02.png`<br>`qa/shots/gate_b/scream_03.png`<br>`qa/shots/gate_b/keyboard_space_pulse.png` |
+| Step C: Visual Style Polish | In Progress | - | - |
 | Step D: HUD and Menus Redesign | Pending | - | - |
 | Step E: Gameplay Dynamics & AI | Pending | - | - |
 | Step F: Performance & Stability | Pending | - | - |
@@ -36,3 +36,28 @@
 ### Gate A Verdict:
 - **Condition**: 30 seconds of continuous gameplay movement (walking left, walking right, jumping, crouching/sneaking) with 0 errors.
 - **Result**: PASSED with 0 browser errors and 0 in-engine errors. Full evidence logged in `qa/shots/gate_a/`.
+
+---
+
+## Step B: Sonar & Darkness Overhaul (GATE B: PASSED)
+
+### Issues Resolved:
+1. **Pulse Registration & Web Bytecode Casting**: All pulse signal listeners and pool operations used strict custom class type hints (`as PulseCharger`, `PulseBubble`). In Web export bytecode, custom class casts evaluate to `null`, completely preventing pulses from being fired or registered in `PulseRegistry`. Removed strict class casts in favor of duck-typed references across `sonar_system.gd`, `charge_rings.gd`, `camera_rig.gd`, `post_fx.gd`, and `hud.gd`.
+2. **Player Lifecycle Stale Node Connection**: In `level_root.gd`, `SonarSystem._connect_player()` queried `get_tree().get_first_node_in_group(&"player")` immediately upon level reload, which returned the stale queue-freed player rather than the newly spawned instance. Added `connect_player(p_node)` and passed the freshly spawned player reference directly from `EntitySpawner`.
+3. **Radial Reveal Texture Falloff**: In `reveal_texture_factory.gd`, pixels were generated with `Color(1.0, 1.0, 1.0, v)` which kept RGB at 1.0 everywhere in the quad. Fixed texture generation to `Color(v, v, v, v)` ensuring proper radial attenuation in both RGB and Alpha channels for the GL Compatibility renderer.
+4. **Solid Geometry Illumination**: In `level_builder.gd`, polygon color was set to `Color.BLACK` under `flat_reveal.gdshader`, preventing them from reflecting light. Updated polygon base to `Color.WHITE` with blueprint tint `Color(0.12, 0.14, 0.18, 1.0)` so solids brightly illuminate within light cones and remain pure pitch-black in shadow.
+5. **3-Tier Profiles & Wavefront Propagation**: Calibrated Whisper ($r=150$px, $t=1.5$s), Normal ($r=350$px, $t=3.0$s), and Scream ($r=700$px, $t=5.0$s). Verified concentric distance-field arcs and trailing ripples in `shaders/sonar_air.gdshader`.
+
+### Gate B Evidence Matrix:
+
+| Pulse Tier | t = 0.1s (Expanding Arc) | t = 0.5s (Full Illumination & Shadows) | t = 2.0s (Fade / Decay) |
+|---|---|---|---|
+| **Whisper** ($r=150$px) | `qa/shots/gate_b/whisper_01.png` | `qa/shots/gate_b/whisper_02.png` | `qa/shots/gate_b/whisper_03.png` |
+| **Normal** ($r=350$px) | `qa/shots/gate_b/normal_01.png` | `qa/shots/gate_b/normal_02.png` | `qa/shots/gate_b/normal_03.png` |
+| **Scream** ($r=700$px) | `qa/shots/gate_b/scream_01.png` | `qa/shots/gate_b/scream_02.png` | `qa/shots/gate_b/scream_03.png` |
+| **Spacebar (Native Input)** | - | `qa/shots/gate_b/keyboard_space_pulse.png` | - |
+
+### Gate B Verdict:
+- **Condition**: All 3 tiers tested across 3 timestamps + native keyboard Space charging and release. Wavefront rings visible, occlusion shadows cast behind solid walls, fading memory persistence, 0 browser errors, 0 engine errors.
+- **Result**: PASSED with 0 browser errors and 0 in-engine errors. Full visual evidence captured in `qa/shots/gate_b/`.
+

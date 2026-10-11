@@ -1,19 +1,19 @@
 class_name SonarSystem
 extends Node2D
 
-signal bubble_spawned(bubble: PulseBubble)
+signal bubble_spawned(bubble: Node)
 
 @export var air_material: ShaderMaterial
 
 var bubble_packed: PackedScene = preload("res://scenes/sonar/pulse_bubble.tscn")
-var pool: Array[PulseBubble] = []
+var pool: Array = []
 var hit_nodes_per_bubble: Dictionary = {}
 
 func _ready() -> void:
 	add_to_group(&"sonar_system")
 	var max_b: int = GameConfig.data.max_bubbles if (GameConfig != null and GameConfig.data != null) else 6
 	for i in range(max_b):
-		var b: PulseBubble = bubble_packed.instantiate() as PulseBubble
+		var b = bubble_packed.instantiate()
 		add_child(b)
 		pool.append(b)
 		hit_nodes_per_bubble[b] = {}
@@ -39,25 +39,38 @@ func _on_quality_changed(_q: int) -> void:
 func _on_level_loaded(_level_root: Node) -> void:
 	_connect_player()
 
+func connect_player(p: Node) -> void:
+	if p == null:
+		return
+	var charger = p.get_node_or_null("PulseCharger")
+	if charger != null and charger.has_signal("pulse_released"):
+		if not charger.pulse_released.is_connected(spawn):
+			charger.pulse_released.connect(spawn)
+
 func _connect_player() -> void:
 	if not is_inside_tree():
 		return
 	var tree: SceneTree = get_tree()
 	if tree == null:
 		return
-	var p: Node = tree.get_first_node_in_group(&"player")
-	if p != null:
-		var charger: PulseCharger = p.get_node_or_null("PulseCharger") as PulseCharger
-		if charger != null and not charger.pulse_released.is_connected(spawn):
-			charger.pulse_released.connect(spawn)
+	# Find player among children of parent LevelRoot first
+	var p: Node = null
+	var parent_node = get_parent()
+	if parent_node != null:
+		p = parent_node.find_child("Player", true, false)
+	if p == null:
+		p = tree.get_first_node_in_group(&"player")
+	if p == null and tree.root != null:
+		p = tree.root.find_child("Player", true, false)
+	connect_player(p)
 
-func spawn(profile: PulseProfile, origin: Vector2) -> PulseBubble:
-	var chosen: PulseBubble = null
+func spawn(profile: PulseProfile, origin: Vector2) -> Node:
+	var chosen = null
 	var limit: int = mini(4, pool.size()) if (GameConfig != null and GameConfig.sonar_quality == 0) else pool.size()
 
 	# 1. Look for inactive bubble within limit
 	for i in range(limit):
-		var b: PulseBubble = pool[i]
+		var b = pool[i]
 		if not b.active:
 			chosen = b
 			break
@@ -66,7 +79,7 @@ func spawn(profile: PulseProfile, origin: Vector2) -> PulseBubble:
 	if chosen == null:
 		var oldest_age: float = -1.0
 		for i in range(limit):
-			var b: PulseBubble = pool[i]
+			var b = pool[i]
 			if b.age > oldest_age:
 				oldest_age = b.age
 				chosen = b
@@ -79,7 +92,7 @@ func spawn(profile: PulseProfile, origin: Vector2) -> PulseBubble:
 	return chosen
 
 func _process(_delta: float) -> void:
-	var active_bubbles: Array[PulseBubble] = []
+	var active_bubbles: Array = []
 	var reactive_nodes: Array[Node] = get_tree().get_nodes_in_group(&"wave_reactive")
 
 	for b in pool:
@@ -110,7 +123,7 @@ func _process(_delta: float) -> void:
 
 		for i in range(6):
 			if i < active_bubbles.size():
-				var b: PulseBubble = active_bubbles[i]
+				var b = active_bubbles[i]
 				p_data.append(Vector4(b.origin.x, b.origin.y, b.radius, b.ring_alpha))
 				var p_thick: float = b.profile.ring_thickness if b.profile != null else 2.0
 				var p_gap: float = b.profile.trail_gap if b.profile != null else 14.0

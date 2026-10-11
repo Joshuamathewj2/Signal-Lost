@@ -34,8 +34,10 @@ func _ready() -> void:
 	if SceneRouter != null and SceneRouter.has_signal("level_loaded"):
 		SceneRouter.level_loaded.connect(_on_level_loaded)
 
-func _on_level_loaded(_root: Node) -> void:
-	var p: Node2D = get_tree().get_first_node_in_group(&"player") as Node2D
+func _on_level_loaded(root: Node) -> void:
+	var p: Node2D = root.find_child("Player", true, false) as Node2D if root != null else null
+	if p == null and is_inside_tree():
+		p = get_tree().get_first_node_in_group(&"player") as Node2D
 	if p != null:
 		target = p
 		global_position = p.global_position
@@ -43,14 +45,14 @@ func _on_level_loaded(_root: Node) -> void:
 		_connect_player(p)
 
 func _connect_player(p: Node) -> void:
-	var charger: PulseCharger = p.get_node_or_null("PulseCharger") as PulseCharger
-	if charger != null and not charger.pulse_released.is_connected(_on_pulse_released):
+	if p == null:
+		return
+	var charger = p.get_node_or_null("PulseCharger")
+	if charger != null and charger.has_signal("pulse_released") and not charger.pulse_released.is_connected(_on_pulse_released):
 		charger.pulse_released.connect(_on_pulse_released)
 
-	if p is Player:
-		var pl: Player = p as Player
-		if not pl.player_died.is_connected(_on_player_died):
-			pl.player_died.connect(_on_player_died)
+	if p.has_signal("player_died") and not p.player_died.is_connected(_on_player_died):
+		p.player_died.connect(_on_player_died)
 
 func _on_pulse_released(profile: PulseProfile, _origin: Vector2) -> void:
 	if profile == null:

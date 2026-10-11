@@ -1,7 +1,7 @@
 class_name ChargeRings
 extends Node2D
 
-@export var charger: PulseCharger
+@export var charger: Node
 
 var current_reveal_radius: float = 0.0
 var target_reveal_radius: float = 0.0
@@ -18,13 +18,17 @@ func _ready() -> void:
 	material = mat
 
 	if charger == null and get_parent() != null:
-		charger = get_parent().get_node_or_null("PulseCharger") as PulseCharger
+		charger = get_parent().get_node_or_null("PulseCharger")
 
 	if charger != null:
-		charger.charge_started.connect(_on_charge_started)
-		charger.charge_changed.connect(_on_charge_changed)
-		charger.pulse_released.connect(_on_pulse_ended)
-		charger.pulse_failed.connect(_on_pulse_failed)
+		if not charger.charge_started.is_connected(_on_charge_started):
+			charger.charge_started.connect(_on_charge_started)
+		if not charger.charge_changed.is_connected(_on_charge_changed):
+			charger.charge_changed.connect(_on_charge_changed)
+		if not charger.pulse_released.is_connected(_on_pulse_ended):
+			charger.pulse_released.connect(_on_pulse_ended)
+		if not charger.pulse_failed.is_connected(_on_pulse_failed):
+			charger.pulse_failed.connect(_on_pulse_failed)
 
 func _process(delta: float) -> void:
 	if visible:

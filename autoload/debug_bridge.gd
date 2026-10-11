@@ -59,7 +59,7 @@ func _handle_command(cmd_name: String, cmd_args: Dictionary) -> void:
 			if p != null:
 				var charger = p.get_node_or_null("PulseCharger")
 				if charger != null:
-					var prof = GameConfig.get_pulse_profile(StringName(tier))
+					var prof = GameConfig.pulses.get(StringName(tier))
 					if prof != null:
 						charger.pulse_released.emit(prof, (p as Node2D).global_position)
 		"set_god_mode":

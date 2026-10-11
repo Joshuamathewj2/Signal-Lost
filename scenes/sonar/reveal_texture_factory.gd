@@ -30,7 +30,7 @@ static func get_texture() -> ImageTexture:
 			if absf(d - 0.80) <= 0.008:
 				v *= 0.96
 
-			img.set_pixel(x, y, Color(1.0, 1.0, 1.0, v))
+			img.set_pixel(x, y, Color(v, v, v, v))
 
 	_cached_texture = ImageTexture.create_from_image(img)
 	return _cached_texture

@@ -55,8 +55,8 @@ func _update_safe_margins() -> void:
 	safe_area.add_theme_constant_override("margin_right", margin)
 	safe_area.add_theme_constant_override("margin_bottom", margin)
 
-func _on_level_loaded(_level_root: Node) -> void:
-	_find_and_bind_player()
+func _on_level_loaded(level_root: Node) -> void:
+	_find_and_bind_player(level_root)
 	if level_label != null:
 		level_label._recompute_progress()
 	if controls_hint != null:
@@ -65,11 +65,17 @@ func _on_level_loaded(_level_root: Node) -> void:
 		controls_hint.modulate.a = 1.0 if is_lvl1 else 0.0
 		_has_moved = false
 
-func _find_and_bind_player() -> void:
-	var player: Node = get_tree().get_first_node_in_group(&"player")
+func _find_and_bind_player(level_root: Node = null) -> void:
+	var player: Node = null
+	if level_root != null:
+		player = level_root.find_child("Player", true, false)
+	if player == null and is_inside_tree():
+		player = get_tree().get_first_node_in_group(&"player")
+	if player == null and is_inside_tree() and get_tree().root != null:
+		player = get_tree().root.find_child("Player", true, false)
 	if player is CharacterBody2D:
 		_player_node = player as CharacterBody2D
 	if player != null and battery_bar != null:
-		var battery: Battery = player.get_node_or_null("Battery") as Battery
-		var charger: PulseCharger = player.get_node_or_null("PulseCharger") as PulseCharger
+		var battery = player.get_node_or_null("Battery")
+		var charger = player.get_node_or_null("PulseCharger")
 		battery_bar.setup(battery, charger)

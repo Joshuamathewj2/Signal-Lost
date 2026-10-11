@@ -59,6 +59,8 @@ func load_level(path: String) -> void:
 	# 6. Camera Rig limits & target
 	var player_inst: Node2D = spawned.get("player") as Node2D
 	if player_inst != null:
+		if sonar_system != null and sonar_system.has_method("connect_player"):
+			sonar_system.call("connect_player", player_inst)
 		if player_inst is Player:
 			(player_inst as Player).map_bottom = map_px.size.y
 		if camera_rig != null:

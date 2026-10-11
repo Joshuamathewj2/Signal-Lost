@@ -9,7 +9,11 @@ uniform vec2 rect_origin = vec2(0.0, 0.0);
 varying vec2 world_pos;
 
 float band(float d, float r, float w) {
-	return 1.0 - smoothstep(0.0, max(w, 0.001), abs(d - r));
+	if (d > r) {
+		return 1.0 - smoothstep(0.0, max(w * 0.4, 0.4), d - r);
+	} else {
+		return 1.0 - smoothstep(0.0, max(w * 1.6, 1.2), r - d);
+	}
 }
 
 void vertex() {

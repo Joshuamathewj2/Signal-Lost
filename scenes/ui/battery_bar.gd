@@ -18,10 +18,10 @@ var flash_tween: Tween
 func _ready() -> void:
 	custom_minimum_size = Vector2(180, 10)
 
-func setup(battery: Battery, charger: PulseCharger) -> void:
+func setup(battery: Node, charger: Node) -> void:
 	if battery != null:
-		current_energy = battery.energy
-		max_energy = battery.max_energy
+		current_energy = battery.get("energy") if "energy" in battery else 100.0
+		max_energy = battery.get("max_energy") if "max_energy" in battery else 100.0
 		displayed_energy = current_energy
 		if not battery.energy_changed.is_connected(_on_energy_changed):
 			battery.energy_changed.connect(_on_energy_changed)

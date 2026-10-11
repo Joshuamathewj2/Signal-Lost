@@ -33,13 +33,13 @@ static func build(data: LevelData, root: Node2D) -> Dictionary:
 		col.position = center
 		solids_body.add_child(col)
 
-		# Polygon2D (black)
+		# Polygon2D (illuminated when in light, pitch black in shadow/unlit)
 		var poly: Polygon2D = Polygon2D.new()
 		poly.light_mask = 1
-		poly.color = Color.BLACK
+		poly.color = Color.WHITE
 		var mat: ShaderMaterial = ShaderMaterial.new()
 		mat.shader = _flat_reveal_shader
-		mat.set_shader_parameter(&"tint", Color(0.05, 0.05, 0.05, 1.0))
+		mat.set_shader_parameter(&"tint", Color(0.12, 0.14, 0.18, 1.0))
 		poly.material = mat
 		poly.polygon = PackedVector2Array([
 			px_pos,
