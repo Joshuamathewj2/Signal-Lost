@@ -26,7 +26,7 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 	# 1. Spawn Player
 	var p_cell: Vector2i = data.player_spawn
 	var p_pos := Vector2((float(p_cell.x) + 0.5) * 32.0, (float(p_cell.y) + 1.0) * 32.0)
-	var player_inst: Player = PLAYER_SCENE.instantiate() as Player
+	var player_inst: Node2D = PLAYER_SCENE.instantiate() as Node2D
 	player_inst.position = p_pos
 	root.add_child(player_inst)
 	result["player"] = player_inst
@@ -49,7 +49,7 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 		for cell in data.cells["L"]:
 			var cell_vec: Vector2i = cell
 			var l_pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, (float(cell_vec.y) + 1.0) * 32.0)
-			var listener_inst: EnemyBase = LISTENER_SCENE.instantiate() as EnemyBase
+			var listener_inst: Node2D = LISTENER_SCENE.instantiate() as Node2D
 			listener_inst.position = l_pos
 			listener_inst.set_meta("spawn_pos", l_pos)
 			_setup_mover(listener_inst, graph, bounds_per_row, cell_vec.y)
@@ -61,7 +61,7 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 		for cell in data.cells["S"]:
 			var cell_vec: Vector2i = cell
 			var s_pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, (float(cell_vec.y) + 1.0) * 32.0)
-			var sentry_inst: EnemyBase = SENTRY_SCENE.instantiate() as EnemyBase
+			var sentry_inst: Node2D = SENTRY_SCENE.instantiate() as Node2D
 			sentry_inst.position = s_pos
 			sentry_inst.set_meta("spawn_pos", s_pos)
 			enemies_node.add_child(sentry_inst)
@@ -72,7 +72,7 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 		for cell in data.cells["H"]:
 			var cell_vec: Vector2i = cell
 			var h_pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, (float(cell_vec.y) + 1.0) * 32.0)
-			var hunter_inst: EnemyBase = HUNTER_SCENE.instantiate() as EnemyBase
+			var hunter_inst: Node2D = HUNTER_SCENE.instantiate() as Node2D
 			hunter_inst.position = h_pos
 			hunter_inst.set_meta("spawn_pos", h_pos)
 			_setup_mover(hunter_inst, graph, bounds_per_row, cell_vec.y)
@@ -84,7 +84,7 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 		for cell in data.cells["B"]:
 			var cell_vec: Vector2i = cell
 			var b_pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, (float(cell_vec.y) + 1.0) * 32.0)
-			var brute_inst: EnemyBase = BRUTE_SCENE.instantiate() as EnemyBase
+			var brute_inst: Node2D = BRUTE_SCENE.instantiate() as Node2D
 			brute_inst.position = b_pos
 			brute_inst.set_meta("spawn_pos", b_pos)
 			_setup_mover(brute_inst, graph, bounds_per_row, cell_vec.y)
@@ -100,10 +100,11 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 
 	return result
 
-static func _setup_mover(enemy: EnemyBase, graph: PlatformGraph, bounds_per_row: Dictionary, row_y: int) -> void:
-	if enemy.mover == null:
+static func _setup_mover(enemy: Node2D, graph: PlatformGraph, bounds_per_row: Dictionary, row_y: int) -> void:
+	var mover = enemy.get("mover")
+	if mover == null:
 		return
-	enemy.mover.graph = graph
+	mover.graph = graph
 	if bounds_per_row.has(row_y):
 		var b_arr: Array = bounds_per_row[row_y]
 		b_arr.sort()

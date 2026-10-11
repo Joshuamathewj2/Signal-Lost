@@ -35,10 +35,26 @@ const server = http.createServer((req, res) => {
     res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Accept-Ranges', 'bytes');
     res.setHeader('Content-Type', contentType);
 
-    const stream = fs.createReadStream(filePath);
-    stream.pipe(res);
+    const range = req.headers.range;
+    if (range) {
+      const parts = range.replace(/bytes=/, '').split('-');
+      const start = parseInt(parts[0], 10);
+      const end = parts[1] ? parseInt(parts[1], 10) : stats.size - 1;
+      const chunksize = (end - start) + 1;
+      res.writeHead(206, {
+        'Content-Range': `bytes ${start}-${end}/${stats.size}`,
+        'Content-Length': chunksize,
+        'Content-Type': contentType
+      });
+      fs.createReadStream(filePath, { start, end }).pipe(res);
+    } else {
+      res.setHeader('Content-Length', stats.size);
+      res.writeHead(200);
+      fs.createReadStream(filePath).pipe(res);
+    }
   });
 });
 

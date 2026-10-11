@@ -5,7 +5,7 @@ signal level_loaded(level_root: Node)
 const LEVEL_ROOT_SCENE: PackedScene = preload("res://scenes/level/level_root.tscn")
 
 var current_level_index: int = 1
-var current_level_root: LevelRoot = null
+var current_level_root: Node2D = null
 var is_transitioning: bool = false
 var fade_rect: ColorRect = null
 
@@ -90,11 +90,17 @@ func _spawn_level_instant(path: String) -> void:
 		current_level_root.queue_free()
 		current_level_root = null
 
-	for child in host.get_children():
-		child.queue_free()
+	var menus: Node = get_tree().root.get_node_or_null("Main/Menus")
+	if menus != null:
+		for child in menus.get_children():
+			if child != null and child != fade_rect:
+				child.queue_free()
 
-	var new_root: LevelRoot = LEVEL_ROOT_SCENE.instantiate() as LevelRoot
-	new_root.level_path = path
+	var new_root = LEVEL_ROOT_SCENE.instantiate()
+	if new_root == null:
+		push_error("SceneRouter: failed to instantiate LEVEL_ROOT_SCENE")
+		return
+	new_root.set("level_path", path)
 	host.add_child(new_root)
 	current_level_root = new_root
 	level_loaded.emit(new_root)

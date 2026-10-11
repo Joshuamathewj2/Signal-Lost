@@ -43,9 +43,11 @@ void fragment() {
 	float v = smoothstep(vignette_radius, vignette_radius - 0.45, length(dir) * 1.2);
 	c *= mix(1.0 - vignette_strength, 1.0, v);
 
-	// Grain
-	float n = hash(uv * vec2(1280.0, 720.0) + fract(TIME) * 91.0) - 0.5;
-	c += n * grain_amount;
+	// Grain (must not lift pure blacks)
+	float lum = luminance(c);
+	float n = hash(uv * vec2(1920.0, 1080.0) + fract(TIME) * 91.0) - 0.5;
+	c += n * grain_amount * clamp(lum * 2.5, 0.0, 1.0);
+	c = max(vec3(0.0), c);
 
 	// Flash
 	c = mix(c, vec3(1.0), flash);

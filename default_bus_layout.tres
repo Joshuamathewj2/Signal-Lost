@@ -1,4 +1,4 @@
-[gd_resource type="AudioBusLayout" format=3]
+[gd_resource type="AudioBusLayout" format=3 uid="uid://cudg3yln6u4ah"]
 
 [sub_resource type="AudioEffectLimiter" id="AudioEffectLimiter_mst"]
 ceiling_db = -1.0
@@ -8,12 +8,9 @@ cutoff_hz = 18000.0
 
 [sub_resource type="AudioEffectReverb" id="AudioEffectReverb_pls"]
 room_size = 0.55
-damping = 0.5
 wet = 0.25
 
 [sub_resource type="AudioEffectReverb" id="AudioEffectReverb_amb"]
-room_size = 0.8
-damping = 0.5
 wet = 0.35
 
 [resource]

@@ -46,7 +46,7 @@ static func parse_text(text: String) -> LevelData:
 	for r in range(data.height):
 		var row_str: String = grid_rows[r]
 		if row_str.length() != data.width:
-			push_error("LevelParser: ragged row %d has length %d, expected %d" % [r, row_str.length(), data.width])
+			DebugFlags.log(&"level", "LevelParser: ragged row %d has length %d, expected %d" % [r, row_str.length(), data.width])
 		for c in range(row_str.length()):
 			var ch: String = row_str[c]
 			if ch != ".":

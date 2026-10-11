@@ -5,3 +5,6 @@ export/
 *.translation
 build/
 .playwright-mcp/
+node_modules/
+scratch/
+godot.html

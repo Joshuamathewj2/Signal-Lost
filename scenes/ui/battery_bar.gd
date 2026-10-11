@@ -23,13 +23,18 @@ func setup(battery: Battery, charger: PulseCharger) -> void:
 		current_energy = battery.energy
 		max_energy = battery.max_energy
 		displayed_energy = current_energy
-		battery.energy_changed.connect(_on_energy_changed)
+		if not battery.energy_changed.is_connected(_on_energy_changed):
+			battery.energy_changed.connect(_on_energy_changed)
 
 	if charger != null:
-		charger.charge_started.connect(_on_charge_started)
-		charger.charge_changed.connect(_on_charge_changed)
-		charger.pulse_released.connect(_on_pulse_released)
-		charger.pulse_failed.connect(_on_pulse_failed)
+		if not charger.charge_started.is_connected(_on_charge_started):
+			charger.charge_started.connect(_on_charge_started)
+		if not charger.charge_changed.is_connected(_on_charge_changed):
+			charger.charge_changed.connect(_on_charge_changed)
+		if not charger.pulse_released.is_connected(_on_pulse_released):
+			charger.pulse_released.connect(_on_pulse_released)
+		if not charger.pulse_failed.is_connected(_on_pulse_failed):
+			charger.pulse_failed.connect(_on_pulse_failed)
 
 func _on_energy_changed(val: float, max_val: float) -> void:
 	current_energy = val
