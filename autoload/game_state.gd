@@ -57,12 +57,13 @@ func _sample_enemies_alert() -> void:
 	var max_aw: float = 0.0
 	var chasing: bool = false
 	for e in enemies:
-		if e is EnemyBase:
-			var eb: EnemyBase = e as EnemyBase
-			if eb.awareness != null:
-				max_aw = maxf(max_aw, eb.awareness.value)
-			if eb.state_machine != null and eb.state_machine.current != null:
-				if eb.state_machine.current.name == "Chase":
+		if e is Node:
+			var aw_comp = e.get_node_or_null("Awareness")
+			if aw_comp != null and "value" in aw_comp:
+				max_aw = maxf(max_aw, float(aw_comp.get("value")))
+			var sm = e.get_node_or_null("StateMachine")
+			if sm != null and "current" in sm and sm.get("current") != null:
+				if sm.get("current").name == "Chase":
 					chasing = true
 	_target_alert = max_aw
 	is_any_enemy_chasing = chasing

@@ -61,7 +61,11 @@ func _handle_command(cmd_name: String, cmd_args: Dictionary) -> void:
 				if charger != null:
 					var prof = GameConfig.pulses.get(StringName(tier))
 					if prof != null:
-						charger.pulse_released.emit(prof, (p as Node2D).global_position)
+						var origin: Vector2 = (p as Node2D).global_position
+						charger.pulse_released.emit(prof, origin)
+						var noise_r: float = prof.noise_radius() * float(charger.get("noise_scale") if "noise_scale" in charger else 1.0)
+						var ev: NoiseEvent = NoiseEvent.make(origin, noise_r, prof.loudness, NoiseEvent.NoiseType.PULSE, p)
+						NoiseBus.emit_noise(ev)
 		"set_god_mode":
 			var p = get_tree().get_first_node_in_group(&"player")
 			if p == null and get_tree().root != null:
@@ -139,6 +143,8 @@ func get_snapshot() -> Dictionary:
 		"ready": true,
 		"fps": Engine.get_frames_per_second(),
 		"level": GameState.level_index if GameState != null else 1,
+		"is_level_active": GameState.is_level_active if GameState != null else false,
+		"fragments_collected": (GameState.stats.get("fragments", []) as Array).size() if GameState != null else 0,
 		"battery": 100.0,
 		"player": null,
 		"pulses": [],
@@ -211,16 +217,23 @@ func get_snapshot() -> Dictionary:
 		if node is Node2D:
 			var n2d: Node2D = node as Node2D
 			var aw: float = 0.0
-			if "awareness" in node:
-				aw = float(node.get("awareness"))
+			var aw_comp = node.get_node_or_null("Awareness")
+			if aw_comp != null and "value" in aw_comp:
+				aw = float(aw_comp.get("value"))
 			var st: String = ""
-			if "current_state_name" in node:
-				st = str(node.get("current_state_name"))
+			var sm = node.get_node_or_null("StateMachine")
+			if sm != null and "current" in sm and sm.get("current") != null:
+				st = str(sm.get("current").name)
+			var facing: int = 1
+			if "facing" in node:
+				facing = int(node.get("facing"))
 			en_arr.append({
 				"name": n2d.name,
+				"kind": str(node.get("kind")) if "kind" in node else "",
 				"pos": [n2d.global_position.x, n2d.global_position.y],
 				"awareness": aw,
-				"state": st
+				"state": st,
+				"facing": facing
 			})
 	snap["enemies"] = en_arr
 

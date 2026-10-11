@@ -32,7 +32,7 @@ func _ready() -> void:
 		sensor.body_entered.connect(_on_sensor_body_entered)
 
 func _on_sensor_body_entered(body: Node2D) -> void:
-	if mode == "KEY" and body is Player and GameState.has_keycard:
+	if mode == "KEY" and body != null and body.is_in_group(&"player") and GameState.has_keycard:
 		open()
 
 func on_plate() -> void:

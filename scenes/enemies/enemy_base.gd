@@ -147,6 +147,6 @@ func _on_state_changed(_actor: Node, _from: StringName, to: StringName) -> void:
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	if profile != null and not profile.contact_kills:
 		return
-	if body is Player or body.is_in_group(&"player"):
+	if body != null and body.is_in_group(&"player"):
 		if body.has_method("die"):
 			body.call("die", &"caught")

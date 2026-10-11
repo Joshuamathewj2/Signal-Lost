@@ -1,7 +1,7 @@
 class_name DecoyPickup
 extends Interactable
 
-func _on_player_entered(_p: Player) -> void:
+func _on_player_entered(_p: Node2D) -> void:
 	if GameState == null:
 		return
 	if GameState.decoy_count >= 3:

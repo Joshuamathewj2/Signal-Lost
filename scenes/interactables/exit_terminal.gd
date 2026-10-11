@@ -18,14 +18,16 @@ func _process(_delta: float) -> void:
 	if not _activated and beacon_dot != null:
 		beacon_dot.visible = (int(Time.get_ticks_msec() / 300) % 2) == 0
 
-func _on_player_entered(p: Player) -> void:
+func _on_player_entered(p: Node2D) -> void:
 	if _activated:
 		return
 	_activated = true
 
-	if p.motor != null:
-		p.motor.input_enabled = false
-	p.velocity = Vector2.ZERO
+	var motor: Node = p.get_node_or_null("PlayerMotor")
+	if motor != null and "input_enabled" in motor:
+		motor.input_enabled = false
+	if "velocity" in p:
+		p.velocity = Vector2.ZERO
 
 	if beacon_dot != null:
 		beacon_dot.visible = false

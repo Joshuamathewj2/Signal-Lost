@@ -36,7 +36,7 @@ func _draw() -> void:
 	draw_line(p_start, p_end, Palette.color(&"danger"), 2.0)
 
 func _on_body_entered(body: Node2D) -> void:
-	if body is Player or body.is_in_group(&"player"):
+	if body != null and body.is_in_group(&"player"):
 		if body.has_method("die"):
 			body.call("die", &"shot")
 		queue_free()

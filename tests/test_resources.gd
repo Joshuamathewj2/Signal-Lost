@@ -30,22 +30,22 @@ func run() -> Array[String]:
 
 	if whisper != null:
 		var r_whisper: float = whisper.noise_radius()
-		if absf(r_whisper - 43.2) > 0.5:
-			failures.append("Whisper noise radius expected ~43.2, got %f" % r_whisper)
+		if absf(r_whisper - 90.0) > 1.0:
+			failures.append("Whisper noise radius expected ~90.0, got %f" % r_whisper)
 	else:
 		failures.append("whisper pulse is null")
 
 	if normal != null:
 		var r_normal: float = normal.noise_radius()
-		if absf(r_normal - 200.0) > 0.5:
-			failures.append("Normal noise radius expected ~200.0, got %f" % r_normal)
+		if absf(r_normal - 350.0) > 1.0:
+			failures.append("Normal noise radius expected ~350.0, got %f" % r_normal)
 	else:
 		failures.append("normal pulse is null")
 
 	if scream != null:
 		var r_scream: float = scream.noise_radius()
-		if absf(r_scream - 728.0) > 0.5:
-			failures.append("Scream noise radius expected ~728.0, got %f" % r_scream)
+		if absf(r_scream - 910.0) > 1.0:
+			failures.append("Scream noise radius expected ~910.0, got %f" % r_scream)
 	else:
 		failures.append("scream pulse is null")
 

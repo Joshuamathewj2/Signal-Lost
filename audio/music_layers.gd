@@ -71,10 +71,9 @@ func _exit_tree() -> void:
 
 func _on_level_loaded(_root: Node) -> void:
 	var player: Node = get_tree().get_first_node_in_group(&"player")
-	if player is Player:
-		var pl: Player = player as Player
-		if not pl.player_died.is_connected(_on_player_died):
-			pl.player_died.connect(_on_player_died)
+	if player != null and player.has_signal("player_died"):
+		if not player.player_died.is_connected(_on_player_died):
+			player.player_died.connect(_on_player_died)
 
 func _on_player_died(_cause: StringName) -> void:
 	death_muffle_timer = 0.6

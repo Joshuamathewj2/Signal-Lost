@@ -9,8 +9,9 @@
 | Step B: Sonar & Darkness Overhaul | PASS | 3 pulse tiers verified at t=0.1s, 0.5s, 2.0s + Space key pulse with 0 errors (`tests/e2e/test_gate_b.js`) | `qa/shots/gate_b/whisper_01.png`<br>`qa/shots/gate_b/whisper_02.png`<br>`qa/shots/gate_b/whisper_03.png`<br>`qa/shots/gate_b/normal_01.png`<br>`qa/shots/gate_b/normal_02.png`<br>`qa/shots/gate_b/normal_03.png`<br>`qa/shots/gate_b/scream_01.png`<br>`qa/shots/gate_b/scream_02.png`<br>`qa/shots/gate_b/scream_03.png`<br>`qa/shots/gate_b/keyboard_space_pulse.png` |
 | Step C: Visual Style Polish | PASS | Vector chassis, dynamic eye color state, shockwave ripples & CA burst verified with 0 errors (`tests/e2e/test_step_c.js`) | `qa/shots/step_c/01_player_vector_idle.png`<br>`qa/shots/step_c/02_player_eye_charging_cyan.png`<br>`qa/shots/step_c/03_normal_pulse_reveal.png`<br>`qa/shots/step_c/04_scream_shake_and_ca.png`<br>`qa/shots/step_c/05_interactables_revealed.png` |
 | Step D: HUD and Menus Redesign | PASS | Full menu flows, scaled HUD, battery preview, awareness bar verified with 0 errors (`tests/e2e/test_step_d.js`) | `qa/shots/step_d/01_main_menu.png`<br>`qa/shots/step_d/02_level_select.png`<br>`qa/shots/step_d/03_hud_gameplay.png`<br>`qa/shots/step_d/04_battery_preview_charging.png`<br>`qa/shots/step_d/05_pause_menu.png`<br>`qa/shots/step_d/06_settings_menu.png`<br>`qa/shots/step_d/07_level_complete.png`<br>`qa/shots/step_d/08_enemy_awareness_bar.png` |
-| Step E: Gameplay Dynamics & AI | Pending | - | - |
-| Step F: Performance & Stability | Pending | - | - |
+| Step E: Gameplay Dynamics & AI | PASS | Listener patrol, hearing discrimination, investigate & alert states, sentry aiming, player caught death flow (`tests/e2e/test_step_e.js`) | `qa/shots/step_e/01_listener_patrol.png`<br>`qa/shots/step_e/02_whisper_ignored.png`<br>`qa/shots/step_e/03_listener_investigating.png`<br>`qa/shots/step_e/04_sentry_aim_and_fire.png`<br>`qa/shots/step_e/05_player_caught.png` |
+| Gate C: Level 1 Playthrough | PASS | Full start-to-exit run: sonar pulse, fragment pickup, terminal restore, "SIGNAL RESTORED" screen with 0 errors (`tests/e2e/test_gate_c.js`) | `qa/shots/gate_c/01_level1_start.png`<br>`qa/shots/gate_c/02_level1_walking_and_pulse.png`<br>`qa/shots/gate_c/03_fragment_collected.png`<br>`qa/shots/gate_c/04_terminal_activated.png`<br>`qa/shots/gate_c/05_level_complete_ghost_medal.png` |
+| Step F: Performance & Stability | PASS | 60s soak test across continuous level switches, pulses, movements with 0 errors (`tests/e2e/test_soak.js`) | `qa/shots/soak/01_soak_start.png`<br>`qa/shots/soak/02_soak_end.png` |
 
 ---
 
@@ -83,5 +84,54 @@
 6. **Level Complete Screen**: "SIGNAL RESTORED" title, stats grid (Time, Pulses, Loudest, Detected, Fragments), GHOST medal with sonar wipe reveal.
 7. **Awareness Bar**: Fixed positioning (-46px above enemy head/antenna), unshaded canvas material, and reveal visibility.
 8. **Automated Verification**: Ran `tests/e2e/test_step_d.js` across menu navigation, pause menu, battery preview, level complete, and enemy awareness bar. PASSED with 0 browser errors and 0 engine errors. Screenshots saved in `qa/shots/step_d/`.
+
+---
+
+## Step E: Gameplay Dynamics & AI (PASSED)
+
+### Issues Resolved:
+1. **Duck-Typing Interactables & Enemy Collision**: Eliminated all strict `is Player` and `is EnemyBase` class checks in `interactable.gd`, `fragment.gd`, `exit_terminal.gd`, `keycard.gd`, `decoy_pickup.gd`, `door.gd`, `one_way_door.gd`, `pressure_plate.gd`, `projectile.gd`, and `enemy_base.gd`. All entities use group membership (`&"player"`, `&"enemies"`) and duck-typed property checks.
+2. **Enemy State Machine Robustness**: Cleaned state machine casts in `st_sentry_idle.gd`, `st_sentry_aim.gd`, `st_sentry_fire.gd`, and `st_investigate.gd` to ensure reliable WebAssembly execution.
+3. **Perception and Hearing Discrimination**:
+   - Verified that Listener starts in `Patrol` mode.
+   - Whisper pulses outside noise radius are ignored without alerting Listener.
+   - Normal / Scream pulses within hearing range alert the Listener, transitioning it to `Investigate`/`Chase`, updating awareness bar above its head, and placing a noise origin reticle at the source.
+   - Sentry aims at targets with laser sight and fires projectile streaks that trigger noise upon impact.
+   - Player caught by enemy hitbox cleanly triggers `die("caught")` without crashing.
+4. **Automated Verification**: Ran `tests/e2e/test_step_e.js`. PASSED with 0 browser errors and 0 engine errors. Visual evidence saved in `qa/shots/step_e/`.
+
+---
+
+## Gate C: Full Level 1 Playthrough (GATE C: PASSED)
+
+### Issues Resolved & Verification:
+1. **Start to Finish Playthrough**: Scripted complete end-to-end traversal of Level 1 (`levels/level_01.txt`).
+2. **Sonar Wavefront Arc Reveal**: Space key charge and release successfully illuminates the pitch-black level, revealing platforms, hint signs, and walls.
+3. **Memory Fragment Pickup**: Navigated to column 27, collected Fragment `F`, verified HUD antenna counter increments from 0 to 1, clink SFX, and pickup particles.
+4. **Terminal Activation & Restore**: Navigated to column 36 Exit Terminal `E`, stepped onto terminal sensor, verified beacon disables, screen lights up white, "SIGNAL RESTORED" label emerges, and restore burst particles trigger.
+5. **Level Complete Screen**: "SIGNAL RESTORED" screen displays with accurate run stats (Time, Pulses, Loudest: Normal, Detections: 0, Fragments: 1/3), medal badge awarded, and responsive Next/Retry/Menu buttons.
+6. **Error Rate**: PASSED with 0 browser errors and 0 in-engine errors (`tests/e2e/test_gate_c.js`). Screenshots captured in `qa/shots/gate_c/`.
+
+---
+
+## Step F: Performance & Stability / Soak Test (PASSED)
+
+### Issues Resolved & Verification:
+1. **60-Second Continuous Soak Loop**: Automated continuous random gameplay inputs (walking left/right, jumping, charging and releasing pulses, switching levels 1 through 4 every 15 ticks) over a 60-second endurance run.
+2. **Engine & Memory Stability**: No memory leaks, zero WebGL context loss, zero unhandled exceptions, and 0 console errors recorded across 177 performance samples.
+3. **Frame Rate**: Average FPS sustained at ~42 FPS under headless software rendering on Windows CPU.
+4. **Automated Verification**: Executed `tests/e2e/test_soak.js`. PASSED with 0 browser errors and 0 engine errors. Screenshots saved in `qa/shots/soak/`.
+
+---
+
+## Final Verification Sign-Off
+
+- **Gate A (Movement & Physics 30s soak)**: PASSED (0 errors)
+- **Gate B (Sonar 3-tier wavefronts, occlusion, fading)**: PASSED (0 errors)
+- **Gate C (Complete Level 1 playthrough start to exit)**: PASSED (0 errors)
+- **Pitch Black Aesthetic**: Pure `#000000` darkness verified across all screenshots
+- **HUD & Menus**: Scaled Rajdhani font, pure monochrome vector styling, red accent warnings, persistent Pause menu, functional Settings and Mission Select
+- **Web Build**: Headless web export packages cleanly into `build/web/index.pck` and runs locally on `http://127.0.0.1:8000`
+
 
 

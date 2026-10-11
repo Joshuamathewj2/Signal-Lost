@@ -61,8 +61,8 @@ func load_level(path: String) -> void:
 	if player_inst != null:
 		if sonar_system != null and sonar_system.has_method("connect_player"):
 			sonar_system.call("connect_player", player_inst)
-		if player_inst is Player:
-			(player_inst as Player).map_bottom = map_px.size.y
+		if "map_bottom" in player_inst:
+			player_inst.map_bottom = map_px.size.y
 		if camera_rig != null:
 			camera_rig.target = player_inst
 			camera_rig.set_limits(Rect2i(0, 0, int(map_px.size.x), int(map_px.size.y)))

@@ -2,6 +2,58 @@
 
 All notable changes to this project will be documented in this file.
 
+## Recovery Milestone: Complete Overhaul & Multi-Gate Verification (100% COMPLETE)
+
+### Gate C: Full Level 1 Playthrough (VERIFIED 0 ERRORS)
+- Completed end-to-end traversal of Level 1 from Start `S` to Exit `E`.
+- Verified sonar pulse reveals level geometry, platforms, and hint signs.
+- Successfully picked up Memory Fragment `F`, incrementing antenna HUD counter from 0 to 1 and spawning particle burst.
+- Activated Exit Terminal `E`, playing restore pulse animation and "SIGNAL RESTORED" sequence.
+- Level Complete screen verified with stats grid (Time, Pulses, Loudest, Detections: 0, Fragments: 1/3) and medal badge.
+- Evidence captured in `qa/shots/gate_c/` with 0 browser errors and 0 engine errors (`tests/e2e/test_gate_c.js`).
+
+### Step F: Performance & Stability Soak Test (VERIFIED 0 ERRORS)
+- Executed 60-second continuous gameplay loop cycling through levels 1-4 with rapid movements, jumps, and pulses.
+- Zero memory leaks, zero WebGL context errors, and 0 console errors across 177 sampled ticks (`tests/e2e/test_soak.js`).
+- Evidence captured in `qa/shots/soak/`.
+
+### Step E: Gameplay Dynamics & AI (VERIFIED 0 ERRORS)
+- Duck-typed all entity and interactable collision handlers across `interactable.gd`, `fragment.gd`, `exit_terminal.gd`, `keycard.gd`, `decoy_pickup.gd`, `door.gd`, `one_way_door.gd`, `pressure_plate.gd`, `projectile.gd`, and `enemy_base.gd`.
+- Verified Listener patrol and hearing discrimination: whispers outside radius are ignored; normal and scream pulses alert listener, trigger Investigate state, awareness bar display, and noise origin reticle.
+- Verified Sentry aiming laser and projectile firing.
+- Verified player caught death trigger and clean reload.
+- Evidence captured in `qa/shots/step_e/` with 0 errors (`tests/e2e/test_step_e.js`).
+
+### Step D: HUD and Menus Redesign (VERIFIED 0 ERRORS)
+- Redesigned HUD: Scaled up antenna fragment counter (28px Rajdhani font), 220x14px battery bar with solid red fill and pale charge preview overlay, ability badges (`F`, `G`), diamond charge pips, and minimalist level progress bar (260x3px).
+- Main Menu: High-contrast minimalist aesthetic with sonar wipe circle revealing "SIGNAL LOST" typography, white outlined buttons with red hover/focus styling.
+- Mission Select: 4x2 Mission Select grid with locked/unlocked states and keyboard navigation.
+- Pause Menu: Preserved `PauseMenu` during level transitions and verified overlay pause flow.
+- Settings Menu: Calibrated volume sliders, screen shake, film grain, CA, and colorblind toggles with Rajdhani font.
+- Evidence captured in `qa/shots/step_d/` with 0 errors (`tests/e2e/test_step_d.js`).
+
+### Step C: Visual Style Polish (VERIFIED 0 ERRORS)
+- Replaced player visuals with crisp vector chassis and dynamic eye dot: white (idle), cyan (charging), red (alert/detected).
+- Integrated `Rajdhani-SemiBold.ttf` font into `HintSign`.
+- Verified screen shake trauma and chromatic aberration burst on Scream pulses.
+- Evidence captured in `qa/shots/step_c/` with 0 errors (`tests/e2e/test_step_c.js`).
+
+### Gate B: Sonar & Darkness Overhaul (VERIFIED 0 ERRORS)
+- Eliminated all strict custom class casts (`as PulseCharger`, `PulseBubble`, `as Player`).
+- Corrected radial reveal texture generation to modulate RGB+Alpha (`Color(v, v, v, v)`).
+- Re-tinted solid polygon bases to bright white under `flat_reveal.gdshader` to ensure bright illumination inside light cones and pitch-black occlusion in shadow.
+- Calibrated 3 pulse tiers (Whisper, Normal, Scream) verified at t=0.1s, 0.5s, 2.0s with Spacebar native input.
+- Evidence captured in `qa/shots/gate_b/` with 0 errors (`tests/e2e/test_gate_b.js`).
+
+### Gate A: Triage and Stop the Bleeding (VERIFIED 0 ERRORS)
+- Fixed NoiseEvent and ripple ring crash by standardizing property aliases.
+- Set default clear color to pure `#000000` pitch black darkness in `project.godot`.
+- Gated film grain in `shaders/post_fx.gdshader` by luminance so pitch black is never lifted.
+- Remapped Space/LMB to pulse and W/Up Arrow to jump.
+- Bundled level txt files into `index.pck`.
+- Verified 30 seconds of continuous gameplay movement with 0 errors (`tests/e2e/test_gate_a.js`).
+- Evidence captured in `qa/shots/gate_a/`.
+
 ## Recovery Step 0: Verification Loop & Before Audit
 - Installed Godot 4.7.2 official export templates and configured Web export preset in `export_presets.cfg`.
 - Exported headless Web build to `build/web/index.html`.

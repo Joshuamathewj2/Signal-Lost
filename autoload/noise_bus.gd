@@ -7,13 +7,13 @@ func emit_noise_event(event: NoiseEvent) -> void:
 
 func emit_noise(event: NoiseEvent) -> void:
 	# Vent routing: if event within 96 px of an intake and event.source is not a vent -> after 0.2s emit at outlet
-	if not (event.source is Vent):
+	var is_source_vent: bool = event.source != null and (event.source.is_in_group(&"vent_intakes") or event.source.is_in_group(&"vent_outlets") or event.source.is_in_group(&"vent_mutes"))
+	if not is_source_vent:
 		var intakes: Array[Node] = get_tree().get_nodes_in_group(&"vent_intakes")
 		for intake_node in intakes:
-			if intake_node is Vent:
-				var intake: Vent = intake_node as Vent
-				if intake.outlet != null and event.position.distance_to(intake.global_position + Vector2(16, 16)) <= 96.0:
-					var out_vent: Vent = intake.outlet
+			if intake_node is Node2D:
+				var out_vent: Node2D = intake_node.get("outlet") as Node2D
+				if out_vent != null and event.position.distance_to((intake_node as Node2D).global_position + Vector2(16, 16)) <= 96.0:
 					var out_r: float = maxf(event.radius * 4.0, 240.0)
 					var out_loud: float = event.loudness + 1.5
 					var out_type: int = event.type

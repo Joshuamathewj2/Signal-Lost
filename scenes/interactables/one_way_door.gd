@@ -8,7 +8,7 @@ extends StaticBody2D
 @onready var sensor: Area2D = $Sensor
 @onready var visual: Node2D = $Visual
 
-var _tracked_players: Array[Player] = []
+var _tracked_players: Array[Node2D] = []
 
 func _ready() -> void:
 	collision_layer = 0
@@ -29,7 +29,8 @@ func _physics_process(_delta: float) -> void:
 	var allow_pass: bool = false
 	for p in _tracked_players:
 		if is_instance_valid(p):
-			if p.velocity.x * float(dir) >= -5.0:
+			var vx: float = p.velocity.x if "velocity" in p else 0.0
+			if vx * float(dir) >= -5.0:
 				allow_pass = true
 				break
 
@@ -37,14 +38,12 @@ func _physics_process(_delta: float) -> void:
 		collision_shape.set_deferred("disabled", allow_pass)
 
 func _on_sensor_body_entered(body: Node2D) -> void:
-	if body is Player:
-		var p: Player = body as Player
-		if not _tracked_players.has(p):
-			_tracked_players.append(p)
+	if body != null and body.is_in_group(&"player"):
+		if not _tracked_players.has(body):
+			_tracked_players.append(body)
 
 func _on_sensor_body_exited(body: Node2D) -> void:
-	if body is Player:
-		var p: Player = body as Player
-		_tracked_players.erase(p)
+	if body != null and body.is_in_group(&"player"):
+		_tracked_players.erase(body)
 		if _tracked_players.is_empty() and collision_shape != null:
 			collision_shape.set_deferred("disabled", false)

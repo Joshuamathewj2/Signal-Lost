@@ -14,15 +14,15 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 
 func _on_body_entered(body: Node2D) -> void:
-	if body is Player:
-		_on_player_entered(body as Player)
-	elif body is EnemyBase:
-		_on_enemy_entered(body as EnemyBase)
+	if body != null and body.is_in_group(&"player"):
+		_on_player_entered(body)
+	elif body != null and body.is_in_group(&"enemies"):
+		_on_enemy_entered(body)
 
-func _on_player_entered(_p: Player) -> void:
+func _on_player_entered(_p: Node2D) -> void:
 	pass
 
-func _on_enemy_entered(_e: EnemyBase) -> void:
+func _on_enemy_entered(_e: Node2D) -> void:
 	pass
 
 func emit_noise(radius: float, loudness: float, type: NoiseEvent.NoiseType = NoiseEvent.NoiseType.FOOTSTEP) -> void:
