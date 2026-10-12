@@ -1,117 +1,138 @@
-# SIGNAL LOST — Enemy AI (v1.0)
+# SIGNAL LOST — Enemy AI & Adversary Behavior Specification (V2)
 
-## 1. Shared components
-| Component | Responsibility |
-|---|---|
-| `HearingComponent` | registered in group `listeners`; `consider(event)` math below; emits `heard(event, strength)` after propagation delay |
-| `VisionComponent` | every 0.1 s: player visible iff `PulseRegistry.reveal_at(player) > 0.25` AND dist ≤ `sight_range` AND angle to facing ≤ `sight_angle/2` AND raycast clear (mask world). Emits `player_spotted(pos)` / `player_lost()` |
-| `NoiseMemory` | ring buffer of last N noise origins (Listener/Brute N=1, Hunter N=3), entries `{pos, time, strength}`; entries older than 20 s expire |
-| `Awareness` | float 0..1; `+= profile.awareness_gain * (0.35 + 0.65*strength)` on heard; `= 1` on spotted; decays `profile.awareness_decay`/s when nothing new; emits `awareness_changed` |
-| `PlatformMover` | `move_to(world_pos, speed)` → nearest graph node path via `PlatformGraph.find_path(from, to)`; executes WALK/JUMP/DROP; emits `arrived`, `path_failed` |
-| `StateMachine` | node-based; `transition_to(name, msg := {})`; emits `state_changed` |
+- **Purpose**: Authoritative artificial intelligence specification detailing enemy silhouettes, state machines, sensory perception (sight, hearing, vibration), combat attacks, platform graph navigation, and the Shogun Mech boss fight.
+- **Audience**: AI Engineers, Gameplay Programmers, Level Designers, Technical Directors.
+- **Status**: Approved.
+- **Last Updated**: 2026-10-11.
+- **Depends On**: [00_CURRENT_STATE_AUDIT.md](file:///c:/vibe-game/docs/00_CURRENT_STATE_AUDIT.md), [GAME_CONFIG_REFERENCE.md](file:///c:/vibe-game/docs/GAME_CONFIG_REFERENCE.md), [COMBAT_DESIGN.md](file:///c:/vibe-game/docs/COMBAT_DESIGN.md).
 
-### Hearing math (formal)
-For event `e` and listener at `p` with profile `(T, m, A)` (threshold, multiplier, accepted types):
-```
-d     = |p - e.position|
-R     = e.radius * m
-if e.type ∉ A or e.loudness < T or d > R*1.0: reject      (wall count can only increase d_eff)
-w     = walls_between(e.position, p)  ∈ {0..3}   (repeated raycasts, mask=world)
-d_eff = d * (1 + 0.75 * w)
-heard iff d_eff ≤ R
-strength s = 1 - d_eff / R                         ∈ (0,1]
-delivery delay = d / 700  s
-```
-Inverse-distance intuition: perceived intensity ∝ 1/d; we linearize to `s` for tuning clarity (documented in report notes).
+---
 
-### Contact
-Every enemy has `Hitbox` (Area2D, mask player). On `body_entered(player)` → `player.die(&"caught")` if `profile.contact_kills`. Sentry has no hitbox; its projectiles kill.
+## 1. Shared Sensory Perception & Components
 
-## 2. Profiles (`resources/enemies/*.tres`)
-| Field | Listener | Sentry | Hunter | Brute |
-|---|---|---|---|---|
-| walk_speed | 50 | 0 | 90 | 40 |
-| run_speed | 120 | 0 | 230 | 110 |
-| turn_speed (deg/s) | — | 60 | — | — |
-| hearing_threshold | 1.0 | 3.0 | 0.5 | 0.5 |
-| hearing_mult | 1.0 | 1.0 | 1.25 | 2.5 |
-| accepted_types | all except ENEMY | PULSE, GLASS, DECOY, IMPACT | all except ENEMY | FOOTSTEP, LAND, GLASS(stomp only) |
-| sight_range | 200 | 320 | 240 | 0 |
-| sight_angle_deg | 70 | 40 | 90 | 0 |
-| investigate_wait | 1.5 s | — | 0.6 s | 1.0 s |
-| search_time | 4.0 s | — | 2.5 s | 3.0 s |
-| awareness_gain | 0.6 | 1.0 | 0.8 | 0.7 |
-| awareness_decay | 0.15/s | 0.25/s | 0.1/s | 0.2/s |
-| can_jump | true | false | true | false |
-| memory_size | 1 | 1 | 3 | 1 |
-| fire_interval | — | 0.9 s | — | — |
-| projectile_speed | — | 420 px/s | — | — |
+Every enemy inherits from `EnemyBase` and shares standardized sensory and decision components:
+1. **`HearingComponent`**:
+   - Listens to `NoiseBus` events.
+   - Evaluates Euclidean distance $d$ and occluding wall count $W$ via repeated line-of-sight raycasts:
+     $$d_{eff} = d \cdot (1 + 0.75 \cdot W)$$
+   - Registers event if $L_E \ge \theta_{threshold}$ and $d_{eff} \le R_E \cdot m_{sensitivity}$.
+   - Delivers event after physical propagation delay $\Delta t = d / 700 \text{ px/s}$.
+2. **`VisionComponent`**:
+   - Updates every 0.10s.
+   - The player is visible **only if** they are currently illuminated by an active sonar bubble ($\text{brightness} > 0.25$) or hero self-glow, inside the enemy's vision cone ($\le \text{angle}/2$), within range, and unobstructed by world geometry. In pure darkness, the player is 100% invisible.
+3. **`AwarenessComponent`**:
+   - Float meter from 0.0 to 1.0. Accumulates on hearing sound cues; instantly jumps to 1.0 on direct sight. Decays at a profile-defined rate when undisturbed.
+4. **`AttackTokenReceiver`**:
+   - Requests attack tokens from `AttackTokenManager` before initiating strikes. If denied, circles target or maintains defensive stance.
 
-## 3. Listener (patrolling drone-walker)
-Patrol range: walks its starting floor segment between walls/edges (or invisible `|` marker cells), turning with a 0.6 s pause.
-| State | Enter | Update | Exit | Transitions |
-|---|---|---|---|---|
-| PATROL | speed=walk; resume patrol dir | walk; turn at segment end (pause 0.6 s) | — | heard → INVESTIGATE(pos); spotted → CHASE |
-| INVESTIGATE | "?" tell; mover.move_to(noise.pos, walk*1.4 = 70) | on newer heard → retarget | stop | arrived → SEARCH; path_failed → SEARCH at nearest reachable; spotted → CHASE |
-| SEARCH | timer=search_time | flip facing every 1.0 s; scan | — | timer → RETURN; heard → INVESTIGATE; spotted → CHASE |
-| CHASE | "!" flash, emit ENEMY noise ripple, GameState.detected(); speed=run | move_to(last_seen) every 0.25 s | — | lost for 1.5 s → INVESTIGATE(last_seen) |
-| RETURN | move_to(patrol start) walk | — | — | arrived → PATROL; heard → INVESTIGATE; spotted → CHASE |
+---
+
+## 2. Standard Adversary Roster
+
+### 2.1 Ashigaru (Spearman Drone)
+- **Silhouette**: Lean robotic soldier wearing a conical jingasa helmet, gripping a long yari spear with two hands. Height 58 px.
+- **Stats**: HP: 2 segments | Poise: 40.0 | Walk Speed: 50 px/s | Run Speed: 120 px/s.
+- **Perception**: Sight: 70° cone, 200 px | Hearing Threshold: 1.0 | Sensitivity: 1.0x | Hears pulses, footsteps, combat slashes.
+- **Combat Attacks**:
+  - *Spear Thrust*: Startup 27f (0.45s, red blade glint) -> Active 4f -> Recovery 20f. Range 44 px. Damage: 1 segment. Poise Dmg: 25.
+  - *Pommel Strike*: Close-range pushback. Startup 16f (0.27s) -> Active 3f -> Recovery 15f. Range 22 px. Deals 15 poise damage (no HP damage).
+
 ```mermaid
 stateDiagram-v2
-  [*] --> PATROL
-  PATROL --> INVESTIGATE: heard
-  INVESTIGATE --> SEARCH: arrived / path_failed
-  SEARCH --> RETURN: timeout
-  RETURN --> PATROL: arrived
-  INVESTIGATE --> INVESTIGATE: heard newer
-  SEARCH --> INVESTIGATE: heard
-  RETURN --> INVESTIGATE: heard
-  PATROL --> CHASE: spotted
-  INVESTIGATE --> CHASE: spotted
-  SEARCH --> CHASE: spotted
-  CHASE --> INVESTIGATE: lost 1.5s
+    [*] --> PATROL
+    PATROL --> INVESTIGATE: Noise Heard (Awareness > 0.3)
+    PATROL --> CHASE: Player Spotted
+    INVESTIGATE --> SEARCH: Arrived at Noise Origin
+    INVESTIGATE --> CHASE: Player Spotted
+    SEARCH --> PATROL: Search Timer Expired (4.0s)
+    SEARCH --> INVESTIGATE: Newer Noise Heard
+    CHASE --> ATTACK: In Range (40px) & Token Granted
+    CHASE --> SEARCH: Player Lost (1.5s)
+    ATTACK --> CHASE: Attack Complete
+    ATTACK --> STAGGER: Parried / Poise Depleted
+    STAGGER --> CHASE: Stagger Duration Expired (1.5s)
 ```
-Tells: antenna ripple ring (red-grey, unshaded) on every state change; "?" glyph (investigate) / "!" (chase) above head for 0.6 s, white-flashed silhouette.
 
-## 4. Sentry (balcony turret)
-| State | Enter | Update | Exit | Transitions |
+---
+
+### 2.2 Kenshi (Swordsman Duelist)
+- **Silhouette**: Agile armored ronin with a flowing shoulder cape and single katana held in high jodan stance. Height 56 px.
+- **Stats**: HP: 3 segments | Poise: 60.0 | Walk Speed: 70 px/s | Run Speed: 160 px/s.
+- **Perception**: Sight: 80° cone, 220 px | Hearing Threshold: 1.0 | Sensitivity: 1.0x.
+- **Special AI Behavior**:
+  - Predictable front slashes have a 40% chance of being deflected by the Kenshi's auto-parry.
+  - Can back-dash (12f evasion) when the player charges a heavy attack.
+- **Combat Attacks**:
+  - *Quick Draw Slash*: Fast step-forward slash. Startup 21f (0.35s) -> Active 3f -> Recovery 18f. Range 36 px. Damage: 1 segment.
+  - *Spinning Sweep*: Unblockable sweeping strike. Startup 32f (0.53s, red kanji flash) -> Active 5f -> Recovery 24f. Range 48 px. Damage: 2 segments.
+
+---
+
+### 2.3 Yumi (Balcony Archer)
+- **Silhouette**: Hooded, crouched perched silhouette holding an asymmetrical acoustic longbow. Stationed on elevated catwalks. Height 52 px.
+- **Stats**: HP: 1 segment | Poise: 20.0 | Walk Speed: 40 px/s | Run Speed: 100 px/s.
+- **Perception**: Sight: 40° narrow cone, 400 px range | Hearing Threshold: 0.8 | Sensitivity: 1.2x.
+- **Combat Attacks**:
+  - *Acoustic Arrow*: Aims laser sight for 42f (0.70s), then fires a high-velocity piercing arrow (520 px/s). Arrow is rendered as a sharp red vector line inside sonar rings. Damage: 1 segment.
+  - *Flee / Reposition*: If player approaches within 60 px, drops a flash pellet (0.2s blind) and retreats via platform graph.
+
+---
+
+### 2.4 Oni Brute (Heavy Mech)
+- **Silhouette**: Massive hulking mechanical brute with broad spiked shoulders and an oversized iron kanabo club. Height 82 px.
+- **Stats**: HP: 6 segments | Poise: 120.0 | Walk Speed: 40 px/s | Run Speed: 110 px/s.
+- **Perception**: Blind (0° cone, 0 px sight). Completely deaf to airborne voice pulses. Reacts exclusively to ground vibration (`FOOTSTEP`, `LAND`). Hearing Sensitivity: 2.5x.
+- **Special Defenses**:
+  - Front armor is 100% immune to light Katana slashes (sparks bounce off with zero damage).
+  - Vulnerable only to Naginata heavy thrusts, environmental traps (breakable glass floors), or stealth rear finishers.
+- **Combat Attacks**:
+  - *Club Ground Slam*: Startup 36f (0.60s) -> Active 6f -> Recovery 30f. Shatters glass floors, emits shockwave ripple (180 px noise). Damage: 2 segments.
+  - *Bull Charge*: Sprints in a straight line (260 px/s) until colliding with a solid wall, stunning itself for 2.0s.
+
+---
+
+### 2.5 Sentry (Balcony Turret)
+- **Silhouette**: Ceiling/wall-mounted mechanical eye turret with rotating perimeter sensors.
+- **Stats**: HP: 1 segment | Poise: 10.0 | Static (0 px/s).
+- **Perception**: Scans 40° cone across 320 px, rotating at 60°/s. Alerted by high-amplitude noise (Scream, glass break, decoy, loudness $\ge 3.0$).
+- **Combat Attacks**:
+  - *Targeting Laser*: Locks red tracking beam on player for 0.60s (36f).
+  - *Plasma Bolt*: Fires red lethal projectile at 420 px/s. Can be deflected back into the turret with a Katana parry.
+
+---
+
+## 3. Boss Encounter: The Shogun Mech (Sector 9)
+
+The **Shogun Mech** is the automated warlord of Facility 09: a 120 px tall multi-limbed mechanical daimyo combining acoustic warfare, sword mastery, and room-filling artillery.
+
+### Boss Stats: 18 HP Segments | 200.0 Poise | 3 Combat Phases
+
+| Phase | Health Threshold | Signature Attacks & Telegraphs | Sonar / Acoustic Mechanic | Arena Hazard |
 |---|---|---|---|---|
-| IDLE | — | sweep ±45° around base facing at 30°/s | — | heard (loud ≥3) → AIM(noise.pos); spotted → AIM(player, tracking) |
-| AIM | whine SFX, red dotted laser line (1 px, α0.4, unshaded) toward target; timer 0.6 s | rotate toward target at 60°/s; if tracking, retarget | — | timer & within 5° → FIRE |
-| FIRE | spawn Projectile toward target; ENEMY noise ripple (r 160) | — | — | after fire_interval: if still spotted → AIM(tracking); else if fired < 3 at noise → AIM(noise) ; else → IDLE |
-Projectile: `Area2D` 6×2 red streak, speed 420, lifetime 2.5 s, dies on world; white reticle ring (r 10 px, 1 px) follows it; kills player on contact; makes IMPACT noise (r 120, loud 1.5) on hitting a wall.
+| **Phase 1: The Blade Master** | 100% – 66% HP (18 – 13 HP) | • *Twin Naginata Sweep* (Telegraph 30f, 160° sweep, 2 dmg).<br>• *Overhead Cleave* (Telegraph 24f, 2 dmg, breaks guard). | Clashing blades emit massive 320 px noise rings, lighting the arena floor temporarily. | Four breakable glass platforms over bottom spikes. |
+| **Phase 2: Acoustic Barrage** | 66% – 33% HP (12 – 7 HP) | • *Acoustic Shockwave* (Mech slams floor, emitting Scream wavefront that deafens player HUD).<br>• *Summons 2 Ashigaru* reinforcements. | Periodic arena-wide Scream pulses reveal everything but blind hearing HUD for 2.0s. | Perimeter ceiling lanterns swing wildly, generating chaotic noise ripples. |
+| **Phase 3: Overdrive Ronin** | 33% – 0% HP (6 – 0 HP) | • *Sonic Dash Slice* (Instant cross-room slash, 18f telegraph, 2 dmg).<br>• *Berserk 5-Hit Flurry* (Must parry 3 of 5 to break stance). | Total blackout mode: Mech only visible during attack blade gleams or active player pulses. | Floor electrifies periodically; player must fight on upper catwalks. |
 
-## 5. Hunter (fast, memory of 3 noises)
-| State | Enter | Update | Exit | Transitions |
-|---|---|---|---|---|
-| PATROL | walk | patrol like Listener | — | heard → TRACK |
-| TRACK | pop oldest unvisited memory entry; speed = (any entry loudness ≥ 3 within last 2 s) ? run : walk*1.6 | move_to(entry); on heard: push to memory (dedupe within 48 px) | — | arrived → next entry or SEARCH if empty; spotted → CHASE |
-| SEARCH | timer 2.5 s; sniff anim | flip facing every 0.6 s | — | timeout → RETURN; heard → TRACK |
-| CHASE | as Listener but run=230 and double-ping red ripple every 1 s | — | — | lost 2.0 s → TRACK(last_seen pushed) |
-| RETURN | as Listener | — | — | — |
-Tell: emits a quiet ENEMY ripple (double ring) every 1.2 s while TRACK — the player can see the hunt.
+---
 
-## 6. Deaf Brute (vibration only)
-| State | Enter | Update | Exit | Transitions |
-|---|---|---|---|---|
-| WANDER | walk | patrol segment; each step (0.7 s) emits a thud ripple (unshaded, ENEMY type → ignored by all) and +0.03 camera shake if within 160 px | — | heard (FOOTSTEP/LAND) → CHARGE(pos) |
-| CHARGE | roar tell, red flash, run toward pos (same floor only; never jumps; drops allowed) | stops at edge/wall | — | arrived/blocked → STUNNED |
-| STUNNED | 1.2 s head shake (vulnerable window to pass) | — | — | timeout → SEARCH(3 s) → WANDER (returns to segment) |
-Also: stepping on `G` glass breaks it (GLASS noise from glass, Brute ignores; others hear). Pulses (any size) are ignored → teaching beat: in level 5 you may Scream freely.
+## 4. Platform Navigation Graph & Stuck Detection
 
-## 7. Mimic (stretch, Phase 10)
-Static `Fragment`-shaped visual drawn in white; when revealed, 3% chance per pulse to flicker red for one frame; if player within 24 px → reveals red, lunges 64 px, kills. Never in the core 8 levels.
+### 4.1 Node & Edge Specifications
+Enemies traverse level geometry using the directed `PlatformGraph`:
+- **Nodes**: Standable coordinates (empty cell with solid `#`, catwalk `=`, or glass `G` below).
+- **Edge Types**:
+  - `WALK`: Adjacent horizontal nodes ($\Delta x = \pm 1, \Delta y = 0$). Cost: 1.0.
+  - `JUMP`: Ascending vertical edges ($\Delta y \le 2$ tiles, $\Delta x \le 3$ tiles). Requires upward impulse $v_y = -560 \text{ px/s}$. Cost: 2.5.
+  - `DROP`: Descending ledge drops ($\Delta y \le 8$ tiles, $\Delta x \le 1$ tile). Controlled freefall. Cost: 1.2.
+  - `CATWALK_DROP`: Direct vertical drop through `=` platforms via collision mask clearing. Cost: 1.5.
 
-## 8. Tuning table (single place: the `.tres` profiles; GameConfig only holds global sound constants)
-| Global | Value |
-|---|---|
-| sound_speed | 700 px/s |
-| wall_penalty | 0.75 |
-| max_wall_raycasts | 3 |
-| vision_tick | 0.1 s |
-| reveal_visible_threshold | 0.25 |
-| memory_expiry | 20 s |
-| repath_interval | 0.25 s |
-
-## 9. Debug visualisation (DebugOverlay page 0)
-Per enemy: hearing radius ring for a reference Normal pulse (`200 * mult`, dashed, grey), sight cone (white α0.2), state label (`PATROL` etc.) + awareness number, current path polyline, memory entries as small numbered crosses. Noise events: circle of `radius` coloured by type, fading 1 s.
+### 4.2 Stuck-Detection & Recovery Heuristics
+To guarantee enemies never get trapped on ledges or in infinite jump loops:
+1. **Velocity Sampling**: `PlatformMover` tracks position delta every 0.50s.
+2. **Stuck Condition**: If $| \mathbf{p}(t) - \mathbf{p}(t - 0.5) | < 8.0 \text{ px}$ while state is `CHASE` or `INVESTIGATE`:
+   - Increments `stuck_ticks`.
+   - If `stuck_ticks >= 2` (1.0s elapsed), aborts current path.
+3. **Recovery State**:
+   - Executes a brief **Hop Back** impulse (80 px/s opposite to wall normal).
+   - Queries `PlatformGraph` for nearest alternative node with Euclidean clearance.
+   - If pathfinding fails completely, transitions to `SEARCH` state in place for 2.0s before resuming patrol.

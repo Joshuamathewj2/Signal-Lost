@@ -10,7 +10,8 @@ enum NoiseType {
 	CLINK = 5,
 	PLATE = 6,
 	DECOY = 7,
-	ENEMY = 8
+	ENEMY = 8,
+	COMBAT = 9
 }
 
 var position: Vector2 = Vector2.ZERO

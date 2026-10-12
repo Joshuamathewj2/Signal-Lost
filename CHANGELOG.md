@@ -2,6 +2,72 @@
 
 All notable changes to this project will be documented in this file.
 
+## Milestone: Phase 5 Implementation — Vertical Level Pipeline & Zero Soft-Locks (100% COMPLETE)
+- Upgraded LevelValidator with bidirectional return path checks and jump apex constraints; refactored multi-tier level pipeline (Levels 1–9) and eliminated Level 3 soft-lock with overhead return ladder; added case-insensitive state machine transitions and safe ladder climbing; upgraded camera rig with 48 px look-ahead and dynamic combat zoom; verified 27/27 unit tests, Gates A & B, and Phase 5 E2E test suite with zero errors.
+
+## Milestone: Phase 4 Implementation — Adversary Roster (Part 2 — Kenshi, Yumi & Oni Brute) (100% COMPLETE)
+- Implemented Kenshi duelist AI with 40% frontal auto-parry, back-dash evasion, quick draw slash, and spinning unblockable sweep; implemented Yumi balcony archer with 400 px laser aiming, 520 px/s acoustic piercing arrows, and flash pellet repositioning; implemented Oni Brute heavy mech with frontal light attack immunity, club ground slam, and glass floor shattering; verified 27/27 unit tests, Gates A & B, and Phase 4 E2E test suite.
+
+## Milestone: Phase 3 Implementation — Adversary Roster (Part 1 — Ashigaru & Sentry) (100% COMPLETE)
+- Integrated HealthComponent, PoiseComponent, and HurtboxComponent into EnemyBase with damage flashes, poise staggers, and death signals; implemented Ashigaru spearman with 27-frame telegraph glint and yari thrust; integrated AttackTokenManager concurrency limits; enabled Katana parry reflection of Sentry projectiles; verified 24/24 unit tests, Gates A & B, and Phase 3 E2E test suite.
+
+## Milestone: Phase 2 Implementation — Weapon Arsenal & Stealth Assassinations (100% COMPLETE)
+- Implemented WeaponSwapManager (Q key cycling), WeaponNaginata (52 px reach, 2-hit chain, overhead impale), WeaponKunai (4-hit flurry, silent strikes), AssassinationSystem (unaware rear cone 60° instant lethal takedowns), and Shuriken sub-weapon (F key projectile distraction lure).
+- All 23 headless unit tests pass, Gates A and B pass with 0 errors, and Phase 2 E2E weapons suite passes.
+
+## Milestone: Phase 1 Implementation — Combat Primitives & Health Refactor (100% COMPLETE)
+- Implemented HealthComponent (3 HP segments, i-frames), PoiseComponent (100 max poise, stagger/break), Hitbox/Hurtbox primitives, and CombatController with Katana 3-hit combo, 6-frame parry deflect, and 12-i-frame dash roll.
+- All 21 headless unit tests pass, Gates A and B pass with 0 errors, and Phase 1 E2E combat suite passes.
+
+## Milestone: Phase 0 Implementation — Architectural Hygiene & Baseline Verification (100% COMPLETE)
+
+### P0-T01: Input Map Expansion (VERIFIED 0 ERRORS)
+- Expanded input map in `project.godot` with 6 new combat and utility actions: `attack` (J / RMB / Pad X), `attack_heavy` (I / MMB / Pad RB), `dash` (L / Alt / Pad B), `block_parry` (K / Thumb Mouse 4 / Pad LB), `weapon_swap` (Q / Wheel Up/Down / D-Pad Up), and `hint` (H / D-Pad Down).
+- Decoupled `K` key and gamepad button 2 from `pulse` action to prevent input conflicts with parry and attack systems.
+- Headless syntax verification: `godot --headless --path . --quit-after 120` passed with 0 errors.
+
+### P0-T02: AttackTokenManager Singleton (VERIFIED 0 ERRORS)
+- Created `autoload/attack_token_manager.gd` enforcing enemy attack concurrency limit (`max_tokens = 2`).
+- Implemented `request_token(actor)`, `release_token(actor)`, waiting queue dispatch, and automated instance cleanup.
+- Registered singleton under `[autoload]` in `project.godot` per architecture specification.
+
+### P0-T03: Combat Configuration Resources (VERIFIED 0 ERRORS)
+- Created `scripts/resources/attack_data.gd` defining typed `AttackData` resource (damage, poise damage, knockback, hitstop, frame data, reach, noise).
+- Created `scripts/resources/combat_config_data.gd` and `resources/config/combat_config.tres` with default combat balance parameters per `docs/GAME_CONFIG_REFERENCE.md`.
+- Integrated `combat_config.tres` and `AttackData` regression assertions into `tests/test_resources.gd`.
+
+### P0-T04: Baseline Regression Gate (VERIFIED 0 ERRORS)
+- Verified static headless parse: `godot --headless --path . --quit-after 120` returned 0 errors.
+- Verified all 17 unit test suites: `godot --headless --path . -s res://tests/run_tests.gd` returned `ALL TESTS PASSED`.
+- Built headless Web release bundle: `godot --headless --export-release "Web" build/web/index.html`.
+- Executed Playwright Gate A: `node tests/e2e/test_gate_a.js` completed 30 seconds of continuous movement with 0 browser errors and 0 engine errors.
+- Evidence screenshots captured in `qa/shots/phase_0/` (`01_gate_a_menu.png` through `07_gate_a_after_30s.png`).
+
+## Milestone: Master V2 Documentation Set Created (100% COMPLETE)
+- **Technical Audit Completed**: Conducted factual, verified audit of all 103 files, line counts, global states, protected systems, and technical debt in `docs/00_CURRENT_STATE_AUDIT.md`.
+- **Master Documentation Suite Created**:
+  - `docs/README_INDEX.md`: Master directory, reading order, and universal gameplay glossary.
+  - `docs/GDD.md`: V2 Game Design Document with vision, 5 pillars, core loops, and sonar-combat interlock.
+  - `docs/PRD.md`: Product Requirements Document with MoSCoW scope, functional criteria (FR-*), NFRs, and traceability matrix.
+  - `docs/TECH_STACK.md`: Engine version (Godot 4.7.2 / 4.4+), GL Compatibility renderer, typed GDScript, and tooling architecture.
+  - `docs/ARCHITECTURE.md`: Target modular architecture, scene trees, component model, signal map, and 10-step safe migration plan.
+  - `docs/GAME_CONFIG_REFERENCE.md`: Master tunables reference table with every balance variable marked CURRENT or PROPOSED.
+  - `docs/INPUT_MAP.md`: Keyboard, mouse, and gamepad mapping matrix with conflict resolution and HUD prompt text.
+  - `docs/COMBAT_DESIGN.md` & `docs/COMBAT_FRAME_DATA.md`: 3-weapon combat system, parry/guard windows, stealth finishers, and 60 FPS frame data.
+  - `docs/ENEMY_AI.md`: Adversary silhouettes, stats, telegraphs, FSM diagrams, and 3-phase Shogun Mech boss fight.
+  - `docs/LEVEL_DESIGN_V2.md`: Traversal metrics, level validator specs, golden return rule, and walkthroughs/maps for Levels 1–9.
+  - `docs/PUZZLES.md`: Escape-room puzzle toolbox, PuzzleController design, level puzzle sheets, atmospheric lore, and solution bot specs.
+  - `docs/ART_DIRECTION.md`: Tri-color palette rules, silhouette sheets, Verlet scarf specs, environment props, VFX guide, and Current vs Target gap table.
+  - `docs/ANIMATION_SPEC.md`: Frame-by-frame animation timelines, event callbacks, cancellation rules, and Animation Gallery debug tool.
+  - `docs/AUDIO_SPEC.md` & `docs/CREDITS.md`: Procedural synthesis recipes, sound-to-noise table, dynamic music cross-fader, and open-source licenses.
+  - `docs/UI_UX_SPEC.md`: Tactical samurai HUD layout, floating awareness indicators, boss gauges, menus, and accessibility design.
+  - `docs/QA_TEST_PLAN.md`: Automated unit tests, Playwright E2E browser tests, definition of done, bug report templates, and evidence archiving rules.
+  - `docs/IMPLEMENTATION_PLAN.md`: Phased roadmap (Phases 0–9), session-sized tasks (<250 LOC), cut-order list, and regression gates.
+  - `docs/RISKS_AND_DECISIONS.md`: Risk register with mitigations and 6 formal Architecture Decision Records (ADRs).
+  - `docs/TASKS.md`: Granular production checklist tracking all 55 implementation tasks.
+  - `docs/AGENT_RULES.md`: Non-negotiable protocols, protected systems, web duck-typing rules, and verification workflows.
+  - `docs/prompts/PHASE_0.md` through `PHASE_9.md`: Ready-to-paste implementation prompts for Antigravity AI agents.
+
 ## Recovery Milestone: Complete Overhaul & Multi-Gate Verification (100% COMPLETE)
 
 ### Gate C: Full Level 1 Playthrough (VERIFIED 0 ERRORS)

@@ -102,6 +102,42 @@ func _handle_command(cmd_name: String, cmd_args: Dictionary) -> void:
 				var settings_scene: PackedScene = preload("res://scenes/ui/settings_menu.tscn")
 				var s = settings_scene.instantiate()
 				menus_node.add_child(s)
+		"player_attack":
+			var p = get_tree().get_first_node_in_group(&"player")
+			if p != null:
+				var cc = p.get_node_or_null("CombatController")
+				if cc != null and cc.has_method("handle_attack_input"):
+					cc.handle_attack_input()
+		"player_dash":
+			var p = get_tree().get_first_node_in_group(&"player")
+			if p != null:
+				var cc = p.get_node_or_null("CombatController")
+				if cc != null and cc.has_method("handle_dash_input"):
+					cc.handle_dash_input()
+		"player_parry":
+			var p = get_tree().get_first_node_in_group(&"player")
+			if p != null:
+				var cc = p.get_node_or_null("CombatController")
+				if cc != null and cc.has_method("start_parry"):
+					cc.start_parry()
+		"damage_player":
+			var p = get_tree().get_first_node_in_group(&"player")
+			if p != null:
+				var hc = p.get_node_or_null("HealthComponent")
+				if hc != null and hc.has_method("take_damage"):
+					hc.take_damage(int(cmd_args.get("damage", 1)))
+		"cycle_weapon":
+			var p = get_tree().get_first_node_in_group(&"player")
+			if p != null:
+				var wm = p.get_node_or_null("WeaponSwapManager")
+				if wm != null and wm.has_method("cycle_weapon"):
+					wm.cycle_weapon()
+		"throw_shuriken":
+			var p = get_tree().get_first_node_in_group(&"player")
+			if p != null:
+				var cc = p.get_node_or_null("CombatController")
+				if cc != null and cc.has_method("throw_shuriken"):
+					cc.throw_shuriken()
 
 func _process(delta: float) -> void:
 	if not OS.has_feature("web"):
@@ -188,13 +224,53 @@ func get_snapshot() -> Dictionary:
 		if motor != null and "is_sneaking" in motor:
 			sneaking = bool(motor.get("is_sneaking"))
 
+		var health_comp: Node = p.get_node_or_null("HealthComponent")
+		var poise_comp: Node = p.get_node_or_null("PoiseComponent")
+		var combat_ctrl: Node = p.get_node_or_null("CombatController")
+
+		var current_hp: int = 3
+		var max_hp: int = 3
+		if health_comp != null:
+			current_hp = int(health_comp.get("current_health"))
+			max_hp = int(health_comp.get("max_health"))
+
+		var current_poise: float = 100.0
+		if poise_comp != null:
+			current_poise = float(poise_comp.get("current_poise"))
+
+		var combat_state: String = "idle"
+		var combo_idx: int = 0
+		if combat_ctrl != null:
+			var st = combat_ctrl.get("current_state")
+			match st:
+				0: combat_state = "idle"
+				1: combat_state = "attacking"
+				2: combat_state = "parrying"
+				3: combat_state = "guarding"
+				4: combat_state = "dashing"
+			combo_idx = int(combat_ctrl.get("current_combo"))
+
+		var weapon_name: String = "Katana"
+		var weapon_mgr: Node = p.get_node_or_null("WeaponSwapManager")
+		if weapon_mgr != null and "current_weapon" in weapon_mgr:
+			match int(weapon_mgr.get("current_weapon")):
+				0: weapon_name = "Katana"
+				1: weapon_name = "Naginata"
+				2: weapon_name = "Kunai"
+
 		snap["player"] = {
 			"pos": [p2d.global_position.x, p2d.global_position.y],
 			"vel": [vel.x, vel.y],
 			"on_floor": on_floor,
 			"is_alive": alive,
 			"facing": facing,
-			"is_sneaking": sneaking
+			"is_sneaking": sneaking,
+			"health": current_hp,
+			"max_health": max_hp,
+			"poise": current_poise,
+			"combat_state": combat_state,
+			"combo": combo_idx,
+			"weapon": weapon_name
 		}
 
 	# Pulses
@@ -224,6 +300,14 @@ func get_snapshot() -> Dictionary:
 			var sm = node.get_node_or_null("StateMachine")
 			if sm != null and "current" in sm and sm.get("current") != null:
 				st = str(sm.get("current").name)
+			var hp: int = 1
+			var hc = node.get_node_or_null("HealthComponent")
+			if hc != null:
+				hp = int(hc.get("current_health"))
+			var ps: float = 100.0
+			var pc = node.get_node_or_null("PoiseComponent")
+			if pc != null:
+				ps = float(pc.get("current_poise"))
 			var facing: int = 1
 			if "facing" in node:
 				facing = int(node.get("facing"))
@@ -233,7 +317,9 @@ func get_snapshot() -> Dictionary:
 				"pos": [n2d.global_position.x, n2d.global_position.y],
 				"awareness": aw,
 				"state": st,
-				"facing": facing
+				"facing": facing,
+				"health": hp,
+				"poise": ps
 			})
 	snap["enemies"] = en_arr
 

@@ -12,6 +12,7 @@ const LANTERN_SCENE: PackedScene = preload("res://scenes/interactables/lantern.t
 const VENT_SCENE: PackedScene = preload("res://scenes/interactables/vent.tscn")
 const DECOY_PICKUP_SCENE: PackedScene = preload("res://scenes/interactables/decoy_pickup.tscn")
 const HINT_SIGN_SCENE: PackedScene = preload("res://scenes/interactables/hint_sign.tscn")
+const LADDER_SCENE: PackedScene = preload("res://scenes/interactables/ladder.tscn")
 
 static func spawn_interactables(data: LevelData, parent: Node2D, graph: PlatformGraph) -> void:
 	# 1. Exit Terminal
@@ -111,6 +112,27 @@ static func spawn_interactables(data: LevelData, parent: Node2D, graph: Platform
 			hint_inst.set_text(text_val)
 			hint_idx += 1
 			parent.add_child(hint_inst)
+
+	# 12. Ladders (H)
+	if data.cells.has("H"):
+		var h_list: Array = data.cells["H"]
+		var cols: Dictionary = {}
+		for cell in h_list:
+			var cell_vec: Vector2i = cell
+			if not cols.has(cell_vec.x):
+				cols[cell_vec.x] = []
+			(cols[cell_vec.x] as Array).append(cell_vec.y)
+		for c in cols.keys():
+			var rows: Array = cols[c]
+			rows.sort()
+			if rows.size() > 1: # Vertical ladder run
+				var top_r: int = rows[0]
+				var bot_r: int = rows[rows.size() - 1]
+				var ladder_inst: Node2D = LADDER_SCENE.instantiate() as Node2D
+				ladder_inst.set("cell", Vector2i(c, top_r))
+				ladder_inst.set("height_tiles", (bot_r - top_r + 1))
+				ladder_inst.position = Vector2((float(c) + 0.5) * 32.0, float(top_r) * 32.0)
+				parent.add_child(ladder_inst)
 
 static func _spawn_doors(data: LevelData, key: String, mode: String, parent: Node2D, graph: PlatformGraph) -> void:
 	if not data.cells.has(key):

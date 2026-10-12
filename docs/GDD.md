@@ -1,150 +1,168 @@
-# SIGNAL LOST — Game Design Document (v1.0)
+# SIGNAL LOST — Game Design Document (V2 Specification)
 
-## 0. Assumptions (stated instead of asking)
-1. The two reference screenshots mentioned in the brief were **not attached** to the planning session. §2B text of the brief is treated as the complete, binding art direction.
-2. Engine: Godot **4.4 stable** (anything ≥4.3 works; we use `Parallax2D`, which needs 4.3+).
-3. Renderer: **Compatibility** (GL) is the default and only target code path (see ARCHITECTURE §2). Everything must also run under Forward+ unchanged.
-4. Font: **Rajdhani** (SIL OFL 1.1), Medium + SemiBold weights, bundled in `res://assets/fonts/`.
-5. Platform: Windows/Linux desktop, keyboard+mouse and XInput gamepad.
-6. Scope: 8 levels, 4 enemy types, Decoy Beacon is the only "stretch" ability that is built (Phase 8) because the HUD layout requires an ability slot. EMP, Echo-memory upgrade and Mimic remain stretch (Phase 10, optional).
-7. All numbers below are defaults that live in `res://resources/config/default_config.tres` (a `GameConfigData` resource) or in the `.tres` profiles. The code must never hardcode them.
+- **Purpose**: Authoritative creative design specification for SIGNAL LOST V2, establishing design pillars, player fantasy, core game loop, combat-sonar mechanics, progression, and narrative tone.
+- **Audience**: Game Designers, Producers, Gameplay Programmers, AI Coding Agents.
+- **Status**: Approved.
+- **Last Updated**: 2026-10-11.
+- **Depends On**: [00_CURRENT_STATE_AUDIT.md](file:///c:/vibe-game/docs/00_CURRENT_STATE_AUDIT.md), [README_INDEX.md](file:///c:/vibe-game/docs/README_INDEX.md).
 
-## 1. Pitch
-You are a tiny robot in an abandoned facility. The world is pitch black. You see only by emitting sonar pulses — but every pulse is a sound, and the machines that still patrol the facility hear it. **Seeing reveals your position.**
+---
 
-Genre: 2D side-view stealth platformer / puzzle. Level length 30–120 s for a skilled run. Instant restart.
+## 1. Vision Statement & Player Fantasy
 
-## 2. Core loop
-1. Move in darkness; only a faint 40 px glow around the robot is visible.
-2. Charge and release a sonar pulse; a dome of reveal expands from the robot, clipped by walls/floors.
-3. Enemies within the pulse's **noise radius** (not reveal radius) hear it when the sound wavefront reaches them and investigate the **origin**.
-4. Use the remembered picture (bubbles fade over seconds) to plan, sneak, distract, reach the **Exit Terminal**.
-5. Score screen → next level.
+> *"You are a blind, master cybernetic samurai stranded within a collapsed subterranean megalopolis. The world is drowned in pitch darkness. You perceive reality solely through acoustic pulses and steel echoes. Every blade strike, every footstep, and every sonar call reveals your surroundings—but the hunting machines hear every sound. To see is to be hunted. To strike is to reveal your heart."*
 
-## 3. Units & world scale
-| Item | Value |
-|---|---|
-| Tile size | 32 px |
-| Base viewport | 1280×720, stretch `canvas_items`, aspect `expand` |
-| Camera zoom | 2.0 (visible world ≈ 640×360 px ≈ 20×11 tiles) |
-| Robot body | 14×18 px collision capsule (crouched 14×12) |
-| Sound/wave speed | 700 px/s (visual wavefront and hearing delay share it) |
+**The Player Fantasy**: The player embodies a lethal, calculating ronin navigating a lethal high-tech labyrinth. You do not stumble blindly through darkness; you command sound as both weapon and sight. You stalk patrol drones from shadows, visualize rooms through razor-sharp acoustic reflections, deflect bullets in absolute dark by sound cues alone, and execute precision strikes before slipping back into silence.
 
-## 4. Player
-### 4.1 Movement (side-view, `CharacterBody2D`)
-| Param | Default | Note |
-|---|---|---|
-| run_speed | 180 px/s | |
-| sneak_speed | 70 px/s | hold `sneak` (crouch pose, silent) |
-| ground_accel | 1400 px/s² | |
-| ground_friction | 1800 px/s² | |
-| air_accel | 900 px/s² | |
-| gravity | 1800 px/s² | |
-| fall_gravity_mult | 1.35 | when vy > 0 |
-| jump_velocity | −560 px/s | apex ≈ 87 px ≈ 2.7 tiles → clears **2-tile** steps |
-| jump_cut_mult | 0.45 | releasing jump while rising multiplies vy |
-| max_fall_speed | 900 px/s | |
-| coyote_time | 0.10 s | |
-| jump_buffer | 0.12 s | |
-| drop_through_time | 0.20 s | `sneak`+`jump` on a one-way platform |
-| max horizontal jump | ≈3.5 tiles → level gaps ≤ **3 tiles** | |
+---
 
-Sneaking cannot jump higher (jump allowed, but sneak is cancelled while airborne).
+## 2. The Five Design Pillars
 
-### 4.2 Movement noise
-| Event | Condition | Noise radius | Loudness | Type |
-|---|---|---|---|---|
-| Footstep | on floor, not sneaking, \|vx\| > 40, every 0.30 s | 40 px | 0.5 | `FOOTSTEP` |
-| Hard landing | landing with vy > 520 px/s | 96 px | 1.0 | `LAND` |
-| Sneak | any | 0 | 0 | none |
+Every mechanical system, level layout, and tuning variable must directly serve these five pillars.
 
-### 4.3 Sonar pulse (the heart)
-Hold `pulse` to charge, release to emit. Charge time `t` (s) → normalized `c = clamp(t / charge_full_time, 0, 1)`, `charge_full_time = 1.0 s`.
-Tier is **discrete** (keeps medals and enemy rules legible):
-- `c < 0.35` (incl. taps) → **Whisper**
-- `0.35 ≤ c < 0.85` → **Normal**
-- `c ≥ 0.85` → **Scream**
+### Pillar 1: Acoustic Asymmetry (Seeing is Exposure)
+- **What We Do**: Visual perception is strictly tied to active acoustic emission. Pitch blackness is total safety; illumination is active vulnerability. We force the player to make constant tactical gambles between clarity and concealment.
+- **What We Refuse**: We refuse permanent environmental illumination, continuous mini-maps, x-ray vision overlays, or passive flashlight cones that give unearned visual awareness.
 
-| Profile (`PulseProfile`) | reveal_radius | expand_time | hold_time | fade_time | noise_mult | noise_radius | loudness | energy_cost | cooldown | shake | zoom punch |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| Whisper | 72 px | r/700 (≈0.10 s) | 0.6 s | 0.6 s | 0.6 | **43 px** | 1.0 | 6 | 0.20 s | 0 | 0 |
-| Normal | 200 px | ≈0.29 s | 1.2 s | 1.6 s | 1.0 | **200 px** | 2.0 | 22 | 0.60 s | 2 px | 0 |
-| Scream | 560 px | 0.80 s | 2.0 s | 3.0 s | 1.3 | **728 px** | 3.0 | 55 | 3.50 s | 9 px | +6% |
+### Pillar 2: High-Lethality Tactical Combat (Deliberate Blades)
+- **What We Do**: Combat is swift, weighty, and punishing. Blade clashes produce violent noise that ripples across the sector. Parries reward split-second timing; poise breaks enable decisive finishers. Attacks require deliberate commitment with clear startup and recovery windows.
+- **What We Refuse**: We refuse button-mashing brawling, damage-sponge enemies, endless juggle combos, or hit trading where the player mindlessly spams attacks through enemy strikes.
 
-- Noise radius is always `reveal_radius * noise_mult`. Whisper's noise (43 px ≈ 1.3 tiles) means it is only heard by an enemy practically touching you: **a genuinely safe option**. Scream's noise is 30% larger than what it shows you: **a genuine gamble**.
-- If energy is insufficient for the selected tier, the pulse downgrades to the highest affordable tier; if not even Whisper, it fails with a dry "click" (no noise, no reveal). The charge ring shows the downgrade live (ring turns dashed).
-- While charging: movement allowed at 60% speed, battery regen paused.
-- Echo memory (base game, always on): after fade, a bubble lingers at **12% brightness for 2.0 s** (the "ghost map"), then disappears.
-- Max simultaneous bubbles: **6** (oldest recycled first).
+### Pillar 3: Vertical Escape-Room Architecture (Spatial Puzzles)
+- **What We Do**: Levels are multi-tier vertical environments filled with interconnected passages, seal locks, resonance panels, and acoustic vents. Progression requires reading the environment, deducing combinations, and manipulating sound to unlock blast doors.
+- **What We Refuse**: We refuse flat linear corridors, brainless key-hunt fetch quests, or puzzle dead-ends that permanently soft-lock the player without clear escape or return routes.
 
-### 4.4 Battery
-`max 100`, regen **8/s** when |v| < 5 and not charging, **3/s** while moving, regen starts **0.8 s** after the last pulse. Energy 0: cannot pulse; movement unaffected; HUD bar flashes.
+### Pillar 4: Pure Aesthetic Legibility (The Tri-Color Canvas)
+- **What We Do**: The game renders exclusively in a high-contrast tri-color palette: Pure Black (`#000000`), Razor White (`#FFFFFF`), and Blood Red (`#E00000`). Silhouettes are sharp, bold, and instantly identifiable at a glance across screen distances.
+- **What We Refuse**: We refuse muddy textures, visual clutter, ambient grey fog, decorative visual noise that obscures mechanical hitboxes, or colors outside the tri-color spectrum.
 
-### 4.5 Health — decision: **one-hit death + instant restart**
-Justification: levels are 30–120 s and checkpointless; one-hit makes every pulse a real decision and keeps state small (no healing systems). Death → 0.08 s hit-stop → 0.6 s disintegration → level reload (total ≤ 1.0 s). `restart` key reloads instantly at any time.
+### Pillar 5: Fair, Predictable Determinism (Respect the Player)
+- **What We Do**: Every enemy attack is distinctly telegraphed visually and acoustically. Enemy hearing follows deterministic raycast physics without random dice rolls. AI respects concurrency limits (maximum 2 simultaneous attackers via attack tokens).
+- **What We Refuse**: We refuse off-screen cheap deaths, instant un-telegraphed sniper shots, arbitrary enemy respawns behind the player, or unpredictable physics bugs.
 
-### 4.6 Visibility of the player
-The player is "revealed" to enemies whenever the player's position is inside any active bubble (brightness > 0.25) with clear line of sight from the bubble origin (your own pulse always reveals you). Enemies with sight (Listener, Hunter, Sentry) then see you if within their sight range and LOS. Being in pure darkness = invisible.
+---
 
-## 5. Enemies (summary — full FSMs in ENEMY_AI.md)
-All share `HearingComponent` (receives `NoiseEvent`). Render: flat red `#E00000` silhouettes, visible only when lit by a bubble or the player glow; when they make sound while unlit they show as a blurred dark-red smudge `#5A0000` @50%.
+## 3. Core Loops
 
-| Enemy | Speed (walk/run) | Hearing threshold | Hearing mult | Sight | Contact | Tell |
-|---|---|---|---|---|---|---|
-| Listener (security drone on legs) | 50 / 120 | loudness ≥ 1.0 | 1.0 | 200 px, 70° cone | kills | antenna ripple + "!" flash |
-| Sentry (balcony turret) | static, turns 60°/s | loudness ≥ 3.0 (screams, amp vents, glass) | 1.0 | 320 px, 40° cone | n/a (projectiles kill) | charge whine 0.6 s, red laser tick |
-| Hunter (fast hound-drone) | 90 / 230 | loudness ≥ 0.5 (hears footsteps) | 1.25 | 240 px, 90° | kills | double-ping red ripple |
-| Deaf Brute (heavy mech) | 40 / 110 | ignores SOUND; hears `FOOTSTEP`/`LAND` only (vibration) | 2.5 | none | kills | ground-thud ripples every step |
-| Mimic (stretch) | — | — | — | — | — | looks like a fragment |
+### 3.1 Moment-to-Moment Loop (Seconds)
+```
+  [DARKNESS] -> Assess audio cues / memory
+      │
+  [PULSE / STRIKE] -> Reveal local geometry + emit acoustic wavefront
+      │
+  [EVALUATE] -> Identify enemy positions, sight cones, and platforms
+      │
+  [EXECUTE] -> Sneak, parry, strike, or evade into safe shadow
+```
 
-## 6. Environment & objects (all extend `Interactable`)
-| Object | ASCII | Behaviour |
-|---|---|---|
-| Solid wall/floor | `#` | collides, occludes pulses, white rough edge line on exposed sides |
-| One-way platform (catwalk) | `=` | jump up through, drop with `sneak`+`jump`; does NOT occlude |
-| Keycard | `K` | pickup; enables `D` doors (level-wide) |
-| Locked door | `D` (2 tall) | solid + occludes until player touches it holding a keycard; opens with slide-up |
-| Plate door | `R` (2 tall) | opens permanently when any `_` plate is pressed |
-| Pressure plate | `_` | pressed by player or enemy; click noise (r 64, loud 1.0) |
-| One-way door | `>` / `<` (2 tall) | passable only moving right / left |
-| Glass floor | `G` | solid; breaks if hit by a Scream wavefront or a Brute steps on it → shatter noise r 360, loud 3.0 |
-| Hanging lantern | `~` (ceiling) | swings when any wavefront passes; clink noise r 96, loud 1.0 (throttled 1/1.5 s) |
-| Amp vent intake / outlet | `V` / `v` | noise originating within 96 px of an intake is re-emitted at its paired outlet 0.2 s later with radius `max(r*4, 240)` and loudness +1.5 (lure tool) |
-| Mute vent | `M` | pulses emitted within 64 px get noise_mult ×0.3 (reveal unchanged) — safe scouting spot |
-| Exit terminal | `E` | touch + hold `interact`-free: on contact, 0.8 s "SIGNAL RESTORED" sequence → level complete |
-| Signal fragment | `F` | collectible; score + lore line on the level complete screen |
-| Decoy pickup | `C` | +1 decoy charge (Phase 8) |
+### 3.2 Room-to-Room Loop (Minutes)
+1. Enter an unrevealed sector in pitch darkness.
+2. Emit a low-tier **Whisper** to locate footholds and nearby patrol sentries without alerting them.
+3. Solve local tactical obstacles: assassinate an isolated guard, lure a brute into breakable glass, or trigger a resonance panel.
+4. Unlock vertical access points (catwalk drops, wall-jump shafts, or elevator lifts) to reach higher tiers.
 
-## 7. Decoy Beacon (built in Phase 8; EMP stays stretch)
-`ability_primary` (F): throw a beacon (arc, v = 380 px/s at 45° in facing direction). On landing it waits 0.5 s then emits a **Normal** pulse (reveal + noise) from its position. Charges per level from level header `decoys=N` + `C` pickups. Max 3.
+### 3.3 Level-to-Level Loop (3 to 7 Minutes)
+1. Infiltrate sector start (`P`).
+2. Explore branches to discover hidden **Signal Fragments** (`F`) and weapon upgrade shrines.
+3. Decipher the sector's central **Escape-Room Puzzle** (e.g., resonance sequence, seal locks).
+4. Confront sector gatekeeper or ambush encounter.
+5. Reach the **Exit Terminal** (`E`), triggering the "SIGNAL RESTORED" sequence.
+6. Review performance medals (**Ghost**, **Quiet**, **Loud**) and unlock subsequent campaign sectors.
 
-## 8. Win/lose, scoring, medals
-- Win: touch Exit Terminal. Lose: contact with an enemy or projectile, or falling out of the map (y > map bottom + 200).
-- Tracked per run: time, pulses by tier, loudest tier, times detected (enemy entered CHASE), fragments.
-- Medal:
-  - **Ghost**: 0 Normal and 0 Scream pulses (decoys allowed) and 0 detections.
-  - **Quiet**: 0 Scream pulses, ≤ 1 detection.
-  - **Loud**: anything else.
-- Saved per level: best time, best medal, fragments found (bitmask).
+### 3.4 Full-Game Progression Loop (Entire Campaign)
+1. **Levels 1–3 (The Awakening)**: Master basic locomotion, Katana slashes, Whisper/Normal pulses, and simple keycard gates.
+2. **Levels 4–6 (The Arsenal)**: Unlock the **Naginata** (long-range thrusts, lantern triggers) and **Twin Kunai** (rapid dashes, stealth assassinations). Confront heavy Oni Brutes and Sentry nests.
+3. **Levels 7–8 (The Infiltration)**: Overcome complex escape-room seal locks, vent networks, and multi-tier enemy crossfires.
+4. **Level 9 (The Core Citadel)**: Multi-stage climatic showdown against the **Shogun Mech**, combining all combat, sonar, and puzzle mechanics into a master test of skill.
 
-## 9. Progression (8 levels — maps in LEVEL_DESIGN.md)
-| # | Name | Teaches |
-|---|---|---|
-| 1 | Wake | move, jump, pulse tiers, fragment, exit |
-| 2 | Listen | Listener, whisper is safe, normal is heard |
-| 3 | Floors | one-way drop-through, keycard + locked door, multi-floor |
-| 4 | Crossfire | Sentry + projectiles, glass floor gamble |
-| 5 | Heavy | Deaf Brute (sneak), pressure plate, lanterns |
-| 6 | Pack | Hunter memory, amp vent lure, mute vent scouting |
-| 7 | Gates | one-way doors, mixed enemies |
-| 8 | Signal | everything + decoys |
-Tutorial = level design only; the only text is 1 short controls hint at level 1 start (fades after first move) and key glyphs on world-space hint signs (`?` panels lit by pulses).
+---
 
-## 10. HUD / UX (full spec in UI_UX.md)
-Top-left fragment counter; bottom-left ability icon + key badge + charge pips + red battery bar with pending-cost ghost; bottom-centre level name + progress line; red awareness bars above revealed enemies; world reticles; charge ring (white) + noise ring (red). Black/white/red only.
+## 4. The Unique Interlock: Sonar + Noise + Combat
 
-## 11. Game feel
-Hit-stop 0.08 s on death; zoom punch +6% on Scream (0.15 s in, 0.5 s out); shake by tier; chromatic aberration burst on Scream and detection; one white flash frame (alpha 0.35) on first detection; squash/stretch on jump/land; antenna wobble; robot disintegrates into white particles.
+The defining innovation of SIGNAL LOST is the triangular mechanical coupling between **Sight**, **Sound**, and **Violence**:
 
-## 12. Colour language (exact; theme resource `palette.tres`)
-`#000000` bg · `#1A1A1A` far · `#2B2B2B` mid · `#3D3D3D` near · `#FFFFFF` player/edges/UI · `#E00000` danger · `#5A0000` sensed smudge · pulse arc `#FFFFFF` α0.85. No other hues. Colour-blind mode: danger rendered as white outline + 45° hatch fill (shader flag), smudge as grey hatch.
+```
+                       [ COMBAT ACTION ]
+                      (Slash / Parry / Hit)
+                           ▲         │
+                          ╱           │ Emits Loud Combat Noise
+      Provides Target    ╱             │ (Radius: 180 - 450 px)
+      Position & Angle  ╱               ▼
+                       ╱           [ NOISE BUS ]
+                      │           (Acoustic Physics)
+                      │                 │
+     Illuminates      │                 │ Alerts Nearby Enemies
+     Entities         │                 │ to Investigate
+                      │                 ▼
+                 [ SONAR REVEAL ] ◄─── [ ENEMY ALERT ]
+             (Expanding Wavefront)    (FSM State Transition)
+```
+
+1. **Every Combat Action is an Acoustic Beacon**:
+   - A light Katana slash emits a 180 px noise ring.
+   - A heavy Naginata thrust emits a 320 px noise ring.
+   - A successful parry spark emits a sharp 260 px acoustic crack.
+   - Engaging one enemy in close combat automatically alerts any guard within earshot unless executed in a sound-damped **Mute Zone**.
+2. **Violence as Vision**:
+   - In pure darkness, an attacking enemy is invisible until they step into a sonar bubble or attack.
+   - When an enemy attacks, their blade gleam and telegraph flash illuminate their silhouette for 0.4s.
+   - Striking an enemy creates an explosive burst of sparks that illuminates surrounding walls for 0.6s. A skilled player can fight purely by the light of their own clashing blades.
+3. **The Stealth-Combat Spectrum**:
+   - Players are never forced into pure non-lethal stealth or mindless action.
+   - You may choose to ghost a level without raising a blade (earning the **Ghost Medal**).
+   - Alternatively, you can deliberately ring a heavy lantern or emit a **Scream** pulse to gather guards into a tight choke-point, then ambush them with wide Naginata sweeps.
+
+---
+
+## 5. Difficulty Philosophy & Fairness Guarantees
+
+SIGNAL LOST is designed to be tough, tense, and deeply rewarding—akin to *Sekiro: Shadows Die Twice* meets *Mark of the Ninja*—without unfair frustration:
+- **Segmented Health**: The hero has **3 Health Segments** (expandable to 5 via secret fragments). One hit does not mean instant death; single mistakes allow recovery, while consecutive mistakes are fatal.
+- **Fair Telegraph Minimums**: No hostile attack can ever hit in less than **18 frames (300 ms)** from telegraph start. Heavy attacks telegraph for **30 to 45 frames (500 to 750 ms)**.
+- **Attack Token Concurrency**: Regardless of how many enemies surround the hero, a centralized manager grants a maximum of **2 active attack tokens**. The rest circle, feint, or position for ranged support.
+- **Generous I-Frames on Reaction**: A properly timed Dash grants **12 invulnerability frames (200 ms)**. A successful Parry grants **16 frames of invulnerability** and instantly staggers the attacker.
+
+---
+
+## 6. Progression & Arsenal Unlocks
+
+| Level | Sector Name | Unlocked Weapon / Tool | Key Ability / Mechanic |
+|---|---|---|---|
+| **Level 1** | Sub-Level 0: Wake | **Katana (Single Blade)** | Balanced slash combo, Whisper/Normal pulse. |
+| **Level 2** | Acoustic Bay | Shuriken Sub-Weapon | Throw shuriken (`F`) to hit distant switches/distract. |
+| **Level 3** | Iron Tier | **Naginata (Spear-Blade)** | Long reach, pierce, vertical ceiling switches. |
+| **Level 4** | Glass Foundry | Scream Pulse Overdrive | Heavy shockwave, glass shattering, lantern swings. |
+| **Level 5** | Resonance Deep | **Twin Kunai (Dual Daggers)** | Ultra-fast strikes, wall-stick, low noise profile. |
+| **Level 6** | Ventilation Vault | Decoy Beacon Tool | Thrown acoustic lure emitting remote Normal pulses. |
+| **Level 7** | The Great Seal | Grappling Wire Tool | Vertical ascent, ceiling latching, platform skips. |
+| **Level 8** | Redoubt Perimeter | Pulse Resonance Overcharge | Resonate glyphs to trigger sector-wide machinery. |
+| **Level 9** | Shogun Citadel | All Weapons & Masteries | Multi-stage boss showdown with the Shogun Mech. |
+
+---
+
+## 7. The Escape-Room Puzzle Layer
+
+SIGNAL LOST V2 elevates level progression from simple navigation to atmospheric environmental puzzles:
+1. **Echo Glyphs**: Cryptographic runes etched into ancient walls. Flashing different pulse tiers reveals hidden numerical combinations or directional hints.
+2. **Resonance Panels**: Acoustic tuning forks built into bulkhead doors. When struck with matching acoustic frequencies (Whisper, Normal, or blade impact), they chime and unlock.
+3. **Harmonic Lanterns**: Puzzles requiring players to strike hanging lanterns in a specific order within a countdown window. Each lantern strike chimes across the sector, creating tactical noise tension.
+4. **Directional Blast Gates & Key Seals**: Secure airlocks requiring two distinct cryptographic artifacts hidden in separate wings of the facility.
+
+---
+
+## 8. Narrative Framing & World Lore
+
+Told entirely through minimal environmental fragments, terminal logs, and mechanical styling:
+- **The Setting**: Facility 09 ("The Silent Well"), an automated subterranean military research complex sealed three centuries after a catastrophic autonomous weapon war.
+- **The Hero (Cipher-0)**: A prototype cybernetic ronin unit reactivated after centuries of sleep. Cipher's optical sensors were destroyed during the initial purge, leaving only auditory acoustic processing arrays intact.
+- **The Enemy (The Automated Shogunate)**: The facility's automated defense network, which has mutated over centuries of isolation into a strict feudal hierarchy of tireless drone guardians led by the central autonomous AI core: **The Shogun Mech**.
+
+---
+
+## 9. What This Game Is NOT (Anti-Vision)
+
+To keep scope rock-solid and prevent feature creep:
+- **NOT an Open-World Metroidvania**: Levels are discrete, handcrafted challenge sectors (Levels 1–9), not a giant sprawling continuous maze requiring 15 hours of backtracking.
+- **NOT an RPG with Stat Grinds**: No XP farming, skill trees with +2% damage increments, weapon crafting, or loot drops. Mastery comes from player skill and weapon properties.
+- **NOT a Cover Shooter or Run-and-Gun**: You cannot hide behind chest-high walls and shoot assault rifles. You are an acoustic blade master operating in total shadow.
+- **NOT a 3D Game**: 100% 2D side-view physics with strictly planar collision geometry.

@@ -10,6 +10,10 @@ signal player_died(cause: StringName)
 @onready var battery: Battery = $Battery
 @onready var pulse_charger: PulseCharger = $PulseCharger
 @onready var footstep_emitter: FootstepEmitter = $FootstepEmitter
+@onready var health: HealthComponent = get_node_or_null("HealthComponent") as HealthComponent
+@onready var poise: PoiseComponent = get_node_or_null("PoiseComponent") as PoiseComponent
+@onready var combat: CombatController = get_node_or_null("CombatController") as CombatController
+@onready var hurtbox: HurtboxComponent = get_node_or_null("HurtboxComponent") as HurtboxComponent
 
 var is_alive: bool = true
 var death_time: float = 0.6
@@ -27,6 +31,11 @@ func _ready() -> void:
 	var glow: PointLight2D = get_node_or_null("GlowLight") as PointLight2D
 	if glow != null and glow.texture == null:
 		glow.texture = RevealTextureFactory.get_texture()
+
+	if health != null:
+		health.died.connect(func(cause: StringName) -> void:
+			die(cause)
+		)
 
 	if pulse_charger != null:
 		pulse_charger.charge_started.connect(func() -> void:
@@ -95,3 +104,14 @@ func die(cause: StringName) -> void:
 		if SceneRouter != null:
 			SceneRouter.restart_level()
 	)
+
+func intercept_hit(hostile_hitbox: Area2D) -> bool:
+	if combat != null:
+		return combat.intercept_hit(hostile_hitbox)
+	return false
+
+func take_damage(amount: int, knockback: Vector2 = Vector2.ZERO) -> bool:
+	if health != null:
+		return health.take_damage(amount, knockback)
+	die(&"caught")
+	return true

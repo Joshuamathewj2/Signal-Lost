@@ -9,14 +9,16 @@ var target_y: float = 0.0
 var trauma: float = 0.0
 var shake_time: float = 0.0
 var zoom_tween: Tween = null
-var base_zoom: float = 2.0
+var base_zoom: float = 1.8
+var current_target_zoom: float = 1.8
 
 func _ready() -> void:
 	add_to_group(&"camera_rig")
 	var cfg: GameConfigData = GameConfig.data
-	base_zoom = cfg.camera_zoom if cfg != null else 2.0
+	base_zoom = 1.8
+	current_target_zoom = 1.8
 	if camera != null:
-		camera.zoom = Vector2(base_zoom, base_zoom)
+		camera.zoom = Vector2(1.8, 1.8)
 		camera.position_smoothing_enabled = true
 		camera.position_smoothing_speed = cfg.camera_smoothing if cfg != null else 6.0
 
@@ -88,9 +90,23 @@ func _process(delta: float) -> void:
 	elif "facing" in target:
 		facing = target.get("facing")
 
-	var lookahead_dist: float = cfg.camera_lookahead if cfg != null else 40.0
+	var lookahead_dist: float = 48.0
 	var desired_lookahead: float = float(facing) * lookahead_dist
 	current_lookahead = lerpf(current_lookahead, desired_lookahead, 3.0 * delta)
+
+	# Dynamic combat zoom (1.8x base, 1.45x combat)
+	var combat_ctrl = target.get_node_or_null("CombatController")
+	var in_combat: bool = false
+	if combat_ctrl != null:
+		var c_state = combat_ctrl.get("current_state")
+		if c_state != null and int(c_state) != 0:
+			in_combat = true
+
+	var target_zoom_val: float = 1.45 if in_combat else 1.8
+	if zoom_tween == null or not zoom_tween.is_valid():
+		current_target_zoom = lerpf(current_target_zoom, target_zoom_val, 2.5 * delta)
+		if camera != null:
+			camera.zoom = Vector2(current_target_zoom, current_target_zoom)
 
 	# Vertical deadzone (24 px)
 	var diff_y: float = target.global_position.y - target_y

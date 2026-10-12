@@ -41,5 +41,11 @@ func update(delta: float) -> void:
 		transition(&"Stunned")
 		return
 
+	var player: Node2D = get_tree().get_first_node_in_group(&"player") as Node2D
+	if player != null and actor.global_position.distance_to(player.global_position) <= 48.0:
+		transition(&"Slam")
+		return
+
 	if actor.is_on_wall():
-		transition(&"Stunned")
+		transition(&"Stunned", {"duration": 2.0})
+		return

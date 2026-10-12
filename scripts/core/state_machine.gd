@@ -20,6 +20,8 @@ func _ready() -> void:
 			s.actor = actor
 			states[s.name] = s
 			states[StringName(s.name)] = s
+			states[s.name.to_lower()] = s
+			states[StringName(s.name.to_lower())] = s
 
 	if initial != null:
 		transition_to(initial.name)
@@ -27,12 +29,16 @@ func _ready() -> void:
 		transition_to(get_child(0).name)
 
 func transition_to(target_name: StringName, msg: Dictionary = {}) -> void:
-	if current != null and current.name == target_name and not msg.get("force", false):
+	if current != null and (current.name == target_name or current.name.to_lower() == str(target_name).to_lower()) and not msg.get("force", false):
 		return
 
 	if not states.has(target_name):
-		push_warning("StateMachine: state '%s' not found" % str(target_name))
-		return
+		var lower_target: StringName = StringName(str(target_name).to_lower())
+		if states.has(lower_target):
+			target_name = lower_target
+		else:
+			push_warning("StateMachine: state '%s' not found" % str(target_name))
+			return
 
 	var prev_name: StringName = current.name if current != null else &""
 	if current != null:

@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://cyumi_enemy_01"]
+
+[ext_resource type="PackedScene" path="res://scenes/enemies/enemy_base.tscn" id="1_eb01"]
+[ext_resource type="Resource" path="res://resources/enemies/enemy_yumi.tres" id="2_prof02"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/visuals/yumi_visual.tscn" id="3_yvis03"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_patrol.gd" id="4_pat04"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_investigate.gd" id="5_inv05"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_search.gd" id="6_src06"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_chase.gd" id="7_chs07"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_yumi_aim.gd" id="8_aim08"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_return.gd" id="9_ret09"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_stunned.gd" id="10_stn10"]
+
+[node name="Yumi" instance=ExtResource("1_eb01")]
+profile = ExtResource("2_prof02")
+kind = &"yumi"
+
+[node name="Visual" parent="." index="2" instance=ExtResource("3_yvis03")]
+
+[node name="StateMachine" parent="." index="7" node_paths=PackedStringArray("initial")]
+initial = NodePath("Patrol")
+
+[node name="Patrol" type="Node" parent="StateMachine" index="0"]
+script = ExtResource("4_pat04")
+
+[node name="Investigate" type="Node" parent="StateMachine" index="1"]
+script = ExtResource("5_inv05")
+
+[node name="Search" type="Node" parent="StateMachine" index="2"]
+script = ExtResource("6_src06")
+
+[node name="Chase" type="Node" parent="StateMachine" index="3"]
+script = ExtResource("7_chs07")
+
+[node name="Aim" type="Node" parent="StateMachine" index="4"]
+script = ExtResource("8_aim08")
+
+[node name="Return" type="Node" parent="StateMachine" index="5"]
+script = ExtResource("9_ret09")
+
+[node name="Stagger" type="Node" parent="StateMachine" index="6"]
+script = ExtResource("10_stn10")
+
+[node name="HealthComponent" parent="." index="8"]
+max_health = 1
+current_health = 1
+
+[node name="PoiseComponent" parent="." index="9"]
+max_poise = 20.0
+current_poise = 20.0

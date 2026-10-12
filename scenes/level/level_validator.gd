@@ -13,10 +13,10 @@ static func validate(data: LevelData) -> Dictionary:
 	var h: int = data.height
 
 	# 1. Dimensions check
-	if w > 40:
-		errors.append("Width %d exceeds max 40" % w)
-	if h > 22:
-		errors.append("Height %d exceeds max 22" % h)
+	if w > 48:
+		errors.append("Width %d exceeds max 48" % w)
+	if h > 32:
+		errors.append("Height %d exceeds max 32" % h)
 
 	for r in range(h):
 		if data.grid[r].length() != w:
@@ -73,7 +73,7 @@ static func validate(data: LevelData) -> Dictionary:
 				if manhattan < 5:
 					errors.append("Enemy '%s' at %s too close to player spawn %s (dist %d < 5)" % [e_char, str(e_cell), str(p_pos), manhattan])
 
-	# 6. Exit reachability on PlatformGraph
+	# 6. Exit & Keycard reachability on PlatformGraph
 	if p_cells.size() == 1 and e_cells.size() == 1 and errors.is_empty():
 		var graph: PlatformGraph = PlatformGraph.new()
 		graph.build(data)
@@ -81,24 +81,36 @@ static func validate(data: LevelData) -> Dictionary:
 		var p_start := Vector2((float(data.player_spawn.x) + 0.5) * 32.0, (float(data.player_spawn.y) + 1.0) * 32.0)
 		var p_exit := Vector2((float(data.exit_cell.x) + 0.5) * 32.0, (float(data.exit_cell.y) + 1.0) * 32.0)
 
-		# Initial path test
+		var k_cells: Array = data.cells.get("K", [])
+		var has_plate: bool = not (data.cells.get("_", []) as Array).is_empty()
+
+		# Open R doors if plate exists
+		if has_plate:
+			for r_pos in data.cells.get("R", []):
+				graph.set_door_open(r_pos, true)
+
+		# If there are keycards, verify player can reach each keycard
+		if not k_cells.is_empty():
+			for k_cell in k_cells:
+				var p_key := Vector2((float(k_cell.x) + 0.5) * 32.0, (float(k_cell.y) + 1.0) * 32.0)
+				var res_k: Dictionary = graph.find_path(p_start, p_key, true)
+				if (res_k.get("points", PackedVector2Array()) as PackedVector2Array).is_empty():
+					errors.append("Keycard at %s is not reachable from player spawn %s" % [str(k_cell), str(data.player_spawn)])
+
+			# Once keycards are reached, doors D unlock
+			for d_pos in data.cells.get("D", []):
+				graph.set_door_open(d_pos, true)
+
+			# Bidirectional Return Rule: from each keycard, assert player can reach exit
+			for k_cell in k_cells:
+				var p_key := Vector2((float(k_cell.x) + 0.5) * 32.0, (float(k_cell.y) + 1.0) * 32.0)
+				var res_exit_from_k: Dictionary = graph.find_path(p_key, p_exit, true)
+				if (res_exit_from_k.get("points", PackedVector2Array()) as PackedVector2Array).is_empty():
+					errors.append("Exit cell at %s is not reachable from keycard %s (soft-lock)" % [str(data.exit_cell), str(k_cell)])
+
+		# Validate path to exit
 		var res: Dictionary = graph.find_path(p_start, p_exit, true)
 		if (res.get("points", PackedVector2Array()) as PackedVector2Array).is_empty():
-			# Check if doors can be opened via keys/plates
-			var has_k: bool = not (data.cells.get("K", []) as Array).is_empty()
-			var has_plate: bool = not (data.cells.get("_", []) as Array).is_empty()
-
-			# Open D doors if K exists
-			if has_k:
-				for d_pos in data.cells.get("D", []):
-					graph.set_door_open(d_pos, true)
-			# Open R doors if plate exists
-			if has_plate:
-				for r_pos in data.cells.get("R", []):
-					graph.set_door_open(r_pos, true)
-
-			var res2: Dictionary = graph.find_path(p_start, p_exit, true)
-			if (res2.get("points", PackedVector2Array()) as PackedVector2Array).is_empty():
-				errors.append("Exit cell at %s is not reachable from player spawn %s" % [str(data.exit_cell), str(data.player_spawn)])
+			errors.append("Exit cell at %s is not reachable from player spawn %s" % [str(data.exit_cell), str(data.player_spawn)])
 
 	return { "errors": errors, "warnings": warnings }

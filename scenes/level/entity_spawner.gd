@@ -6,6 +6,9 @@ const LISTENER_SCENE: PackedScene = preload("res://scenes/enemies/listener.tscn"
 const SENTRY_SCENE: PackedScene = preload("res://scenes/enemies/sentry.tscn")
 const HUNTER_SCENE: PackedScene = preload("res://scenes/enemies/hunter.tscn")
 const BRUTE_SCENE: PackedScene = preload("res://scenes/enemies/brute.tscn")
+const ASHIGARU_SCENE: PackedScene = preload("res://scenes/enemies/ashigaru.tscn")
+const KENSHI_SCENE: PackedScene = preload("res://scenes/enemies/kenshi.tscn")
+const YUMI_SCENE: PackedScene = preload("res://scenes/enemies/yumi.tscn")
 
 static var _warned_stubs: Dictionary = {}
 
@@ -71,13 +74,15 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 	if data.cells.has("H"):
 		for cell in data.cells["H"]:
 			var cell_vec: Vector2i = cell
-			var h_pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, (float(cell_vec.y) + 1.0) * 32.0)
-			var hunter_inst: Node2D = HUNTER_SCENE.instantiate() as Node2D
-			hunter_inst.position = h_pos
-			hunter_inst.set_meta("spawn_pos", h_pos)
-			_setup_mover(hunter_inst, graph, bounds_per_row, cell_vec.y)
-			enemies_node.add_child(hunter_inst)
-			(result["enemies"] as Array).append(hunter_inst)
+			var is_ladder: bool = (data.cells["H"] as Array).has(cell_vec + Vector2i(0, 1)) or (data.cells["H"] as Array).has(cell_vec - Vector2i(0, 1))
+			if not is_ladder:
+				var h_pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, (float(cell_vec.y) + 1.0) * 32.0)
+				var hunter_inst: Node2D = HUNTER_SCENE.instantiate() as Node2D
+				hunter_inst.position = h_pos
+				hunter_inst.set_meta("spawn_pos", h_pos)
+				_setup_mover(hunter_inst, graph, bounds_per_row, cell_vec.y)
+				enemies_node.add_child(hunter_inst)
+				(result["enemies"] as Array).append(hunter_inst)
 
 	# 7. Spawn Brute enemies (B)
 	if data.cells.has("B"):
@@ -91,9 +96,45 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 			enemies_node.add_child(brute_inst)
 			(result["enemies"] as Array).append(brute_inst)
 
-	# 8. Stub warnings for unimplemented entities
+	# 8. Spawn Ashigaru enemies (A)
+	if data.cells.has("A"):
+		for cell in data.cells["A"]:
+			var cell_vec: Vector2i = cell
+			var a_pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, (float(cell_vec.y) + 1.0) * 32.0)
+			var ashigaru_inst: Node2D = ASHIGARU_SCENE.instantiate() as Node2D
+			ashigaru_inst.position = a_pos
+			ashigaru_inst.set_meta("spawn_pos", a_pos)
+			_setup_mover(ashigaru_inst, graph, bounds_per_row, cell_vec.y)
+			enemies_node.add_child(ashigaru_inst)
+			(result["enemies"] as Array).append(ashigaru_inst)
+
+	# 9. Spawn Kenshi duelist enemies (k)
+	if data.cells.has("k"):
+		for cell in data.cells["k"]:
+			var cell_vec: Vector2i = cell
+			var k_pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, (float(cell_vec.y) + 1.0) * 32.0)
+			var kenshi_inst: Node2D = KENSHI_SCENE.instantiate() as Node2D
+			kenshi_inst.position = k_pos
+			kenshi_inst.set_meta("spawn_pos", k_pos)
+			_setup_mover(kenshi_inst, graph, bounds_per_row, cell_vec.y)
+			enemies_node.add_child(kenshi_inst)
+			(result["enemies"] as Array).append(kenshi_inst)
+
+	# 10. Spawn Yumi archer enemies (Y)
+	if data.cells.has("Y"):
+		for cell in data.cells["Y"]:
+			var cell_vec: Vector2i = cell
+			var y_pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, (float(cell_vec.y) + 1.0) * 32.0)
+			var yumi_inst: Node2D = YUMI_SCENE.instantiate() as Node2D
+			yumi_inst.position = y_pos
+			yumi_inst.set_meta("spawn_pos", y_pos)
+			_setup_mover(yumi_inst, graph, bounds_per_row, cell_vec.y)
+			enemies_node.add_child(yumi_inst)
+			(result["enemies"] as Array).append(yumi_inst)
+
+	# 11. Stub warnings for unimplemented entities
 	for ch in data.cells.keys():
-		if ch != "#" and ch != "=" and ch != "P" and ch != "L" and ch != "|" and ch != "." and ch != "F" and ch != "K" and ch != "E" and ch != "D" and ch != "R" and ch != "_" and ch != ">" and ch != "<" and ch != "G" and ch != "~" and ch != "V" and ch != "v" and ch != "M" and ch != "S" and ch != "H" and ch != "B" and ch != "C" and ch != "?":
+		if ch != "#" and ch != "=" and ch != "P" and ch != "L" and ch != "|" and ch != "." and ch != "F" and ch != "K" and ch != "E" and ch != "D" and ch != "R" and ch != "_" and ch != ">" and ch != "<" and ch != "G" and ch != "~" and ch != "V" and ch != "v" and ch != "M" and ch != "S" and ch != "H" and ch != "B" and ch != "A" and ch != "k" and ch != "Y" and ch != "C" and ch != "?":
 			if not _warned_stubs.has(ch):
 				_warned_stubs[ch] = true
 				push_warning("STUB: spawn " + ch)

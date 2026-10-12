@@ -3,8 +3,8 @@ extends State
 
 var stun_timer: float = 1.2
 
-func enter(_msg: Dictionary = {}) -> void:
-	stun_timer = 1.2
+func enter(msg: Dictionary = {}) -> void:
+	stun_timer = float(msg.get("duration", 1.2))
 	if actor == null:
 		return
 

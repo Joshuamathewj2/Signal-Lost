@@ -39,6 +39,27 @@ func update(delta: float) -> void:
 
 	if actor.vision != null and actor.vision.is_spotted:
 		lost_timer = 0.0
+
+		# Attack range check
+		if machine != null and machine.has_node("Thrust"):
+			var player: Node2D = get_tree().get_first_node_in_group(&"player") as Node2D
+			if player != null and actor.global_position.distance_to(player.global_position) <= 44.0:
+				if AttackTokenManager == null or AttackTokenManager.request_token(actor):
+					transition(&"Thrust")
+					return
+		elif machine != null and machine.has_node("Duel"):
+			var player: Node2D = get_tree().get_first_node_in_group(&"player") as Node2D
+			if player != null and actor.global_position.distance_to(player.global_position) <= 48.0:
+				if AttackTokenManager == null or AttackTokenManager.request_token(actor):
+					transition(&"Duel")
+					return
+		elif machine != null and machine.has_node("Aim"):
+			var player: Node2D = get_tree().get_first_node_in_group(&"player") as Node2D
+			if player != null and actor.global_position.distance_to(player.global_position) <= 400.0:
+				if AttackTokenManager == null or AttackTokenManager.request_token(actor):
+					transition(&"Aim")
+					return
+
 		repath_timer -= delta
 		if repath_timer <= 0.0:
 			repath_timer = 0.25

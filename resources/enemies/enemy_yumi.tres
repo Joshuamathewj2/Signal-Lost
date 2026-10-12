@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="EnemyProfile" format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/enemy_profile.gd" id="1_yp01"]
+
+[resource]
+script = ExtResource("1_yp01")
+walk_speed = 40.0
+run_speed = 100.0
+turn_speed = 80.0
+hearing_threshold = 0.8
+hearing_mult = 1.2
+accepted_types = Array[int]([])
+sight_range = 400.0
+sight_angle_deg = 40.0
+search_time = 4.0
+investigate_wait = 1.5
+awareness_gain = 0.7
+awareness_decay = 0.15
+can_jump = true
+contact_kills = false
+tint = Color(0.88, 0, 0, 1)
+memory_size = 1
+fire_interval = 1.2
+projectile_speed = 520.0

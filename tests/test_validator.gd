@@ -28,7 +28,7 @@ func run() -> Array[String]:
 		dir.list_dir_begin()
 		var file_name := dir.get_next()
 		while file_name != "":
-			if not dir.current_is_dir() and file_name.ends_with(".txt"):
+			if not dir.current_is_dir() and file_name.begins_with("level_0") and file_name.ends_with(".txt"):
 				var full_path := "res://levels/" + file_name
 				var data: LevelData = ParserScript.parse_file(full_path)
 				if data == null:

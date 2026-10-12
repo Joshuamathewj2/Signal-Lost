@@ -153,6 +153,18 @@ func build(data: LevelData, custom_solid_fn: Callable = Callable()) -> void:
 				var dist_cost: float = Vector2(float(dx), float(rise)).length() * 1.3
 				_add_edge(id, nid, EdgeType.JUMP, dist_cost, false)
 
+	# 2.5 LADDERS (H): Connect bottom standable node to top standable node
+	if data.cells.has("H"):
+		for cell in data.cells["H"]:
+			var c: int = cell.x
+			for stand_c in standable_cells.keys():
+				if abs(stand_c.x - c) <= 1:
+					var id1: int = standable_cells[stand_c]
+					for stand_c2 in standable_cells.keys():
+						if abs(stand_c2.x - c) <= 1 and stand_c2.y < stand_c.y and (stand_c.y - stand_c2.y) <= 10:
+							var id2: int = standable_cells[stand_c2]
+							_add_edge(id1, id2, EdgeType.WALK, float(stand_c.y - stand_c2.y) * 1.0, true)
+
 func _add_edge(from_id: int, to_id: int, type: EdgeType, weight: float, both_ways: bool) -> void:
 	edge_types[Vector2i(from_id, to_id)] = int(type)
 	if not astar_all.has_point(from_id) or not astar_all.has_point(to_id):

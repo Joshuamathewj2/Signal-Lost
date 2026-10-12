@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://scenes/enemies/states/st_stunned.gd" id="6_stn06"]
 [ext_resource type="Script" path="res://scenes/enemies/states/st_search.gd" id="7_src07"]
 [ext_resource type="Script" path="res://scenes/enemies/states/st_return.gd" id="8_ret08"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_brute_slam.gd" id="9_slm09"]
 
 [node name="Brute" groups=["brute"] instance=ExtResource("1_eb01")]
 profile = ExtResource("2_prof02")
@@ -32,3 +33,14 @@ script = ExtResource("7_src07")
 
 [node name="Return" type="Node" parent="StateMachine" index="4"]
 script = ExtResource("8_ret08")
+
+[node name="Slam" type="Node" parent="StateMachine" index="5"]
+script = ExtResource("9_slm09")
+
+[node name="HealthComponent" parent="." index="8"]
+max_health = 6
+current_health = 6
+
+[node name="PoiseComponent" parent="." index="9"]
+max_poise = 120.0
+current_poise = 120.0

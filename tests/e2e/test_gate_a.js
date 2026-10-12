@@ -40,9 +40,9 @@ async function runGateA() {
   await page.locator('canvas').click();
   await page.waitForTimeout(1000);
 
-  // Take main menu screenshot
-  fs.mkdirSync('qa/shots/gate_a', { recursive: true });
-  await page.screenshot({ path: 'qa/shots/gate_a/01_gate_a_menu.png' });
+  const shotDir = process.env.SHOT_DIR || 'qa/shots/phase_0';
+  fs.mkdirSync(shotDir, { recursive: true });
+  await page.screenshot({ path: path.join(shotDir, '01_gate_a_menu.png') });
 
   // Load Level 1
   console.log('Starting Level 1...');
@@ -55,7 +55,7 @@ async function runGateA() {
 
   const snap1 = await page.evaluate(() => window.__SL);
   console.log('Initial Level 1 snapshot:', JSON.stringify(snap1.player));
-  await page.screenshot({ path: 'qa/shots/gate_a/02_gate_a_level_start.png' });
+  await page.screenshot({ path: path.join(shotDir, '02_gate_a_level_start.png') });
 
   console.log('Running 30-second movement sequence (Left, Right, Jump, Crouch)...');
   const startTime = Date.now();
@@ -67,20 +67,20 @@ async function runGateA() {
     await page.keyboard.down('KeyD');
     await page.waitForTimeout(1500);
     await page.keyboard.up('KeyD');
-    if (cycle === 1) await page.screenshot({ path: 'qa/shots/gate_a/03_gate_a_walking_right.png' });
+    if (cycle === 1) await page.screenshot({ path: path.join(shotDir, '03_gate_a_walking_right.png') });
 
     // Walk Left
     await page.keyboard.down('KeyA');
     await page.waitForTimeout(1500);
     await page.keyboard.up('KeyA');
-    if (cycle === 1) await page.screenshot({ path: 'qa/shots/gate_a/04_gate_a_walking_left.png' });
+    if (cycle === 1) await page.screenshot({ path: path.join(shotDir, '04_gate_a_walking_left.png') });
 
     // Jump
     await page.keyboard.down('KeyW');
     await page.waitForTimeout(200);
     await page.keyboard.up('KeyW');
     await page.waitForTimeout(400);
-    if (cycle === 1) await page.screenshot({ path: 'qa/shots/gate_a/05_gate_a_jumping.png' });
+    if (cycle === 1) await page.screenshot({ path: path.join(shotDir, '05_gate_a_jumping.png') });
 
     // Crouch / Sneak
     await page.keyboard.down('Shift');
@@ -88,13 +88,13 @@ async function runGateA() {
     await page.waitForTimeout(1000);
     await page.keyboard.up('KeyD');
     await page.keyboard.up('Shift');
-    if (cycle === 1) await page.screenshot({ path: 'qa/shots/gate_a/06_gate_a_crouch_sneak.png' });
+    if (cycle === 1) await page.screenshot({ path: path.join(shotDir, '06_gate_a_crouch_sneak.png') });
 
     const currentSnap = await page.evaluate(() => window.__SL);
     console.log(`Cycle ${cycle} [elapsed ${Math.round((Date.now() - startTime)/1000)}s] Pos: ${JSON.stringify(currentSnap.player?.pos)} Errors: ${errors.length}`);
   }
 
-  await page.screenshot({ path: 'qa/shots/gate_a/07_gate_a_after_30s.png' });
+  await page.screenshot({ path: path.join(shotDir, '07_gate_a_after_30s.png') });
 
   // Check in-engine recorded errors
   const engineErrors = await page.evaluate(() => window.__SL_errors || []);

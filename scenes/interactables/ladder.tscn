@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://cladder_interactable_01"]
+
+[ext_resource type="Script" path="res://scenes/interactables/ladder.gd" id="1_ld01"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ladder"]
+size = Vector2(24, 192)
+
+[node name="Ladder" type="Area2D"]
+script = ExtResource("1_ld01")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 96)
+shape = SubResource("RectangleShape2D_ladder")

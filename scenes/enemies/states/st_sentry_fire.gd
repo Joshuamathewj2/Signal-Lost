@@ -24,6 +24,8 @@ func enter(msg: Dictionary = {}) -> void:
 		fire_dir = actor.facing_direction
 	if "direction" in proj:
 		proj.direction = fire_dir
+	if "source_turret" in proj:
+		proj.source_turret = actor
 	if proj is Node2D:
 		(proj as Node2D).position = actor.global_position + fire_dir * 16.0
 	actor.get_parent().add_child(proj)

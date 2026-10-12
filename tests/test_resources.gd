@@ -15,7 +15,8 @@ func run() -> Array[String]:
 		"res://resources/enemies/enemy_hunter.tres",
 		"res://resources/enemies/enemy_brute.tres",
 		"res://resources/theme/palette_default.tres",
-		"res://resources/theme/palette_colorblind.tres"
+		"res://resources/theme/palette_colorblind.tres",
+		"res://resources/config/combat_config.tres"
 	]
 
 	for path in tres_paths:
@@ -80,6 +81,30 @@ func run() -> Array[String]:
 			failures.append("HudLabel font_size expected 22, got %d" % ui_theme.get_font_size(&"font_size", &"HudLabel"))
 		if ui_theme.get_font_size(&"font_size", &"LevelNameLabel") != 26:
 			failures.append("LevelNameLabel font_size expected 26, got %d" % ui_theme.get_font_size(&"font_size", &"LevelNameLabel"))
+
+	# Verify Combat Configuration
+	var combat_cfg: CombatConfigData = load("res://resources/config/combat_config.tres") as CombatConfigData
+	if combat_cfg == null:
+		failures.append("combat_config.tres is null or failed to load as CombatConfigData")
+	else:
+		if combat_cfg.health_segments_base != 3:
+			failures.append("combat_cfg health_segments_base expected 3, got %d" % combat_cfg.health_segments_base)
+		if combat_cfg.hero_poise_max != 100.0:
+			failures.append("combat_cfg hero_poise_max expected 100.0, got %f" % combat_cfg.hero_poise_max)
+		if combat_cfg.parry_window_frames != 6:
+			failures.append("combat_cfg parry_window_frames expected 6, got %d" % combat_cfg.parry_window_frames)
+		if combat_cfg.dash_i_frames != 12:
+			failures.append("combat_cfg dash_i_frames expected 12, got %d" % combat_cfg.dash_i_frames)
+		if combat_cfg.attack_token_limit != 2:
+			failures.append("combat_cfg attack_token_limit expected 2, got %d" % combat_cfg.attack_token_limit)
+
+	# Verify AttackData class
+	var attack_data: AttackData = AttackData.new()
+	if attack_data == null:
+		failures.append("AttackData failed to instantiate")
+	else:
+		if attack_data.total_frames() != 21:
+			failures.append("AttackData default total_frames expected 21, got %d" % attack_data.total_frames())
 
 	return failures
 
