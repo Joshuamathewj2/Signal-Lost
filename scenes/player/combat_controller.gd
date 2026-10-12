@@ -26,6 +26,8 @@ enum CombatState {
 @export var weapon_swap_mgr: WeaponSwapManager
 @export var assassination_sys: AssassinationSystem
 
+const SLASH_ARC_SCRIPT: Script = preload("res://scenes/fx/slash_arc.gd")
+
 var current_state: CombatState = CombatState.IDLE
 var current_combo: int = 0
 var combo_buffer: bool = false
@@ -317,6 +319,9 @@ func _process_attack(delta: float) -> void:
 		if elapsed >= s_time and elapsed < a_time:
 			if not hitbox.is_active:
 				hitbox.activate()
+				var facing_i: int = motor.facing if motor != null else 1
+				var p_node: Node2D = player if player != null else self
+				SLASH_ARC_SCRIPT.spawn(p_node, Vector2(0.0, -12.0), facing_i, current_attack_data.reach)
 		else:
 			if hitbox.is_active:
 				hitbox.deactivate()

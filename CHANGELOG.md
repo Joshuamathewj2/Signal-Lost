@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## Milestone: Phase 7 Implementation — Visual Overhaul, Scarf Physics & Tactical HUD (100% COMPLETE)
+- Overhauled Cipher-0 samurai hero vector rig with kabuto crest, articulated limbs, scabbard, and 6-node Verlet physics scarf; enhanced Ashigaru, Kenshi, Yumi, and Oni Brute vector silhouettes; implemented procedural white slash arc trails with tapering curves; overhauled tactical HUD with active weapon [Q] badge and segmented HP [■][■][■] display; verified 29/29 unit tests, Gates A & B, step_c, step_d, and Phase 7 E2E tests with zero errors.
+
 ## Milestone: Phase 6 Implementation — Escape-Room Puzzle Layer & Cryptography (100% COMPLETE)
 - Implemented PuzzleController managing multi-element states and blast door unlock sequences; implemented EchoGlyphs with tier-selective visual reveals (Whisper cyan, Normal white, Scream red); implemented ResonancePanels with acoustic tuning and lockout penalties; implemented HarmonicLanterns with spring physics and pitch sequences; implemented SealLocks with hydraulic release noise; wired H key emergency acoustic hint beacon; verified 29/29 unit tests, Gates A & B, and Phase 6 E2E test suite with zero errors.
 

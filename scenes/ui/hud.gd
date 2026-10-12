@@ -11,6 +11,8 @@ extends CanvasLayer
 @onready var secondary_slot: Control = $Root/SafeArea/BottomLeft/AbilityRow/SecondarySlot
 @onready var level_label: Control = $Root/SafeArea/BottomCentre
 @onready var controls_hint: Label = get_node_or_null("Root/SafeArea/BottomCentre/ControlsHint") as Label
+@onready var weapon_badge: Label = get_node_or_null("Root/SafeArea/BottomLeft/TacticalStatus/WeaponBadge") as Label
+@onready var health_label: Label = get_node_or_null("Root/SafeArea/BottomLeft/TacticalStatus/HealthLabel") as Label
 
 var _has_moved: bool = false
 var _player_node: CharacterBody2D = null
@@ -79,3 +81,28 @@ func _find_and_bind_player(level_root: Node = null) -> void:
 		var battery = player.get_node_or_null("Battery")
 		var charger = player.get_node_or_null("PulseCharger")
 		battery_bar.setup(battery, charger)
+
+	if player != null:
+		var health_comp = player.get_node_or_null("HealthComponent")
+		if health_comp != null and health_comp.has_signal("health_changed") and not health_comp.health_changed.is_connected(_on_health_changed):
+			health_comp.health_changed.connect(_on_health_changed)
+			_on_health_changed(int(health_comp.get("current_health")), int(health_comp.get("max_health")))
+
+		var swap_mgr = player.get_node_or_null("WeaponSwapManager")
+		if swap_mgr != null and swap_mgr.has_signal("weapon_swapped") and not swap_mgr.weapon_swapped.is_connected(_on_weapon_swapped):
+			swap_mgr.weapon_swapped.connect(_on_weapon_swapped)
+			var w_name: StringName = swap_mgr.call("get_weapon_name", swap_mgr.get("current_weapon"))
+			_on_weapon_swapped(swap_mgr.get("current_weapon"), w_name)
+
+
+func _on_health_changed(cur: int, max_hp: int) -> void:
+	if health_label != null:
+		var blocks: String = ""
+		for i in range(max_hp):
+			blocks += "[■]" if i < cur else "[□]"
+		health_label.text = "HP: " + blocks
+
+
+func _on_weapon_swapped(_type: int, w_name: StringName) -> void:
+	if weapon_badge != null:
+		weapon_badge.text = "[Q] " + str(w_name).to_upper()

@@ -126,20 +126,20 @@
 ---
 
 ### PHASE 7: Visual Overhaul, Scarf Physics & Tactical HUD
-- [ ] **P7-T01**: Redraw Cipher-0 samurai vector rig (54 px height) with articulated limbs and scabbard.
-  - *Files Touched*: `scenes/player/player_visual.gd` | *Owner*: Opus 5.5 | *Status*: PENDING
-- [ ] **P7-T02**: Implement Verlet physics scarf trailing velocity, wind, and inertia behind the hero.
-  - *Files Touched*: `scenes/player/visuals/scarf_physics.gd` | *Owner*: Opus 5.5 | *Status*: PENDING
-- [ ] **P7-T03**: Redraw enemy silhouettes (Ashigaru, Kenshi, Yumi, Brute) with distinctive shape contours.
-  - *Files Touched*: `scenes/enemies/visuals/*_visual.gd` | *Owner*: Sonnet 5.5 | *Status*: PENDING
-- [ ] **P7-T04**: Implement procedural curved white `Line2D` slash trails with directional sparks.
-  - *Files Touched*: `scenes/fx/slash_arc.gd`, `shaders/slash_arc.gdshader` | *Owner*: Sonnet 5.5 | *Status*: PENDING
-- [ ] **P7-T05**: Overhaul `hud.tscn` to match target reference: weapon badge, segmented health, score.
-  - *Files Touched*: `scenes/ui/hud.gd`, `scenes/ui/hud.tscn` | *Owner*: Sonnet 5.5 | *Status*: PENDING
-- [ ] **P7-T06**: Implement 3-plane parallax background builder (shoji screens, gantries, pillars).
-  - *Files Touched*: `scenes/world/background_builder.gd` | *Owner*: Sonnet 5.5 | *Status*: PENDING
-- [ ] **P7-T07**: Execute `test_step_c.js` and `test_step_d.js`. Log evidence to `/qa/shots/phase_7/`.
-  - *Files Touched*: `tests/e2e/test_step_d.js` | *Owner*: Sonnet 5.5 | *Status*: PENDING
+- [x] **P7-T01**: Redraw Cipher-0 samurai vector rig (54 px height) with articulated limbs and scabbard.
+  - *Files Touched*: `scenes/player/player_visual.gd` | *Owner*: Opus 5.5 | *Status*: COMPLETED
+- [x] **P7-T02**: Implement Verlet physics scarf trailing velocity, wind, and inertia behind the hero.
+  - *Files Touched*: `scenes/player/visuals/scarf_physics.gd` | *Owner*: Opus 5.5 | *Status*: COMPLETED
+- [x] **P7-T03**: Redraw enemy silhouettes (Ashigaru, Kenshi, Yumi, Brute) with distinctive shape contours.
+  - *Files Touched*: `scenes/enemies/visuals/*_visual.gd` | *Owner*: Sonnet 5.5 | *Status*: COMPLETED
+- [x] **P7-T04**: Implement procedural curved white `Line2D` slash trails with directional sparks.
+  - *Files Touched*: `scenes/fx/slash_arc.gd`, `shaders/slash_arc.gdshader` | *Owner*: Sonnet 5.5 | *Status*: COMPLETED
+- [x] **P7-T05**: Overhaul `hud.tscn` to match target reference: weapon badge, segmented health, score.
+  - *Files Touched*: `scenes/ui/hud.gd`, `scenes/ui/hud.tscn` | *Owner*: Sonnet 5.5 | *Status*: COMPLETED
+- [x] **P7-T06**: Implement 3-plane parallax background builder (shoji screens, gantries, pillars).
+  - *Files Touched*: `scenes/world/background_builder.gd` | *Owner*: Sonnet 5.5 | *Status*: COMPLETED
+- [x] **P7-T07**: Execute `test_step_c.js` and `test_step_d.js`. Log evidence to `/qa/shots/phase_7/`.
+  - *Files Touched*: `tests/e2e/test_step_d.js`, `tests/e2e/test_phase_7.js` | *Owner*: Sonnet 5.5 | *Status*: COMPLETED
 
 ---
 
