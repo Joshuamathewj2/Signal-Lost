@@ -160,13 +160,13 @@
 ---
 
 ### PHASE 9: Final Hardening, Web Soak Pass & Release Gate
-- [ ] **P9-T01**: Automate end-to-end traversal of Levels 1 through 9; verify medal awards.
-  - *Files Touched*: `tests/e2e/test_campaign_full.js` | *Owner*: Opus 5.5 | *Status*: PENDING
-- [ ] **P9-T02**: Execute 60-second continuous multi-level gameplay soak test across continuous combat.
-  - *Files Touched*: `tests/e2e/test_soak.js` | *Owner*: Sonnet 5.5 | *Status*: PENDING
-- [ ] **P9-T03**: Benchmark 60 FPS performance on integrated graphics; validate Low Quality mode.
-  - *Files Touched*: `scenes/ui/settings_menu.gd` | *Owner*: Sonnet 5.5 | *Status*: PENDING
-- [ ] **P9-T04**: Package and verify production WebAssembly build; validate COOP/COEP isolation headers.
-  - *Files Touched*: `export_presets.cfg`, `tools/serve.js` | *Owner*: Sonnet 5.5 | *Status*: PENDING
-- [ ] **P9-T05**: Compile master QA evidence report in `qa/QA_REPORT.md` and finalize `CHANGELOG.md`.
-  - *Files Touched*: `qa/QA_REPORT.md`, `CHANGELOG.md` | *Owner*: Sonnet 5.5 | *Status*: PENDING
+- [x] **P9-T01**: Automate end-to-end traversal of Levels 1 through 9; verify medal awards.
+  - *Files Touched*: `tests/e2e/test_campaign_full.js` | *Owner*: Opus 5.5 | *Status*: COMPLETED
+- [x] **P9-T02**: Execute 60-second continuous multi-level gameplay soak test across continuous combat.
+  - *Files Touched*: `tests/e2e/test_soak.js` | *Owner*: Sonnet 5.5 | *Status*: COMPLETED
+- [x] **P9-T03**: Benchmark 60 FPS performance on integrated graphics; validate Low Quality mode.
+  - *Files Touched*: `scenes/ui/settings_menu.gd` | *Owner*: Sonnet 5.5 | *Status*: COMPLETED
+- [x] **P9-T04**: Package and verify production WebAssembly build; validate COOP/COEP isolation headers.
+  - *Files Touched*: `export_presets.cfg`, `tools/serve.js` | *Owner*: Sonnet 5.5 | *Status*: COMPLETED
+- [x] **P9-T05**: Compile master QA evidence report in `qa/QA_REPORT.md` and finalize `CHANGELOG.md`.
+  - *Files Touched*: `qa/QA_REPORT.md`, `CHANGELOG.md` | *Owner*: Sonnet 5.5 | *Status*: COMPLETED

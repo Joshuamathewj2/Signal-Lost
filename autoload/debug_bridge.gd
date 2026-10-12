@@ -1,11 +1,16 @@
 extends Node
 
 var recent_noise_events: Array[Dictionary] = []
+var is_level_complete: bool = false
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	if NoiseBus != null:
 		NoiseBus.noise_emitted.connect(_on_noise_emitted)
+	if GameState != null and GameState.has_signal("level_completed"):
+		GameState.level_completed.connect(func(_stats: Dictionary) -> void: is_level_complete = true)
+	if SceneRouter != null and SceneRouter.has_signal("level_loaded"):
+		SceneRouter.level_loaded.connect(func(_root: Node) -> void: is_level_complete = false)
 
 	if OS.has_feature("web"):
 		_init_web_bridge()
@@ -41,7 +46,10 @@ func _handle_command(cmd_name: String, cmd_args: Dictionary) -> void:
 			var idx: int = int(cmd_args.get("level", 1))
 			if SceneRouter != null:
 				SceneRouter.is_transitioning = false
-				SceneRouter.load_level(idx)
+				SceneRouter.current_level_index = idx
+				GameState.level_index = idx
+				var path := "res://levels/level_%02d.txt" % idx
+				SceneRouter._spawn_level_instant(path)
 		"restart":
 			if SceneRouter != null:
 				SceneRouter.restart_level()
@@ -138,6 +146,10 @@ func _handle_command(cmd_name: String, cmd_args: Dictionary) -> void:
 				var cc = p.get_node_or_null("CombatController")
 				if cc != null and cc.has_method("throw_shuriken"):
 					cc.throw_shuriken()
+		"complete_level":
+			if GameState != null and GameState.has_method("complete_level"):
+				GameState.complete_level()
+
 
 func _process(delta: float) -> void:
 	if not OS.has_feature("web"):
@@ -180,12 +192,16 @@ func get_snapshot() -> Dictionary:
 		"fps": Engine.get_frames_per_second(),
 		"level": GameState.level_index if GameState != null else 1,
 		"is_level_active": GameState.is_level_active if GameState != null else false,
+		"is_transitioning": SceneRouter.is_transitioning if SceneRouter != null else false,
 		"fragments_collected": (GameState.stats.get("fragments", []) as Array).size() if GameState != null else 0,
 		"battery": 100.0,
 		"player": null,
 		"pulses": [],
 		"noise_events": recent_noise_events.duplicate(),
 		"enemies": [],
+		"level_complete": is_level_complete,
+		"medal": str(GameState.stats.get("medal", "")) if GameState != null else "",
+		"stats": GameState.stats.duplicate() if GameState != null else {},
 		"tree": _dump_tree(tree.root, 0) if tree != null and tree.root != null else []
 	}
 

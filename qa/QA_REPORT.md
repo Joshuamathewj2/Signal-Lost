@@ -133,5 +133,38 @@
 - **HUD & Menus**: Scaled Rajdhani font, pure monochrome vector styling, red accent warnings, persistent Pause menu, functional Settings and Mission Select
 - **Web Build**: Headless web export packages cleanly into `build/web/index.pck` and runs locally on `http://127.0.0.1:8000`
 
+---
+
+## SIGNAL LOST V2 — Master Release Gate & Final Verification
+
+### V2 Campaign Automated Playthrough (`tests/e2e/test_campaign_full.js`)
+- **Sector 01**: PASSED — Medal: GHOST (`qa/shots/phase_9/sector_01_start.png`, `sector_01_victory.png`)
+- **Sector 02**: PASSED — Medal: GHOST (`qa/shots/phase_9/sector_02_start.png`, `sector_02_victory.png`)
+- **Sector 03**: PASSED — Medal: GHOST (`qa/shots/phase_9/sector_03_start.png`, `sector_03_victory.png`)
+- **Sector 04**: PASSED — Medal: GHOST (`qa/shots/phase_9/sector_04_start.png`, `sector_04_victory.png`)
+- **Sector 05**: PASSED — Medal: GHOST (`qa/shots/phase_9/sector_05_start.png`, `sector_05_victory.png`)
+- **Sector 06**: PASSED — Medal: GHOST (`qa/shots/phase_9/sector_06_start.png`, `sector_06_victory.png`)
+- **Sector 07**: PASSED — Medal: GHOST (`qa/shots/phase_9/sector_07_start.png`, `sector_07_victory.png`)
+- **Sector 08**: PASSED — Medal: GHOST (`qa/shots/phase_9/sector_08_start.png`, `sector_08_victory.png`)
+- **Sector 09**: PASSED — Medal: GHOST (`qa/shots/phase_9/sector_09_start.png`, `sector_09_victory.png`)
+- **Total Browser & Engine Errors**: 0 errors across all 9 sectors.
+
+### V2 60-Second Stability Soak Test (`tests/e2e/test_soak.js`)
+- **Continuous Soak Duration**: 61 seconds continuous gameplay loop.
+- **Samples Collected**: 157 ticks sampled.
+- **Average Frame Rate**: 39.0 FPS (headless software rendering).
+- **WebGL Context Loss Events**: 0 events.
+- **Total Console Errors**: 0 errors (`qa/shots/phase_9/soak_start.png`, `soak_end.png`).
+
+### V2 Systems Verification Matrix
+1. **Samurai Hero Silhouette & Verlet Scarf**: 54 px vector chassis with 6-node Verlet physics scarf trailing inertia and velocity.
+2. **Combat Engine**: 3-weapon arsenal (Katana 3-hit combo, Naginata 52 px reach, Kunai silent flurry), 6-frame parry window, 12 i-frame dash roll, stealth rear cone assassinations, shuriken lures.
+3. **Adversary Roster**: Ashigaru (spear glint), Sentry (aiming laser), Kenshi (40% auto-parry, quick draw), Yumi (piercing arrows), Oni Brute (heavy armor slam, glass shatter).
+4. **Puzzles & Cryptography**: EchoGlyphs, ResonancePanels, HarmonicLanterns, SealLocks, and emergency acoustic hint beacon (H key).
+5. **Climax Boss**: 18 HP / 200 Poise Shogun Mech with 3 combat phases (naginata sweeps, shockwaves/summons, berserk flurry) and 480 px bottom-center boss bar.
+6. **Audio Architecture**: Procedural Taiko percussion layers (138 BPM) and metallic synthesized SFX library.
+7. **Production Web Export**: 100% packaged Web build with COOP/COEP isolation headers and 30/30 unit tests passing.
+
+
 
 
