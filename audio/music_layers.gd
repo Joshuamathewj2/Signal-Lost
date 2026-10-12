@@ -92,12 +92,12 @@ func _process(delta: float) -> void:
 	var alert: float = GameState.alert_level if GameState != null else 0.0
 	var chasing: bool = GameState.is_any_enemy_chasing if GameState != null else false
 
-	var tgt_l0: float = -8.0
+	var tgt_l0: float = -12.0 if chasing else -8.0
 	var tgt_l1: float = -12.0 if alert >= 0.2 else -80.0
 	var tgt_l2: float = -10.0 if alert >= 0.5 else -80.0
-	var tgt_l3: float = -6.0 if chasing else -80.0
+	var tgt_l3: float = 0.0 if chasing else -80.0
 
-	var fade_rate: float = 80.0 * delta / 0.8
+	var fade_rate: float = 80.0 * delta / (0.3 if chasing else 2.5)
 	p_l0.volume_db = move_toward(p_l0.volume_db, tgt_l0, fade_rate)
 	p_l1.volume_db = move_toward(p_l1.volume_db, tgt_l1, fade_rate)
 	p_l2.volume_db = move_toward(p_l2.volume_db, tgt_l2, fade_rate)
@@ -154,26 +154,30 @@ func _build_l2_tension() -> AudioStreamWAV:
 	return wav
 
 func _build_l3_chase() -> AudioStreamWAV:
-	# 120 BPM kick (sine 60 Hz) + hat (noise 8 ms)
+	# 138 BPM driving taiko percussion (beat interval = 60 / 138 s ~ 0.4348 s)
 	var total: int = int(8.0 * 44100.0)
 	var arr := PackedFloat32Array()
 	arr.resize(total)
-	var half_beat: int = int(0.5 * 44100.0)
-	for b in range(16):
-		var start: int = b * half_beat
-		# Kick (0.08 s)
-		for j in range(int(0.08 * 44100.0)):
+	var beat_samples: float = 44100.0 * (60.0 / 138.0)
+	var num_beats: int = int(float(total) / beat_samples)
+	for b in range(num_beats):
+		var start: int = int(float(b) * beat_samples)
+		# Taiko primary strike (120 Hz downward glide to 60 Hz)
+		var strike_len: int = int(0.20 * 44100.0)
+		for j in range(strike_len):
 			var idx: int = start + j
 			if idx < total:
 				var t: float = float(j) / 44100.0
-				var env: float = exp(-t / 0.03)
-				arr[idx] += sin(t * TAU * 60.0) * env * 0.5
-		# Hat (8 ms)
-		var hat_start: int = start + int(half_beat * 0.5)
-		for j in range(int(0.008 * 44100.0)):
-			var idx: int = hat_start + j
+				var env: float = exp(-t / 0.07)
+				var freq: float = 120.0 - (60.0 * (t / 0.20))
+				arr[idx] += sin(t * TAU * freq) * env * 0.65
+		# Wood clatter / rim on eighth-note offbeat
+		var offbeat: int = start + int(beat_samples * 0.5)
+		var rim_len: int = int(0.015 * 44100.0)
+		for j in range(rim_len):
+			var idx: int = offbeat + j
 			if idx < total:
-				arr[idx] += randf_range(-0.15, 0.15)
+				arr[idx] += randf_range(-0.18, 0.18) * exp(-float(j) / 200.0)
 	var wav: AudioStreamWAV = Synth.to_wav(arr)
 	wav.loop_mode = AudioStreamWAV.LOOP_FORWARD
 	wav.loop_end = total

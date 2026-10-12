@@ -157,6 +157,40 @@ static func build() -> Dictionary:
 	lib[&"ui_select"] = Synth.to_wav(s_uis)
 	lib[&"ui_back"] = Synth.to_wav(s_uib)
 
+	# 21. sfx_katana_slash (0.09 s) - High-pass noise swoosh
+	var s_ks := Synth.noise(0.09)
+	s_ks = Synth.env_exp(s_ks, 0.035)
+	lib[&"sfx_katana_slash"] = Synth.to_wav(s_ks)
+
+	# 22. sfx_naginata_thrust (0.16 s) - Air displacement pop + resonant tone
+	var s_nt := Synth.sine(140.0, 0.16)
+	s_nt = Synth.env_exp(s_nt, 0.07)
+	var s_ntn := Synth.env_exp(Synth.noise(0.16), 0.04)
+	for i in range(s_nt.size()):
+		s_nt[i] = s_nt[i] * 0.7 + s_ntn[i] * 0.3
+	lib[&"sfx_naginata_thrust"] = Synth.to_wav(s_nt)
+
+	# 23. sfx_blade_clash (0.22 s) - Resonant dual-comb filtered metal strike
+	var s_bc1 := Synth.sine(880.0, 0.22)
+	var s_bc2 := Synth.sine(1320.0, 0.22)
+	var s_bc := Synth.env_exp(Synth.noise(0.22), 0.06)
+	for i in range(s_bc.size()):
+		s_bc[i] = (s_bc[i] * 0.4 + (s_bc1[i] + s_bc2[i]) * 0.3)
+	lib[&"sfx_blade_clash"] = Synth.to_wav(s_bc)
+
+	# 24. sfx_parry_deflect (0.28 s) - High 1800 Hz pure bell ping
+	var s_pd := Synth.sine(1800.0, 0.28)
+	var s_pd2 := Synth.sine(3600.0, 0.28)
+	for i in range(s_pd.size()):
+		s_pd[i] = (s_pd[i] * 0.7 + s_pd2[i] * 0.3)
+	s_pd = Synth.env_exp(s_pd, 0.14)
+	lib[&"sfx_parry_deflect"] = Synth.to_wav(s_pd)
+
+	# 25. sfx_arrow_whistle (0.35 s) - Descending sinusoidal whistle
+	var s_aw := Synth.glide(1200.0, 500.0, 0.35)
+	s_aw = Synth.env_exp(s_aw, 0.25)
+	lib[&"sfx_arrow_whistle"] = Synth.to_wav(s_aw)
+
 	var elapsed: int = Time.get_ticks_msec() - t0
 	DebugFlags.log(&"audio", "SfxLibrary rendered in %d ms (< 1500 ms limit)" % elapsed)
 

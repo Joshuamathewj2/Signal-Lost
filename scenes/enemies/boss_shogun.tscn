@@ -1,0 +1,65 @@
+[gd_scene format=3 uid="uid://cboss_shogun_root_01"]
+
+[ext_resource type="Script" path="res://scenes/enemies/boss_shogun.gd" id="1_bs01"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/visuals/shogun_visual.tscn" id="2_vis02"]
+[ext_resource type="Script" path="res://scenes/combat/health_component.gd" id="3_hlt03"]
+[ext_resource type="Script" path="res://scenes/combat/poise_component.gd" id="4_poi04"]
+[ext_resource type="Script" path="res://scenes/combat/hitbox_component.gd" id="5_hit05"]
+[ext_resource type="Script" path="res://scenes/combat/hurtbox_component.gd" id="6_hrt06"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_bbody"]
+radius = 20.0
+height = 64.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bhit"]
+radius = 50.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_bhurt"]
+radius = 24.0
+height = 68.0
+
+[node name="BossShogun" type="CharacterBody2D"]
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("1_bs01")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -32)
+shape = SubResource("CapsuleShape2D_bbody")
+
+[node name="Visual" parent="." instance=ExtResource("2_vis02")]
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("3_hlt03")
+max_health = 18
+current_health = 18
+
+[node name="PoiseComponent" type="Node" parent="."]
+script = ExtResource("4_poi04")
+max_poise = 200.0
+current_poise = 200.0
+
+[node name="HitboxComponent" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 4
+monitoring = false
+monitorable = true
+script = ExtResource("5_hit05")
+damage = 2
+poise_damage = 35.0
+knockback_force = 220.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
+position = Vector2(0, -32)
+shape = SubResource("CircleShape2D_bhit")
+
+[node name="HurtboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("health_component", "poise_component")]
+collision_layer = 8
+collision_mask = 4
+script = ExtResource("6_hrt06")
+health_component = NodePath("../HealthComponent")
+poise_component = NodePath("../PoiseComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+position = Vector2(0, -32)
+shape = SubResource("CapsuleShape2D_bhurt")

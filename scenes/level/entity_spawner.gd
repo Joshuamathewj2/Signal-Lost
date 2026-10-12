@@ -9,6 +9,7 @@ const BRUTE_SCENE: PackedScene = preload("res://scenes/enemies/brute.tscn")
 const ASHIGARU_SCENE: PackedScene = preload("res://scenes/enemies/ashigaru.tscn")
 const KENSHI_SCENE: PackedScene = preload("res://scenes/enemies/kenshi.tscn")
 const YUMI_SCENE: PackedScene = preload("res://scenes/enemies/yumi.tscn")
+const BOSS_SHOGUN_SCENE: PackedScene = preload("res://scenes/enemies/boss_shogun.tscn")
 
 static var _warned_stubs: Dictionary = {}
 
@@ -132,9 +133,20 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 			enemies_node.add_child(yumi_inst)
 			(result["enemies"] as Array).append(yumi_inst)
 
-	# 11. Stub warnings for unimplemented entities
+	# 11. Spawn Boss Shogun (W)
+	if data.cells.has("W"):
+		for cell in data.cells["W"]:
+			var cell_vec: Vector2i = cell
+			var w_pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, (float(cell_vec.y) + 1.0) * 32.0)
+			var shogun_inst: Node2D = BOSS_SHOGUN_SCENE.instantiate() as Node2D
+			shogun_inst.position = w_pos
+			shogun_inst.set_meta("spawn_pos", w_pos)
+			enemies_node.add_child(shogun_inst)
+			(result["enemies"] as Array).append(shogun_inst)
+
+	# 12. Stub warnings for unimplemented entities
 	for ch in data.cells.keys():
-		if ch != "#" and ch != "=" and ch != "P" and ch != "L" and ch != "|" and ch != "." and ch != "F" and ch != "K" and ch != "E" and ch != "D" and ch != "R" and ch != "_" and ch != ">" and ch != "<" and ch != "G" and ch != "~" and ch != "V" and ch != "v" and ch != "M" and ch != "S" and ch != "H" and ch != "B" and ch != "A" and ch != "k" and ch != "Y" and ch != "C" and ch != "?":
+		if ch != "#" and ch != "=" and ch != "P" and ch != "L" and ch != "|" and ch != "." and ch != "F" and ch != "K" and ch != "E" and ch != "D" and ch != "R" and ch != "_" and ch != ">" and ch != "<" and ch != "G" and ch != "~" and ch != "V" and ch != "v" and ch != "M" and ch != "S" and ch != "H" and ch != "B" and ch != "A" and ch != "k" and ch != "Y" and ch != "C" and ch != "?" and ch != "W":
 			if not _warned_stubs.has(ch):
 				_warned_stubs[ch] = true
 				push_warning("STUB: spawn " + ch)

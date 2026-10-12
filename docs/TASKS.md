@@ -144,18 +144,18 @@
 ---
 
 ### PHASE 8: Shogun Mech Climax Boss & Audio Polish
-- [ ] **P8-T01**: Implement Shogun Mech Phase 1 (Naginata sweeps) and Phase 2 (Acoustic shockwaves).
-  - *Files Touched*: `scenes/enemies/boss_shogun.tscn`, `st_shogun_phase1.gd` | *Owner*: Opus 5.5 | *Status*: PENDING
-- [ ] **P8-T02**: Implement Shogun Mech Phase 3 (Sonic dash, berserk flurry, electrified floor).
-  - *Files Touched*: `scenes/enemies/states/st_shogun_phase3.gd` | *Owner*: Opus 5.5 | *Status*: PENDING
-- [ ] **P8-T03**: Implement bottom-center 480 px boss vitality and poise meter (`BossBar`).
-  - *Files Touched*: `scenes/ui/boss_health_bar.gd` | *Owner*: Sonnet 5.5 | *Status*: PENDING
-- [ ] **P8-T04**: Implement dynamic taiko percussion cross-fader in `music_layers.gd` triggered on alert.
-  - *Files Touched*: `audio/music_layers.gd` | *Owner*: Sonnet 5.5 | *Status*: PENDING
-- [ ] **P8-T05**: Synthesize metallic combat clangs, blade swooshes, and parry deflects in `sfx_library.gd`.
-  - *Files Touched*: `audio/sfx_library.gd` | *Owner*: Sonnet 5.5 | *Status*: PENDING
-- [ ] **P8-T06**: Execute `test_boss_shogun.gd`. Capture boss battle evidence to `/qa/shots/phase_8/`.
-  - *Files Touched*: `tests/test_boss_shogun.gd` | *Owner*: Sonnet 5.5 | *Status*: PENDING
+- [x] **P8-T01**: Implement Shogun Mech Phase 1 (Naginata sweeps) and Phase 2 (Acoustic shockwaves).
+  - *Files Touched*: `scenes/enemies/boss_shogun.tscn`, `st_shogun_phase1.gd` | *Owner*: Opus 5.5 | *Status*: COMPLETED
+- [x] **P8-T02**: Implement Shogun Mech Phase 3 (Sonic dash, berserk flurry, electrified floor).
+  - *Files Touched*: `scenes/enemies/states/st_shogun_phase3.gd` | *Owner*: Opus 5.5 | *Status*: COMPLETED
+- [x] **P8-T03**: Implement bottom-center 480 px boss vitality and poise meter (`BossBar`).
+  - *Files Touched*: `scenes/ui/boss_health_bar.gd` | *Owner*: Sonnet 5.5 | *Status*: COMPLETED
+- [x] **P8-T04**: Implement dynamic taiko percussion cross-fader in `music_layers.gd` triggered on alert.
+  - *Files Touched*: `audio/music_layers.gd` | *Owner*: Sonnet 5.5 | *Status*: COMPLETED
+- [x] **P8-T05**: Synthesize metallic combat clangs, blade swooshes, and parry deflects in `sfx_library.gd`.
+  - *Files Touched*: `audio/sfx_library.gd` | *Owner*: Sonnet 5.5 | *Status*: COMPLETED
+- [x] **P8-T06**: Execute `test_boss_shogun.gd`. Capture boss battle evidence to `/qa/shots/phase_8/`.
+  - *Files Touched*: `tests/test_boss_shogun.gd` | *Owner*: Sonnet 5.5 | *Status*: COMPLETED
 
 ---
 
