@@ -5,6 +5,9 @@ signal noise_emitted(event: NoiseEvent)
 func emit_noise_event(event: NoiseEvent) -> void:
 	emit_noise(event)
 
+func emit_noise_params(pos: Vector2, rad: float, loud: float, n_type: int = 0, src: Node = null) -> void:
+	emit_noise(NoiseEvent.make(pos, rad, loud, n_type as NoiseEvent.NoiseType, src))
+
 func emit_noise(event: NoiseEvent) -> void:
 	# Vent routing: if event within 96 px of an intake and event.source is not a vent -> after 0.2s emit at outlet
 	var is_source_vent: bool = event.source != null and (event.source.is_in_group(&"vent_intakes") or event.source.is_in_group(&"vent_outlets") or event.source.is_in_group(&"vent_mutes"))

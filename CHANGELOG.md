@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## Milestone: Phase 6 Implementation — Escape-Room Puzzle Layer & Cryptography (100% COMPLETE)
+- Implemented PuzzleController managing multi-element states and blast door unlock sequences; implemented EchoGlyphs with tier-selective visual reveals (Whisper cyan, Normal white, Scream red); implemented ResonancePanels with acoustic tuning and lockout penalties; implemented HarmonicLanterns with spring physics and pitch sequences; implemented SealLocks with hydraulic release noise; wired H key emergency acoustic hint beacon; verified 29/29 unit tests, Gates A & B, and Phase 6 E2E test suite with zero errors.
+
 ## Milestone: Phase 5 Implementation — Vertical Level Pipeline & Zero Soft-Locks (100% COMPLETE)
 - Upgraded LevelValidator with bidirectional return path checks and jump apex constraints; refactored multi-tier level pipeline (Levels 1–9) and eliminated Level 3 soft-lock with overhead return ladder; added case-insensitive state machine transitions and safe ladder climbing; upgraded camera rig with 48 px look-ahead and dynamic combat zoom; verified 27/27 unit tests, Gates A & B, and Phase 5 E2E test suite with zero errors.
 

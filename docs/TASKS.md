@@ -110,18 +110,18 @@
 ---
 
 ### PHASE 6: Escape-Room Puzzle Layer & Cryptography
-- [ ] **P6-T01**: Implement centralized `PuzzleController` managing multi-node puzzle triggers.
-  - *Files Touched*: `scenes/interactables/puzzle_controller.gd` | *Owner*: Opus 5.5 | *Status*: PENDING
-- [ ] **P6-T02**: Implement `EchoGlyph` (tier-selective reveal) and `ResonancePanel` (frequency matching).
-  - *Files Touched*: `scenes/interactables/echo_glyph.gd`, `resonance_panel.gd` | *Owner*: Opus 5.5 | *Status*: PENDING
-- [ ] **P6-T03**: Implement `HarmonicLantern` sequence (striking 1-2-3 in 8.0s unlocks blast gate).
-  - *Files Touched*: `scenes/interactables/harmonic_lantern.gd` | *Owner*: Sonnet 5.5 | *Status*: PENDING
-- [ ] **P6-T04**: Implement `SealLock` multi-node airlock gates requiring dual keys or simultaneous plates.
-  - *Files Touched*: `scenes/interactables/seal_lock.gd` | *Owner*: Sonnet 5.5 | *Status*: PENDING
-- [ ] **P6-T05**: Wire `H` key to emit emergency directional acoustic hint beacon towards `E`.
-  - *Files Touched*: `scenes/player/hint_beacon.gd` | *Owner*: Sonnet 5.5 | *Status*: PENDING
-- [ ] **P6-T06**: Execute puzzle unit suite. Capture evidence to `/qa/shots/phase_6/`.
-  - *Files Touched*: `tests/test_puzzle_resonance.gd` | *Owner*: Sonnet 5.5 | *Status*: PENDING
+- [x] **P6-T01**: Implement centralized `PuzzleController` managing multi-node puzzle triggers.
+  - *Files Touched*: `scenes/interactables/puzzle_controller.gd` | *Owner*: Opus 5.5 | *Status*: COMPLETED
+- [x] **P6-T02**: Implement `EchoGlyph` (tier-selective reveal) and `ResonancePanel` (frequency matching).
+  - *Files Touched*: `scenes/interactables/echo_glyph.gd`, `resonance_panel.gd` | *Owner*: Opus 5.5 | *Status*: COMPLETED
+- [x] **P6-T03**: Implement `HarmonicLantern` sequence (striking 1-2-3 in 8.0s unlocks blast gate).
+  - *Files Touched*: `scenes/interactables/harmonic_lantern.gd` | *Owner*: Sonnet 5.5 | *Status*: COMPLETED
+- [x] **P6-T04**: Implement `SealLock` multi-node airlock gates requiring dual keys or simultaneous plates.
+  - *Files Touched*: `scenes/interactables/seal_lock.gd` | *Owner*: Sonnet 5.5 | *Status*: COMPLETED
+- [x] **P6-T05**: Wire `H` key to emit emergency directional acoustic hint beacon towards `E`.
+  - *Files Touched*: `scenes/player/hint_beacon.gd` | *Owner*: Sonnet 5.5 | *Status*: COMPLETED
+- [x] **P6-T06**: Execute puzzle unit suite. Capture evidence to `/qa/shots/phase_6/`.
+  - *Files Touched*: `tests/test_puzzle_resonance.gd` | *Owner*: Sonnet 5.5 | *Status*: COMPLETED
 
 ---
 
