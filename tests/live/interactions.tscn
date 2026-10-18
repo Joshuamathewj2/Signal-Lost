@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tests/live/interactions.gd" id="1_it01"]
+
+[node name="Interactions" type="Node"]
+script = ExtResource("1_it01")

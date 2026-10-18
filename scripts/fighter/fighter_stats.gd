@@ -21,6 +21,7 @@ var max_fall_speed: float = 900.0
 var coyote_time: float = 0.10
 var jump_buffer: float = 0.10
 var drop_through_time: float = 0.20
+var knockback_friction: float = 600.0  ## decel while control-locked (knockback slide)
 
 var can_jump: bool = true
 var jump_cooldown: float = 0.0
@@ -36,7 +37,7 @@ var weight_class: StringName = &"medium"
 const LOCOMOTION_KEYS: PackedStringArray = [
 	"run_speed", "sneak_speed", "ground_accel", "ground_friction", "air_accel", "gravity",
 	"fall_gravity_mult", "jump_velocity", "jump_cut_mult", "max_fall_speed", "coyote_time",
-	"jump_buffer", "drop_through_time",
+	"jump_buffer", "drop_through_time", "knockback_friction",
 ]
 
 
@@ -67,7 +68,8 @@ func apply_dict(d: Dictionary, context: String = "fighter") -> FighterStats:
 
 func apply_game_config(cfg: GameConfigData) -> FighterStats:
 	for key in LOCOMOTION_KEYS:
-		set(key, cfg.get(key))
+		if key in cfg:
+			set(key, cfg.get(key))
 	return self
 
 

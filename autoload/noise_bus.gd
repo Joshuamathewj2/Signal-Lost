@@ -2,6 +2,22 @@ extends Node
 
 signal noise_emitted(event: NoiseEvent)
 
+## Intensity front-end (0.0-1.0, data/noise.json) over the radius/loudness bus.
+## Hearing still applies distance falloff + wall attenuation per listener.
+func emit_intensity(source: Node, pos: Vector2, intensity: float, tag: StringName = &"", n_type: int = NoiseEvent.NoiseType.COMBAT) -> NoiseEvent:
+	var cfg: Dictionary = CombatTuning.noise()
+	var i: float = clampf(intensity, 0.0, 1.0)
+	var ev := NoiseEvent.make(pos, i * float(cfg.get("intensity_to_radius", 400.0)), i * float(cfg.get("intensity_to_loudness", 2.5)), n_type as NoiseEvent.NoiseType, source)
+	ev.tag = tag
+	emit_noise(ev)
+	return ev
+
+
+## Emits the intensity configured for a hero/villain action tag (noise.json "actions").
+func emit_action(source: Node, pos: Vector2, tag: StringName, n_type: int = NoiseEvent.NoiseType.COMBAT) -> NoiseEvent:
+	return emit_intensity(source, pos, CombatTuning.action_intensity(tag), tag, n_type)
+
+
 func emit_noise_event(event: NoiseEvent) -> void:
 	emit_noise(event)
 

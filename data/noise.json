@@ -1,0 +1,22 @@
+{
+ "_doc": "Noise intensity model (0.0-1.0) layered on the existing NoiseBus. emit_intensity() converts intensity to the bus's radius/loudness; HearingComponent still applies distance falloff and wall attenuation (raycasts). Existing stealth emitters (footsteps, pulses, combo strikes) keep their tuned radius/loudness; these tags let enemies tell actions apart.",
+ "intensity_to_radius": 400.0,
+ "intensity_to_loudness": 2.5,
+ "actions": {
+  "walk": 0.2,
+  "run": 0.5,
+  "jump": 0.3,
+  "land": 0.6,
+  "dash": 0.4,
+  "attack": 0.8,
+  "parry": 0.7,
+  "clash": 0.7,
+  "execution": 0.9,
+  "wall_slam": 0.8
+ },
+ "reactions": {
+  "land":  {"max_distance": 180.0, "face": true},
+  "dash":  {"max_distance": 110.0, "face": true, "dodge_chance": 0.30},
+  "parry": {"max_distance": 150.0, "face": true, "hesitate": 0.35, "backoff": 120.0}
+ }
+}

@@ -9,6 +9,7 @@ var step_timer: float = 0.0
 func _ready() -> void:
 	if motor != null:
 		motor.landed.connect(_on_motor_landed)
+		motor.jumped.connect(_on_motor_jumped)
 
 func _process(delta: float) -> void:
 	if player == null or motor == null:
@@ -40,6 +41,7 @@ func _emit_step() -> void:
 		NoiseEvent.NoiseType.FOOTSTEP,
 		player
 	)
+	ev.tag = &"run" if speed_x > 110.0 else &"walk"
 	NoiseBus.emit_noise(ev)
 
 func _on_motor_landed(impact_speed: float) -> void:
@@ -53,4 +55,11 @@ func _on_motor_landed(impact_speed: float) -> void:
 			NoiseEvent.NoiseType.LAND,
 			player
 		)
+		ev.tag = &"land"
 		NoiseBus.emit_noise(ev)
+
+
+## Jump take-off scuff (data/noise.json actions.jump, default 0.3).
+func _on_motor_jumped() -> void:
+	if player != null and NoiseBus != null:
+		NoiseBus.emit_action(player, player.global_position, &"jump", NoiseEvent.NoiseType.FOOTSTEP)

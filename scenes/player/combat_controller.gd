@@ -9,6 +9,7 @@ signal combo_changed(combo_index: int)
 signal parry_success(attacker: Node)
 signal guard_state_changed(is_guarding: bool)
 signal dash_started
+signal clashed(attacker: Node)
 
 enum CombatState {
 	IDLE,
@@ -52,6 +53,10 @@ const DASH_DURATION: float = 0.25
 const DASH_SPEED: float = 400.0
 const DASH_COOLDOWN: float = 0.50
 const DASH_SLASH_COOLDOWN: float = 1.20
+
+## Last time (s) the katana hitbox was live - a hostile melee hit landing within
+## data/combat.json clash.window_frames of it is a weapon clash, not damage.
+var _slash_live_time: float = -100.0
 
 var plunge_recovery_timer: float = 0.0
 var takedown_timer: float = 0.0
@@ -299,6 +304,7 @@ func handle_heavy_attack_input() -> void:
 			NoiseEvent.NoiseType.COMBAT,
 			player
 		)
+		ev.tag = &"attack"
 		NoiseBus.emit_noise(ev)
 
 	_configure_hitbox(current_attack_data)
@@ -375,6 +381,7 @@ func handle_dash_input() -> void:
 
 	if NoiseBus != null and player != null:
 		var ev: NoiseEvent = NoiseEvent.make(player.global_position, 60.0, 0.4, NoiseEvent.NoiseType.FOOTSTEP, player)
+		ev.tag = &"dash"
 		NoiseBus.emit_noise(ev)
 
 	dash_started.emit()
@@ -425,6 +432,7 @@ func start_combo_strike(step: int) -> void:
 			NoiseEvent.NoiseType.COMBAT,
 			player
 		)
+		ev.tag = &"attack"
 		NoiseBus.emit_noise(ev)
 
 	_configure_hitbox(current_attack_data)
@@ -480,6 +488,7 @@ func _process_attack(delta: float) -> void:
 
 	if hitbox != null:
 		if elapsed >= s_time and elapsed < a_time:
+			_slash_live_time = _now()
 			if not hitbox.is_active:
 				hitbox.activate()
 				var facing_i: int = motor.facing if motor != null else 1
@@ -547,6 +556,9 @@ func stop_guard() -> void:
 
 
 func intercept_hit(hostile_hitbox: Area2D) -> bool:
+	if _is_clash(hostile_hitbox):
+		_execute_clash(hostile_hitbox)
+		return true
 	if current_state == CombatState.PARRYING:
 		_execute_parry_deflect(hostile_hitbox)
 		return true
@@ -590,9 +602,73 @@ func _execute_parry_deflect(hostile_hitbox: Area2D) -> void:
 
 	if NoiseBus != null and player != null:
 		var ev: NoiseEvent = NoiseEvent.make(player.global_position, 260.0, 2.2, NoiseEvent.NoiseType.COMBAT, player)
+		ev.tag = &"parry"
 		NoiseBus.emit_noise(ev)
 
 	parry_success.emit(attacker)
+
+
+func _now() -> float:
+	return float(Time.get_ticks_msec()) / 1000.0
+
+
+## Weapon clash: a hostile MELEE hit arriving while (or within a few frames
+## after) the katana is live, from an enemy in front of the hero within reach.
+## Projectiles and hazards never clash (they are parried / dodged instead).
+func _is_clash(hostile_hitbox: Area2D) -> bool:
+	if hostile_hitbox == null or player == null:
+		return false
+	if current_state != CombatState.ATTACKING and current_state != CombatState.DASH_SLASH:
+		return false
+	var cfg: Dictionary = CombatTuning.combat("clash")
+	if _now() - _slash_live_time > float(cfg.get("window_frames", 4)) / 60.0:
+		return false
+	if hostile_hitbox.has_method("deflect") or hostile_hitbox is Projectile:
+		return false
+	var attacker: Node2D = hostile_hitbox.get_parent() as Node2D
+	if attacker == null or not attacker.is_in_group(&"enemies"):
+		return false
+	var dx: float = attacker.global_position.x - player.global_position.x
+	var facing_dir: int = motor.facing if motor != null else 1
+	return dx * float(facing_dir) > -4.0 and absf(dx) <= float(cfg.get("max_distance", 64.0))
+
+
+## Enemy side of a clash: the katana reached an enemy whose own melee is live.
+func clash_with(attacker: Node2D) -> void:
+	var hb: Area2D = attacker.get_node_or_null("Hitbox") as Area2D
+	if hb != null:
+		_execute_clash(hb)
+
+
+func _execute_clash(hostile_hitbox: Area2D) -> void:
+	var cfg: Dictionary = CombatTuning.combat("clash")
+	var attacker: Node2D = hostile_hitbox.get_parent() as Node2D
+	var facing_dir: float = float(motor.facing) if motor != null else 1.0
+	var mid: Vector2 = (player.global_position + attacker.global_position) * 0.5 + Vector2(0.0, -12.0)
+	var push: float = float(cfg.get("pushback", 170.0))
+
+	# Both blades rebound: hero slides back, attacker is shoved and loses its swing.
+	if hitbox != null:
+		hitbox.deactivate()
+	player.velocity.x = -facing_dir * push
+	if attacker.has_method("apply_impulse"):
+		attacker.call("apply_impulse", Vector2(facing_dir * push, 0.0), float(cfg.get("attacker_lock", 0.2)))
+	elif "velocity" in attacker:
+		attacker.set("velocity", Vector2(facing_dir * push, 0.0))
+	var sm: Node = attacker.get_node_or_null("StateMachine")
+	if sm != null and sm.get("current") != null and (sm.get("current") as Node).has_method("interrupt"):
+		(sm.get("current") as Node).call("interrupt")
+
+	ParticlesFactory.spawn_hit_spark(player.get_parent(), mid)
+	ParticlesFactory.spawn_sprite_hit_spark(player.get_parent(), mid)
+	if AudioManager != null:
+		AudioManager.play_sfx(&"sfx_blade_clash", mid)
+	if is_inside_tree():
+		HitStop.freeze(get_tree(), float(cfg.get("hitstop_ms", 70)) / 1000.0)
+		get_tree().call_group(&"camera_rig", &"add_trauma", float(cfg.get("shake", 0.25)))
+	if NoiseBus != null:
+		NoiseBus.emit_action(player, mid, &"clash")
+	clashed.emit(attacker)
 
 
 func _execute_guard_absorption(hostile_hitbox: Area2D) -> void:

@@ -85,6 +85,12 @@ func _execute_slam() -> void:
 			elif player.has_method("die"):
 				player.call("die", &"crushed")
 
+	# Friendly fire (data/combat.json friendly_fire.shockwaves): allies in the
+	# slam radius are crushed too.
+	var wave: DamageInfo = DamageInfo.make(2, actor, DamageInfo.Faction.ENEMY, Vector2(320.0, -80.0), &"shockwave")
+	wave.poise_damage = 60.0
+	Shockwave.strike(get_tree(), slam_pos, REACH, wave, actor)
+
 	# Shatter nearby glass floors
 	var glass_nodes: Array[Node] = get_tree().get_nodes_in_group(&"wave_reactive")
 	for node in glass_nodes:

@@ -58,6 +58,21 @@ var fighter: Fighter = null
 ## data/enemies/<kind>.json (locomotion / jump / dash / nav / combat tuning)
 var enemy_data: Dictionary = {}
 
+## Emitted when this enemy reacts to a tagged hero noise (land / dash / parry).
+signal reacted_to_hero(tag: StringName)
+signal executed
+signal wall_slammed
+
+# Step 0C interaction state (tuning: data/combat.json)
+var _recent_hits: Array[float] = []
+var _dodge_ready_at: float = 0.0
+var _knock_speed: float = 0.0
+var _knock_window: float = 0.0
+var _slammed: bool = false
+## Real time (s) until which this enemy's melee is live (set by attack states via
+## mark_attack_active). A hero slash arriving now is a clash, not damage.
+var _attack_live_until: float = -100.0
+
 
 func _ready() -> void:
 	add_to_group(&"enemies")
@@ -67,6 +82,8 @@ func _ready() -> void:
 	fighter = get_node_or_null("Fighter") as Fighter
 	if fighter != null:
 		_setup_fighter()
+	if NoiseBus != null:
+		NoiseBus.noise_emitted.connect(_on_bus_noise)
 
 	# Physics Layer 4 (enemy), Mask 1 (world) | 2 (one_way)
 	collision_layer = 0
@@ -207,6 +224,9 @@ func _physics_process(delta: float) -> void:
 
 	if evade_cooldown > 0.0:
 		evade_cooldown -= delta
+	if _knock_window > 0.0:
+		_knock_window -= delta
+		_check_wall_slam()
 
 	if is_evading:
 		evade_timer -= delta
@@ -313,10 +333,16 @@ func _on_damaged(amount: int, knockback: Vector2) -> void:
 	if is_dead:
 		return
 
+	var w: Dictionary = CombatTuning.weight(weight_class())
+	var armored: bool = is_hyper_armored()
+	var kb: Vector2 = knockback * float(w.get("knockback_mult", 1.0))
+	if armored:
+		kb *= float(w.get("armored_knockback_mult", 0.1))
 	if fighter != null:
-		apply_impulse(velocity + knockback, 0.2)
+		apply_impulse(velocity + kb, 0.0 if armored else float(w.get("stagger_lock", 0.2)))
 	else:
-		velocity += knockback
+		velocity += kb
+	_arm_wall_slam(kb.x)
 	var vis: Node = get_node_or_null("Visual")
 	if vis != null:
 		if vis.has_method("play_anim"):
@@ -324,8 +350,8 @@ func _on_damaged(amount: int, knockback: Vector2) -> void:
 		if vis.has_method("flash"):
 			vis.call("flash")
 
-	# Flinch interrupts attack wind-up unless super-armored (Brute)
-	if kind != &"brute":
+	# Flinch interrupts attack wind-up unless hyper-armored (weight class / JSON states)
+	if not armored:
 		if state_machine != null and state_machine.current != null:
 			if state_machine.current.has_method("interrupt"):
 				state_machine.current.call("interrupt")
@@ -335,6 +361,8 @@ func _on_damaged(amount: int, knockback: Vector2) -> void:
 		var hp_ratio: float = float(health_component.current_health) / float(health_component.max_health)
 		if hp_ratio <= 0.25 and not retreat_mode:
 			_trigger_low_hp_behavior()
+
+	_register_hit_for_dodge()
 
 	# Statistical evasion check (chance by type and cooldown)
 	if not is_evading and evade_cooldown <= 0.0 and health_component != null and health_component.current_health > 0:
@@ -451,6 +479,19 @@ func intercept_hit(hitbox_area: Area2D) -> bool:
 	if is_dead:
 		return false
 
+	# Weapon clash, enemy side: our melee is live while the katana arrives.
+	if _is_hero_attack(hitbox_area) and float(Time.get_ticks_msec()) / 1000.0 <= _attack_live_until:
+		var hero_combat: Node = hitbox_area.get_parent().get_node_or_null("CombatController")
+		if hero_combat != null and hero_combat.has_method("clash_with"):
+			_attack_live_until = -100.0
+			hero_combat.call("clash_with", self)
+			return true
+
+	# Execution: a staggered enemy struck by the hero is finished hard.
+	if poise_component != null and poise_component.is_staggered and _is_hero_attack(hitbox_area):
+		_execute_finisher(hitbox_area)
+		return true
+
 	if is_in_group(&"brute"):
 		var facing_dir: float = float(facing)
 		var is_frontal: bool = (hitbox_area.global_position.x - global_position.x) * facing_dir >= -6.0
@@ -476,6 +517,147 @@ func intercept_hit(hitbox_area: Area2D) -> bool:
 	if sm != null and sm.current != null and sm.current.has_method("intercept_hit"):
 		return bool(sm.current.call("intercept_hit", hitbox_area))
 	return false
+
+
+# --- Step 0C: weight classes, execution, dodge, wall slam, noise reactions ---
+
+## Attack states call this when their hit window opens (melee only).
+func mark_attack_active(duration: float) -> void:
+	var window: float = float(CombatTuning.combat("clash").get("window_frames", 4)) / 60.0
+	_attack_live_until = float(Time.get_ticks_msec()) / 1000.0 + duration + window
+
+
+func weight_class() -> StringName:
+	if enemy_data.has("weight_class"):
+		return StringName(str(enemy_data["weight_class"]))
+	return StringName(str(CombatTuning.combat("legacy_weight").get(String(kind), "medium")))
+
+
+func is_hyper_armored() -> bool:
+	var always: Variant = DataLoader.load_json(CombatTuning.COMBAT_JSON).get("legacy_hyper_armor_always", [])
+	if always is Array and (always as Array).has(String(kind)):
+		return true
+	match String(CombatTuning.weight(weight_class()).get("hyper_armor", "never")):
+		"always":
+			return true
+		"states":
+			var states: Array = enemy_data.get("hyper_armor_states", [])
+			return state_machine != null and state_machine.current != null and states.has(String(state_machine.current.name))
+	return false
+
+
+func _is_hero_attack(hitbox_area: Area2D) -> bool:
+	if hitbox_area == null or hitbox_area is Projectile:
+		return false
+	var p: Node = hitbox_area.get_parent()
+	return p != null and p.is_in_group(&"player")
+
+
+func _execute_finisher(hitbox_area: Area2D) -> void:
+	var cfg: Dictionary = CombatTuning.combat("execution")
+	var base: int = int(hitbox_area.get("damage")) if hitbox_area.get("damage") != null else 1
+	var dmg: int = int(round(float(base) * float(cfg.get("damage_mult", 2.0)))) + int(cfg.get("bonus_damage", 2))
+	var dir: float = signf(global_position.x - hitbox_area.global_position.x)
+	var info: DamageInfo = DamageInfo.make(dmg, hitbox_area.get_parent(), DamageInfo.Faction.PLAYER,
+			Vector2((dir if dir != 0.0 else 1.0) * 260.0, -60.0), &"execution")
+	info.hitstop_ms = int(cfg.get("hitstop_ms", 140))
+	info.shake = float(cfg.get("shake", 0.55))
+	info.apply_to(self)
+	for i in int(cfg.get("burst_count", 3)):
+		ParticlesFactory.spawn_blood_splat(get_parent(), global_position + Vector2(randf_range(-10.0, 10.0), randf_range(-24.0, 0.0)))
+	ParticlesFactory.spawn_sprite_hit_spark(get_parent(), global_position + Vector2(0.0, -12.0))
+	if NoiseBus != null:
+		NoiseBus.emit_action(hitbox_area.get_parent(), global_position, &"execution")
+	executed.emit()
+
+
+func _arm_wall_slam(knock_vx: float) -> void:
+	_knock_speed = absf(knock_vx)
+	_knock_window = 0.35
+	_slammed = false
+
+
+func _check_wall_slam() -> void:
+	if _slammed or is_dead or not is_on_wall():
+		return
+	var cfg: Dictionary = CombatTuning.combat("wall_slam")
+	if _knock_speed < float(cfg.get("min_speed", 180.0)):
+		return
+	_slammed = true
+	var info: DamageInfo = DamageInfo.make(int(cfg.get("bonus_damage", 1)), self, DamageInfo.Faction.NEUTRAL, Vector2.ZERO, &"wall_slam")
+	info.hitstop_ms = int(cfg.get("hitstop_ms", 80))
+	info.shake = float(cfg.get("shake", 0.35))
+	info.apply_to(self)
+	ParticlesFactory.spawn_landing_dust(get_parent(), global_position)
+	ParticlesFactory.spawn_hit_spark(get_parent(), global_position + Vector2(float(-facing) * 8.0, -8.0))
+	if NoiseBus != null:
+		NoiseBus.emit_action(self, global_position, &"wall_slam", NoiseEvent.NoiseType.IMPACT)
+	wall_slammed.emit()
+
+
+func _register_hit_for_dodge() -> void:
+	var cfg: Dictionary = CombatTuning.combat("dodge")
+	var now: float = float(Time.get_ticks_msec()) / 1000.0
+	_recent_hits.append(now)
+	var window: float = float(cfg.get("window", 1.2))
+	while not _recent_hits.is_empty() and now - _recent_hits[0] > window:
+		_recent_hits.remove_at(0)
+	if _recent_hits.size() >= int(cfg.get("hits_to_trigger", 2)) and now >= _dodge_ready_at and randf() < float(cfg.get("chance", 0.45)):
+		_dodge_ready_at = now + float(cfg.get("cooldown", 2.0))
+		_recent_hits.clear()
+		dodge_away()
+
+
+## Dash away from the hero (Fighter enemies) or backstep (legacy enemies).
+func dodge_away() -> bool:
+	if is_dead or (health_component != null and not health_component.is_alive()):
+		return false
+	var player: Node2D = get_tree().get_first_node_in_group(&"player") as Node2D
+	var away: int = -facing
+	if player != null:
+		away = 1 if global_position.x >= player.global_position.x else -1
+	if fighter != null:
+		fighter.facing = away
+		if fighter.request_dash(true):
+			var vis: Node = get_node_or_null("Visual")
+			if vis != null and vis.has_method("play_anim"):
+				vis.call("play_anim", &"evade")
+			return true
+		return false
+	face(-away)
+	evade_cooldown = 0.0
+	return try_evade()
+
+
+func _on_bus_noise(event: NoiseEvent) -> void:
+	if is_dead or event == null or event.tag == &"" or event.source == null or not event.source.is_in_group(&"player"):
+		return
+	var r: Dictionary = CombatTuning.reaction(event.tag)
+	if r.is_empty() or not is_inside_tree():
+		return
+	if global_position.distance_to(event.position) > float(r.get("max_distance", 0.0)):
+		return
+	if poise_component != null and poise_component.is_staggered:
+		return
+	# Walls block the reaction (same rule hearing uses).
+	var q := PhysicsRayQueryParameters2D.create(global_position + Vector2(0.0, -8.0), event.position + Vector2(0.0, -8.0), 1)
+	if not get_world_2d().direct_space_state.intersect_ray(q).is_empty():
+		return
+	var toward: int = 1 if event.position.x >= global_position.x else -1
+	if bool(r.get("face", false)):
+		face(toward)
+	match event.tag:
+		&"dash":
+			if randf() < float(r.get("dodge_chance", 0.0)):
+				dodge_away()
+		&"parry":
+			# The hero just turned a blow aside: hesitate and give ground.
+			if AttackTokenManager != null:
+				AttackTokenManager.release_token(self)
+			if mover != null:
+				mover.stop()
+			apply_impulse(Vector2(float(-toward) * float(r.get("backoff", 120.0)), 0.0), float(r.get("hesitate", 0.35)))
+	reacted_to_hero.emit(event.tag)
 
 
 func _on_died(_cause: StringName) -> void:

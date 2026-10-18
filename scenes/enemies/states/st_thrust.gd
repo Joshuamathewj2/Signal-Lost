@@ -54,6 +54,8 @@ func update(delta: float) -> void:
 	if elapsed >= STARTUP_TIME and elapsed < (STARTUP_TIME + ACTIVE_TIME):
 		if not hitbox_activated:
 			hitbox_activated = true
+			if actor.has_method("mark_attack_active"):
+				actor.call("mark_attack_active", ACTIVE_TIME)
 			_execute_thrust_hit()
 	elif elapsed >= (STARTUP_TIME + ACTIVE_TIME) and hitbox_activated:
 		hitbox_activated = false

@@ -192,8 +192,12 @@ func _apply_horizontal(dir: float, delta: float) -> void:
 	if dash_phase == DashPhase.ACTIVE:
 		body.velocity.x = float(facing) * stats.dash_speed
 		return
-	if dash_phase == DashPhase.TELEGRAPH or control_lock > 0.0:
+	if dash_phase == DashPhase.TELEGRAPH:
 		body.velocity.x = move_toward(body.velocity.x, 0.0, stats.ground_friction * delta)
+		return
+	if control_lock > 0.0:
+		# Knockback slide: lighter friction so hits visibly carry the body.
+		body.velocity.x = move_toward(body.velocity.x, 0.0, stats.knockback_friction * delta)
 		return
 	var speed: float = (stats.sneak_speed if is_sneaking else stats.run_speed) * speed_mult
 	var target_vx: float = dir * speed
@@ -251,10 +255,13 @@ func _set_crouch(crouched: bool) -> void:
 
 ## Dash in the facing direction. With stats.dash_telegraph > 0 the fighter first
 ## freezes in a readable wind-up (enemy dashes must be telegraphed, >= 0.4 s).
-func request_dash() -> bool:
-	if dash_phase != DashPhase.NONE or dash_cooldown_timer > 0.0 or control_lock > 0.0:
+func request_dash(skip_telegraph: bool = false) -> bool:
+	if dash_phase != DashPhase.NONE or dash_cooldown_timer > 0.0:
 		return false
-	if stats.dash_telegraph > 0.0:
+	if control_lock > 0.0 and not skip_telegraph:
+		return false
+	control_lock = 0.0
+	if stats.dash_telegraph > 0.0 and not skip_telegraph:
 		dash_phase = DashPhase.TELEGRAPH
 		dash_timer = stats.dash_telegraph
 		dash_telegraphed.emit(stats.dash_telegraph)

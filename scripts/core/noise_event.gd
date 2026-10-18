@@ -20,6 +20,9 @@ var loudness: float = 0.0
 var source_type: NoiseType = NoiseType.PULSE
 var timestamp: float = 0.0
 var emitter: Node = null
+## What made the sound (data/noise.json "actions": land, dash, parry, ...).
+## Lets listeners react to specific hero actions; empty for legacy emitters.
+var tag: StringName = &""
 
 # Aliases for robust backwards compatibility
 var type: NoiseType:

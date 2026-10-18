@@ -1,0 +1,43 @@
+{
+ "_doc": "Hero <-> villain interaction tuning (Step 0C). Times in seconds unless *_ms / *_frames. Velocities px/s.",
+ "clash": {
+  "window_frames": 4,
+  "max_distance": 64.0,
+  "pushback": 170.0,
+  "attacker_lock": 0.20,
+  "hitstop_ms": 70,
+  "shake": 0.25
+ },
+ "weight_classes": {
+  "light":  {"knockback_mult": 1.25, "stagger_lock": 0.30, "hyper_armor": "never"},
+  "medium": {"knockback_mult": 1.00, "stagger_lock": 0.22, "hyper_armor": "never"},
+  "heavy":  {"knockback_mult": 0.45, "stagger_lock": 0.10, "hyper_armor": "states", "armored_knockback_mult": 0.1},
+  "boss":   {"knockback_mult": 0.15, "stagger_lock": 0.05, "hyper_armor": "states", "armored_knockback_mult": 0.0}
+ },
+ "legacy_weight": {"brute": "heavy", "oni_enforcer": "heavy", "shield_bearer": "heavy", "boss_shogun": "boss"},
+ "legacy_hyper_armor_always": ["brute"],
+ "execution": {
+  "damage_mult": 2.0,
+  "bonus_damage": 2,
+  "hitstop_ms": 140,
+  "shake": 0.55,
+  "burst_count": 3
+ },
+ "dodge": {
+  "window": 1.2,
+  "hits_to_trigger": 2,
+  "chance": 0.45,
+  "cooldown": 2.0
+ },
+ "wall_slam": {
+  "min_speed": 180.0,
+  "bonus_damage": 1,
+  "hitstop_ms": 80,
+  "shake": 0.35
+ },
+ "friendly_fire": {
+  "parried_projectiles": true,
+  "hazards": true,
+  "shockwaves": true
+ }
+}

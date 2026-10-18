@@ -146,6 +146,8 @@ func update(delta: float) -> void:
 func _strike(reach: float, dmg: int, poise_dmg: float, knockback: float) -> void:
 	if actor == null:
 		return
+	if actor.has_method("mark_attack_active"):
+		actor.call("mark_attack_active", 0.067)
 
 	if NoiseBus != null:
 		var ev := NoiseEvent.make(actor.global_position, 200.0, 1.6, NoiseEvent.NoiseType.COMBAT, actor)
