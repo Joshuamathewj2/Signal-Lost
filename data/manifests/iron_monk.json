@@ -1,0 +1,442 @@
+{
+ "version": 1,
+ "unit": "iron_monk",
+ "atlas": "res://assets/sprites/atlases/iron_monk.png",
+ "atlas_size": [
+  1960,
+  350
+ ],
+ "scale": 0.254,
+ "foot_offset": 0,
+ "collision": {
+  "shape": "capsule",
+  "radius": 10,
+  "height": 34,
+  "units": "world px (after scale)"
+ },
+ "notes": "Iron Monk (v1). Flail spin is one pose; spinning is procedural (rotating flail sprite).",
+ "sources": {
+  "executioners_v1": "executioners_v1.jpg"
+ },
+ "erased_regions": [
+  {
+   "rect": [
+    900,
+    30,
+    1850,
+    180
+   ],
+   "reason": "title 'VOID EXECUTIONERS' + subtitle",
+   "sheet": "executioners_v1"
+  },
+  {
+   "rect": [
+    75,
+    214,
+    395,
+    252
+   ],
+   "reason": "text label 'THE EXECUTIONER'",
+   "sheet": "executioners_v1"
+  },
+  {
+   "rect": [
+    75,
+    518,
+    330,
+    557
+   ],
+   "reason": "text label 'THE PHANTOM'",
+   "sheet": "executioners_v1"
+  },
+  {
+   "rect": [
+    75,
+    757,
+    360,
+    796
+   ],
+   "reason": "text label 'THE IRON MONK'",
+   "sheet": "executioners_v1"
+  },
+  {
+   "rect": [
+    75,
+    1010,
+    425,
+    1048
+   ],
+   "reason": "text label 'THE BLOOD ARCHER'",
+   "sheet": "executioners_v1"
+  },
+  {
+   "rect": [
+    75,
+    1261,
+    310,
+    1300
+   ],
+   "reason": "text label 'THE WARDEN'",
+   "sheet": "executioners_v1"
+  },
+  {
+   "rect": [
+    2612,
+    1398,
+    2670,
+    1450
+   ],
+   "sheet": "executioners_v1",
+   "reason": "generator watermark (inverse-blended out, art underneath kept)"
+  }
+ ],
+ "animations": {
+  "idle": {
+   "frames": [
+    {
+     "id": "idle:0:executioners_v1@65,798",
+     "x": 211,
+     "y": 2,
+     "w": 194,
+     "h": 194,
+     "ox": 89,
+     "oy": 191,
+     "override": null,
+     "sheet": "executioners_v1",
+     "src": [
+      65,
+      798,
+      259,
+      992
+     ]
+    }
+   ],
+   "durations": [
+    0.125
+   ],
+   "loop": true,
+   "fps": 8,
+   "blend": "mix",
+   "anchor": "feet",
+   "procedural": {
+    "breathe": 0.02,
+    "period": 1.8
+   }
+  },
+  "walk": {
+   "frames": [
+    {
+     "id": "walk:0:executioners_v1@296,804",
+     "x": 407,
+     "y": 2,
+     "w": 173,
+     "h": 188,
+     "ox": 102,
+     "oy": 184,
+     "override": null,
+     "sheet": "executioners_v1",
+     "src": [
+      296,
+      804,
+      469,
+      992
+     ]
+    },
+    {
+     "id": "walk:1:executioners_v1@538,816",
+     "x": 1389,
+     "y": 2,
+     "w": 178,
+     "h": 176,
+     "ox": 83,
+     "oy": 172,
+     "override": null,
+     "sheet": "executioners_v1",
+     "src": [
+      538,
+      816,
+      716,
+      992
+     ]
+    }
+   ],
+   "durations": [
+    0.2,
+    0.2
+   ],
+   "loop": true,
+   "fps": 5,
+   "blend": "mix",
+   "anchor": "feet"
+  },
+  "spin": {
+   "frames": [
+    {
+     "id": "spin:0:executioners_v1@773,788",
+     "x": 2,
+     "y": 2,
+     "w": 207,
+     "h": 204,
+     "ox": 85,
+     "oy": 200,
+     "override": null,
+     "sheet": "executioners_v1",
+     "src": [
+      773,
+      788,
+      980,
+      992
+     ]
+    }
+   ],
+   "durations": [
+    0.125
+   ],
+   "loop": true,
+   "fps": 8,
+   "blend": "mix",
+   "anchor": "feet",
+   "procedural": {
+    "spin_flail": true
+   }
+  },
+  "chain_throw": {
+   "frames": [
+    {
+     "id": "chain_throw:0:executioners_v1@1005,810",
+     "x": 582,
+     "y": 2,
+     "w": 396,
+     "h": 182,
+     "ox": 179,
+     "oy": 178,
+     "override": null,
+     "sheet": "executioners_v1",
+     "src": [
+      1005,
+      810,
+      1401,
+      992
+     ]
+    }
+   ],
+   "durations": [
+    0.1667
+   ],
+   "loop": false,
+   "fps": 6,
+   "blend": "mix",
+   "anchor": "feet",
+   "events": [
+    {
+     "frame": 0,
+     "event": "spawn_projectile"
+    }
+   ]
+  },
+  "hit": {
+   "frames": [
+    {
+     "id": "hit:0:executioners_v1@1419,814",
+     "x": 1123,
+     "y": 2,
+     "w": 147,
+     "h": 178,
+     "ox": 69,
+     "oy": 174,
+     "override": null,
+     "sheet": "executioners_v1",
+     "src": [
+      1419,
+      814,
+      1566,
+      992
+     ]
+    },
+    {
+     "id": "hit:1:executioners_v1@1616,810",
+     "x": 980,
+     "y": 2,
+     "w": 141,
+     "h": 182,
+     "ox": 68,
+     "oy": 178,
+     "override": null,
+     "sheet": "executioners_v1",
+     "src": [
+      1616,
+      810,
+      1757,
+      992
+     ]
+    }
+   ],
+   "durations": [
+    0.125,
+    0.125
+   ],
+   "loop": false,
+   "fps": 8,
+   "blend": "mix",
+   "anchor": "feet"
+  },
+  "stagger": {
+   "frames": [
+    {
+     "id": "stagger:0:executioners_v1@1823,814",
+     "x": 1272,
+     "y": 2,
+     "w": 115,
+     "h": 178,
+     "ox": 54,
+     "oy": 174,
+     "override": null,
+     "sheet": "executioners_v1",
+     "src": [
+      1823,
+      814,
+      1938,
+      992
+     ]
+    }
+   ],
+   "durations": [
+    0.125
+   ],
+   "loop": false,
+   "fps": 8,
+   "blend": "mix",
+   "anchor": "feet"
+  },
+  "defeat": {
+   "frames": [
+    {
+     "id": "defeat:0:executioners_v1@1823,814",
+     "x": 1272,
+     "y": 2,
+     "w": 115,
+     "h": 178,
+     "ox": 54,
+     "oy": 174,
+     "override": null,
+     "sheet": "executioners_v1",
+     "src": [
+      1823,
+      814,
+      1938,
+      992
+     ]
+    },
+    {
+     "id": "defeat:1:executioners_v1@2000,854",
+     "x": 2,
+     "y": 210,
+     "w": 226,
+     "h": 138,
+     "ox": 112,
+     "oy": 134,
+     "override": null,
+     "sheet": "executioners_v1",
+     "src": [
+      2000,
+      854,
+      2226,
+      992
+     ]
+    }
+   ],
+   "durations": [
+    0.25,
+    0.25
+   ],
+   "loop": false,
+   "fps": 4,
+   "blend": "mix",
+   "anchor": "feet"
+  },
+  "flail_ball": {
+   "frames": [
+    {
+     "id": "flail_ball:0:executioners_v1@2293,791",
+     "x": 230,
+     "y": 210,
+     "w": 107,
+     "h": 110,
+     "ox": 53,
+     "oy": 55,
+     "override": null,
+     "sheet": "executioners_v1",
+     "src": [
+      2293,
+      791,
+      2400,
+      901
+     ]
+    }
+   ],
+   "durations": [
+    0.125
+   ],
+   "loop": false,
+   "fps": 8,
+   "blend": "mix",
+   "anchor": "center"
+  },
+  "chain": {
+   "frames": [
+    {
+     "id": "chain:0:executioners_v1@2370,794",
+     "x": 1569,
+     "y": 2,
+     "w": 173,
+     "h": 175,
+     "ox": 86,
+     "oy": 87,
+     "override": null,
+     "sheet": "executioners_v1",
+     "src": [
+      2370,
+      794,
+      2543,
+      969
+     ]
+    }
+   ],
+   "durations": [
+    0.125
+   ],
+   "loop": false,
+   "fps": 8,
+   "blend": "mix",
+   "anchor": "center"
+  },
+  "crescent": {
+   "frames": [
+    {
+     "id": "crescent:0:executioners_v1@2466,804",
+     "x": 1744,
+     "y": 2,
+     "w": 214,
+     "h": 159,
+     "ox": 107,
+     "oy": 79,
+     "override": null,
+     "sheet": "executioners_v1",
+     "src": [
+      2466,
+      804,
+      2680,
+      963
+     ]
+    }
+   ],
+   "durations": [
+    0.125
+   ],
+   "loop": false,
+   "fps": 8,
+   "blend": "mix",
+   "anchor": "center"
+  }
+ }
+}

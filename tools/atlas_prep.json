@@ -1,0 +1,4251 @@
+{
+ "paths": {
+  "source": "assets/sprites/_source",
+  "atlases": "assets/sprites/atlases",
+  "manifests": "data/manifests",
+  "debug": "assets/sprites/_build"
+ },
+ "atlas_max_width": 2048,
+ "frame_pad": 2,
+ "watermark": {
+  "template_sheet": "hazards_secondary",
+  "rect": [
+   2612,
+   1398,
+   2670,
+   1450
+  ],
+  "color": 255,
+  "floor": 4
+ },
+ "sheets": {
+  "archer_v1": {
+   "key": {
+    "lum": [
+     14,
+     47
+    ],
+    "max_sat": 14,
+    "hole_min_area": 120,
+    "feather": 2
+   },
+   "erase": [
+    {
+     "rect": [
+      45,
+      15,
+      385,
+      55
+     ],
+     "reason": "text label 'Idle while concealed'"
+    },
+    {
+     "rect": [
+      1382,
+      15,
+      1631,
+      55
+     ],
+     "reason": "text label 'Alert detection'"
+    },
+    {
+     "rect": [
+      46,
+      270,
+      125,
+      310
+     ],
+     "reason": "text label 'Turn'"
+    },
+    {
+     "rect": [
+      1109,
+      269,
+      1260,
+      310
+     ],
+     "reason": "text label 'Aim Bow'"
+    },
+    {
+     "rect": [
+      45,
+      532,
+      312,
+      571
+     ],
+     "reason": "text label 'Draw bowstring'"
+    },
+    {
+     "rect": [
+      872,
+      532,
+      1005,
+      571
+     ],
+     "reason": "text label 'Release'"
+    },
+    {
+     "rect": [
+      1936,
+      532,
+      2040,
+      571
+     ],
+     "reason": "text label 'Recoil'"
+    },
+    {
+     "rect": [
+      45,
+      790,
+      226,
+      838
+     ],
+     "reason": "text label 'Reposition'"
+    },
+    {
+     "rect": [
+      1122,
+      792,
+      1189,
+      830
+     ],
+     "reason": "text label 'Run'"
+    },
+    {
+     "rect": [
+      45,
+      1031,
+      143,
+      1076
+     ],
+     "reason": "text label 'Jump'"
+    },
+    {
+     "rect": [
+      870,
+      1028,
+      1074,
+      1068
+     ],
+     "reason": "text label 'Hit Reaction'"
+    },
+    {
+     "rect": [
+      1133,
+      1028,
+      1245,
+      1068
+     ],
+     "reason": "text label 'Defeat'"
+    },
+    {
+     "rect": [
+      290,
+      566,
+      314,
+      579
+     ],
+     "reason": "descender of text label 'Draw bowstring'"
+    }
+   ]
+  },
+  "archer_v2": {
+   "key": {
+    "lum": [
+     0,
+     37
+    ],
+    "max_sat": 14,
+    "hole_min_area": 120,
+    "feather": 2
+   },
+   "tint": [
+    0.85,
+    1.1,
+    2.6
+   ],
+   "erase": []
+  },
+  "acoustic_hunter": {
+   "key": {
+    "lum": [
+     0,
+     24
+    ],
+    "max_sat": 16,
+    "hole_min_area": 150,
+    "feather": 2
+   },
+   "erase": []
+  },
+  "executioners_v1": {
+   "key": {
+    "lum": [
+     0,
+     24
+    ],
+    "max_sat": 14,
+    "hole_min_area": 150,
+    "feather": 2
+   },
+   "erase": [
+    {
+     "rect": [
+      900,
+      30,
+      1850,
+      180
+     ],
+     "reason": "title 'VOID EXECUTIONERS' + subtitle"
+    },
+    {
+     "rect": [
+      75,
+      214,
+      395,
+      252
+     ],
+     "reason": "text label 'THE EXECUTIONER'"
+    },
+    {
+     "rect": [
+      75,
+      518,
+      330,
+      557
+     ],
+     "reason": "text label 'THE PHANTOM'"
+    },
+    {
+     "rect": [
+      75,
+      757,
+      360,
+      796
+     ],
+     "reason": "text label 'THE IRON MONK'"
+    },
+    {
+     "rect": [
+      75,
+      1010,
+      425,
+      1048
+     ],
+     "reason": "text label 'THE BLOOD ARCHER'"
+    },
+    {
+     "rect": [
+      75,
+      1261,
+      310,
+      1300
+     ],
+     "reason": "text label 'THE WARDEN'"
+    }
+   ]
+  },
+  "executioners_v2": {
+   "key": {
+    "lum": [
+     0,
+     24
+    ],
+    "max_sat": 16,
+    "hole_min_area": 150,
+    "feather": 2
+   },
+   "erase": [
+    {
+     "rect": [
+      2158,
+      238,
+      2526,
+      269
+     ],
+     "reason": "text label 'WEAPON & ATTACK-EFFECT'"
+    }
+   ]
+  },
+  "boss_leviathan_v1": {
+   "key": {
+    "lum": [
+     0,
+     24
+    ],
+    "max_sat": 16,
+    "hole_min_area": 150,
+    "feather": 2
+   },
+   "luma": [
+    {
+     "rect": [
+      1760,
+      832,
+      2030,
+      1112
+     ],
+     "floor": 20,
+     "gamma": 0.9,
+     "knee": 140
+    },
+    {
+     "rect": [
+      1000,
+      1225,
+      1410,
+      1448
+     ],
+     "floor": 20
+    },
+    {
+     "rect": [
+      2320,
+      1225,
+      2710,
+      1448
+     ],
+     "floor": 20,
+     "knee": 90
+    }
+   ],
+   "erase": [
+    {
+     "rect": [
+      50,
+      38,
+      1535,
+      104
+     ],
+     "reason": "title 'CRIMSON LEVIATHAN - BOSS SPRITE SHEET'"
+    },
+    {
+     "rect": [
+      56,
+      144,
+      2700,
+      151
+     ],
+     "only_if": {
+      "max_sat": 75,
+      "max_lum": 125
+     },
+     "reason": "section divider line"
+    },
+    {
+     "rect": [
+      56,
+      481,
+      2700,
+      488
+     ],
+     "only_if": {
+      "max_sat": 75,
+      "max_lum": 125
+     },
+     "reason": "section divider line"
+    },
+    {
+     "rect": [
+      56,
+      824,
+      2700,
+      831
+     ],
+     "only_if": {
+      "max_sat": 75,
+      "max_lum": 125
+     },
+     "reason": "section divider line"
+    },
+    {
+     "rect": [
+      56,
+      1162,
+      2700,
+      1169
+     ],
+     "only_if": {
+      "max_sat": 75,
+      "max_lum": 125
+     },
+     "reason": "section divider line"
+    },
+    {
+     "rect": [
+      140,
+      428,
+      2700,
+      436
+     ],
+     "only_if": {
+      "max_sat": 75,
+      "max_lum": 125
+     },
+     "reason": "ground line under row 1"
+    },
+    {
+     "rect": [
+      140,
+      772,
+      2700,
+      780
+     ],
+     "only_if": {
+      "max_sat": 75,
+      "max_lum": 125
+     },
+     "reason": "ground line under row 2"
+    },
+    {
+     "rect": [
+      140,
+      1110,
+      2700,
+      1118
+     ],
+     "only_if": {
+      "max_sat": 75,
+      "max_lum": 125
+     },
+     "reason": "ground line under row 3"
+    },
+    {
+     "rect": [
+      140,
+      1448,
+      2700,
+      1456
+     ],
+     "only_if": {
+      "max_sat": 75,
+      "max_lum": 125
+     },
+     "reason": "ground line under row 4"
+    },
+    {
+     "rect": [
+      56,
+      152,
+      470,
+      190
+     ],
+     "reason": "section label 'BEHAVIOR & MOVEMENT'"
+    },
+    {
+     "rect": [
+      56,
+      494,
+      420,
+      534
+     ],
+     "reason": "section label 'ATTACKS & COMBAT'"
+    },
+    {
+     "rect": [
+      56,
+      838,
+      420,
+      876
+     ],
+     "reason": "section label 'PHASE TRANSITIONS'"
+    },
+    {
+     "rect": [
+      56,
+      1174,
+      400,
+      1212
+     ],
+     "reason": "section label 'EFFECTS & ASSETS'"
+    },
+    {
+     "rect": [
+      150,
+      440,
+      2700,
+      474
+     ],
+     "reason": "frame labels row 1 (IDLE .. DEFEAT)"
+    },
+    {
+     "rect": [
+      150,
+      783,
+      2700,
+      817
+     ],
+     "reason": "frame labels row 2 (SWORD WIND-UP .. JUMP ATTACK)"
+    },
+    {
+     "rect": [
+      150,
+      1121,
+      2700,
+      1157
+     ],
+     "reason": "frame labels row 3 (ARMOR BREAK .. PHASE TRANSITION)"
+    },
+    {
+     "rect": [
+      150,
+      1460,
+      2700,
+      1498
+     ],
+     "reason": "frame labels row 4 (FLOATING SWORDS .. CLONE SILHOUETTES)"
+    }
+   ]
+  },
+  "boss_leviathan_v2": {
+   "key": {
+    "lum": [
+     0,
+     24
+    ],
+    "max_sat": 16,
+    "hole_min_area": 150,
+    "feather": 2
+   },
+   "luma": [
+    {
+     "rect": [
+      1400,
+      754,
+      1725,
+      1120
+     ],
+     "floor": 22,
+     "gamma": 0.85,
+     "knee": 80
+    },
+    {
+     "rect": [
+      1895,
+      1155,
+      2225,
+      1462
+     ],
+     "floor": 20
+    }
+   ],
+   "erase": [
+    {
+     "rect": [
+      305,
+      36,
+      1020,
+      698
+     ],
+     "reason": "hero-scale Leviathan portrait (reference art, not a frame)"
+    },
+    {
+     "rect": [
+      100,
+      553,
+      276,
+      698
+     ],
+     "reason": "white hero scale silhouette"
+    },
+    {
+     "rect": [
+      58,
+      48,
+      350,
+      172
+     ],
+     "reason": "title 'CRIMSON LEVIATHAN'"
+    },
+    {
+     "rect": [
+      384,
+      712,
+      688,
+      752
+     ],
+     "reason": "caption 'CRIMSON LEVIATHAN'"
+    },
+    {
+     "rect": [
+      1000,
+      48,
+      1150,
+      100
+     ],
+     "reason": "text label 'IDLE / WALK'"
+    },
+    {
+     "rect": [
+      1800,
+      48,
+      2092,
+      98
+     ],
+     "reason": "text label 'SWORD WIND-UP & SLAM'"
+    },
+    {
+     "rect": [
+      2092,
+      386,
+      2398,
+      416
+     ],
+     "reason": "caption 'SWORD WIND-UP & SLAM'"
+    },
+    {
+     "rect": [
+      1000,
+      418,
+      1238,
+      462
+     ],
+     "reason": "text label 'HORIZONTAL SWEEP'"
+    },
+    {
+     "rect": [
+      2114,
+      722,
+      2380,
+      760
+     ],
+     "reason": "caption 'DASH / JUMP ATTACK'"
+    },
+    {
+     "rect": [
+      58,
+      786,
+      172,
+      832
+     ],
+     "reason": "text label 'STAGGER'"
+    },
+    {
+     "rect": [
+      800,
+      786,
+      976,
+      832
+     ],
+     "reason": "text label 'ARMOR BREAK'"
+    },
+    {
+     "rect": [
+      1800,
+      786,
+      1892,
+      832
+     ],
+     "reason": "text label 'DEFEAT'"
+    },
+    {
+     "rect": [
+      294,
+      1127,
+      412,
+      1162
+     ],
+     "reason": "caption 'STAGGER'"
+    },
+    {
+     "rect": [
+      1154,
+      1127,
+      1340,
+      1162
+     ],
+     "reason": "caption 'ARMOR BREAK'"
+    },
+    {
+     "rect": [
+      2199,
+      1127,
+      2297,
+      1162
+     ],
+     "reason": "caption 'DEFEAT'"
+    },
+    {
+     "rect": [
+      130,
+      1474,
+      2700,
+      1508
+     ],
+     "reason": "FX row captions (FLOATING SWORDS .. CLONE SILHOUETTES)"
+    }
+   ]
+  },
+  "hazards_death_corridor": {
+   "key": {
+    "lum": [
+     0,
+     24
+    ],
+    "max_sat": 16,
+    "hole_min_area": 150,
+    "feather": 2
+   },
+   "luma": [
+    {
+     "rect": [
+      2070,
+      1240,
+      2300,
+      1460
+     ],
+     "floor": 20
+    },
+    {
+     "rect": [
+      2390,
+      1240,
+      2560,
+      1315
+     ],
+     "floor": 20
+    }
+   ],
+   "erase": [
+    {
+     "rect": [
+      40,
+      312,
+      1470,
+      350
+     ],
+     "reason": "frame labels spike floor row"
+    },
+    {
+     "rect": [
+      1520,
+      404,
+      2700,
+      440
+     ],
+     "reason": "frame labels hunter crusher row"
+    },
+    {
+     "rect": [
+      228,
+      532,
+      305,
+      568
+     ],
+     "reason": "text label 'Track'"
+    },
+    {
+     "rect": [
+      556,
+      574,
+      722,
+      612
+     ],
+     "reason": "text label 'Spinning Saw'"
+    },
+    {
+     "rect": [
+      815,
+      574,
+      1005,
+      612
+     ],
+     "reason": "text label 'Jagging Saw'"
+    },
+    {
+     "rect": [
+      155,
+      754,
+      236,
+      786
+     ],
+     "reason": "text label 'Intact'"
+    },
+    {
+     "rect": [
+      484,
+      754,
+      584,
+      786
+     ],
+     "reason": "text label 'Cracked'"
+    },
+    {
+     "rect": [
+      800,
+      752,
+      935,
+      790
+     ],
+     "reason": "text label 'Crumbling'"
+    },
+    {
+     "rect": [
+      1140,
+      752,
+      1305,
+      792
+     ],
+     "reason": "text label 'Empty/Debris'"
+    },
+    {
+     "rect": [
+      828,
+      896,
+      912,
+      934
+     ],
+     "reason": "text label 'Active'"
+    },
+    {
+     "rect": [
+      40,
+      1160,
+      1300,
+      1196
+     ],
+     "reason": "frame labels wall skewer row"
+    },
+    {
+     "rect": [
+      1700,
+      1155,
+      2700,
+      1192
+     ],
+     "reason": "frame labels falling block row"
+    },
+    {
+     "rect": [
+      40,
+      1205,
+      250,
+      1244
+     ],
+     "reason": "section label '09. RISING VOID'"
+    }
+   ]
+  },
+  "hazards_secondary": {
+   "key": {
+    "lum": [
+     0,
+     24
+    ],
+    "max_sat": 16,
+    "hole_min_area": 150,
+    "feather": 2
+   },
+   "erase": [
+    {
+     "rect": [
+      104,
+      636,
+      146,
+      747
+     ],
+     "reason": "white UI arrow (up) in chained crusher panel"
+    },
+    {
+     "rect": [
+      809,
+      641,
+      851,
+      750
+     ],
+     "reason": "white UI arrow (down) in chained crusher panel"
+    }
+   ]
+  },
+  "hazards_grid_obstacles": {
+   "key": {
+    "lum": [
+     0,
+     24
+    ],
+    "max_sat": 14,
+    "hole_min_area": 400,
+    "hole_tone": [
+     8,
+     20
+    ],
+    "hole_tone_frac": 0.6,
+    "feather": 2,
+    "grid": {
+     "lum": [
+      18,
+      52
+     ],
+     "line_frac": 0.3
+    },
+    "open_radius": 2
+   },
+   "luma": [
+    {
+     "rect": [
+      712,
+      1322,
+      1304,
+      1458
+     ],
+     "floor": 22,
+     "knee": 200,
+     "drop_grey_below": 70
+    },
+    {
+     "rect": [
+      1594,
+      1318,
+      2192,
+      1458
+     ],
+     "floor": 22,
+     "knee": 200,
+     "drop_grey_below": 70
+    },
+    {
+     "rect": [
+      2420,
+      995,
+      2660,
+      1245
+     ],
+     "floor": 20,
+     "knee": 120,
+     "drop_grey_below": 70
+    }
+   ],
+   "erase": []
+  }
+ },
+ "units": {
+  "archer": {
+   "notes": "Crimson Archer. Base = archer_v1 (crimson flat). run_smooth/roll/knockdown/dissolve come from archer_v2, tinted toward v1 crimson; v2 keeps its black ink lines, so those frames read slightly more detailed.",
+   "scale": 0.203,
+   "foot_offset": 0,
+   "fps": 10,
+   "collision": {
+    "shape": "capsule",
+    "radius": 8,
+    "height": 26,
+    "units": "world px (after scale)"
+   },
+   "animations": {
+    "idle_concealed": {
+     "sheet": "archer_v1",
+     "fps": 6,
+     "loop": true,
+     "rects": [
+      [
+       90,
+       109,
+       233,
+       247
+      ],
+      [
+       364,
+       109,
+       507,
+       247
+      ],
+      [
+       636,
+       108,
+       778,
+       248
+      ],
+      [
+       907,
+       112,
+       1046,
+       247
+      ],
+      [
+       1169,
+       113,
+       1307,
+       244
+      ]
+     ]
+    },
+    "alert": {
+     "sheet": "archer_v1",
+     "fps": 10,
+     "rects": [
+      [
+       1448,
+       78,
+       1622,
+       246
+      ],
+      [
+       1709,
+       77,
+       1883,
+       246
+      ],
+      [
+       1956,
+       68,
+       2130,
+       246
+      ]
+     ]
+    },
+    "turn": {
+     "sheet": "archer_v1",
+     "fps": 12,
+     "rects": [
+      [
+       122,
+       312,
+       213,
+       512
+      ],
+      [
+       398,
+       312,
+       501,
+       512
+      ],
+      [
+       659,
+       315,
+       769,
+       513
+      ],
+      [
+       921,
+       316,
+       1028,
+       512
+      ]
+     ]
+    },
+    "aim": {
+     "sheet": "archer_v1",
+     "fps": 10,
+     "rects": [
+      [
+       1163,
+       311,
+       1327,
+       512
+      ],
+      [
+       1445,
+       309,
+       1610,
+       512
+      ],
+      [
+       1705,
+       310,
+       1890,
+       512
+      ],
+      [
+       1948,
+       311,
+       2119,
+       512
+      ]
+     ]
+    },
+    "draw": {
+     "sheet": "archer_v1",
+     "fps": 8,
+     "rects": [
+      [
+       92,
+       572,
+       308,
+       774
+      ],
+      [
+       362,
+       574,
+       528,
+       772
+      ],
+      [
+       617,
+       579,
+       794,
+       772
+      ]
+     ],
+     "events": [
+      {
+       "frame": 0,
+       "event": "emit_noise"
+      }
+     ]
+    },
+    "release": {
+     "sheet": "archer_v1",
+     "fps": 14,
+     "rects": [
+      [
+       903,
+       596,
+       1076,
+       772
+      ],
+      [
+       1171,
+       596,
+       1389,
+       772
+      ],
+      [
+       1444,
+       596,
+       1606,
+       772
+      ]
+     ],
+     "events": [
+      {
+       "frame": 1,
+       "event": "spawn_projectile"
+      }
+     ]
+    },
+    "recoil": {
+     "sheet": "archer_v1",
+     "fps": 10,
+     "rects": [
+      [
+       1707,
+       593,
+       1862,
+       774
+      ],
+      [
+       1958,
+       598,
+       2109,
+       770
+      ]
+     ]
+    },
+    "reposition": {
+     "sheet": "archer_v1",
+     "fps": 12,
+     "loop": true,
+     "rects": [
+      [
+       77,
+       853,
+       244,
+       1011
+      ],
+      [
+       347,
+       852,
+       522,
+       1011
+      ],
+      [
+       596,
+       842,
+       768,
+       1000
+      ],
+      [
+       914,
+       834,
+       1065,
+       1006
+      ]
+     ]
+    },
+    "run": {
+     "sheet": "archer_v1",
+     "fps": 12,
+     "loop": true,
+     "rects": [
+      [
+       1174,
+       842,
+       1334,
+       1007
+      ],
+      [
+       1427,
+       832,
+       1555,
+       1008
+      ],
+      [
+       1656,
+       846,
+       1827,
+       1013
+      ],
+      [
+       1889,
+       843,
+       2063,
+       1013
+      ],
+      [
+       2159,
+       844,
+       2285,
+       1010
+      ]
+     ]
+    },
+    "run_smooth": {
+     "sheet": "archer_v2",
+     "fps": 12,
+     "loop": true,
+     "rects": [
+      [
+       89,
+       852,
+       312,
+       1028
+      ],
+      [
+       361,
+       853,
+       598,
+       1027
+      ],
+      [
+       656,
+       837,
+       860,
+       1031
+      ],
+      [
+       902,
+       835,
+       1087,
+       1033
+      ],
+      [
+       1131,
+       837,
+       1304,
+       1029
+      ],
+      [
+       1349,
+       850,
+       1590,
+       1024
+      ]
+     ]
+    },
+    "jump": {
+     "sheet": "archer_v1",
+     "fps": 10,
+     "rects": [
+      [
+       116,
+       1050,
+       236,
+       1277
+      ],
+      [
+       374,
+       1064,
+       495,
+       1256
+      ],
+      [
+       616,
+       1136,
+       752,
+       1280
+      ]
+     ],
+     "events": [
+      {
+       "frame": 0,
+       "event": "jump_takeoff"
+      }
+     ]
+    },
+    "roll": {
+     "sheet": "archer_v2",
+     "fps": 14,
+     "rects": [
+      [
+       649,
+       1132,
+       864,
+       1302
+      ],
+      [
+       924,
+       1143,
+       1112,
+       1297
+      ],
+      [
+       1168,
+       1162,
+       1358,
+       1296
+      ]
+     ]
+    },
+    "hit": {
+     "sheet": "archer_v1",
+     "fps": 10,
+     "rects": [
+      [
+       910,
+       1087,
+       1060,
+       1281
+      ]
+     ]
+    },
+    "knockdown": {
+     "sheet": "archer_v2",
+     "fps": 8,
+     "rects": [
+      [
+       1397,
+       1096,
+       1547,
+       1295
+      ],
+      [
+       1608,
+       1184,
+       1780,
+       1295
+      ]
+     ]
+    },
+    "defeat": {
+     "sheet": "archer_v1",
+     "fps": 8,
+     "rects": [
+      [
+       1136,
+       1070,
+       1306,
+       1279
+      ],
+      [
+       1467,
+       1095,
+       1563,
+       1278
+      ],
+      [
+       1694,
+       1133,
+       1811,
+       1276
+      ],
+      [
+       1907,
+       1189,
+       2091,
+       1277
+      ],
+      [
+       2158,
+       1203,
+       2354,
+       1282
+      ]
+     ]
+    },
+    "dissolve": {
+     "sheet": "archer_v2",
+     "fps": 8,
+     "rects": [
+      [
+       1824,
+       1163,
+       2070,
+       1300
+      ],
+      [
+       2075,
+       1163,
+       2276,
+       1300
+      ]
+     ],
+     "drop_low_sat": 45
+    },
+    "bow": {
+     "sheet": "archer_v1",
+     "anchor": "center",
+     "rects": [
+      [
+       146,
+       1319,
+       225,
+       1499
+      ]
+     ]
+    },
+    "arrow": {
+     "sheet": "archer_v1",
+     "anchor": "center",
+     "rects": [
+      [
+       385,
+       1398,
+       441,
+       1412
+      ]
+     ]
+    },
+    "arrow_angled": {
+     "sheet": "archer_v1",
+     "anchor": "center",
+     "rects": [
+      [
+       614,
+       1398,
+       676,
+       1412
+      ]
+     ]
+    },
+    "arrow_charged": {
+     "sheet": "archer_v1",
+     "anchor": "center",
+     "rects": [
+      [
+       853,
+       1388,
+       1033,
+       1414
+      ]
+     ]
+    },
+    "arrow_impact": {
+     "sheet": "archer_v1",
+     "anchor": "center",
+     "rects": [
+      [
+       1199,
+       1373,
+       1266,
+       1433
+      ]
+     ]
+    },
+    "crosshair": {
+     "sheet": "archer_v1",
+     "anchor": "center",
+     "rects": [
+      [
+       1378,
+       1338,
+       1556,
+       1474
+      ]
+     ]
+    },
+    "hit_flash": {
+     "derive": {
+      "from": "hit"
+     },
+     "fps": 10,
+     "procedural": {
+      "flash": "white",
+      "time": 0.06
+     },
+     "note": "single hit frame + runtime white flash"
+    }
+   }
+  },
+  "acoustic_hunter": {
+   "notes": "Acoustic Hunter (blind). Dedicated sheet. The large reference figure (bottom-left) is not sliced.",
+   "scale": 0.162,
+   "foot_offset": 0,
+   "fps": 10,
+   "collision": {
+    "shape": "capsule",
+    "radius": 8,
+    "height": 28,
+    "units": "world px (after scale)"
+   },
+   "animations": {
+    "crouch_idle": {
+     "sheet": "acoustic_hunter",
+     "fps": 6,
+     "loop": true,
+     "rects": [
+      [
+       42,
+       139,
+       231,
+       305
+      ],
+      [
+       257,
+       138,
+       446,
+       305
+      ],
+      [
+       473,
+       132,
+       659,
+       305
+      ],
+      [
+       685,
+       139,
+       875,
+       305
+      ],
+      [
+       901,
+       138,
+       1090,
+       305
+      ],
+      [
+       1117,
+       138,
+       1305,
+       305
+      ]
+     ]
+    },
+    "alert": {
+     "sheet": "acoustic_hunter",
+     "fps": 10,
+     "rects": [
+      [
+       1391,
+       40,
+       1557,
+       308
+      ],
+      [
+       1566,
+       40,
+       1735,
+       308
+      ],
+      [
+       1748,
+       40,
+       1914,
+       308
+      ],
+      [
+       1935,
+       40,
+       2098,
+       308
+      ]
+     ]
+    },
+    "turn": {
+     "sheet": "acoustic_hunter",
+     "fps": 10,
+     "rects": [
+      [
+       2204,
+       55,
+       2324,
+       309
+      ],
+      [
+       2345,
+       52,
+       2503,
+       309
+      ],
+      [
+       2519,
+       55,
+       2669,
+       309
+      ]
+     ]
+    },
+    "aim": {
+     "sheet": "acoustic_hunter",
+     "fps": 10,
+     "rects": [
+      [
+       59,
+       396,
+       251,
+       685
+      ],
+      [
+       293,
+       396,
+       482,
+       685
+      ],
+      [
+       524,
+       396,
+       720,
+       684
+      ],
+      [
+       757,
+       396,
+       956,
+       683
+      ]
+     ]
+    },
+    "release": {
+     "sheet": "acoustic_hunter",
+     "fps": 14,
+     "rects": [
+      [
+       1071,
+       393,
+       1329,
+       684
+      ],
+      [
+       1349,
+       393,
+       1567,
+       684
+      ],
+      [
+       1597,
+       393,
+       1798,
+       684
+      ]
+     ],
+     "events": [
+      {
+       "frame": 0,
+       "event": "spawn_projectile"
+      }
+     ]
+    },
+    "crawl": {
+     "sheet": "acoustic_hunter",
+     "fps": 8,
+     "loop": true,
+     "rects": [
+      [
+       1867,
+       515,
+       2061,
+       681
+      ],
+      [
+       2093,
+       515,
+       2278,
+       678
+      ],
+      [
+       2295,
+       515,
+       2481,
+       680
+      ],
+      [
+       2509,
+       515,
+       2706,
+       679
+      ]
+     ],
+     "events": [
+      {
+       "frame": 0,
+       "event": "footstep_soft"
+      },
+      {
+       "frame": 2,
+       "event": "footstep_soft"
+      }
+     ]
+    },
+    "run": {
+     "sheet": "acoustic_hunter",
+     "fps": 14,
+     "loop": true,
+     "rects": [
+      [
+       70,
+       840,
+       283,
+       1063
+      ],
+      [
+       308,
+       840,
+       523,
+       1062
+      ],
+      [
+       550,
+       840,
+       766,
+       1064
+      ],
+      [
+       798,
+       840,
+       1005,
+       1064
+      ],
+      [
+       1038,
+       840,
+       1251,
+       1063
+      ],
+      [
+       1280,
+       840,
+       1486,
+       1062
+      ],
+      [
+       1529,
+       840,
+       1716,
+       1064
+      ]
+     ],
+     "events": [
+      {
+       "frame": 1,
+       "event": "footstep"
+      },
+      {
+       "frame": 4,
+       "event": "footstep"
+      }
+     ]
+    },
+    "jump": {
+     "sheet": "acoustic_hunter",
+     "fps": 10,
+     "rects": [
+      [
+       1838,
+       730,
+       2005,
+       1064
+      ],
+      [
+       2033,
+       730,
+       2240,
+       999
+      ],
+      [
+       2259,
+       730,
+       2458,
+       1060
+      ],
+      [
+       2491,
+       730,
+       2650,
+       1064
+      ]
+     ],
+     "events": [
+      {
+       "frame": 0,
+       "event": "jump_takeoff"
+      }
+     ]
+    },
+    "hit": {
+     "sheet": "acoustic_hunter",
+     "fps": 12,
+     "rects": [
+      [
+       457,
+       1180,
+       640,
+       1472
+      ],
+      [
+       677,
+       1180,
+       861,
+       1473
+      ],
+      [
+       908,
+       1180,
+       1071,
+       1471
+      ]
+     ]
+    },
+    "defeat": {
+     "sheet": "acoustic_hunter",
+     "fps": 8,
+     "rects": [
+      [
+       1187,
+       1213,
+       1458,
+       1469
+      ],
+      [
+       1481,
+       1302,
+       1720,
+       1469
+      ]
+     ]
+    },
+    "dissolve": {
+     "sheet": "acoustic_hunter",
+     "fps": 8,
+     "rects": [
+      [
+       1745,
+       1296,
+       2010,
+       1480
+      ],
+      [
+       2010,
+       1296,
+       2265,
+       1480
+      ]
+     ]
+    },
+    "arrow": {
+     "sheet": "acoustic_hunter",
+     "anchor": "center",
+     "rects": [
+      [
+       2376,
+       1257,
+       2448,
+       1290
+      ]
+     ]
+    },
+    "arrow_volley": {
+     "sheet": "acoustic_hunter",
+     "anchor": "center",
+     "rects": [
+      [
+       2379,
+       1360,
+       2504,
+       1422
+      ]
+     ]
+    },
+    "arrow_impact": {
+     "sheet": "acoustic_hunter",
+     "anchor": "center",
+     "rects": [
+      [
+       2483,
+       1233,
+       2676,
+       1321
+      ]
+     ]
+    }
+   }
+  },
+  "executioner": {
+   "notes": "Void Executioner (v1). One frame per pose: idle breathing, walk bob and wind-up shake are procedural. Slam FX borrowed from executioners_v2.",
+   "scale": 0.249,
+   "foot_offset": 0,
+   "fps": 8,
+   "collision": {
+    "shape": "capsule",
+    "radius": 12,
+    "height": 40,
+    "units": "world px (after scale)"
+   },
+   "animations": {
+    "idle": {
+     "sheet": "executioners_v1",
+     "loop": true,
+     "rects": [
+      [
+       110,
+       255,
+       384,
+       492
+      ]
+     ],
+     "procedural": {
+      "breathe": 0.025,
+      "period": 1.6
+     },
+     "isolate": true
+    },
+    "walk": {
+     "sheet": "executioners_v1",
+     "fps": 5,
+     "loop": true,
+     "rects": [
+      [
+       386,
+       262,
+       505,
+       492
+      ],
+      [
+       566,
+       280,
+       743,
+       492
+      ]
+     ],
+     "procedural": {
+      "bob": 4
+     },
+     "events": [
+      {
+       "frame": 0,
+       "event": "footstep_heavy"
+      },
+      {
+       "frame": 1,
+       "event": "footstep_heavy"
+      }
+     ]
+    },
+    "windup": {
+     "sheet": "executioners_v1",
+     "fps": 2,
+     "rects": [
+      [
+       790,
+       200,
+       980,
+       492
+      ]
+     ],
+     "procedural": {
+      "shake": 2.0,
+      "tint": "warning"
+     }
+    },
+    "slam": {
+     "sheet": "executioners_v1",
+     "fps": 6,
+     "rects": [
+      [
+       1055,
+       280,
+       1381,
+       492
+      ]
+     ],
+     "events": [
+      {
+       "frame": 0,
+       "event": "hitbox_on"
+      },
+      {
+       "frame": 0,
+       "event": "spawn_shockwave"
+      }
+     ]
+    },
+    "drag": {
+     "sheet": "executioners_v1",
+     "fps": 6,
+     "rects": [
+      [
+       1399,
+       282,
+       1563,
+       492
+      ]
+     ]
+    },
+    "hit": {
+     "sheet": "executioners_v1",
+     "fps": 8,
+     "rects": [
+      [
+       1610,
+       282,
+       1751,
+       491
+      ]
+     ]
+    },
+    "stagger": {
+     "sheet": "executioners_v1",
+     "fps": 4,
+     "rects": [
+      [
+       1795,
+       280,
+       1954,
+       492
+      ]
+     ]
+    },
+    "defeat": {
+     "sheet": "executioners_v1",
+     "fps": 4,
+     "rects": [
+      [
+       1795,
+       280,
+       1954,
+       492
+      ],
+      [
+       1992,
+       340,
+       2254,
+       492
+      ]
+     ]
+    },
+    "sweep": {
+     "derive": {
+      "from": "windup"
+     },
+     "fps": 6,
+     "procedural": {
+      "rotate": -0.35,
+      "tint": "warning"
+     },
+     "note": "no sweep art: wind-up pose rotated + slam pose; uses 'drag' as follow-through"
+    },
+    "cleaver": {
+     "sheet": "executioners_v1",
+     "anchor": "center",
+     "rects": [
+      [
+       2288,
+       258,
+       2592,
+       348
+      ]
+     ]
+    },
+    "impact_splash": {
+     "sheet": "executioners_v1",
+     "anchor": "feet",
+     "rects": [
+      [
+       2302,
+       368,
+       2478,
+       478
+      ],
+      [
+       2514,
+       376,
+       2672,
+       479
+      ]
+     ]
+    },
+    "slam_burst": {
+     "sheet": "executioners_v2",
+     "anchor": "feet",
+     "rects": [
+      [
+       1236,
+       270,
+       1500,
+       494
+      ]
+     ]
+    },
+    "shockwave": {
+     "sheet": "executioners_v2",
+     "anchor": "feet",
+     "rects": [
+      [
+       2160,
+       420,
+       2286,
+       490
+      ],
+      [
+       2300,
+       405,
+       2436,
+       493
+      ]
+     ]
+    },
+    "ground_eruption": {
+     "sheet": "executioners_v2",
+     "anchor": "feet",
+     "rects": [
+      [
+       2464,
+       302,
+       2684,
+       490
+      ]
+     ]
+    }
+   }
+  },
+  "phantom": {
+   "notes": "Phantom (v1, crimson). v2 phantom is grey = violates red-is-hostile, not used. No jump art: jump reuses the dash pose.",
+   "scale": 0.228,
+   "foot_offset": 0,
+   "fps": 10,
+   "collision": {
+    "shape": "capsule",
+    "radius": 8,
+    "height": 26,
+    "units": "world px (after scale)"
+   },
+   "animations": {
+    "idle": {
+     "sheet": "executioners_v1",
+     "fps": 4,
+     "loop": true,
+     "rects": [
+      [
+       804,
+       561,
+       950,
+       739
+      ],
+      [
+       1408,
+       564,
+       1539,
+       739
+      ]
+     ]
+    },
+    "ready": {
+     "sheet": "executioners_v1",
+     "rects": [
+      [
+       69,
+       588,
+       224,
+       740
+      ]
+     ],
+     "procedural": {
+      "tint": "warning"
+     }
+    },
+    "dash": {
+     "sheet": "executioners_v1",
+     "rects": [
+      [
+       535,
+       579,
+       725,
+       739
+      ]
+     ]
+    },
+    "slash": {
+     "sheet": "executioners_v1",
+     "fps": 12,
+     "rects": [
+      [
+       316,
+       571,
+       469,
+       740
+      ]
+     ],
+     "events": [
+      {
+       "frame": 0,
+       "event": "hitbox_on"
+      }
+     ]
+    },
+    "double_slash": {
+     "sheet": "executioners_v1",
+     "fps": 10,
+     "isolate": true,
+     "rects": [
+      [
+       1025,
+       530,
+       1192,
+       740
+      ],
+      [
+       1176,
+       530,
+       1344,
+       740
+      ]
+     ],
+     "events": [
+      {
+       "frame": 0,
+       "event": "hitbox_on"
+      },
+      {
+       "frame": 1,
+       "event": "hitbox_on"
+      }
+     ]
+    },
+    "hit": {
+     "sheet": "executioners_v1",
+     "rects": [
+      [
+       1624,
+       551,
+       1752,
+       740
+      ]
+     ]
+    },
+    "stagger": {
+     "sheet": "executioners_v1",
+     "rects": [
+      [
+       1823,
+       563,
+       1930,
+       740
+      ]
+     ]
+    },
+    "defeat": {
+     "sheet": "executioners_v1",
+     "fps": 6,
+     "rects": [
+      [
+       1823,
+       563,
+       1930,
+       740
+      ],
+      [
+       2022,
+       560,
+       2182,
+       734
+      ]
+     ]
+    },
+    "jump": {
+     "derive": {
+      "from": "dash"
+     },
+     "note": "no jump art: dash pose reused for airborne"
+    },
+    "blade": {
+     "sheet": "executioners_v1",
+     "anchor": "center",
+     "rects": [
+      [
+       2290,
+       543,
+       2530,
+       574
+      ],
+      [
+       2290,
+       588,
+       2530,
+       619
+      ]
+     ]
+    },
+    "dash_streak": {
+     "sheet": "executioners_v1",
+     "anchor": "center",
+     "rects": [
+      [
+       2407,
+       633,
+       2673,
+       718
+      ]
+     ]
+    }
+   }
+  },
+  "iron_monk": {
+   "notes": "Iron Monk (v1). Flail spin is one pose; spinning is procedural (rotating flail sprite).",
+   "scale": 0.254,
+   "foot_offset": 0,
+   "fps": 8,
+   "collision": {
+    "shape": "capsule",
+    "radius": 10,
+    "height": 34,
+    "units": "world px (after scale)"
+   },
+   "animations": {
+    "idle": {
+     "sheet": "executioners_v1",
+     "loop": true,
+     "rects": [
+      [
+       67,
+       797,
+       257,
+       990
+      ]
+     ],
+     "procedural": {
+      "breathe": 0.02,
+      "period": 1.8
+     }
+    },
+    "walk": {
+     "sheet": "executioners_v1",
+     "fps": 5,
+     "loop": true,
+     "rects": [
+      [
+       298,
+       806,
+       467,
+       990
+      ],
+      [
+       540,
+       815,
+       714,
+       990
+      ]
+     ]
+    },
+    "spin": {
+     "sheet": "executioners_v1",
+     "loop": true,
+     "rects": [
+      [
+       775,
+       790,
+       978,
+       990
+      ]
+     ],
+     "procedural": {
+      "spin_flail": true
+     }
+    },
+    "chain_throw": {
+     "sheet": "executioners_v1",
+     "fps": 6,
+     "rects": [
+      [
+       1007,
+       812,
+       1399,
+       990
+      ]
+     ],
+     "events": [
+      {
+       "frame": 0,
+       "event": "spawn_projectile"
+      }
+     ]
+    },
+    "hit": {
+     "sheet": "executioners_v1",
+     "fps": 8,
+     "rects": [
+      [
+       1421,
+       815,
+       1564,
+       990
+      ],
+      [
+       1618,
+       812,
+       1755,
+       990
+      ]
+     ]
+    },
+    "stagger": {
+     "sheet": "executioners_v1",
+     "rects": [
+      [
+       1825,
+       815,
+       1936,
+       990
+      ]
+     ]
+    },
+    "defeat": {
+     "sheet": "executioners_v1",
+     "fps": 4,
+     "rects": [
+      [
+       1825,
+       815,
+       1936,
+       990
+      ],
+      [
+       2002,
+       855,
+       2224,
+       990
+      ]
+     ]
+    },
+    "flail_ball": {
+     "sheet": "executioners_v1",
+     "anchor": "center",
+     "rects": [
+      [
+       2294,
+       793,
+       2399,
+       899
+      ]
+     ]
+    },
+    "chain": {
+     "sheet": "executioners_v1",
+     "anchor": "center",
+     "isolate": true,
+     "rects": [
+      [
+       2372,
+       796,
+       2541,
+       967
+      ]
+     ]
+    },
+    "crescent": {
+     "sheet": "executioners_v1",
+     "anchor": "center",
+     "isolate": true,
+     "rects": [
+      [
+       2468,
+       806,
+       2680,
+       963
+      ]
+     ]
+    }
+   }
+  },
+  "blood_archer": {
+   "notes": "Blood Archer (v1). Rain-of-arrows uses the arrow sprite at runtime (no rain art).",
+   "scale": 0.228,
+   "foot_offset": 0,
+   "fps": 8,
+   "collision": {
+    "shape": "capsule",
+    "radius": 8,
+    "height": 28,
+    "units": "world px (after scale)"
+   },
+   "animations": {
+    "idle": {
+     "sheet": "executioners_v1",
+     "loop": true,
+     "rects": [
+      [
+       85,
+       1055,
+       246,
+       1242
+      ]
+     ],
+     "procedural": {
+      "breathe": 0.02,
+      "period": 1.5
+     }
+    },
+    "walk": {
+     "sheet": "executioners_v1",
+     "fps": 6,
+     "loop": true,
+     "rects": [
+      [
+       319,
+       1055,
+       424,
+       1242
+      ],
+      [
+       511,
+       1055,
+       645,
+       1242
+      ]
+     ]
+    },
+    "draw": {
+     "sheet": "executioners_v1",
+     "fps": 6,
+     "rects": [
+      [
+       738,
+       1020,
+       912,
+       1242
+      ],
+      [
+       973,
+       1020,
+       1133,
+       1242
+      ]
+     ]
+    },
+    "release": {
+     "sheet": "executioners_v1",
+     "fps": 10,
+     "rects": [
+      [
+       1200,
+       1055,
+       1345,
+       1242
+      ]
+     ],
+     "events": [
+      {
+       "frame": 0,
+       "event": "spawn_projectile"
+      }
+     ]
+    },
+    "hit": {
+     "sheet": "executioners_v1",
+     "fps": 8,
+     "rects": [
+      [
+       1400,
+       1055,
+       1525,
+       1242
+      ],
+      [
+       1598,
+       1055,
+       1736,
+       1241
+      ]
+     ]
+    },
+    "stagger": {
+     "sheet": "executioners_v1",
+     "rects": [
+      [
+       1822,
+       1055,
+       1912,
+       1242
+      ]
+     ]
+    },
+    "dissolve": {
+     "sheet": "executioners_v1",
+     "fps": 6,
+     "rects": [
+      [
+       1822,
+       1055,
+       1912,
+       1242
+      ],
+      [
+       2033,
+       1045,
+       2159,
+       1242
+      ]
+     ]
+    },
+    "bow": {
+     "sheet": "executioners_v1",
+     "anchor": "center",
+     "rects": [
+      [
+       2306,
+       1020,
+       2388,
+       1227
+      ]
+     ]
+    },
+    "arrow": {
+     "sheet": "executioners_v1",
+     "anchor": "center",
+     "rects": [
+      [
+       2427,
+       1118,
+       2548,
+       1137
+      ]
+     ]
+    },
+    "arrow_impact": {
+     "sheet": "executioners_v1",
+     "anchor": "center",
+     "rects": [
+      [
+       2572,
+       1068,
+       2677,
+       1184
+      ]
+     ]
+    }
+   }
+  },
+  "warden": {
+   "notes": "Warden (v1). Shield is baked into body frames (front-facing guard).",
+   "scale": 0.256,
+   "foot_offset": 0,
+   "fps": 8,
+   "collision": {
+    "shape": "capsule",
+    "radius": 10,
+    "height": 32,
+    "units": "world px (after scale)"
+   },
+   "animations": {
+    "idle": {
+     "sheet": "executioners_v1",
+     "loop": true,
+     "rects": [
+      [
+       85,
+       1310,
+       230,
+       1494
+      ]
+     ],
+     "procedural": {
+      "breathe": 0.02,
+      "period": 1.7
+     }
+    },
+    "walk": {
+     "sheet": "executioners_v1",
+     "fps": 5,
+     "loop": true,
+     "rects": [
+      [
+       289,
+       1310,
+       419,
+       1494
+      ],
+      [
+       488,
+       1310,
+       627,
+       1494
+      ]
+     ]
+    },
+    "spear_ready": {
+     "sheet": "executioners_v1",
+     "rects": [
+      [
+       662,
+       1310,
+       889,
+       1494
+      ]
+     ],
+     "procedural": {
+      "tint": "warning"
+     }
+    },
+    "spear_raise": {
+     "sheet": "executioners_v1",
+     "rects": [
+      [
+       898,
+       1262,
+       1115,
+       1494
+      ]
+     ],
+     "procedural": {
+      "tint": "warning"
+     }
+    },
+    "thrust": {
+     "sheet": "executioners_v1",
+     "fps": 8,
+     "rects": [
+      [
+       1125,
+       1320,
+       1363,
+       1494
+      ]
+     ],
+     "events": [
+      {
+       "frame": 0,
+       "event": "hitbox_on"
+      }
+     ]
+    },
+    "hit": {
+     "sheet": "executioners_v1",
+     "rects": [
+      [
+       1383,
+       1320,
+       1511,
+       1494
+      ]
+     ]
+    },
+    "shield_bash": {
+     "sheet": "executioners_v1",
+     "fps": 8,
+     "rects": [
+      [
+       1584,
+       1310,
+       1768,
+       1494
+      ]
+     ],
+     "events": [
+      {
+       "frame": 0,
+       "event": "hitbox_on"
+      }
+     ]
+    },
+    "stagger": {
+     "sheet": "executioners_v1",
+     "rects": [
+      [
+       1801,
+       1320,
+       1942,
+       1494
+      ]
+     ]
+    },
+    "defeat": {
+     "sheet": "executioners_v1",
+     "fps": 4,
+     "rects": [
+      [
+       1801,
+       1320,
+       1942,
+       1494
+      ],
+      [
+       1976,
+       1370,
+       2223,
+       1494
+      ]
+     ]
+    },
+    "shield": {
+     "sheet": "executioners_v1",
+     "anchor": "center",
+     "rects": [
+      [
+       2296,
+       1290,
+       2377,
+       1462
+      ]
+     ]
+    },
+    "spear": {
+     "sheet": "executioners_v1",
+     "anchor": "center",
+     "rects": [
+      [
+       2405,
+       1284,
+       2579,
+       1457
+      ]
+     ],
+     "isolate": true
+    },
+    "guard_spark": {
+     "sheet": "executioners_v1",
+     "anchor": "center",
+     "rects": [
+      [
+       2596,
+       1286,
+       2700,
+       1462
+      ]
+     ]
+    }
+   }
+  },
+  "boss_leviathan": {
+   "notes": "Crimson Leviathan. Body frames = boss_leviathan_v2; phase_transition (white-hot, also the 'real one' in the clone fight), shockwave, sword trails, floating swords and clone silhouettes = v1. Energy pillars + floor fractures from v2 because v1 draws them fused into one image.",
+   "scale": 0.326,
+   "foot_offset": 0,
+   "fps": 8,
+   "collision": {
+    "shape": "capsule",
+    "radius": 16,
+    "height": 64,
+    "units": "world px (after scale)"
+   },
+   "animations": {
+    "idle": {
+     "sheet": "boss_leviathan_v2",
+     "loop": true,
+     "rects": [
+      [
+       1027,
+       104,
+       1197,
+       375
+      ]
+     ],
+     "procedural": {
+      "breathe": 0.02,
+      "period": 1.4
+     }
+    },
+    "walk": {
+     "sheet": "boss_leviathan_v2",
+     "fps": 6,
+     "loop": true,
+     "rects": [
+      [
+       1027,
+       104,
+       1197,
+       375
+      ],
+      [
+       1256,
+       104,
+       1413,
+       375
+      ],
+      [
+       1464,
+       104,
+       1641,
+       375
+      ],
+      [
+       1256,
+       104,
+       1413,
+       375
+      ]
+     ],
+     "events": [
+      {
+       "frame": 0,
+       "event": "footstep_heavy"
+      },
+      {
+       "frame": 2,
+       "event": "footstep_heavy"
+      }
+     ]
+    },
+    "windup": {
+     "sheet": "boss_leviathan_v2",
+     "fps": 4,
+     "isolate": true,
+     "rects": [
+      [
+       1846,
+       104,
+       2093,
+       375
+      ],
+      [
+       2090,
+       40,
+       2331,
+       375
+      ]
+     ],
+     "procedural": {
+      "tint": "warning",
+      "shake": 1.5
+     }
+    },
+    "slam": {
+     "sheet": "boss_leviathan_v2",
+     "fps": 6,
+     "rects": [
+      [
+       2404,
+       140,
+       2692,
+       375
+      ]
+     ],
+     "events": [
+      {
+       "frame": 0,
+       "event": "hitbox_on"
+      },
+      {
+       "frame": 0,
+       "event": "spawn_shockwave"
+      }
+     ]
+    },
+    "sweep": {
+     "sheet": "boss_leviathan_v2",
+     "fps": 8,
+     "rects": [
+      [
+       1018,
+       461,
+       1335,
+       712
+      ],
+      [
+       1357,
+       461,
+       1673,
+       712
+      ]
+     ],
+     "events": [
+      {
+       "frame": 1,
+       "event": "hitbox_on"
+      }
+     ]
+    },
+    "dash": {
+     "sheet": "boss_leviathan_v2",
+     "rects": [
+      [
+       1792,
+       505,
+       2064,
+       712
+      ]
+     ]
+    },
+    "jump": {
+     "sheet": "boss_leviathan_v2",
+     "rects": [
+      [
+       2127,
+       440,
+       2348,
+       662
+      ]
+     ]
+    },
+    "jump_slam": {
+     "sheet": "boss_leviathan_v2",
+     "rects": [
+      [
+       2433,
+       448,
+       2669,
+       715
+      ]
+     ],
+     "events": [
+      {
+       "frame": 0,
+       "event": "hitbox_on"
+      },
+      {
+       "frame": 0,
+       "event": "spawn_fractures"
+      }
+     ]
+    },
+    "stagger": {
+     "sheet": "boss_leviathan_v2",
+     "fps": 6,
+     "rects": [
+      [
+       100,
+       840,
+       320,
+       1113
+      ],
+      [
+       395,
+       840,
+       640,
+       1113
+      ]
+     ]
+    },
+    "armor_break": {
+     "sheet": "boss_leviathan_v2",
+     "fps": 6,
+     "rects": [
+      [
+       805,
+       832,
+       1150,
+       1114
+      ],
+      [
+       1187,
+       826,
+       1386,
+       1113
+      ]
+     ]
+    },
+    "enraged": {
+     "sheet": "boss_leviathan_v2",
+     "loop": true,
+     "rects": [
+      [
+       1404,
+       758,
+       1721,
+       1118
+      ]
+     ],
+     "procedural": {
+      "pulse": 0.08,
+      "period": 0.5
+     }
+    },
+    "phase_transition": {
+     "sheet": "boss_leviathan_v1",
+     "loop": true,
+     "rects": [
+      [
+       1762,
+       836,
+       2028,
+       1112
+      ]
+     ],
+     "procedural": {
+      "pulse": 0.1,
+      "period": 0.3
+     }
+    },
+    "defeat": {
+     "sheet": "boss_leviathan_v2",
+     "fps": 5,
+     "rects": [
+      [
+       1841,
+       912,
+       2112,
+       1113
+      ],
+      [
+       2134,
+       940,
+       2394,
+       1115
+      ],
+      [
+       2412,
+       880,
+       2653,
+       1113
+      ]
+     ]
+    },
+    "floating_sword": {
+     "sheet": "boss_leviathan_v1",
+     "anchor": "center",
+     "isolate": true,
+     "rects": [
+      [
+       196,
+       1238,
+       280,
+       1430
+      ],
+      [
+       328,
+       1252,
+       370,
+       1402
+      ],
+      [
+       446,
+       1246,
+       512,
+       1402
+      ]
+     ]
+    },
+    "sword_trail": {
+     "sheet": "boss_leviathan_v1",
+     "anchor": "center",
+     "isolate": true,
+     "blend": "add",
+     "rects": [
+      [
+       596,
+       1222,
+       855,
+       1380
+      ],
+      [
+       640,
+       1222,
+       966,
+       1440
+      ]
+     ]
+    },
+    "shockwave": {
+     "sheet": "boss_leviathan_v1",
+     "anchor": "feet",
+     "blend": "add",
+     "rects": [
+      [
+       1004,
+       1228,
+       1406,
+       1446
+      ]
+     ]
+    },
+    "energy_pillar": {
+     "sheet": "boss_leviathan_v2",
+     "anchor": "feet",
+     "blend": "add",
+     "rects": [
+      [
+       1900,
+       1158,
+       1992,
+       1462
+      ],
+      [
+       2005,
+       1158,
+       2124,
+       1462
+      ],
+      [
+       2138,
+       1158,
+       2221,
+       1462
+      ]
+     ]
+    },
+    "floor_fracture": {
+     "sheet": "boss_leviathan_v2",
+     "anchor": "feet",
+     "rects": [
+      [
+       1044,
+       1236,
+       1154,
+       1340
+      ],
+      [
+       1220,
+       1206,
+       1394,
+       1346
+      ],
+      [
+       1000,
+       1348,
+       1209,
+       1458
+      ],
+      [
+       1222,
+       1362,
+       1416,
+       1449
+      ]
+     ]
+    },
+    "clone_silhouettes": {
+     "sheet": "boss_leviathan_v1",
+     "anchor": "feet",
+     "rects": [
+      [
+       2322,
+       1228,
+       2708,
+       1446
+      ]
+     ]
+    },
+    "clone": {
+     "derive": {
+      "from": "walk"
+     },
+     "procedural": {
+      "tint": "clone"
+     },
+     "note": "clones = body frames tinted dark (fake wind-ups need the full move set)"
+    }
+   }
+  },
+  "hazards_death_corridor": {
+   "notes": "Moving Death Corridor hazard sheet.",
+   "scale": 0.25,
+   "foot_offset": 0,
+   "fps": 8,
+   "anchor": "feet",
+   "animations": {
+    "spike_floor": {
+     "sheet": "hazards_death_corridor",
+     "rects": [
+      [
+       45,
+       226,
+       302,
+       274
+      ],
+      [
+       334,
+       226,
+       590,
+       306
+      ],
+      [
+       622,
+       184,
+       881,
+       287
+      ],
+      [
+       911,
+       126,
+       1168,
+       274
+      ],
+      [
+       1201,
+       112,
+       1455,
+       310
+      ]
+     ],
+     "note": "0 idle, 1 warning, 2 emerging, 3 full, 4 retracting"
+    },
+    "hunter_crusher": {
+     "sheet": "hazards_death_corridor",
+     "anchor": "top",
+     "rects": [
+      [
+       1565,
+       134,
+       1784,
+       402
+      ],
+      [
+       1868,
+       134,
+       2086,
+       402
+      ],
+      [
+       2112,
+       134,
+       2439,
+       402
+      ],
+      [
+       2465,
+       134,
+       2684,
+       402
+      ]
+     ],
+     "note": "0 idle, 1 slamming, 2 impact, 3 reset"
+    },
+    "saw_track": {
+     "sheet": "hazards_death_corridor",
+     "anchor": "center",
+     "rects": [
+      [
+       52,
+       474,
+       482,
+       520
+      ]
+     ]
+    },
+    "saw_blade": {
+     "sheet": "hazards_death_corridor",
+     "anchor": "center",
+     "rects": [
+      [
+       559,
+       412,
+       718,
+       572
+      ],
+      [
+       815,
+       379,
+       1010,
+       574
+      ]
+     ],
+     "note": "0 spinning, 1 jagging (red motion)"
+    },
+    "saw_on_track": {
+     "sheet": "hazards_death_corridor",
+     "anchor": "center",
+     "rects": [
+      [
+       1055,
+       410,
+       1482,
+       579
+      ]
+     ]
+    },
+    "blade_gate_axle": {
+     "sheet": "hazards_death_corridor",
+     "anchor": "center",
+     "rects": [
+      [
+       1515,
+       536,
+       1701,
+       656
+      ]
+     ]
+    },
+    "blade_gate": {
+     "sheet": "hazards_death_corridor",
+     "anchor": "center",
+     "loop": true,
+     "fps": 12,
+     "rects": [
+      [
+       1738,
+       508,
+       1939,
+       706
+      ],
+      [
+       1988,
+       489,
+       2185,
+       685
+      ],
+      [
+       2238,
+       488,
+       2427,
+       704
+      ],
+      [
+       2488,
+       508,
+       2688,
+       708
+      ]
+     ]
+    },
+    "collapse_platform": {
+     "sheet": "hazards_death_corridor",
+     "rects": [
+      [
+       47,
+       693,
+       343,
+       741
+      ],
+      [
+       384,
+       693,
+       682,
+       742
+      ],
+      [
+       721,
+       640,
+       1028,
+       752
+      ],
+      [
+       1061,
+       633,
+       1380,
+       752
+      ]
+     ],
+     "note": "0 intact, 1 cracked, 2 crumbling, 3 debris"
+    },
+    "false_floor": {
+     "sheet": "hazards_death_corridor",
+     "rects": [
+      [
+       47,
+       844,
+       343,
+       892
+      ],
+      [
+       400,
+       826,
+       677,
+       892
+      ],
+      [
+       724,
+       844,
+       1032,
+       896
+      ]
+     ],
+     "note": "0 hidden, 1 trigger shimmer, 2 active spikes"
+    },
+    "wall_skewer": {
+     "sheet": "hazards_death_corridor",
+     "anchor": "center",
+     "rects": [
+      [
+       67,
+       987,
+       193,
+       1158
+      ],
+      [
+       231,
+       986,
+       389,
+       1158
+      ],
+      [
+       425,
+       986,
+       607,
+       1158
+      ],
+      [
+       658,
+       986,
+       1068,
+       1158
+      ],
+      [
+       1102,
+       1060,
+       1446,
+       1098
+      ]
+     ],
+     "note": "0 mount, 1 idle, 2 warning, 3 fired, 4 retracted spear"
+    },
+    "falling_block": {
+     "sheet": "hazards_death_corridor",
+     "anchor": "top",
+     "rects": [
+      [
+       1675,
+       823,
+       1993,
+       937
+      ],
+      [
+       2030,
+       824,
+       2348,
+       1098
+      ],
+      [
+       2364,
+       824,
+       2699,
+       1152
+      ]
+     ],
+     "note": "0 warning cracks, 1 falling, 2 impact"
+    },
+    "rising_void": {
+     "sheet": "hazards_death_corridor",
+     "fps": 6,
+     "loop": true,
+     "rects": [
+      [
+       49,
+       1220,
+       331,
+       1456
+      ],
+      [
+       344,
+       1220,
+       626,
+       1458
+      ],
+      [
+       640,
+       1220,
+       922,
+       1457
+      ],
+      [
+       935,
+       1210,
+       1218,
+       1457
+      ]
+     ]
+    },
+    "gauntlet_crusher": {
+     "sheet": "hazards_death_corridor",
+     "anchor": "center",
+     "rects": [
+      [
+       1258,
+       1252,
+       1644,
+       1456
+      ],
+      [
+       1659,
+       1289,
+       2002,
+       1459
+      ]
+     ]
+    },
+    "fx_glow": {
+     "sheet": "hazards_death_corridor",
+     "anchor": "center",
+     "blend": "add",
+     "rects": [
+      [
+       2098,
+       1259,
+       2153,
+       1307
+      ],
+      [
+       2207,
+       1249,
+       2270,
+       1309
+      ]
+     ]
+    },
+    "fx_dash": {
+     "sheet": "hazards_death_corridor",
+     "anchor": "center",
+     "blend": "add",
+     "rects": [
+      [
+       2404,
+       1273,
+       2548,
+       1307
+      ]
+     ]
+    },
+    "fx_sparks": {
+     "sheet": "hazards_death_corridor",
+     "anchor": "center",
+     "blend": "add",
+     "rects": [
+      [
+       2074,
+       1376,
+       2146,
+       1453
+      ]
+     ]
+    },
+    "fx_motion_impact": {
+     "sheet": "hazards_death_corridor",
+     "anchor": "center",
+     "blend": "add",
+     "rects": [
+      [
+       2218,
+       1390,
+       2409,
+       1445
+      ]
+     ]
+    },
+    "fx_warning": {
+     "sheet": "hazards_death_corridor",
+     "anchor": "center",
+     "rects": [
+      [
+       2455,
+       1375,
+       2478,
+       1453
+      ]
+     ]
+    },
+    "fx_rubble": {
+     "sheet": "hazards_death_corridor",
+     "anchor": "center",
+     "rects": [
+      [
+       2540,
+       1330,
+       2705,
+       1462
+      ]
+     ]
+    }
+   }
+  },
+  "hazards_secondary": {
+   "notes": "Second hazard sheet. Its 'laser emitters' are dart launchers with a dotted red sight line; real beam lasers come from hazards_grid_obstacles.",
+   "scale": 0.25,
+   "foot_offset": 0,
+   "fps": 8,
+   "anchor": "feet",
+   "animations": {
+    "ceiling_spikes": {
+     "sheet": "hazards_secondary",
+     "anchor": "top",
+     "rects": [
+      [
+       20,
+       14,
+       458,
+       59
+      ],
+      [
+       476,
+       14,
+       913,
+       79
+      ],
+      [
+       932,
+       14,
+       1371,
+       110
+      ],
+      [
+       1390,
+       14,
+       1827,
+       149
+      ],
+      [
+       1846,
+       14,
+       2282,
+       134
+      ],
+      [
+       2300,
+       14,
+       2737,
+       86
+      ]
+     ],
+     "note": "0 idle, 1 warning, 2 emerging, 3 full, 4/5 retracting"
+    },
+    "floor_spikes": {
+     "sheet": "hazards_secondary",
+     "rects": [
+      [
+       19,
+       260,
+       458,
+       304
+      ],
+      [
+       475,
+       241,
+       914,
+       304
+      ],
+      [
+       932,
+       208,
+       1371,
+       304
+      ],
+      [
+       1389,
+       168,
+       1827,
+       304
+      ],
+      [
+       1845,
+       211,
+       2282,
+       304
+      ],
+      [
+       2299,
+       232,
+       2737,
+       304
+      ]
+     ],
+     "note": "0 idle, 1 warning, 2 emerging, 3 full, 4/5 retracting"
+    },
+    "chained_crusher": {
+     "sheet": "hazards_secondary",
+     "anchor": "top",
+     "rects": [
+      [
+       30,
+       335,
+       215,
+       790
+      ],
+      [
+       258,
+       335,
+       442,
+       790
+      ],
+      [
+       450,
+       335,
+       772,
+       790
+      ],
+      [
+       738,
+       335,
+       952,
+       790
+      ]
+     ],
+     "note": "0 raised, 1 dropping, 2 impact, 3 rising"
+    },
+    "dart_launcher": {
+     "sheet": "hazards_secondary",
+     "anchor": "center",
+     "rects": [
+      [
+       1164,
+       388,
+       1274,
+       493
+      ],
+      [
+       1164,
+       524,
+       1579,
+       630
+      ],
+      [
+       1164,
+       648,
+       1579,
+       754
+      ]
+     ],
+     "note": "0 armed (red eye), 1 firing, 2 fired"
+    },
+    "dart_launcher_wall": {
+     "sheet": "hazards_secondary",
+     "anchor": "center",
+     "rects": [
+      [
+       978,
+       376,
+       1143,
+       787
+      ]
+     ]
+    },
+    "dart_sight": {
+     "sheet": "hazards_secondary",
+     "anchor": "center",
+     "rects": [
+      [
+       1272,
+       418,
+       1580,
+       446
+      ]
+     ]
+    },
+    "saw": {
+     "sheet": "hazards_secondary",
+     "anchor": "center",
+     "rects": [
+      [
+       1649,
+       369,
+       1781,
+       501
+      ],
+      [
+       1813,
+       361,
+       1968,
+       506
+      ],
+      [
+       2457,
+       367,
+       2715,
+       518
+      ]
+     ],
+     "note": "0 static, 1 spinning, 2 bloody impact"
+    },
+    "saw_track_pair": {
+     "sheet": "hazards_secondary",
+     "anchor": "center",
+     "rects": [
+      [
+       2013,
+       367,
+       2439,
+       507
+      ]
+     ]
+    },
+    "fan_gate": {
+     "sheet": "hazards_secondary",
+     "anchor": "center",
+     "loop": true,
+     "fps": 12,
+     "rects": [
+      [
+       1669,
+       571,
+       1903,
+       806
+      ],
+      [
+       1939,
+       571,
+       2173,
+       806
+      ],
+      [
+       2195,
+       561,
+       2448,
+       816
+      ],
+      [
+       2464,
+       560,
+       2716,
+       817
+      ]
+     ]
+    },
+    "collapse_platform": {
+     "sheet": "hazards_secondary",
+     "rects": [
+      [
+       38,
+       895,
+       275,
+       948
+      ],
+      [
+       314,
+       871,
+       551,
+       973
+      ],
+      [
+       585,
+       880,
+       830,
+       1105
+      ],
+      [
+       868,
+       896,
+       1105,
+       1040
+      ]
+     ],
+     "note": "0 intact, 1 cracked, 2 crumbling, 3 gone outline"
+    },
+    "false_floor": {
+     "sheet": "hazards_secondary",
+     "rects": [
+      [
+       1160,
+       892,
+       1415,
+       957
+      ],
+      [
+       1156,
+       1019,
+       1417,
+       1115
+      ],
+      [
+       1444,
+       861,
+       1709,
+       985
+      ],
+      [
+       1444,
+       985,
+       1709,
+       1111
+      ]
+     ],
+     "note": "0 hidden, 1 shaking, 2 spikes burst, 3 spikes settled"
+    },
+    "thorn_wave": {
+     "sheet": "hazards_secondary",
+     "rects": [
+      [
+       24,
+       1153,
+       1717,
+       1375
+      ]
+     ]
+    },
+    "spiked_block": {
+     "sheet": "hazards_secondary",
+     "anchor": "top",
+     "rects": [
+      [
+       1785,
+       863,
+       2086,
+       1141
+      ],
+      [
+       2131,
+       875,
+       2375,
+       1272
+      ],
+      [
+       2310,
+       1125,
+       2700,
+       1364
+      ]
+     ],
+     "note": "0 warning (cracks + !), 1 falling, 2 landed + dust"
+    },
+    "particles": {
+     "sheet": "hazards_secondary",
+     "anchor": "center",
+     "region": [
+      0,
+      1410,
+      2350,
+      1525
+     ],
+     "min_area": 150,
+     "join": 4
+    },
+    "hazard_stripes": {
+     "sheet": "hazards_secondary",
+     "anchor": "center",
+     "rects": [
+      [
+       2350,
+       1428,
+       2523,
+       1457
+      ],
+      [
+       2350,
+       1487,
+       2523,
+       1516
+      ]
+     ]
+    },
+    "warning_bar": {
+     "sheet": "hazards_secondary",
+     "anchor": "center",
+     "rects": [
+      [
+       2546,
+       1468,
+       2719,
+       1517
+      ]
+     ]
+    }
+   }
+  },
+  "hazards_grid_obstacles": {
+   "notes": "Grid obstacle sheet (grid lines keyed out).",
+   "scale": 0.25,
+   "foot_offset": 0,
+   "fps": 8,
+   "anchor": "feet",
+   "animations": {
+    "square_crusher": {
+     "sheet": "hazards_grid_obstacles",
+     "rects": [
+      [
+       153,
+       73,
+       374,
+       396
+      ],
+      [
+       464,
+       106,
+       738,
+       458
+      ],
+      [
+       746,
+       215,
+       1097,
+       512
+      ],
+      [
+       1106,
+       150,
+       1352,
+       507
+      ]
+     ],
+     "note": "0 idle, 1 descending, 2 impact, 3 rising"
+    },
+    "pendulum_saw": {
+     "sheet": "hazards_grid_obstacles",
+     "anchor": "top",
+     "rects": [
+      [
+       1521,
+       82,
+       1683,
+       532
+      ],
+      [
+       1779,
+       83,
+       2005,
+       526
+      ],
+      [
+       2075,
+       83,
+       2236,
+       550
+      ],
+      [
+       2313,
+       83,
+       2634,
+       522
+      ]
+     ]
+    },
+    "spike_trap": {
+     "sheet": "hazards_grid_obstacles",
+     "rects": [
+      [
+       142,
+       746,
+       656,
+       827
+      ],
+      [
+       706,
+       628,
+       1221,
+       828
+      ]
+     ],
+     "note": "0 off, 1 on"
+    },
+    "beam_platform": {
+     "sheet": "hazards_grid_obstacles",
+     "rects": [
+      [
+       1439,
+       739,
+       1816,
+       823
+      ],
+      [
+       1872,
+       723,
+       2283,
+       920
+      ],
+      [
+       2323,
+       741,
+       2675,
+       825
+      ]
+     ],
+     "note": "0 intact (red cracks), 1 breaking, 2 plain"
+    },
+    "spiked_ball": {
+     "sheet": "hazards_grid_obstacles",
+     "anchor": "center",
+     "loop": true,
+     "rects": [
+      [
+       153,
+       976,
+       405,
+       1233
+      ],
+      [
+       529,
+       978,
+       782,
+       1233
+      ],
+      [
+       900,
+       978,
+       1152,
+       1233
+      ]
+     ]
+    },
+    "pressure_plate": {
+     "sheet": "hazards_grid_obstacles",
+     "rects": [
+      [
+       1440,
+       1126,
+       1743,
+       1204
+      ],
+      [
+       1844,
+       1114,
+       2146,
+       1205
+      ]
+     ],
+     "note": "0 up, 1 pressed"
+    },
+    "alarm_lamp": {
+     "sheet": "hazards_grid_obstacles",
+     "anchor": "center",
+     "rects": [
+      [
+       2289,
+       1076,
+       2370,
+       1196
+      ],
+      [
+       2425,
+       1001,
+       2654,
+       1239
+      ]
+     ],
+     "note": "0 off, 1 on (glow luma)"
+    },
+    "laser_emitter": {
+     "sheet": "hazards_grid_obstacles",
+     "anchor": "center",
+     "rects": [
+      [
+       140,
+       1330,
+       312,
+       1456
+      ],
+      [
+       547,
+       1331,
+       712,
+       1456
+      ],
+      [
+       1438,
+       1326,
+       1594,
+       1451
+      ]
+     ],
+     "note": "0 idle, 1 charging, 2 firing"
+    },
+    "laser_beam": {
+     "sheet": "hazards_grid_obstacles",
+     "anchor": "center",
+     "blend": "add",
+     "rects": [
+      [
+       712,
+       1322,
+       1304,
+       1458
+      ],
+      [
+       1594,
+       1318,
+       2192,
+       1458
+      ]
+     ],
+     "note": "0 charging (thin), 1 full beam; stretch at runtime"
+    },
+    "laser_emitter_off": {
+     "derive": {
+      "from": "laser_emitter",
+      "frames": [
+       0
+      ]
+     },
+     "procedural": {
+      "modulate": [
+       0.45,
+       0.45,
+       0.45,
+       1.0
+      ]
+     },
+     "note": "sheet's 'off' emitter is too faint to key; idle frame dimmed at runtime"
+    }
+   }
+  }
+ }
+}

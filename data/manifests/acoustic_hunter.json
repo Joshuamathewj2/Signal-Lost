@@ -1,0 +1,1017 @@
+{
+ "version": 1,
+ "unit": "acoustic_hunter",
+ "atlas": "res://assets/sprites/atlases/acoustic_hunter.png",
+ "atlas_size": [
+  2043,
+  1158
+ ],
+ "scale": 0.162,
+ "foot_offset": 0,
+ "collision": {
+  "shape": "capsule",
+  "radius": 8,
+  "height": 28,
+  "units": "world px (after scale)"
+ },
+ "notes": "Acoustic Hunter (blind). Dedicated sheet. The large reference figure (bottom-left) is not sliced.",
+ "sources": {
+  "acoustic_hunter": "acoustic_hunter.jpg"
+ },
+ "erased_regions": [
+  {
+   "rect": [
+    2612,
+    1398,
+    2670,
+    1450
+   ],
+   "sheet": "acoustic_hunter",
+   "reason": "generator watermark (inverse-blended out, art underneath kept)"
+  }
+ ],
+ "animations": {
+  "crouch_idle": {
+   "frames": [
+    {
+     "id": "crouch_idle:0:acoustic_hunter@40,137",
+     "x": 1283,
+     "y": 814,
+     "w": 193,
+     "h": 170,
+     "ox": 73,
+     "oy": 166,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      40,
+      137,
+      233,
+      307
+     ]
+    },
+    {
+     "id": "crouch_idle:1:acoustic_hunter@255,136",
+     "x": 454,
+     "y": 814,
+     "w": 193,
+     "h": 171,
+     "ox": 73,
+     "oy": 167,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      255,
+      136,
+      448,
+      307
+     ]
+    },
+    {
+     "id": "crouch_idle:2:acoustic_hunter@471,130",
+     "x": 2,
+     "y": 814,
+     "w": 190,
+     "h": 177,
+     "ox": 71,
+     "oy": 173,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      471,
+      130,
+      661,
+      307
+     ]
+    },
+    {
+     "id": "crouch_idle:3:acoustic_hunter@683,137",
+     "x": 1478,
+     "y": 814,
+     "w": 194,
+     "h": 170,
+     "ox": 73,
+     "oy": 166,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      683,
+      137,
+      877,
+      307
+     ]
+    },
+    {
+     "id": "crouch_idle:4:acoustic_hunter@899,136",
+     "x": 649,
+     "y": 814,
+     "w": 193,
+     "h": 171,
+     "ox": 72,
+     "oy": 167,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      899,
+      136,
+      1092,
+      307
+     ]
+    },
+    {
+     "id": "crouch_idle:5:acoustic_hunter@1115,136",
+     "x": 844,
+     "y": 814,
+     "w": 192,
+     "h": 171,
+     "ox": 72,
+     "oy": 167,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      1115,
+      136,
+      1307,
+      307
+     ]
+    }
+   ],
+   "durations": [
+    0.1667,
+    0.1667,
+    0.1667,
+    0.1667,
+    0.1667,
+    0.1667
+   ],
+   "loop": true,
+   "fps": 6,
+   "blend": "mix",
+   "anchor": "feet"
+  },
+  "alert": {
+   "frames": [
+    {
+     "id": "alert:0:acoustic_hunter@1389,62",
+     "x": 1871,
+     "y": 316,
+     "w": 170,
+     "h": 248,
+     "ox": 79,
+     "oy": 244,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      1389,
+      62,
+      1559,
+      310
+     ]
+    },
+    {
+     "id": "alert:1:acoustic_hunter@1564,39",
+     "x": 1831,
+     "y": 2,
+     "w": 173,
+     "h": 271,
+     "ox": 78,
+     "oy": 267,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      1564,
+      39,
+      1737,
+      310
+     ]
+    },
+    {
+     "id": "alert:2:acoustic_hunter@1746,46",
+     "x": 545,
+     "y": 316,
+     "w": 170,
+     "h": 264,
+     "ox": 75,
+     "oy": 260,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      1746,
+      46,
+      1916,
+      310
+     ]
+    },
+    {
+     "id": "alert:3:acoustic_hunter@1933,44",
+     "x": 2,
+     "y": 316,
+     "w": 167,
+     "h": 266,
+     "ox": 73,
+     "oy": 262,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      1933,
+      44,
+      2100,
+      310
+     ]
+    }
+   ],
+   "durations": [
+    0.1,
+    0.1,
+    0.1,
+    0.1
+   ],
+   "loop": false,
+   "fps": 10,
+   "blend": "mix",
+   "anchor": "feet"
+  },
+  "turn": {
+   "frames": [
+    {
+     "id": "turn:0:acoustic_hunter@2202,53",
+     "x": 1158,
+     "y": 316,
+     "w": 124,
+     "h": 258,
+     "ox": 47,
+     "oy": 254,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      2202,
+      53,
+      2326,
+      311
+     ]
+    },
+    {
+     "id": "turn:1:acoustic_hunter@2343,50",
+     "x": 717,
+     "y": 316,
+     "w": 162,
+     "h": 261,
+     "ox": 98,
+     "oy": 257,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      2343,
+      50,
+      2505,
+      311
+     ]
+    },
+    {
+     "id": "turn:2:acoustic_hunter@2517,53",
+     "x": 1284,
+     "y": 316,
+     "w": 154,
+     "h": 258,
+     "ox": 105,
+     "oy": 254,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      2517,
+      53,
+      2671,
+      311
+     ]
+    }
+   ],
+   "durations": [
+    0.1,
+    0.1,
+    0.1
+   ],
+   "loop": false,
+   "fps": 10,
+   "blend": "mix",
+   "anchor": "feet"
+  },
+  "aim": {
+   "frames": [
+    {
+     "id": "aim:0:acoustic_hunter@57,398",
+     "x": 1026,
+     "y": 2,
+     "w": 196,
+     "h": 289,
+     "ox": 87,
+     "oy": 286,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      57,
+      398,
+      253,
+      687
+     ]
+    },
+    {
+     "id": "aim:1:acoustic_hunter@291,394",
+     "x": 629,
+     "y": 2,
+     "w": 193,
+     "h": 293,
+     "ox": 76,
+     "oy": 289,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      291,
+      394,
+      484,
+      687
+     ]
+    },
+    {
+     "id": "aim:2:acoustic_hunter@522,395",
+     "x": 824,
+     "y": 2,
+     "w": 200,
+     "h": 291,
+     "ox": 81,
+     "oy": 288,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      522,
+      395,
+      722,
+      686
+     ]
+    },
+    {
+     "id": "aim:3:acoustic_hunter@755,413",
+     "x": 1413,
+     "y": 2,
+     "w": 203,
+     "h": 272,
+     "ox": 85,
+     "oy": 268,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      755,
+      413,
+      958,
+      685
+     ]
+    }
+   ],
+   "durations": [
+    0.1,
+    0.1,
+    0.1,
+    0.1
+   ],
+   "loop": false,
+   "fps": 10,
+   "blend": "mix",
+   "anchor": "feet"
+  },
+  "release": {
+   "frames": [
+    {
+     "id": "release:0:acoustic_hunter@1069,391",
+     "x": 365,
+     "y": 2,
+     "w": 262,
+     "h": 295,
+     "ox": 96,
+     "oy": 291,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      1069,
+      391,
+      1331,
+      686
+     ]
+    },
+    {
+     "id": "release:1:acoustic_hunter@1347,429",
+     "x": 1440,
+     "y": 316,
+     "w": 222,
+     "h": 257,
+     "ox": 98,
+     "oy": 253,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      1347,
+      429,
+      1569,
+      686
+     ]
+    },
+    {
+     "id": "release:2:acoustic_hunter@1595,429",
+     "x": 1664,
+     "y": 316,
+     "w": 205,
+     "h": 257,
+     "ox": 102,
+     "oy": 253,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      1595,
+      429,
+      1800,
+      686
+     ]
+    }
+   ],
+   "durations": [
+    0.0714,
+    0.0714,
+    0.0714
+   ],
+   "loop": false,
+   "fps": 14,
+   "blend": "mix",
+   "anchor": "feet",
+   "events": [
+    {
+     "frame": 0,
+     "event": "spawn_projectile"
+    }
+   ]
+  },
+  "crawl": {
+   "frames": [
+    {
+     "id": "crawl:0:acoustic_hunter@1865,526",
+     "x": 194,
+     "y": 995,
+     "w": 198,
+     "h": 157,
+     "ox": 99,
+     "oy": 153,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      1865,
+      526,
+      2063,
+      683
+     ]
+    },
+    {
+     "id": "crawl:1:acoustic_hunter@2091,517",
+     "x": 1674,
+     "y": 814,
+     "w": 189,
+     "h": 163,
+     "ox": 82,
+     "oy": 159,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      2091,
+      517,
+      2280,
+      680
+     ]
+    },
+    {
+     "id": "crawl:2:acoustic_hunter@2293,521",
+     "x": 2,
+     "y": 995,
+     "w": 190,
+     "h": 161,
+     "ox": 92,
+     "oy": 157,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      2293,
+      521,
+      2483,
+      682
+     ]
+    },
+    {
+     "id": "crawl:3:acoustic_hunter@2507,529",
+     "x": 394,
+     "y": 995,
+     "w": 201,
+     "h": 152,
+     "ox": 102,
+     "oy": 149,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      2507,
+      529,
+      2708,
+      681
+     ]
+    }
+   ],
+   "durations": [
+    0.125,
+    0.125,
+    0.125,
+    0.125
+   ],
+   "loop": true,
+   "fps": 8,
+   "blend": "mix",
+   "anchor": "feet",
+   "events": [
+    {
+     "frame": 0,
+     "event": "footstep_soft"
+    },
+    {
+     "frame": 2,
+     "event": "footstep_soft"
+    }
+   ]
+  },
+  "run": {
+   "frames": [
+    {
+     "id": "run:0:acoustic_hunter@68,848",
+     "x": 870,
+     "y": 586,
+     "w": 217,
+     "h": 217,
+     "ox": 195,
+     "oy": 213,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      68,
+      848,
+      285,
+      1065
+     ]
+    },
+    {
+     "id": "run:1:acoustic_hunter@306,843",
+     "x": 215,
+     "y": 586,
+     "w": 219,
+     "h": 221,
+     "ox": 196,
+     "oy": 218,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      306,
+      843,
+      525,
+      1064
+     ]
+    },
+    {
+     "id": "run:2:acoustic_hunter@548,845",
+     "x": 436,
+     "y": 586,
+     "w": 220,
+     "h": 221,
+     "ox": 194,
+     "oy": 216,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      548,
+      845,
+      768,
+      1066
+     ]
+    },
+    {
+     "id": "run:3:acoustic_hunter@796,842",
+     "x": 2,
+     "y": 586,
+     "w": 211,
+     "h": 224,
+     "ox": 34,
+     "oy": 221,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      796,
+      842,
+      1007,
+      1066
+     ]
+    },
+    {
+     "id": "run:4:acoustic_hunter@1036,850",
+     "x": 1282,
+     "y": 586,
+     "w": 217,
+     "h": 215,
+     "ox": 170,
+     "oy": 211,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      1036,
+      850,
+      1253,
+      1065
+     ]
+    },
+    {
+     "id": "run:5:acoustic_hunter@1278,846",
+     "x": 658,
+     "y": 586,
+     "w": 210,
+     "h": 218,
+     "ox": 105,
+     "oy": 213,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      1278,
+      846,
+      1488,
+      1064
+     ]
+    },
+    {
+     "id": "run:6:acoustic_hunter@1527,849",
+     "x": 1089,
+     "y": 586,
+     "w": 191,
+     "h": 217,
+     "ox": 17,
+     "oy": 213,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      1527,
+      849,
+      1718,
+      1066
+     ]
+    }
+   ],
+   "durations": [
+    0.0714,
+    0.0714,
+    0.0714,
+    0.0714,
+    0.0714,
+    0.0714,
+    0.0714
+   ],
+   "loop": true,
+   "fps": 14,
+   "blend": "mix",
+   "anchor": "feet",
+   "events": [
+    {
+     "frame": 1,
+     "event": "footstep"
+    },
+    {
+     "frame": 4,
+     "event": "footstep"
+    }
+   ]
+  },
+  "jump": {
+   "frames": [
+    {
+     "id": "jump:0:acoustic_hunter@1836,756",
+     "x": 2,
+     "y": 2,
+     "w": 171,
+     "h": 310,
+     "ox": 30,
+     "oy": 306,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      1836,
+      756,
+      2007,
+      1066
+     ]
+    },
+    {
+     "id": "jump:1:acoustic_hunter@2031,729",
+     "x": 1618,
+     "y": 2,
+     "w": 211,
+     "h": 272,
+     "ox": 21,
+     "oy": 268,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      2031,
+      729,
+      2242,
+      1001
+     ]
+    },
+    {
+     "id": "jump:2:acoustic_hunter@2257,797",
+     "x": 171,
+     "y": 316,
+     "w": 203,
+     "h": 265,
+     "ox": 178,
+     "oy": 261,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      2257,
+      797,
+      2460,
+      1062
+     ]
+    },
+    {
+     "id": "jump:3:acoustic_hunter@2489,881",
+     "x": 1501,
+     "y": 586,
+     "w": 163,
+     "h": 185,
+     "ox": 100,
+     "oy": 182,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      2489,
+      881,
+      2652,
+      1066
+     ]
+    }
+   ],
+   "durations": [
+    0.1,
+    0.1,
+    0.1,
+    0.1
+   ],
+   "loop": false,
+   "fps": 10,
+   "blend": "mix",
+   "anchor": "feet",
+   "events": [
+    {
+     "frame": 0,
+     "event": "jump_takeoff"
+    }
+   ]
+  },
+  "hit": {
+   "frames": [
+    {
+     "id": "hit:0:acoustic_hunter@455,1198",
+     "x": 1224,
+     "y": 2,
+     "w": 187,
+     "h": 276,
+     "ox": 99,
+     "oy": 272,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      455,
+      1198,
+      642,
+      1474
+     ]
+    },
+    {
+     "id": "hit:1:acoustic_hunter@675,1178",
+     "x": 175,
+     "y": 2,
+     "w": 188,
+     "h": 297,
+     "ox": 101,
+     "oy": 293,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      675,
+      1178,
+      863,
+      1475
+     ]
+    },
+    {
+     "id": "hit:2:acoustic_hunter@906,1208",
+     "x": 376,
+     "y": 316,
+     "w": 167,
+     "h": 265,
+     "ox": 71,
+     "oy": 261,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      906,
+      1208,
+      1073,
+      1473
+     ]
+    }
+   ],
+   "durations": [
+    0.0833,
+    0.0833,
+    0.0833
+   ],
+   "loop": false,
+   "fps": 12,
+   "blend": "mix",
+   "anchor": "feet"
+  },
+  "defeat": {
+   "frames": [
+    {
+     "id": "defeat:0:acoustic_hunter@1185,1211",
+     "x": 881,
+     "y": 316,
+     "w": 275,
+     "h": 260,
+     "ox": 173,
+     "oy": 256,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      1185,
+      1211,
+      1460,
+      1471
+     ]
+    },
+    {
+     "id": "defeat:1:acoustic_hunter@1479,1300",
+     "x": 1038,
+     "y": 814,
+     "w": 243,
+     "h": 171,
+     "ox": 121,
+     "oy": 167,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      1479,
+      1300,
+      1722,
+      1471
+     ]
+    }
+   ],
+   "durations": [
+    0.125,
+    0.125
+   ],
+   "loop": false,
+   "fps": 8,
+   "blend": "mix",
+   "anchor": "feet"
+  },
+  "dissolve": {
+   "frames": [
+    {
+     "id": "dissolve:0:acoustic_hunter@1749,1299",
+     "x": 194,
+     "y": 814,
+     "w": 258,
+     "h": 175,
+     "ox": 129,
+     "oy": 171,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      1749,
+      1299,
+      2007,
+      1474
+     ]
+    },
+    {
+     "id": "dissolve:1:acoustic_hunter@2014,1294",
+     "x": 1666,
+     "y": 586,
+     "w": 244,
+     "h": 181,
+     "ox": 121,
+     "oy": 177,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      2014,
+      1294,
+      2258,
+      1475
+     ]
+    }
+   ],
+   "durations": [
+    0.125,
+    0.125
+   ],
+   "loop": false,
+   "fps": 8,
+   "blend": "mix",
+   "anchor": "feet"
+  },
+  "arrow": {
+   "frames": [
+    {
+     "id": "arrow:0:acoustic_hunter@2376,1257",
+     "x": 923,
+     "y": 995,
+     "w": 73,
+     "h": 34,
+     "ox": 36,
+     "oy": 17,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      2376,
+      1257,
+      2449,
+      1291
+     ]
+    }
+   ],
+   "durations": [
+    0.1
+   ],
+   "loop": false,
+   "fps": 10,
+   "blend": "mix",
+   "anchor": "center"
+  },
+  "arrow_volley": {
+   "frames": [
+    {
+     "id": "arrow_volley:0:acoustic_hunter@2377,1360",
+     "x": 793,
+     "y": 995,
+     "w": 128,
+     "h": 63,
+     "ox": 64,
+     "oy": 31,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      2377,
+      1360,
+      2505,
+      1423
+     ]
+    }
+   ],
+   "durations": [
+    0.1
+   ],
+   "loop": false,
+   "fps": 10,
+   "blend": "mix",
+   "anchor": "center"
+  },
+  "arrow_impact": {
+   "frames": [
+    {
+     "id": "arrow_impact:0:acoustic_hunter@2483,1232",
+     "x": 597,
+     "y": 995,
+     "w": 194,
+     "h": 91,
+     "ox": 97,
+     "oy": 45,
+     "override": null,
+     "sheet": "acoustic_hunter",
+     "src": [
+      2483,
+      1232,
+      2677,
+      1323
+     ]
+    }
+   ],
+   "durations": [
+    0.1
+   ],
+   "loop": false,
+   "fps": 10,
+   "blend": "mix",
+   "anchor": "center"
+  }
+ }
+}

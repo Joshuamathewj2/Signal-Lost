@@ -1,0 +1,495 @@
+{
+ "version": 1,
+ "unit": "phantom",
+ "atlas": "res://assets/sprites/atlases/phantom.png",
+ "atlas_size": [
+  1838,
+  257
+ ],
+ "scale": 0.228,
+ "foot_offset": 0,
+ "collision": {
+  "shape": "capsule",
+  "radius": 8,
+  "height": 26,
+  "units": "world px (after scale)"
+ },
+ "notes": "Phantom (v1, crimson). v2 phantom is grey = violates red-is-hostile, not used. No jump art: jump reuses the dash pose.",
+ "sources": {
+  "executioners_v1": "executioners_v1.jpg"
+ },
+ "erased_regions": [
+  {
+   "rect": [
+    900,
+    30,
+    1850,
+    180
+   ],
+   "reason": "title 'VOID EXECUTIONERS' + subtitle",
+   "sheet": "executioners_v1"
+  },
+  {
+   "rect": [
+    75,
+    214,
+    395,
+    252
+   ],
+   "reason": "text label 'THE EXECUTIONER'",
+   "sheet": "executioners_v1"
+  },
+  {
+   "rect": [
+    75,
+    518,
+    330,
+    557
+   ],
+   "reason": "text label 'THE PHANTOM'",
+   "sheet": "executioners_v1"
+  },
+  {
+   "rect": [
+    75,
+    757,
+    360,
+    796
+   ],
+   "reason": "text label 'THE IRON MONK'",
+   "sheet": "executioners_v1"
+  },
+  {
+   "rect": [
+    75,
+    1010,
+    425,
+    1048
+   ],
+   "reason": "text label 'THE BLOOD ARCHER'",
+   "sheet": "executioners_v1"
+  },
+  {
+   "rect": [
+    75,
+    1261,
+    310,
+    1300
+   ],
+   "reason": "text label 'THE WARDEN'",
+   "sheet": "executioners_v1"
+  },
+  {
+   "rect": [
+    2612,
+    1398,
+    2670,
+    1450
+   ],
+   "sheet": "executioners_v1",
+   "reason": "generator watermark (inverse-blended out, art underneath kept)"
+  }
+ ],
+ "animations": {
+  "idle": {
+   "frames": [
+    {
+     "id": "idle:0:executioners_v1@802,559",
+     "x": 483,
+     "y": 2,
+     "w": 150,
+     "h": 182,
+     "ox": 74,
+     "oy": 179,
+     "override": null,
+     "sheet": "executioners_v1",
+     "src": [
+      802,
+      559,
+      952,
+      741
+     ]
+    },
+    {
+     "id": "idle:1:executioners_v1@1406,562",
+     "x": 748,
+     "y": 2,
+     "w": 135,
+     "h": 179,
+     "ox": 63,
+     "oy": 176,
+     "override": null,
+     "sheet": "executioners_v1",
+     "src": [
+      1406,
+      562,
+      1541,
+      741
+     ]
+    }
+   ],
+   "durations": [
+    0.25,
+    0.25
+   ],
+   "loop": true,
+   "fps": 4,
+   "blend": "mix",
+   "anchor": "feet"
+  },
+  "ready": {
+   "frames": [
+    {
+     "id": "ready:0:executioners_v1@67,586",
+     "x": 1406,
+     "y": 2,
+     "w": 159,
+     "h": 156,
+     "ox": 88,
+     "oy": 152,
+     "override": null,
+     "sheet": "executioners_v1",
+     "src": [
+      67,
+      586,
+      226,
+      742
+     ]
+    }
+   ],
+   "durations": [
+    0.1
+   ],
+   "loop": false,
+   "fps": 10,
+   "blend": "mix",
+   "anchor": "feet",
+   "procedural": {
+    "tint": "warning"
+   }
+  },
+  "dash": {
+   "frames": [
+    {
+     "id": "dash:0:executioners_v1@533,577",
+     "x": 1210,
+     "y": 2,
+     "w": 194,
+     "h": 164,
+     "ox": 27,
+     "oy": 161,
+     "override": null,
+     "sheet": "executioners_v1",
+     "src": [
+      533,
+      577,
+      727,
+      741
+     ]
+    }
+   ],
+   "durations": [
+    0.1
+   ],
+   "loop": false,
+   "fps": 10,
+   "blend": "mix",
+   "anchor": "feet"
+  },
+  "slash": {
+   "frames": [
+    {
+     "id": "slash:0:executioners_v1@314,569",
+     "x": 1051,
+     "y": 2,
+     "w": 157,
+     "h": 173,
+     "ox": 83,
+     "oy": 169,
+     "override": null,
+     "sheet": "executioners_v1",
+     "src": [
+      314,
+      569,
+      471,
+      742
+     ]
+    }
+   ],
+   "durations": [
+    0.0833
+   ],
+   "loop": false,
+   "fps": 12,
+   "blend": "mix",
+   "anchor": "feet",
+   "events": [
+    {
+     "frame": 0,
+     "event": "hitbox_on"
+    }
+   ]
+  },
+  "double_slash": {
+   "frames": [
+    {
+     "id": "double_slash:0:executioners_v1@1023,552",
+     "x": 310,
+     "y": 2,
+     "w": 171,
+     "h": 190,
+     "ox": 81,
+     "oy": 186,
+     "override": null,
+     "sheet": "executioners_v1",
+     "src": [
+      1023,
+      552,
+      1194,
+      742
+     ]
+    },
+    {
+     "id": "double_slash:1:executioners_v1@1174,528",
+     "x": 2,
+     "y": 2,
+     "w": 172,
+     "h": 214,
+     "ox": 70,
+     "oy": 210,
+     "override": null,
+     "sheet": "executioners_v1",
+     "src": [
+      1174,
+      528,
+      1346,
+      742
+     ]
+    }
+   ],
+   "durations": [
+    0.1,
+    0.1
+   ],
+   "loop": false,
+   "fps": 10,
+   "blend": "mix",
+   "anchor": "feet",
+   "events": [
+    {
+     "frame": 0,
+     "event": "hitbox_on"
+    },
+    {
+     "frame": 1,
+     "event": "hitbox_on"
+    }
+   ]
+  },
+  "hit": {
+   "frames": [
+    {
+     "id": "hit:0:executioners_v1@1622,549",
+     "x": 176,
+     "y": 2,
+     "w": 132,
+     "h": 193,
+     "ox": 66,
+     "oy": 189,
+     "override": null,
+     "sheet": "executioners_v1",
+     "src": [
+      1622,
+      549,
+      1754,
+      742
+     ]
+    }
+   ],
+   "durations": [
+    0.1
+   ],
+   "loop": false,
+   "fps": 10,
+   "blend": "mix",
+   "anchor": "feet"
+  },
+  "stagger": {
+   "frames": [
+    {
+     "id": "stagger:0:executioners_v1@1821,561",
+     "x": 635,
+     "y": 2,
+     "w": 111,
+     "h": 181,
+     "ox": 49,
+     "oy": 177,
+     "override": null,
+     "sheet": "executioners_v1",
+     "src": [
+      1821,
+      561,
+      1932,
+      742
+     ]
+    }
+   ],
+   "durations": [
+    0.1
+   ],
+   "loop": false,
+   "fps": 10,
+   "blend": "mix",
+   "anchor": "feet"
+  },
+  "defeat": {
+   "frames": [
+    {
+     "id": "defeat:0:executioners_v1@1821,561",
+     "x": 635,
+     "y": 2,
+     "w": 111,
+     "h": 181,
+     "ox": 49,
+     "oy": 177,
+     "override": null,
+     "sheet": "executioners_v1",
+     "src": [
+      1821,
+      561,
+      1932,
+      742
+     ]
+    },
+    {
+     "id": "defeat:1:executioners_v1@2020,558",
+     "x": 885,
+     "y": 2,
+     "w": 164,
+     "h": 178,
+     "ox": 34,
+     "oy": 174,
+     "override": null,
+     "sheet": "executioners_v1",
+     "src": [
+      2020,
+      558,
+      2184,
+      736
+     ]
+    }
+   ],
+   "durations": [
+    0.1667,
+    0.1667
+   ],
+   "loop": false,
+   "fps": 6,
+   "blend": "mix",
+   "anchor": "feet"
+  },
+  "blade": {
+   "frames": [
+    {
+     "id": "blade:0:executioners_v1@2288,541",
+     "x": 2,
+     "y": 220,
+     "w": 243,
+     "h": 35,
+     "ox": 121,
+     "oy": 17,
+     "override": null,
+     "sheet": "executioners_v1",
+     "src": [
+      2288,
+      541,
+      2531,
+      576
+     ]
+    },
+    {
+     "id": "blade:1:executioners_v1@2288,586",
+     "x": 247,
+     "y": 220,
+     "w": 244,
+     "h": 35,
+     "ox": 122,
+     "oy": 17,
+     "override": null,
+     "sheet": "executioners_v1",
+     "src": [
+      2288,
+      586,
+      2532,
+      621
+     ]
+    }
+   ],
+   "durations": [
+    0.1,
+    0.1
+   ],
+   "loop": false,
+   "fps": 10,
+   "blend": "mix",
+   "anchor": "center"
+  },
+  "dash_streak": {
+   "frames": [
+    {
+     "id": "dash_streak:0:executioners_v1@2405,631",
+     "x": 1567,
+     "y": 2,
+     "w": 269,
+     "h": 89,
+     "ox": 134,
+     "oy": 44,
+     "override": null,
+     "sheet": "executioners_v1",
+     "src": [
+      2405,
+      631,
+      2674,
+      720
+     ]
+    }
+   ],
+   "durations": [
+    0.1
+   ],
+   "loop": false,
+   "fps": 10,
+   "blend": "mix",
+   "anchor": "center"
+  },
+  "jump": {
+   "frames": [
+    {
+     "id": "dash:0:executioners_v1@533,577",
+     "x": 1210,
+     "y": 2,
+     "w": 194,
+     "h": 164,
+     "ox": 27,
+     "oy": 161,
+     "override": null,
+     "sheet": "executioners_v1",
+     "src": [
+      533,
+      577,
+      727,
+      741
+     ]
+    }
+   ],
+   "durations": [
+    0.1
+   ],
+   "loop": false,
+   "fps": 10,
+   "blend": "mix",
+   "anchor": "feet",
+   "faked": "no jump art: dash pose reused for airborne"
+  }
+ }
+}

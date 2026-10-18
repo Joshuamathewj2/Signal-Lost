@@ -1,0 +1,10 @@
+hazards_death_corridor.jpg <- Generate_sprite_atlas_for_obstacles_2K_20261018122343.jpg
+hazards_secondary.jpg <- Generate_sprite_atlas_for_obstacles_2K_20261018122348.jpg
+hazards_grid_obstacles.jpg <- Modular_industrial_platformer_ha…_2K_20261018122237.jpg
+archer_v1.jpg <- Design_enemy_sprite_atlas_2K_20261018122116.jpg
+archer_v2.jpg <- Design_enemy_sprite_atlas_2K_20261018122129.jpg
+acoustic_hunter.jpg <- Design_acoustic_hunter_sprite_atlas_2K_20261018122148.jpg
+executioners_v1.jpg <- Void_Executioners_game_asset_col…_2K_20261018122011.jpg
+executioners_v2.jpg <- Designing_game_villain_sprite_co…_2K_20261018122328.jpg
+boss_leviathan_v1.jpg <- Design_Crimson_Leviathan_boss_2K_20261018122359.jpg
+boss_leviathan_v2.jpg <- Design_crimson_leviathan_boss_2K_20261018122410.jpg
