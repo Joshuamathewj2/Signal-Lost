@@ -17,24 +17,60 @@ var current_path_types: Array[int] = []
 var current_path_idx: int = 0
 var repath_timer: float = 0.0
 
+# --- Intent mode (body has a Fighter) ---------------------------------------
+# The mover never touches velocity: it writes the Fighter's intent (walk / jump /
+# drop) and the Fighter moves the body with the same physics as the hero.
+var fighter: Fighter = null
+var home_pos: Vector2 = Vector2.ZERO
+var stuck_time: float = 1.5          ## data/enemies/<kind>.json nav.stuck_time
+var launch_distance: float = 40.0    ## nav.launch_distance: start a jump edge this close
+var allow_home_teleport: bool = true ## nav.home_teleport
+var ledge_clearance: float = 14.0    ## nav.ledge_clearance: extra px above a lip when climbing
+var _stuck_timer: float = 0.0
+var _stuck_strikes: int = 0
+var _best_dist: float = INF
+var _turn_timer: float = 0.0
+
 func _ready() -> void:
 	if body == null and get_parent() is EnemyBase:
 		body = get_parent() as EnemyBase
+	if body != null:
+		fighter = body.get_node_or_null("Fighter") as Fighter
+		home_pos = body.global_position
+
+
+func configure_nav(nav: Dictionary) -> void:
+	stuck_time = float(nav.get("stuck_time", stuck_time))
+	launch_distance = float(nav.get("launch_distance", launch_distance))
+	allow_home_teleport = bool(nav.get("home_teleport", allow_home_teleport))
+	ledge_clearance = float(nav.get("ledge_clearance", ledge_clearance))
 
 func move_to(target: Vector2, speed: float) -> void:
 	target_pos = target
 	current_speed = speed
 	is_moving = true
 
+	if fighter != null:
+		fighter.speed_mult = clampf(speed / maxf(fighter.stats.run_speed, 1.0), 0.1, 2.0)
+		_best_dist = INF
+		_stuck_timer = 0.0
+
 	if graph != null and body != null:
 		var can_j: bool = body.profile.can_jump if body.profile != null else true
-		var path_res: Dictionary = graph.find_path(body.global_position, target, can_j)
+		var path_res: Dictionary
+		if fighter != null and fighter.stats.can_jump and can_j:
+			# Only edges this fighter can physically make (jump height / gap from JSON).
+			path_res = graph.find_path_capable(body.global_position, target,
+					fighter.stats.jump_apex() - 8.0, fighter.stats.max_gap + 32.0)
+		else:
+			path_res = graph.find_path(body.global_position, target, can_j and (fighter == null or fighter.stats.can_jump))
 		current_path = path_res.get("points", PackedVector2Array())
-		current_path_types = path_res.get("types", [])
+		current_path_types.assign(path_res.get("types", []))
 		current_path_idx = 1 if current_path.size() > 1 else 0
-		if current_path.is_empty():
+		if current_path.is_empty() and fighter == null:
 			stop()
 			path_failed.emit()
+		# Fighters without a graph route fall back to raycast navigation (_flat_intent).
 
 func stop() -> void:
 	is_moving = false
@@ -42,10 +78,15 @@ func stop() -> void:
 	current_path.clear()
 	current_path_types.clear()
 	current_path_idx = 0
-	if body != null:
+	if body != null and fighter == null:
 		body.velocity.x = 0.0
+	if fighter != null:
+		fighter.intent.move_dir = 0.0
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
+	if fighter != null:
+		_process_intent(delta)
+		return
 	if not is_moving or body == null:
 		return
 
@@ -149,6 +190,153 @@ func _process_flat_mode() -> void:
 
 	body.velocity.x = float(move_dir) * current_speed
 	body.move_and_slide()
+
+# --- Intent mode --------------------------------------------------------------
+
+func _process_intent(delta: float) -> void:
+	var it: FighterIntent = fighter.intent
+	it.move_dir = 0.0
+	if not is_moving or body == null:
+		return
+	if _turn_timer > 0.0:
+		# Anti-stuck strike 2: back off the obstacle briefly.
+		_turn_timer -= delta
+		it.move_dir = float(-body.facing)
+		return
+	if graph != null and not current_path.is_empty():
+		_follow_path_intent(it)
+	else:
+		_flat_intent(it)
+	if is_moving:
+		_check_stuck(delta, it)
+
+
+func _follow_path_intent(it: FighterIntent) -> void:
+	if current_path_idx >= current_path.size():
+		stop()
+		arrived.emit()
+		return
+	var wp: Vector2 = current_path[current_path_idx]
+	var edge_type: int = current_path_types[current_path_idx] if current_path_idx < current_path_types.size() else 0
+	var feet: Vector2 = fighter.feet_position()
+	var dx: float = wp.x - feet.x
+	var dy: float = feet.y - wp.y
+	var on_floor: bool = body.is_on_floor()
+
+	var arrived_wp: bool = absf(dx) < 6.0 if edge_type == PlatformGraph.EdgeType.WALK else (absf(dx) < 10.0 and absf(dy) < 16.0 and on_floor)
+	if arrived_wp:
+		current_path_idx += 1
+		_best_dist = INF
+		if current_path_idx >= current_path.size():
+			stop()
+			arrived.emit()
+			return
+		wp = current_path[current_path_idx]
+		edge_type = current_path_types[current_path_idx] if current_path_idx < current_path_types.size() else 0
+		dx = wp.x - feet.x
+		dy = feet.y - wp.y
+
+	var dir: int = 1 if dx > 0.0 else -1
+	it.move_dir = float(dir)
+	if edge_type == PlatformGraph.EdgeType.JUMP and on_floor and not fighter.ballistic_flight:
+		# Take off from the edge's start node (or the lip, if the ground ends first),
+		# never from "near the landing" - that is already over the gap.
+		var takeoff: Vector2 = current_path[current_path_idx - 1] if current_path_idx > 0 else feet
+		var at_takeoff: bool = absf(feet.x - takeoff.x) <= 6.0 or (signf(feet.x - takeoff.x) == float(dir))
+		if (at_takeoff or not fighter.probe_ground_ahead(dir, 10.0)) and absf(dx) <= launch_distance + 192.0:
+			_jump_to(it, wp)
+	elif edge_type == PlatformGraph.EdgeType.DROP and on_floor and absf(dx) < 16.0 and dy < -8.0:
+		it.drop_through = true
+
+
+## Graph-less navigation from raycasts: jump gaps <= max_gap, climb ledges within
+## jump height when the target is above, drop down when the target is below.
+func _flat_intent(it: FighterIntent) -> void:
+	var feet: Vector2 = fighter.feet_position()
+	var dx: float = target_pos.x - feet.x
+	var dy: float = feet.y - target_pos.y
+	if absf(dx) < 6.0 and absf(dy) < 24.0:
+		stop()
+		arrived.emit()
+		return
+	var dir: int = 1 if dx > 0.0 else -1
+	it.move_dir = float(dir)
+	if not body.is_on_floor() or fighter.ballistic_flight:
+		return
+	var st: FighterStats = fighter.stats
+	if fighter.probe_wall(dir):
+		var rise: float = fighter.probe_ledge_rise(dir)
+		if st.can_jump and rise > 0.0 and rise <= st.jump_apex() - 6.0:
+			_jump_to(it, fighter.feet_position() + Vector2(float(dir) * 28.0, -rise))
+		else:
+			stop()
+			path_failed.emit()
+		return
+	if not fighter.probe_ground_ahead(dir, 12.0):
+		if dy < -24.0:
+			return # target is below: just walk off the edge
+		var gap: float = fighter.probe_gap_width(dir, st.max_gap + 48.0)
+		if st.can_jump and gap <= st.max_gap:
+			_jump_to(it, fighter.feet_position() + Vector2(float(dir) * (gap + 28.0), 0.0))
+		else:
+			stop()
+			path_failed.emit()
+
+
+## Jump toward a feet position. Up onto a ledge: rise to lip height + clearance
+## and air-steer over it (like the hero). Level / downward gaps: computed arc.
+## Fallback: a full held jump.
+func _jump_to(it: FighterIntent, target_feet: Vector2) -> void:
+	if fighter.jump_cooldown_timer > 0.0 or not fighter.stats.can_jump:
+		return
+	var rise: float = fighter.feet_position().y - target_feet.y
+	if rise > 4.0:
+		if fighter.jump_to_height(rise + ledge_clearance):
+			return
+	var v: Vector2 = fighter.ballistic_to(target_feet)
+	if v != Vector2.INF:
+		fighter.launch(v)
+	else:
+		it.jump_pressed = true
+		it.jump_held = true
+
+
+## Anti-stuck: no progress toward the waypoint for `stuck_time` seconds ->
+## 1st strike jump, 2nd strike back off + repath, 3rd strike teleport home.
+func _check_stuck(delta: float, it: FighterIntent) -> void:
+	var goal: Vector2 = target_pos
+	if not current_path.is_empty() and current_path_idx < current_path.size():
+		goal = current_path[current_path_idx]
+	var d: float = body.global_position.distance_to(goal)
+	if d < _best_dist - 2.0:
+		_best_dist = d
+		_stuck_timer = 0.0
+		return
+	_stuck_timer += delta
+	if _stuck_timer < stuck_time:
+		return
+	_stuck_timer = 0.0
+	_best_dist = INF
+	_stuck_strikes += 1
+	if _stuck_strikes == 1:
+		it.jump_pressed = true
+		it.jump_held = true
+	elif _stuck_strikes == 2:
+		_turn_timer = 0.4
+		var t: Vector2 = target_pos
+		var sp: float = current_speed
+		get_tree().create_timer(0.45).timeout.connect(func() -> void:
+			if is_instance_valid(body) and is_moving:
+				move_to(t, sp)
+		)
+	else:
+		_stuck_strikes = 0
+		if allow_home_teleport and home_pos != Vector2.ZERO:
+			body.global_position = home_pos
+			body.velocity = Vector2.ZERO
+		stop()
+		path_failed.emit()
+
 
 func patrol_segment() -> Vector2:
 	if bounds.size() >= 2:

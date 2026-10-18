@@ -12,6 +12,7 @@ extends Node
 ## enemies leave auto_step on and the Fighter moves the body every physics frame.
 
 signal jumped
+signal apex_reached          ## top of any jump/launch (jump-apex attacks hook here)
 signal landed(impact_speed: float)
 signal crouch_changed(crouched: bool)
 signal dash_telegraphed(duration: float)
@@ -44,6 +45,9 @@ var jump_cooldown_timer: float = 0.0
 var control_lock: float = 0.0
 var jump_start_y: float = 0.0
 var max_jump_height: float = 0.0
+var ballistic_flight: bool = false  ## launched on a computed arc: keep vx until landing
+
+var _feet_offset: float = -1.0
 
 var dash_phase: DashPhase = DashPhase.NONE
 var dash_timer: float = 0.0
@@ -53,6 +57,9 @@ var dash_cooldown_timer: float = 0.0
 func _ready() -> void:
 	if body == null:
 		body = get_parent() as CharacterBody2D
+	if auto_step:
+		# Step after AI / PlatformMover (priority 0) have written this frame's intent.
+		process_physics_priority = 10
 
 
 func _physics_process(delta: float) -> void:
@@ -180,6 +187,8 @@ func _tick_cooldowns(delta: float) -> void:
 
 
 func _apply_horizontal(dir: float, delta: float) -> void:
+	if ballistic_flight and not body.is_on_floor():
+		return
 	if dash_phase == DashPhase.ACTIVE:
 		body.velocity.x = float(facing) * stats.dash_speed
 		return
@@ -212,7 +221,10 @@ func _move() -> void:
 	var pre_vy: float = body.velocity.y
 	body.move_and_slide()
 	is_on_floor = body.is_on_floor()
+	if not is_on_floor and pre_vy < 0.0 and body.velocity.y >= 0.0:
+		apex_reached.emit()
 	if not was_on_floor and is_on_floor:
+		ballistic_flight = false
 		landed.emit(pre_vy)
 
 
@@ -274,6 +286,7 @@ func launch(velocity: Vector2) -> void:
 	if body == null:
 		return
 	body.velocity = velocity
+	ballistic_flight = velocity.y < 0.0
 	jump_start_y = body.global_position.y
 	jump_cooldown_timer = stats.jump_cooldown
 	coyote_timer = 0.0
@@ -281,10 +294,62 @@ func launch(velocity: Vector2) -> void:
 	jumped.emit()
 
 
-## Velocity for a jump that lands on `target` (feet position) with an apex margin,
-## or Vector2.INF when the arc exceeds this fighter's jump height.
+## Jump straight up to `height` px (capped by this fighter's jump height) and keep
+## normal air control - how the hero climbs a ledge: rise along the wall, then
+## steer over the lip once the feet clear it.
+func jump_to_height(height: float) -> bool:
+	if body == null or not _can_jump_now():
+		return false
+	var h: float = minf(height, stats.jump_apex())
+	body.velocity.y = -sqrt(2.0 * stats.gravity * maxf(h, 4.0))
+	ballistic_flight = false
+	jump_start_y = body.global_position.y
+	jump_cooldown_timer = stats.jump_cooldown
+	coyote_timer = 0.0
+	jump_buffer_timer = 0.0
+	_set_crouch(false)
+	jumped.emit()
+	return true
+
+
+## Hop away from a threat (archers reposition, enemies dodge out). Lands
+## `distance` px away when an arc is possible, otherwise a full jump with
+## run-speed drift.
+func jump_away(threat_x: float, distance: float = 96.0) -> bool:
+	if body == null or not body.is_on_floor() or not _can_jump_now():
+		return false
+	var dir: float = signf(body.global_position.x - threat_x)
+	if dir == 0.0:
+		dir = float(-facing)
+	facing = int(dir)
+	var v: Vector2 = ballistic_to(feet_position() + Vector2(dir * distance, 0.0), 24.0)
+	if v == Vector2.INF:
+		v = Vector2(dir * stats.run_speed, stats.jump_velocity)
+	launch(v)
+	return true
+
+
+## Distance from the body origin down to the bottom of its collision shape.
+func feet_offset() -> float:
+	if _feet_offset < 0.0:
+		_feet_offset = 0.0
+		for c in body.get_children():
+			if c is CollisionShape2D and (c as CollisionShape2D).shape != null:
+				var cs: CollisionShape2D = c as CollisionShape2D
+				var r: Rect2 = cs.shape.get_rect()
+				_feet_offset = cs.position.y + r.position.y + r.size.y
+				break
+	return _feet_offset
+
+
+func feet_position() -> Vector2:
+	return body.global_position + Vector2(0.0, feet_offset())
+
+
+## Velocity for a jump whose feet land on `target` (feet position) with an apex
+## margin, or Vector2.INF when the arc exceeds this fighter's jump height.
 func ballistic_to(target: Vector2, apex_margin: float = 16.0) -> Vector2:
-	var from: Vector2 = body.global_position
+	var from: Vector2 = feet_position()
 	var top: float = minf(from.y, target.y) - apex_margin
 	var rise: float = from.y - top
 	if rise > stats.jump_apex() + 0.5:
@@ -315,14 +380,14 @@ func probe_wall(dir: int, dist: float = 14.0) -> bool:
 
 ## Ground exists `ahead` px in `dir` within one step down.
 func probe_ground_ahead(dir: int, ahead: float = 16.0, depth: float = 40.0) -> bool:
-	var p: Vector2 = body.global_position + Vector2(float(dir) * ahead, 0.0)
+	var p: Vector2 = feet_position() + Vector2(float(dir) * ahead, -4.0)
 	return not _ray(p, p + Vector2(0.0, depth), GROUND_MASK).is_empty()
 
 
 ## Height (px, positive = up) of the surface just past a wall in `dir`, if it is
 ## reachable with a full jump. Returns -1 when there is no ledge in reach.
 func probe_ledge_rise(dir: int, ahead: float = 24.0) -> float:
-	var feet: Vector2 = body.global_position
+	var feet: Vector2 = feet_position()
 	var top_y: float = feet.y - stats.jump_apex() - 4.0
 	var x: float = feet.x + float(dir) * ahead
 	var hit: Dictionary = _ray(Vector2(x, top_y), Vector2(x, feet.y + 2.0), GROUND_MASK)

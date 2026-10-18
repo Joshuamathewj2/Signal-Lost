@@ -1,0 +1,23 @@
+{
+ "_doc": "Step 0B test enemy: Phantom art on the shared Fighter locomotion. Chases the hero across gaps and up ledges. All values tunable; see report.",
+ "manifest": "phantom",
+ "weight_class": "light",
+ "locomotion": {
+  "run_speed": 150.0,
+  "sneak_speed": 60.0,
+  "ground_accel": 1400.0,
+  "ground_friction": 1800.0,
+  "air_accel": 900.0,
+  "gravity": 1800.0,
+  "fall_gravity_mult": 1.35,
+  "jump_cut_mult": 0.45,
+  "max_fall_speed": 900.0,
+  "coyote_time": 0.10,
+  "jump_buffer": 0.10,
+  "drop_through_time": 0.20
+ },
+ "jump": {"can_jump": true, "jump_height": 84.0, "cooldown": 0.35, "max_gap": 96.0},
+ "dash": {"speed": 380.0, "time": 0.20, "cooldown": 1.5, "telegraph": 0.45},
+ "nav": {"stuck_time": 1.5, "launch_distance": 40.0, "home_teleport": true},
+ "anim_map": {"attack": ["slash", "double_slash"], "telegraph": ["ready"]}
+}

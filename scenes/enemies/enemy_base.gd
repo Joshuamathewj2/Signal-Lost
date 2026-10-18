@@ -52,11 +52,21 @@ var retreat_mode: bool = false
 var stuck_timer: float = 0.0
 var last_pos: Vector2 = Vector2.ZERO
 
+## Optional shared locomotion layer (same physics as the hero). When present the
+## Fighter owns gravity + move_and_slide and PlatformMover drives it via intents.
+var fighter: Fighter = null
+## data/enemies/<kind>.json (locomotion / jump / dash / nav / combat tuning)
+var enemy_data: Dictionary = {}
+
 
 func _ready() -> void:
 	add_to_group(&"enemies")
 	if EnemyRegistry != null:
 		EnemyRegistry.register_enemy(self)
+
+	fighter = get_node_or_null("Fighter") as Fighter
+	if fighter != null:
+		_setup_fighter()
 
 	# Physics Layer 4 (enemy), Mask 1 (world) | 2 (one_way)
 	collision_layer = 0
@@ -119,6 +129,33 @@ func _ready() -> void:
 	call_deferred(&"_setup_sense_ui")
 
 
+func _setup_fighter() -> void:
+	var path: String = "res://data/enemies/%s.json" % String(kind)
+	if FileAccess.file_exists(path):
+		enemy_data = DataLoader.load_json(path, PackedStringArray(["locomotion"]))
+		fighter.stats = FighterStats.new().apply_dict(enemy_data, path)
+		if mover != null:
+			mover.configure_nav(enemy_data.get("nav", {}))
+	else:
+		push_warning("[EnemyBase] %s has a Fighter but no %s; using default stats" % [name, path])
+	fighter.landed.connect(func(impact: float) -> void:
+		if impact > 300.0:
+			ParticlesFactory.spawn_landing_dust(get_parent(), global_position)
+	)
+
+
+## Velocity change routed through the Fighter when present (keeps one owner of
+## body motion). Upward impulses become ballistic launches.
+func apply_impulse(v: Vector2, lock: float = 0.0) -> void:
+	if fighter != null:
+		if v.y < 0.0 and is_on_floor() and lock <= 0.0:
+			fighter.launch(v)
+		else:
+			fighter.apply_knockback(v, lock)
+	else:
+		velocity = v
+
+
 func _setup_sense_ui() -> void:
 	var sense_layer: Node = get_tree().get_first_node_in_group(&"sense_layer")
 	if sense_layer != null:
@@ -159,6 +196,9 @@ func face(dir: int) -> void:
 
 func _physics_process(delta: float) -> void:
 	if is_dead:
+		if fighter != null:
+			fighter.intent.clear()
+			return
 		velocity.x = move_toward(velocity.x, 0.0, 600.0 * delta)
 		if has_gravity and not is_on_floor():
 			velocity.y += 1800.0 * delta
@@ -172,7 +212,14 @@ func _physics_process(delta: float) -> void:
 		evade_timer -= delta
 		if evade_timer <= 0.0:
 			is_evading = false
-		move_and_slide()
+		if fighter == null:
+			move_and_slide()
+		return
+
+	if fighter != null:
+		# Fighter + PlatformMover handle gravity, movement and anti-stuck.
+		if Engine.get_physics_frames() % 8 == 0:
+			check_trap_ahead()
 		return
 
 	if has_gravity and not is_on_floor():
@@ -197,8 +244,7 @@ func _physics_process(delta: float) -> void:
 func _resolve_stuck_state() -> void:
 	# Jump or pick alternative position if trapped
 	if is_on_floor():
-		velocity.y = -350.0
-		velocity.x = float(-facing) * 120.0
+		apply_impulse(Vector2(float(-facing) * 120.0, -350.0))
 	var mover_node: PlatformMover = get_node_or_null("PlatformMover") as PlatformMover
 	if mover_node != null and mover_node.graph != null:
 		var alt_point: int = mover_node.graph.nearest_node(global_position + Vector2(float(-facing) * 64.0, 0.0))
@@ -267,7 +313,10 @@ func _on_damaged(amount: int, knockback: Vector2) -> void:
 	if is_dead:
 		return
 
-	velocity += knockback
+	if fighter != null:
+		apply_impulse(velocity + knockback, 0.2)
+	else:
+		velocity += knockback
 	var vis: Node = get_node_or_null("Visual")
 	if vis != null:
 		if vis.has_method("play_anim"):
@@ -313,9 +362,12 @@ func try_evade() -> bool:
 	evade_cooldown = 1.2
 
 	# Backstep opposite to facing
-	velocity.x = float(-facing) * 220.0
-	if is_on_floor():
-		velocity.y = -60.0 # slight side-hop
+	if fighter != null:
+		fighter.apply_knockback(Vector2(float(-facing) * 220.0, -60.0 if is_on_floor() else velocity.y), evade_timer)
+	else:
+		velocity.x = float(-facing) * 220.0
+		if is_on_floor():
+			velocity.y = -60.0 # slight side-hop
 
 	# Spawn dust telegraph
 	ParticlesFactory.spawn_landing_dust(get_parent(), global_position)
@@ -357,8 +409,7 @@ func escape_jump_upward() -> bool:
 	if not is_on_floor() or is_dead:
 		return false
 	# Perform vertical leap to upper platform
-	velocity.y = -440.0
-	velocity.x = float(-facing) * 140.0
+	apply_impulse(Vector2(float(-facing) * 140.0, -440.0))
 	ParticlesFactory.spawn_landing_dust(get_parent(), global_position)
 	return true
 
@@ -376,8 +427,7 @@ func check_trap_ahead() -> bool:
 			return false
 		# 75% chance to attempt jump over or evade
 		if is_on_floor():
-			velocity.y = -350.0
-			velocity.x = float(facing) * 140.0
+			apply_impulse(Vector2(float(facing) * 140.0, -350.0))
 		return true
 	else:
 		# Normal patrol: avoid known traps by turning around

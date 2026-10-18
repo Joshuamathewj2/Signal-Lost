@@ -7,6 +7,19 @@ enum EdgeType {
 	DROP = 2
 }
 
+## A* with per-edge cost multipliers (jumps cost more than walking the same
+## distance, so capable fighters only jump where it actually saves the route).
+class EdgeCostAStar extends AStar2D:
+	var penalties: Dictionary = {} # Vector2i(from, to) -> multiplier
+
+	func _compute_cost(from_id: int, to_id: int) -> float:
+		return get_point_position(from_id).distance_to(get_point_position(to_id)) * float(penalties.get(Vector2i(from_id, to_id), 1.0))
+
+	func _estimate_cost(from_id: int, end_id: int) -> float:
+		return get_point_position(from_id).distance_to(get_point_position(end_id))
+
+const JUMP_COST_MULT: float = 1.8
+
 var astar_all: AStar2D = AStar2D.new()
 var astar_no_jump: AStar2D = AStar2D.new()
 var width: int = 0
@@ -14,6 +27,9 @@ var height: int = 0
 var standable_cells: Dictionary = {} # Vector2i -> int (id)
 var edge_types: Dictionary = {} # Vector2i(from_id, to_id) -> int (EdgeType)
 var node_positions: Dictionary = {} # int (id) -> Vector2
+var edges: Array[Dictionary] = [] # {from, to, type, weight, both, rise_px, run_px}
+var _capable_cache: Dictionary = {} # Vector2i(max_rise_px, max_run_px) -> AStar2D
+var _best_types: Dictionary = {} # Vector2i(from, to) -> EdgeType, WALK > DROP > JUMP
 
 func build(data: LevelData, custom_solid_fn: Callable = Callable()) -> void:
 	astar_all.clear()
@@ -21,6 +37,9 @@ func build(data: LevelData, custom_solid_fn: Callable = Callable()) -> void:
 	standable_cells.clear()
 	edge_types.clear()
 	node_positions.clear()
+	edges.clear()
+	_capable_cache.clear()
+	_best_types.clear()
 
 	width = data.width
 	height = data.height
@@ -153,6 +172,37 @@ func build(data: LevelData, custom_solid_fn: Callable = Callable()) -> void:
 				var dist_cost: float = Vector2(float(dx), float(rise)).length() * 1.3
 				_add_edge(id, nid, EdgeType.JUMP, dist_cost, false)
 
+		# 2.4b EXTENDED JUMP candidates (rise 0..3, |dx| 4..6, plus rise 3 short hops).
+		# Never added to the legacy A* graphs; only find_path_capable() uses them
+		# when the fighter's JSON jump height / max gap allows it.
+		for rise in range(0, 4):
+			var tr: int = r - rise
+			if tr < 1:
+				continue
+			var dxs: Array = [-6, -5, -4, 4, 5, 6]
+			if rise == 3:
+				dxs.append_array([-3, -2, -1, 1, 2, 3])
+			for dx in dxs:
+				var tc: int = c + dx
+				if tc < 0 or tc >= width:
+					continue
+				var target_cell := Vector2i(tc, tr)
+				if not standable_cells.has(target_cell):
+					continue
+				var clear: bool = true
+				var top_r: int = mini(r, tr)
+				var step: int = 1 if dx > 0 else -1
+				var col: int = c
+				while clear:
+					for cy in [top_r - 1, top_r - 2]:
+						if cy >= 0 and is_solid_fn.call(col, cy):
+							clear = false
+					if col == tc:
+						break
+					col += step
+				if clear:
+					_add_extended_edge(id, standable_cells[target_cell], Vector2(float(dx), float(rise)).length() * 1.3)
+
 	# 2.5 LADDERS (H): Connect bottom standable node to top standable node
 	if data.cells.has("H"):
 		for cell in data.cells["H"]:
@@ -167,6 +217,11 @@ func build(data: LevelData, custom_solid_fn: Callable = Callable()) -> void:
 
 func _add_edge(from_id: int, to_id: int, type: EdgeType, weight: float, both_ways: bool) -> void:
 	edge_types[Vector2i(from_id, to_id)] = int(type)
+	if node_positions.has(from_id) and node_positions.has(to_id):
+		var a: Vector2 = node_positions[from_id]
+		var b: Vector2 = node_positions[to_id]
+		edges.append({"from": from_id, "to": to_id, "type": int(type), "weight": weight, "both": both_ways,
+				"rise_px": maxf(a.y - b.y, 0.0), "run_px": absf(b.x - a.x)})
 	if not astar_all.has_point(from_id) or not astar_all.has_point(to_id):
 		return
 
@@ -184,6 +239,17 @@ func _add_edge(from_id: int, to_id: int, type: EdgeType, weight: float, both_way
 
 	if both_ways:
 		edge_types[Vector2i(to_id, from_id)] = int(type)
+
+func _add_extended_edge(from_id: int, to_id: int, weight: float) -> void:
+	var key := Vector2i(from_id, to_id)
+	if edge_types.has(key):
+		return
+	edge_types[key] = int(EdgeType.JUMP)
+	var a: Vector2 = node_positions[from_id]
+	var b: Vector2 = node_positions[to_id]
+	edges.append({"from": from_id, "to": to_id, "type": int(EdgeType.JUMP), "weight": weight, "both": false,
+			"rise_px": maxf(a.y - b.y, 0.0), "run_px": absf(b.x - a.x), "extended": true})
+
 
 func nearest_node(px: Vector2) -> int:
 	return astar_all.get_closest_point(px)
@@ -234,6 +300,9 @@ func set_door_open(cell: Vector2i, open: bool) -> void:
 			astar_all.set_point_disabled(id, not open)
 		if astar_no_jump.has_point(id):
 			astar_no_jump.set_point_disabled(id, not open)
+		for g in _capable_cache.values():
+			if (g as AStar2D).has_point(id):
+				(g as AStar2D).set_point_disabled(id, not open)
 
 func set_standable(cell: Vector2i, standable: bool) -> void:
 	var id: int = cell.y * width + cell.x
@@ -241,3 +310,87 @@ func set_standable(cell: Vector2i, standable: bool) -> void:
 		astar_all.set_point_disabled(id, not standable)
 	if astar_no_jump.has_point(id):
 		astar_no_jump.set_point_disabled(id, not standable)
+	for g in _capable_cache.values():
+		if (g as AStar2D).has_point(id):
+			(g as AStar2D).set_point_disabled(id, not standable)
+
+
+## JumpLink: hand-authored jump between two feet positions (Marker2D JumpLink or
+## data/level.json "jump_links"). Becomes a JUMP edge usable by capable fighters.
+func add_link(from_px: Vector2, to_px: Vector2, both_ways: bool) -> bool:
+	var a: int = astar_all.get_closest_point(from_px)
+	var b: int = astar_all.get_closest_point(to_px)
+	if a == -1 or b == -1 or a == b:
+		return false
+	_add_edge(a, b, EdgeType.JUMP, 1.0, both_ways)
+	if both_ways:
+		var pa: Vector2 = node_positions[a]
+		var pb: Vector2 = node_positions[b]
+		edges.append({"from": b, "to": a, "type": int(EdgeType.JUMP), "weight": 1.0, "both": false,
+				"rise_px": maxf(pb.y - pa.y, 0.0), "run_px": absf(pa.x - pb.x)})
+	_capable_cache.clear()
+	_best_types.clear()
+	return true
+
+
+## Path for a fighter that can rise at most `max_rise_px` and cross at most
+## `max_run_px` horizontally in one jump (from its FighterStats). Same result
+## format as find_path(). Graphs are cached per capability.
+func find_path_capable(from_px: Vector2, to_px: Vector2, max_rise_px: float, max_run_px: float) -> Dictionary:
+	var key := Vector2i(int(max_rise_px), int(max_run_px))
+	if not _capable_cache.has(key):
+		_capable_cache[key] = _build_capable(max_rise_px, max_run_px)
+	var astar: AStar2D = _capable_cache[key]
+	var empty := { "points": PackedVector2Array(), "types": [], "ids": [] }
+	var id_from: int = astar.get_closest_point(from_px)
+	var id_to: int = astar.get_closest_point(to_px)
+	if id_from == -1 or id_to == -1:
+		return empty
+	var id_path: PackedInt64Array = astar.get_id_path(id_from, id_to)
+	if id_path.is_empty():
+		return empty
+	var pts := PackedVector2Array()
+	var types: Array[int] = []
+	var ids: Array[int] = []
+	for i in range(id_path.size()):
+		var cur_id: int = int(id_path[i])
+		ids.append(cur_id)
+		pts.append(node_positions.get(cur_id, from_px))
+		types.append(int(EdgeType.WALK) if i == 0 else int(_best_types.get(Vector2i(int(id_path[i - 1]), cur_id), int(EdgeType.WALK))))
+	return { "points": pts, "types": types, "ids": ids }
+
+
+## The legacy builder lets a rise-0 JUMP overwrite a WALK between neighbours in
+## edge_types (legacy enemies hop along paths). Capable paths prefer the
+## cheapest way to traverse a pair: WALK, then DROP, then JUMP.
+func _rebuild_best_types() -> void:
+	_best_types.clear()
+	var rank: Dictionary = {int(EdgeType.WALK): 0, int(EdgeType.DROP): 1, int(EdgeType.JUMP): 2}
+	for e in edges:
+		var t: int = int(e["type"])
+		for key in ([Vector2i(int(e["from"]), int(e["to"])), Vector2i(int(e["to"]), int(e["from"]))] if bool(e["both"]) else [Vector2i(int(e["from"]), int(e["to"]))]):
+			if not _best_types.has(key) or int(rank[t]) < int(rank[int(_best_types[key])]):
+				_best_types[key] = t
+
+
+func _build_capable(max_rise_px: float, max_run_px: float) -> AStar2D:
+	if _best_types.is_empty():
+		_rebuild_best_types()
+	var g := EdgeCostAStar.new()
+	for id in astar_all.get_point_ids():
+		# Neutral point weights: costs come from EdgeCostAStar (legacy builder leaves
+		# arbitrary per-point scales from whichever edge was added last).
+		g.add_point(id, astar_all.get_point_position(id), 1.0)
+		g.set_point_disabled(id, astar_all.is_point_disabled(id))
+	for e in edges:
+		if int(e["type"]) == int(EdgeType.JUMP):
+			if float(e["rise_px"]) > max_rise_px or float(e["run_px"]) > max_run_px:
+				continue
+		var f: int = int(e["from"])
+		var t: int = int(e["to"])
+		if g.has_point(f) and g.has_point(t) and not g.are_points_connected(f, t, bool(e["both"])):
+			g.connect_points(f, t, bool(e["both"]))
+		for key in [Vector2i(f, t), Vector2i(t, f)]:
+			if int(_best_types.get(key, int(EdgeType.WALK))) == int(EdgeType.JUMP):
+				g.penalties[key] = JUMP_COST_MULT
+	return g

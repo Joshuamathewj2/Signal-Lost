@@ -16,6 +16,7 @@ var current_level_data: LevelData = null
 var platform_graph: PlatformGraph = null
 
 func _ready() -> void:
+	add_to_group(&"level_root")
 	if not level_path.is_empty():
 		load_level(level_path)
 
