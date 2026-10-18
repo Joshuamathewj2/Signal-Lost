@@ -27,27 +27,59 @@ enum MotorState {
 @export var visual: PlayerVisual
 
 var current_state: MotorState = MotorState.IDLE
-var is_sneaking: bool = false
-var is_crouching: bool = false
 var is_on_floor: bool = false
-var facing: int = 1
 var is_charging: bool = false
 var input_enabled: bool = true
 
-const COYOTE_TIME_SEC: float = 0.10
-const JUMP_BUFFER_SEC: float = 0.10
+## Shared locomotion layer (also used by villains). PlayerMotor only turns Input
+## into a FighterIntent and maps the result onto poses / motor states.
+var fighter: Fighter = null
 
-var coyote_timer: float = 0.0
-var jump_buffer_timer: float = 0.0
-var drop_through_timer: float = 0.0
-var jump_start_y: float = 0.0
-var max_jump_height: float = 0.0
+# Forwarded so existing callers (combat, debug overlay, tests) keep working.
+var facing: int:
+	get: return fighter.facing if fighter != null else 1
+	set(v):
+		if fighter != null:
+			fighter.facing = v
+var is_sneaking: bool:
+	get: return fighter.is_sneaking if fighter != null else false
+var is_crouching: bool:
+	get: return fighter.is_crouching if fighter != null else false
+var coyote_timer: float:
+	get: return fighter.coyote_timer if fighter != null else 0.0
+var jump_buffer_timer: float:
+	get: return fighter.jump_buffer_timer if fighter != null else 0.0
+var drop_through_timer: float:
+	get: return fighter.drop_through_timer if fighter != null else 0.0
+var jump_start_y: float:
+	get: return fighter.jump_start_y if fighter != null else 0.0
+var max_jump_height: float:
+	get: return fighter.max_jump_height if fighter != null else 0.0
+
+
+func _init() -> void:
+	fighter = Fighter.new()
+	fighter.name = "Fighter"
+	fighter.auto_step = false
+
+
+func _notification(what: int) -> void:
+	# A motor freed before entering the tree never adopted its Fighter.
+	if what == NOTIFICATION_PREDELETE and fighter != null and fighter.get_parent() == null:
+		fighter.free()
 
 
 func _ready() -> void:
 	if body != null:
 		body.floor_snap_length = 6.0
 		body.up_direction = Vector2.UP
+	fighter.body = body
+	fighter.ceiling_ray = ceiling_ray
+	fighter.stats = FighterStats.new().apply_game_config(GameConfig.data)
+	add_child(fighter)
+	fighter.crouch_changed.connect(_on_crouch_changed)
+	fighter.jumped.connect(func() -> void: jumped.emit())
+	fighter.landed.connect(_on_fighter_landed)
 
 
 func set_state(new_state: MotorState) -> void:
@@ -91,144 +123,30 @@ func _physics_process(delta: float) -> void:
 		body.velocity = Vector2.ZERO
 		return
 
-	# If in HURT or TAKEDOWN, decelerate and apply gravity without overriding poses
+	# HURT / TAKEDOWN: decelerate + plain gravity, poses untouched
 	if current_state in [MotorState.HURT, MotorState.TAKEDOWN]:
-		body.velocity.x = move_toward(body.velocity.x, 0.0, cfg.ground_friction * delta)
-		if not body.is_on_floor():
-			body.velocity.y += cfg.gravity * delta
-		body.move_and_slide()
-		is_on_floor = body.is_on_floor()
+		fighter.step_passive(delta, false)
+		is_on_floor = fighter.is_on_floor
 		return
 
-	# If in Combat Action (ATTACK, HEAVY, PARRY), apply friction & gravity, never overwrite visual pose
+	# Combat actions (ATTACK, HEAVY, PARRY): friction + fall gravity, poses untouched
 	if current_state in [MotorState.ATTACK_1, MotorState.ATTACK_2, MotorState.ATTACK_3, MotorState.HEAVY, MotorState.PARRY]:
-		body.velocity.x = move_toward(body.velocity.x, 0.0, cfg.ground_friction * delta)
-		if not body.is_on_floor():
-			var g: float = cfg.gravity
-			if body.velocity.y > 0.0:
-				g *= cfg.fall_gravity_mult
-			body.velocity.y += g * delta
-			body.velocity.y = minf(body.velocity.y, cfg.max_fall_speed)
-		body.move_and_slide()
-		is_on_floor = body.is_on_floor()
+		fighter.step_passive(delta, true)
+		is_on_floor = fighter.is_on_floor
 		return
 
-	# --- LOCOMOTION STATE MACHINE ---
-	# Read Input
-	var dir: float = 0.0
-	var want_sneak: bool = false
-	var want_jump: bool = false
-	var jump_released: bool = false
+	# --- LOCOMOTION: Input -> FighterIntent -> Fighter ---
+	var intent: FighterIntent = fighter.intent
+	intent.clear()
 	if input_enabled:
-		dir = Input.get_axis(&"move_left", &"move_right")
-		want_sneak = Input.is_action_pressed(&"sneak")
-		want_jump = Input.is_action_just_pressed(&"jump")
-		jump_released = Input.is_action_just_released(&"jump")
-
-	# Drop-through one-way platforms (layer 2)
-	if input_enabled and want_sneak and want_jump and body.is_on_floor():
-		var on_one_way: bool = false
-		for i in range(body.get_slide_collision_count()):
-			var col: KinematicCollision2D = body.get_slide_collision(i)
-			var collider: Object = col.get_collider()
-			if collider is CollisionObject2D and (collider as CollisionObject2D).get_collision_layer_value(2):
-				on_one_way = true
-				break
-		if on_one_way:
-			drop_through_timer = cfg.drop_through_time
-			body.set_collision_mask_value(2, false)
-			want_jump = false
-
-	if drop_through_timer > 0.0:
-		drop_through_timer -= delta
-		if drop_through_timer <= 0.0:
-			body.set_collision_mask_value(2, true)
-
-	# Jump timers: exactly 0.1s coyote time and 0.1s jump buffer per spec
-	if input_enabled and want_jump:
-		jump_buffer_timer = JUMP_BUFFER_SEC
-	elif jump_buffer_timer > 0.0:
-		jump_buffer_timer -= delta
-
-	if body.is_on_floor():
-		coyote_timer = COYOTE_TIME_SEC
-	elif coyote_timer > 0.0:
-		coyote_timer -= delta
-
-	# Execute Jump
-	if jump_buffer_timer > 0.0 and (body.is_on_floor() or coyote_timer > 0.0):
-		body.velocity.y = cfg.jump_velocity
-		jump_buffer_timer = 0.0
-		coyote_timer = 0.0
-		jump_start_y = body.global_position.y
-		max_jump_height = 0.0
-		_set_crouch(false)
-		jumped.emit()
-
-	# Jump-cut on early release (variable jump height)
-	if input_enabled and jump_released and body.velocity.y < 0.0:
-		body.velocity.y *= cfg.jump_cut_mult
-
-	# Track jump apex for debug
-	if body.velocity.y < 0.0:
-		var current_h: float = jump_start_y - body.global_position.y
-		if current_h > max_jump_height:
-			max_jump_height = current_h
-
-	# Crouch & Sneak Handling (cancelled when airborne)
-	if body.is_on_floor():
-		if want_sneak:
-			_set_crouch(true)
-		else:
-			if ceiling_ray != null and ceiling_ray.is_colliding():
-				_set_crouch(true)
-			else:
-				_set_crouch(false)
-	else:
-		_set_crouch(false)
-
-	is_sneaking = is_crouching and body.is_on_floor()
-
-	# Facing
-	if dir > 0.05:
-		facing = 1
-	elif dir < -0.05:
-		facing = -1
-
-	# Horizontal target velocity
-	var speed: float = cfg.sneak_speed if is_sneaking else cfg.run_speed
-	if is_charging:
-		speed *= cfg.charge_move_mult
-	var target_vx: float = dir * speed
-
-	if body.is_on_floor():
-		if dir != 0.0:
-			body.velocity.x = move_toward(body.velocity.x, target_vx, cfg.ground_accel * delta)
-		else:
-			body.velocity.x = move_toward(body.velocity.x, 0.0, cfg.ground_friction * delta)
-	else:
-		if dir != 0.0:
-			body.velocity.x = move_toward(body.velocity.x, target_vx, cfg.air_accel * delta)
-
-	# Vertical velocity / Gravity
-	if not body.is_on_floor():
-		var g: float = cfg.gravity
-		if body.velocity.y > 0.0:
-			g *= cfg.fall_gravity_mult
-		body.velocity.y += g * delta
-		body.velocity.y = minf(body.velocity.y, cfg.max_fall_speed)
-
-	# Move and Slide
-	var was_on_floor: bool = body.is_on_floor()
-	var pre_vy: float = body.velocity.y
-
-	body.move_and_slide()
-
-	is_on_floor = body.is_on_floor()
-	if not was_on_floor and is_on_floor:
-		landed.emit(pre_vy)
-		if pre_vy > 250.0:
-			ParticlesFactory.spawn_landing_dust(body.get_parent(), body.global_position)
+		intent.move_dir = Input.get_axis(&"move_left", &"move_right")
+		intent.crouch = Input.is_action_pressed(&"sneak")
+		intent.jump_pressed = Input.is_action_just_pressed(&"jump")
+		intent.jump_held = Input.is_action_pressed(&"jump")
+		intent.jump_released = Input.is_action_just_released(&"jump")
+	fighter.speed_mult = cfg.charge_move_mult if is_charging else 1.0
+	fighter.step(delta)
+	is_on_floor = fighter.is_on_floor
 
 	# Derive Locomotion State
 	if not is_on_floor:
@@ -256,13 +174,20 @@ func _physics_process(delta: float) -> void:
 				visual.set_pose(&"idle")
 
 
+func _on_fighter_landed(impact_speed: float) -> void:
+	landed.emit(impact_speed)
+	if impact_speed > 250.0:
+		ParticlesFactory.spawn_landing_dust(body.get_parent(), body.global_position)
+
+
+func _on_crouch_changed(crouched: bool) -> void:
+	_set_crouch(crouched)
+
+
 func _set_crouch(crouched: bool) -> void:
-	if is_crouching == crouched:
-		return
-	is_crouching = crouched
 	if collision_shape != null and collision_shape.shape is CapsuleShape2D:
 		var capsule: CapsuleShape2D = collision_shape.shape as CapsuleShape2D
-		if is_crouching:
+		if crouched:
 			capsule.height = 12.0
 			collision_shape.position.y = 3.0
 		else:

@@ -23,6 +23,25 @@ var enemies: Dictionary = {
 	&"brute": preload("res://resources/enemies/enemy_brute.tres"),
 }
 
+const PLAYER_JSON: String = "res://data/player.json"
+
+
+func _init() -> void:
+	apply_player_json()
+
+
+## data/player.json is the source of truth for hero locomotion; it overrides the
+## matching fields of the preloaded GameConfigData so every reader stays in sync.
+func apply_player_json() -> void:
+	var d: Dictionary = DataLoader.load_json(PLAYER_JSON, PackedStringArray(["locomotion"]))
+	var loco: Dictionary = d.get("locomotion", {})
+	for key in loco:
+		if key in data:
+			data.set(key, float(loco[key]))
+		else:
+			push_warning("[GameConfig] %s: unknown locomotion key '%s'" % [PLAYER_JSON, key])
+
+
 func _ready() -> void:
 	if SaveData != null:
 		var perf_on: bool = bool(SaveData.get_setting("performance_mode", false))

@@ -1,0 +1,19 @@
+{
+ "_doc": "Hero tuning. Values are the exact pre-refactor defaults (resources/config/default_config.tres + PlayerMotor constants); GameConfig applies this block over the .tres at startup so every system reads one source. Units: px, px/s, px/s^2, seconds.",
+ "locomotion": {
+  "run_speed": 180.0,
+  "sneak_speed": 70.0,
+  "ground_accel": 1400.0,
+  "ground_friction": 1800.0,
+  "air_accel": 900.0,
+  "gravity": 1800.0,
+  "fall_gravity_mult": 1.35,
+  "jump_velocity": -560.0,
+  "jump_cut_mult": 0.45,
+  "max_fall_speed": 900.0,
+  "coyote_time": 0.10,
+  "jump_buffer": 0.10,
+  "drop_through_time": 0.20
+ },
+ "weight_class": "medium"
+}
