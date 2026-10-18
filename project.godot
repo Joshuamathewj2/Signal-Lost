@@ -29,6 +29,8 @@ GameState="*res://autoload/game_state.gd"
 AudioManager="*res://autoload/audio_manager.gd"
 SceneRouter="*res://autoload/scene_router.gd"
 SaveData="*res://autoload/save_data.gd"
+EnemyRegistry="*res://autoload/enemy_registry.gd"
+TrapRegistry="*res://autoload/trap_registry.gd"
 DebugFlags="*res://autoload/debug_flags.gd"
 DebugBridge="*res://autoload/debug_bridge.gd"
 

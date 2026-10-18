@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="EnemyProfile" format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/enemy_profile.gd" id="1_prof"]
+
+[resource]
+script = ExtResource("1_prof")
+walk_speed = 0.0
+run_speed = 0.0
+turn_speed = 0.0
+hearing_threshold = 2.0
+hearing_mult = 0.0
+accepted_types = Array[int]([])
+sight_range = 0.0
+sight_angle_deg = 0.0
+search_time = 0.0
+investigate_wait = 0.0
+awareness_gain = 0.0
+awareness_decay = 0.0
+can_jump = false
+contact_kills = false
+tint = Color(1.0, 0.1, 0.1, 1.0)
+memory_size = 0
+fire_interval = 0.0
+projectile_speed = 0.0

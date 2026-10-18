@@ -1,0 +1,50 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/swinging_blade/swinging_blade_back_left_0.png" id="1_gji55"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/swinging_blade/swinging_blade_idle_0.png" id="2_agykl"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/swinging_blade/swinging_blade_swing_center_0.png" id="3_7wwwg"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/swinging_blade/swinging_blade_swing_left_0.png" id="4_mj7iy"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/swinging_blade/swinging_blade_swing_right_0.png" id="5_bt0ou"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_gji55")
+}],
+"loop": 0,
+"name": &"back_left",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_agykl")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_7wwwg")
+}],
+"loop": 0,
+"name": &"swing_center",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_mj7iy")
+}],
+"loop": 1,
+"name": &"swing_left",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_bt0ou")
+}],
+"loop": 0,
+"name": &"swing_right",
+"speed": 8.0
+}]

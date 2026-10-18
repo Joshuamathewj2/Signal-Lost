@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cfan_prop_01"]
+
+[ext_resource type="Script" path="res://scenes/props/fan_prop.gd" id="1_fan01"]
+
+[node name="FanProp" type="Node2D"]
+script = ExtResource("1_fan01")

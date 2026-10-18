@@ -1,0 +1,101 @@
+[gd_scene load_steps=19 format=3 uid="uid://combat_test_arena_01"]
+
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="1_ply"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/ashigaru.tscn" id="2_ash"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/kenshi.tscn" id="3_ken"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/brute.tscn" id="4_bru"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/sentry.tscn" id="5_sen"]
+[ext_resource type="Script" path="res://scenes/debug/debug_draw.gd" id="6_drw"]
+[ext_resource type="PackedScene" path="res://scenes/debug/debug_overlay.tscn" id="7_dbg"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/shield_bearer.tscn" id="8_sb"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/bomber.tscn" id="9_bmb"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/drone.tscn" id="10_drn"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/shadow_assassin.tscn" id="11_asn"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/chain_reaper.tscn" id="12_rpr"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/jammer_tower.tscn" id="13_jam"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/banshee.tscn" id="14_bsh"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/mirror_duelist.tscn" id="15_md"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/oni_enforcer.tscn" id="16_oni"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
+size = Vector2(3000, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(40, 400)
+
+[node name="CombatTestArena" type="Node2D"]
+
+[node name="DebugDraw" type="Node2D" parent="." groups=["debug_draw"]]
+script = ExtResource("6_drw")
+
+[node name="DebugOverlay" parent="." instance=ExtResource("7_dbg")]
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(1000, 200)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("RectangleShape2D_floor")
+
+[node name="WallL" type="StaticBody2D" parent="."]
+position = Vector2(-400, 50)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallL"]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="WallR" type="StaticBody2D" parent="."]
+position = Vector2(2400, 50)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallR"]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="Player" parent="." instance=ExtResource("1_ply")]
+position = Vector2(60, 168)
+
+[node name="Ashigaru" parent="." instance=ExtResource("2_ash")]
+position = Vector2(180, 168)
+
+[node name="Kenshi" parent="." instance=ExtResource("3_ken")]
+position = Vector2(300, 168)
+
+[node name="Brute" parent="." instance=ExtResource("4_bru")]
+position = Vector2(420, 168)
+
+[node name="Sentry" parent="." instance=ExtResource("5_sen")]
+position = Vector2(540, 140)
+
+[node name="ShieldBearer" parent="." instance=ExtResource("8_sb")]
+position = Vector2(680, 168)
+
+[node name="Bomber" parent="." instance=ExtResource("9_bmb")]
+position = Vector2(820, 168)
+
+[node name="Drone" parent="." instance=ExtResource("10_drn")]
+position = Vector2(960, 120)
+
+[node name="ShadowAssassin" parent="." instance=ExtResource("11_asn")]
+position = Vector2(1100, 168)
+
+[node name="ChainReaper" parent="." instance=ExtResource("12_rpr")]
+position = Vector2(1240, 168)
+
+[node name="JammerTower" parent="." instance=ExtResource("13_jam")]
+position = Vector2(1380, 176)
+
+[node name="Banshee" parent="." instance=ExtResource("14_bsh")]
+position = Vector2(1520, 130)
+
+[node name="MirrorDuelist" parent="." instance=ExtResource("15_md")]
+position = Vector2(1680, 168)
+
+[node name="OniEnforcer" parent="." instance=ExtResource("16_oni")]
+position = Vector2(1840, 168)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(900, 120)
+zoom = Vector2(1.0, 1.0)

@@ -1,0 +1,86 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/fx_arrow_0.png" id="1_88jxr"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/fx_arrow_trail_0.png" id="2_rqvdu"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/fx_blood_splat_0.png" id="3_bwqae"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/fx_dust_0.png" id="4_kjn5g"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/fx_hit_spark_0.png" id="5_dr1yr"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/fx_slash1_0.png" id="6_nu7hr"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/fx_slash2_0.png" id="7_jnunh"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/fx_smash_impact_0.png" id="8_mqtqx"]
+[ext_resource type="Texture2D" path="res://assets/sprites/fx/fx_spear_trail_0.png" id="9_u0g56"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_88jxr")
+}],
+"loop": 0,
+"name": &"arrow",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_rqvdu")
+}],
+"loop": 0,
+"name": &"arrow_trail",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_bwqae")
+}],
+"loop": 0,
+"name": &"blood_splat",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_kjn5g")
+}],
+"loop": 0,
+"name": &"dust",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_dr1yr")
+}],
+"loop": 0,
+"name": &"hit_spark",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_nu7hr")
+}],
+"loop": 0,
+"name": &"slash1",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_jnunh")
+}],
+"loop": 0,
+"name": &"slash2",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_mqtqx")
+}],
+"loop": 0,
+"name": &"smash_impact",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_u0g56")
+}],
+"loop": 0,
+"name": &"spear_trail",
+"speed": 8.0
+}]

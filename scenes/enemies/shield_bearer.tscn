@@ -1,0 +1,52 @@
+[gd_scene load_steps=12 format=3 uid="uid://cshield_bearer_01"]
+
+[ext_resource type="PackedScene" path="res://scenes/enemies/enemy_base.tscn" id="1_eb01"]
+[ext_resource type="Script" path="res://scenes/enemies/shield_bearer.gd" id="2_sb02"]
+[ext_resource type="Resource" path="res://resources/enemies/enemy_shield_bearer.tres" id="3_prof03"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/visuals/shield_bearer_visual.tscn" id="4_vis04"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_patrol.gd" id="5_pat05"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_investigate.gd" id="6_inv06"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_search.gd" id="7_src07"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_chase.gd" id="8_chs08"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_thrust.gd" id="9_thr09"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_return.gd" id="10_ret10"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_stunned.gd" id="11_stn11"]
+
+[node name="ShieldBearer" instance=ExtResource("1_eb01")]
+script = ExtResource("2_sb02")
+profile = ExtResource("3_prof03")
+kind = &"shield_bearer"
+
+[node name="Visual" parent="." index="2" instance=ExtResource("4_vis04")]
+
+[node name="StateMachine" parent="." index="7" node_paths=PackedStringArray("initial")]
+initial = NodePath("Patrol")
+
+[node name="Patrol" type="Node" parent="StateMachine" index="0"]
+script = ExtResource("5_pat05")
+
+[node name="Investigate" type="Node" parent="StateMachine" index="1"]
+script = ExtResource("6_inv06")
+
+[node name="Search" type="Node" parent="StateMachine" index="2"]
+script = ExtResource("7_src07")
+
+[node name="Chase" type="Node" parent="StateMachine" index="3"]
+script = ExtResource("8_chs08")
+
+[node name="Thrust" type="Node" parent="StateMachine" index="4"]
+script = ExtResource("9_thr09")
+
+[node name="Return" type="Node" parent="StateMachine" index="5"]
+script = ExtResource("10_ret10")
+
+[node name="Stagger" type="Node" parent="StateMachine" index="6"]
+script = ExtResource("11_stn11")
+
+[node name="HealthComponent" parent="." index="8"]
+max_health = 3
+current_health = 3
+
+[node name="PoiseComponent" parent="." index="9"]
+max_poise = 80.0
+current_poise = 80.0

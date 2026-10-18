@@ -3,12 +3,30 @@ extends Node
 
 signal landed(impact_speed: float)
 signal jumped
+signal state_changed(old_state: MotorState, new_state: MotorState)
+
+enum MotorState {
+	IDLE,
+	RUN,
+	JUMP,
+	FALL,
+	SNEAK,
+	ATTACK_1,
+	ATTACK_2,
+	ATTACK_3,
+	HEAVY,
+	PARRY,
+	HURT,
+	DEAD,
+	TAKEDOWN
+}
 
 @export var body: CharacterBody2D
 @export var collision_shape: CollisionShape2D
 @export var ceiling_ray: RayCast2D
 @export var visual: PlayerVisual
 
+var current_state: MotorState = MotorState.IDLE
 var is_sneaking: bool = false
 var is_crouching: bool = false
 var is_on_floor: bool = false
@@ -16,16 +34,51 @@ var facing: int = 1
 var is_charging: bool = false
 var input_enabled: bool = true
 
+const COYOTE_TIME_SEC: float = 0.10
+const JUMP_BUFFER_SEC: float = 0.10
+
 var coyote_timer: float = 0.0
 var jump_buffer_timer: float = 0.0
 var drop_through_timer: float = 0.0
 var jump_start_y: float = 0.0
 var max_jump_height: float = 0.0
 
+
 func _ready() -> void:
 	if body != null:
 		body.floor_snap_length = 6.0
 		body.up_direction = Vector2.UP
+
+
+func set_state(new_state: MotorState) -> void:
+	if current_state == new_state:
+		return
+	var old_state := current_state
+	current_state = new_state
+	state_changed.emit(old_state, new_state)
+
+
+func is_locomotion_state() -> bool:
+	return current_state in [MotorState.IDLE, MotorState.RUN, MotorState.JUMP, MotorState.FALL, MotorState.SNEAK]
+
+
+func get_state_name(s: MotorState = current_state) -> String:
+	match s:
+		MotorState.IDLE: return "Idle"
+		MotorState.RUN: return "Run"
+		MotorState.JUMP: return "Jump"
+		MotorState.FALL: return "Fall"
+		MotorState.SNEAK: return "Sneak"
+		MotorState.ATTACK_1: return "Attack1"
+		MotorState.ATTACK_2: return "Attack2"
+		MotorState.ATTACK_3: return "Attack3"
+		MotorState.HEAVY: return "Heavy"
+		MotorState.PARRY: return "Parry"
+		MotorState.HURT: return "Hurt"
+		MotorState.DEAD: return "Dead"
+		MotorState.TAKEDOWN: return "Takedown"
+	return "Unknown"
+
 
 func _physics_process(delta: float) -> void:
 	if body == null:
@@ -33,6 +86,34 @@ func _physics_process(delta: float) -> void:
 
 	var cfg: GameConfigData = GameConfig.data
 
+	# If DEAD, halt motion completely and never override poses
+	if current_state == MotorState.DEAD:
+		body.velocity = Vector2.ZERO
+		return
+
+	# If in HURT or TAKEDOWN, decelerate and apply gravity without overriding poses
+	if current_state in [MotorState.HURT, MotorState.TAKEDOWN]:
+		body.velocity.x = move_toward(body.velocity.x, 0.0, cfg.ground_friction * delta)
+		if not body.is_on_floor():
+			body.velocity.y += cfg.gravity * delta
+		body.move_and_slide()
+		is_on_floor = body.is_on_floor()
+		return
+
+	# If in Combat Action (ATTACK, HEAVY, PARRY), apply friction & gravity, never overwrite visual pose
+	if current_state in [MotorState.ATTACK_1, MotorState.ATTACK_2, MotorState.ATTACK_3, MotorState.HEAVY, MotorState.PARRY]:
+		body.velocity.x = move_toward(body.velocity.x, 0.0, cfg.ground_friction * delta)
+		if not body.is_on_floor():
+			var g: float = cfg.gravity
+			if body.velocity.y > 0.0:
+				g *= cfg.fall_gravity_mult
+			body.velocity.y += g * delta
+			body.velocity.y = minf(body.velocity.y, cfg.max_fall_speed)
+		body.move_and_slide()
+		is_on_floor = body.is_on_floor()
+		return
+
+	# --- LOCOMOTION STATE MACHINE ---
 	# Read Input
 	var dir: float = 0.0
 	var want_sneak: bool = false
@@ -63,14 +144,14 @@ func _physics_process(delta: float) -> void:
 		if drop_through_timer <= 0.0:
 			body.set_collision_mask_value(2, true)
 
-	# Jump timers
+	# Jump timers: exactly 0.1s coyote time and 0.1s jump buffer per spec
 	if input_enabled and want_jump:
-		jump_buffer_timer = cfg.jump_buffer
+		jump_buffer_timer = JUMP_BUFFER_SEC
 	elif jump_buffer_timer > 0.0:
 		jump_buffer_timer -= delta
 
 	if body.is_on_floor():
-		coyote_timer = cfg.coyote_time
+		coyote_timer = COYOTE_TIME_SEC
 	elif coyote_timer > 0.0:
 		coyote_timer -= delta
 
@@ -84,7 +165,7 @@ func _physics_process(delta: float) -> void:
 		_set_crouch(false)
 		jumped.emit()
 
-	# Jump-cut on early release
+	# Jump-cut on early release (variable jump height)
 	if input_enabled and jump_released and body.velocity.y < 0.0:
 		body.velocity.y *= cfg.jump_cut_mult
 
@@ -149,17 +230,31 @@ func _physics_process(delta: float) -> void:
 		if pre_vy > 250.0:
 			ParticlesFactory.spawn_landing_dust(body.get_parent(), body.global_position)
 
-	# Update visual
+	# Derive Locomotion State
+	if not is_on_floor:
+		current_state = MotorState.JUMP if body.velocity.y < 0.0 else MotorState.FALL
+	elif is_crouching:
+		current_state = MotorState.SNEAK
+	elif absf(body.velocity.x) > 5.0:
+		current_state = MotorState.RUN
+	else:
+		current_state = MotorState.IDLE
+
+	# Update visual locomotion pose only when in locomotion state
 	if visual != null:
 		visual.set_facing(facing)
-		if not is_on_floor:
-			visual.set_pose(&"jump" if body.velocity.y < 0.0 else &"fall")
-		elif is_crouching:
-			visual.set_pose(&"sneak" if absf(body.velocity.x) > 5.0 else &"crouch")
-		elif absf(body.velocity.x) > 5.0:
-			visual.set_pose(&"run")
-		else:
-			visual.set_pose(&"idle")
+		match current_state:
+			MotorState.JUMP:
+				visual.set_pose(&"jump")
+			MotorState.FALL:
+				visual.set_pose(&"fall")
+			MotorState.SNEAK:
+				visual.set_pose(&"sneak" if absf(body.velocity.x) > 5.0 else &"crouch")
+			MotorState.RUN:
+				visual.set_pose(&"run")
+			MotorState.IDLE:
+				visual.set_pose(&"idle")
+
 
 func _set_crouch(crouched: bool) -> void:
 	if is_crouching == crouched:

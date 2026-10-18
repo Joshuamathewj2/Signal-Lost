@@ -1,64 +1,76 @@
-# SIGNAL LOST — Balance Log (Phase 8)
+# SIGNAL LOST — Master Balance & Difficulty Specification
 
-## 1. Overview & Balancing Philosophy
-All tuning in SIGNAL LOST is driven by resource data (`resources/config/default_config.tres`, `resources/pulses/*.tres`, `resources/enemies/*.tres`).
-Core hard constraints enforced:
-- `whisper.noise_mult` MUST NOT exceed 0.6 (current: 0.6, noise radius 43.2 px).
-- `scream.noise_mult` MUST NOT fall below 1.3 (current: 1.3, noise radius 728.0 px).
-- Every level must feature a stealth route solvable without triggering alarms (Ghost medal achievable).
-- Screaming must provide decisive tactical utility in at least 5 levels, while being lethal if deployed carelessly in at least 4 levels.
+**Version:** 2.0  
+**Date:** 2026-10-17  
+**Status:** IMPLEMENTED & VERIFIED  
 
 ---
 
-## 2. Level Run & Target Time Verification
+## 1. Difficulty Tier Matrix (Shinobi / Ronin / Oni)
 
-| Level | Name | Target Time (LVL §3) | Tested Stealth Time | Ghost Achievable? | Primary Threat / Mechanic |
-|---|---|---|---|---|---|
-| 1 | Wake | 0:30 | 0:18 | Yes | Basic platforming, step-ups, first pulse. No enemies. |
-| 2 | Listen | 0:45 | 0:32 | Yes | Floor Listener. Sneak & high catwalk bypass. |
-| 3 | Floors | 1:15 | 0:54 | Yes | 3 Listeners across 3 tiers. Keycard fetch, drop-throughs. |
-| 4 | Crossfire | 1:00 | 0:42 | Yes | Balcony Sentry + ground Listener. Glass pit cover. |
-| 5 | Heavy | 1:00 | 0:48 | Yes | Deaf Brute + Lanterns + Pressure Plate door. |
-| 6 | Pack | 1:15 | 0:56 | Yes | Hunter + Vent acoustic redirection (V to v). |
-| 7 | Gates | 1:30 | 1:12 | Yes | Directional gates, Sentry, Brute, Decoy beacon. |
-| 8 | Signal | 2:00 | 1:38 | Yes | 3 floors, all enemies (L, S, H, B), dual doors (R, D). |
-
----
-
-## 3. Scream Tactical Utility Verification (≥ 5 Levels)
-Scream pulse provides a 560 px reveal radius (hold 2.0s, fade 3.0s) with sonic shockwave physics:
-1. **Level 1 (Wake):** Full-room reconnaissance reveals hidden upper catwalk and signal fragment `F` in a single pulse with zero danger.
-2. **Level 4 (Crossfire):** Acoustically shatters the glass floor `G`, granting access to the sub-floor fragment `F` and drop routing.
-3. **Level 5 (Heavy):** Brute is completely deaf to airborne acoustic pulses (`accepted_types = [STEP, LAND, DECOY]`). Players can Scream freely to illuminate the entire facility, sway hanging lanterns `~`, and scout the upper catwalk.
-4. **Level 6 (Pack):** Screaming while standing inside the dampening field of mute vent `M` (noise attenuated ×0.3) safely reveals the entire lower floor and Hunter patrol position without triggering investigation. Normal pulse at intake `V` also provides safe long-distance acoustic lure to `v`.
-5. **Level 8 (Signal):** Illuminates the entire 3-story superstructure from the initial mute vent `M` safe zone, locating Sentry aim, keycard `K`, and plate `_` positions.
+| Parameter | Shinobi (Normal) | Ronin (Hard) | Oni (Nightmare) | System Impact |
+|---|---|---|---|---|
+| **Player Max HP** | 5 | 4 | 3 | Segmented HUD HP blocks (`HUD._draw_hp_blocks`) |
+| **Parry Deflect Window** | 6 frames (100 ms) | 4 frames (67 ms) | 3 frames (50 ms) | `CombatController.parry_active_frames` |
+| **Counter Window (Riposte)** | 0.50 s | 0.40 s | 0.30 s | `CombatController.counter_window_timer` |
+| **Enemy Evade Chance** | 25% | 40% | 55% | `EnemyBase._try_evade()` via `GameState` |
+| **Trap Damage Modifier** | +0 | +1 | +2 (Lethal Crush) | `TrapBase._deliver_damage_to()` |
+| **Enemy Attack Aggression** | Normal cooldowns | -20% cooldowns | -40% cooldowns, rapid tokens | `AttackTokenManager` circulation |
+| **Noise Sensitivity** | 1.0x baseline | 1.25x range | 1.5x range, instant reveal | `Awareness.on_heard()` |
 
 ---
 
-## 4. Scream Lethality / Careless Hazard Verification (≥ 4 Levels)
-Deploying a Scream in open space emits a massive 728 px radius acoustic event (loudness 3.0):
-1. **Level 2 (Listen):** Ground-level Scream alerts Listener across the entire chamber instantly, causing it to sprint directly to player's position.
-2. **Level 3 (Floors):** Multi-tier open catwalks permit acoustic propagation across all 3 levels. A careless Scream draws all three Listeners concurrently, cutting off drop routes.
-3. **Level 4 (Crossfire):** A Scream while exposed on the upper tier alerts both Sentry and Listener, shattering glass floors unexpectedly and provoking rapid Sentry suppression fire.
-4. **Level 7 (Gates):** Screaming alerts the Listener and Sentry beyond the one-way gates `>`. Because the player cannot backtrack through `>`, alerted enemies camp the gate threshold.
-5. **Level 8 (Signal):** Careless Scream shatters the glass floor `GGGG` immediately beneath the spawn tier, causing player to fall directly onto the patrol path of the Listener and Hunter on the middle floor.
+## 2. Enemy Roster & Health / Poise Scaling
+
+| Enemy Archetype | Class / Sprite | HP (Shinobi) | HP (Ronin) | HP (Oni) | Poise | Speed (px/s) | Signature Behavior |
+|---|---|---|---|---|---|---|---|
+| **Ronin (Sword)** | Ronin (`ronin_frames.tres`) | 2 | 3 | 4 | 30.0 | 120.0 | 3-Hit combo, 35% evade backstep, parry guard |
+| **Archer (Yumi)** | Archer (`archer_frames.tres`) | 2 | 2 | 3 | 20.0 | 130.0 | Mobile kiting, seeks high ground, ranged arrow |
+| **Spear (Ashigaru)** | Spear (`spear_frames.tres`) | 3 | 4 | 5 | 40.0 | 110.0 | Thrust reach (52px), overhead sweep, defense stance |
+| **Brute (Heavy)** | Brute (`brute_frames.tres`) | 5 | 6 | 8 | 80.0 | 85.0 | Super armor frontal absorb, Kanabo slam, low-HP enrage (+40% speed) |
+| **Shield Bearer** | Shield (`shield_bearer.gd`) | 3 | 4 | 5 | 60.0 | 90.0 | Frontal block, broken only by heavy attack / breaker |
+| **Bomber** | Bomber (`bomber.gd`) | 2 | 3 | 4 | 25.0 | 100.0 | Arc explosive throw, mid-air deflectable |
+| **Drone** | Drone (`drone.gd`) | 1 | 1 | 2 | 10.0 | 140.0 | Airborne hover flight, charged laser beam |
+| **Shadow Assassin** | Assassin (`shadow_assassin.gd`) | 2 | 3 | 4 | 30.0 | 160.0 | Optical cloak (0.08 alpha), pulse reveal, rear backstab |
+| **Chain Reaper** | Chain Reaper (`chain_reaper.gd`) | 4 | 5 | 6 | 50.0 | 105.0 | Extended chain hook whip, parry snap counter |
+| **Jammer Tower** | Jammer (`jammer_tower.gd`) | 3 | 3 | 4 | 999.0 | 0.0 | 240px electromagnetic pulse suppression field |
+| **Banshee** | Banshee (`banshee.gd`) | 2 | 3 | 4 | 20.0 | 125.0 | 1.2s inhalation scream telegraph, silenceable on hit |
+| **Mirror Duelist** | Mirror (`mirror_duelist.gd`) | 5 | 6 | 8 | 60.0 | 140.0 | Shadow reflection, counter parry, heavy breaker |
+| **Oni Enforcer** | Enforcer (`oni_enforcer.gd`) | 12 | 14 | 16 | 120.0 | 95.0 | Phase 2 rage at <= 50% HP, shockwave earth slam |
+| **Boss Shogun** | Shogun (`boss_shogun.gd`) | 20 | 24 | 28 | 150.0 | 130.0 | Multi-phase arena boss, lethal sword art sequences |
 
 ---
 
-## 5. Resource Parameter Audit
+## 3. Trap Hazard Data & Balancing Matrix
 
-### Pulse Profiles (`resources/pulses/`)
-- `pulse_whisper.tres`: `reveal_radius = 72.0`, `noise_mult = 0.6`, `loudness = 1.0`, `energy_cost = 6.0`, `cooldown = 0.2`.
-- `pulse_normal.tres`: `reveal_radius = 200.0`, `noise_mult = 1.0`, `loudness = 2.0`, `energy_cost = 22.0`, `cooldown = 0.6`.
-- `pulse_scream.tres`: `reveal_radius = 560.0`, `noise_mult = 1.3`, `loudness = 3.0`, `energy_cost = 55.0`, `cooldown = 3.5`.
-- `pulse_decoy.tres`: `reveal_radius = 200.0`, `noise_mult = 1.0`, `loudness = 2.0`, `energy_cost = 0.0`.
+All traps feature mandatory visual + sound telegraphing of **>= 0.50 s** before active hitbox frames, with red danger indicator lines and acoustic footprints.
 
-### Enemy Profiles (`resources/enemies/`)
-- `enemy_listener.tres`: `walk_speed = 50.0`, `run_speed = 120.0`, `hearing_threshold = 1.0`, `hearing_mult = 1.0`, all noise types accepted.
-- `enemy_sentry.tres`: Stationary (`walk_speed = 0.0`), `sight_range = 320.0`, `sight_angle = 40.0°`, `hearing_threshold = 3.0` (only hears Screams/Explosions), `fire_interval = 0.9s`.
-- `enemy_hunter.tres`: High mobility (`walk_speed = 90.0`, `run_speed = 230.0`), `hearing_threshold = 0.5`, `hearing_mult = 1.25`, `memory_size = 3`.
-- `enemy_brute.tres`: Heavy patrol (`walk_speed = 40.0`, `run_speed = 110.0`), deaf to voice pulses (`accepted_types = [STEP, LAND, DECOY]`), `sight_range = 0.0` (blind), contact lethal.
+| Trap Archetype | Script / Scene | DMG (Shinobi) | DMG (Ronin) | DMG (Oni) | Telegraph | Reset Cooldown | Noise Footprint | Disarm Method |
+|---|---|---|---|---|---|---|---|---|
+| **Floor Spikes** | `floor_spikes.tscn` | 2 | 3 | 4 | 0.50 s | 2.0 s | 40 px (0.5 loud) | Whisper pulse (Tier 1) |
+| **Ceiling Spikes** | `ceiling_spikes.tscn` | 3 | 4 | 5 (Lethal) | 0.60 s | 3.0 s | 180 px (1.8 loud) | Proximity trigger only |
+| **Swinging Blade** | `swinging_blade.tscn` | 2 | 3 | 4 | 0.50 s | Continuous | 100 px (1.0 loud) | Continuous rhythmic timing |
+| **Wall Blade** | `wall_blade.tscn` | 2 | 3 | 4 | 0.50 s | 2.2 s | 90 px (0.9 loud) | Periodic timer / tripwire |
+| **Arrow Trap** | `arrow_trap.tscn` | 1 | 2 | 3 | 0.50 s | 2.5 s | 80 px (0.8 loud) | Normal pulse (Tier 2) or Parry Deflect |
+| **Spear Launcher** | `spear_launcher.tscn` | 2 | 3 | 4 | 0.50 s | 2.0 s | 120 px (1.2 loud) | Pneumatic lock trigger |
+| **Falling Rock** | `falling_rock.tscn` | 3 | 4 | 5 (Lethal) | 0.60 s | 3.5 s | 220 px (2.2 loud) | Overhead tremor tell |
+| **Rolling Boulder** | `rolling_boulder.tscn` | 3 | 4 | 5 (Lethal) | 0.50 s | 6.0 s | 240 px (2.5 loud) | Tripwire / slope release |
+| **Guillotine** | `guillotine.tscn` | 3 | 4 | 5 (Lethal) | 0.50 s | 2.5 s | 160 px (1.6 loud) | Timed rhythm / winch |
+| **Fire Trap** | `fire_trap.tscn` | 2 | 3 | 4 | 0.60 s | 2.0 s | 140 px (1.4 loud) | Scream pulse (Tier 3) |
 
-### Game Config (`resources/config/default_config.tres`)
-- Player movement: `run_speed = 180.0`, `sneak_speed = 70.0`, `jump_velocity = -560.0`, `gravity = 1800.0`.
-- Battery balance: `battery_max = 100.0`, `regen_still = 8.0/s`, `regen_moving = 3.0/s`, `regen_delay = 0.8s`.
+---
+
+## 4. Hero Maneuvers & Combat Balance
+
+| Maneuver | Input | DMG | Poise DMG | Cooldown / Window | Acoustic Radius | Special Property |
+|---|---|---|---|---|---|---|
+| **Katana Light Slash 1** | `J` / `LMB` | 1 | 15.0 | 0.20 s recovery | 180 px | 3-hit combo chain starter |
+| **Katana Light Slash 2** | `J` / `LMB` | 1 | 20.0 | 0.22 s recovery | 200 px | Extended forward reach |
+| **Katana Light Slash 3** | `J` / `LMB` | 2 | 35.0 | 0.32 s recovery | 280 px | Heavy spin finisher, wide knockback |
+| **Heavy Strike** | Hold `J` / `LMB` | 2 | 50.0 | 0.45 s recovery | 320 px | Guard breaker, penetrates brute armor |
+| **Dash Slash** | `Shift + Attack` | 1 | 25.0 | 1.20 s cooldown | 220 px | Invulnerable piercing dash |
+| **Plunge Strike** | Air `Down + Attack` | 2 | 40.0 | On landing | 240 px | High-speed dive (520 px/s), 64px ground slam shockwave |
+| **Rising Slash** | `Up + Attack` | 2 | 35.0 | 0.30 s recovery | 200 px | Vertical launcher impulse (vy = -340 px/s) |
+| **Counter Strike (Riposte)** | Attack after Parry | 3 | 60.0 | 0.50 s counter window | 260 px | Lethal punish following deflect, slow-mo hitstop |
+| **Parry (Deflect)** | Tap `K` / `RMB` | 0 | 40.0 | 6f window | 260 px | Deflects hostile projectiles 180 deg back |
+| **Kunai Toss** | `F` | 1 | 30.0 | 0.80 s cooldown | 40 px (silent) | Fast ranged projectile (600 px/s), 1.5s stun on impact |

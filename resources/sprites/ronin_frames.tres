@@ -1,0 +1,101 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/enemies/ronin/ronin_attack1_0.png" id="1_f3lrl"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemies/ronin/ronin_attack2_0.png" id="2_sv0y0"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemies/ronin/ronin_attack3_0.png" id="3_dpb20"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemies/ronin/ronin_die_0.png" id="4_pm3l5"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemies/ronin/ronin_idle_0.png" id="5_xdxh3"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemies/ronin/ronin_hurt_0.png" id="6_hlivo"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemies/ronin/ronin_run_0.png" id="7_a1gqr"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemies/ronin/ronin_walk_0.png" id="8_xlx61"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_f3lrl")
+}],
+"loop": 0,
+"name": &"attack1",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_sv0y0")
+}],
+"loop": 0,
+"name": &"attack2",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_dpb20")
+}],
+"loop": 0,
+"name": &"attack3",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_pm3l5")
+}],
+"loop": 0,
+"name": &"die",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_xdxh3")
+}],
+"loop": 0,
+"name": &"evade",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_hlivo")
+}],
+"loop": 0,
+"name": &"hurt",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_xdxh3")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_a1gqr")
+}],
+"loop": 1,
+"name": &"run",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_xdxh3")
+}],
+"loop": 0,
+"name": &"shield_raise",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_hlivo")
+}],
+"loop": 1,
+"name": &"stun",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_xlx61")
+}],
+"loop": 1,
+"name": &"walk",
+"speed": 8.0
+}]

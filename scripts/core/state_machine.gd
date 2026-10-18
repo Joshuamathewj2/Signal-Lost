@@ -28,6 +28,9 @@ func _ready() -> void:
 	elif get_child_count() > 0 and get_child(0) is State:
 		transition_to(get_child(0).name)
 
+func change_state(target_name: StringName, msg: Dictionary = {}) -> void:
+	transition_to(target_name, msg)
+
 func transition_to(target_name: StringName, msg: Dictionary = {}) -> void:
 	if current != null and (current.name == target_name or current.name.to_lower() == str(target_name).to_lower()) and not msg.get("force", false):
 		return

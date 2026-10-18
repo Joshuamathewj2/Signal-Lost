@@ -36,24 +36,21 @@ func register_element(node: Node, explicit_index: int = -1) -> void:
 		return
 	registered_nodes.append(node)
 	var idx: int = explicit_index if explicit_index >= 0 else registered_nodes.size() - 1
-	if node.has_signal("triggered"):
-		node.connect("triggered", Callable(self, "_on_element_triggered").bind(node, idx))
+	if node.has_signal("struck"):
+		node.connect("struck", func(_lantern: Node, p_idx: int) -> void:
+			_on_element_triggered(node, p_idx if p_idx >= 0 else idx)
+		)
+	elif node.has_signal("triggered"):
+		node.connect("triggered", func(_elem: Variant = null) -> void:
+			_on_element_triggered(node, idx)
+		)
 	elif node.has_signal("state_changed"):
-		node.connect("state_changed", Callable(self, "_on_element_state_changed").bind(node, idx))
-	elif node.has_signal("struck"):
-		node.connect("struck", Callable(self, "_on_element_struck").bind(node, idx))
-
-
-func _on_element_state_changed(elem: Node, is_active: bool, _source: Node, idx: int) -> void:
-	if is_active:
-		_on_element_triggered(elem, idx)
-	else:
-		active_elements.erase(idx)
-
-
-func _on_element_struck(_lantern: Node, pitch_idx: int, elem: Node, fallback_idx: int) -> void:
-	var use_idx: int = pitch_idx if pitch_idx >= 0 else fallback_idx
-	_on_element_triggered(elem, use_idx)
+		node.connect("state_changed", func(_elem: Node, is_active: bool) -> void:
+			if is_active:
+				_on_element_triggered(node, idx)
+			else:
+				active_elements.erase(idx)
+		)
 
 
 func _on_element_triggered(elem: Node, idx: int) -> void:

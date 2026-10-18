@@ -60,10 +60,15 @@ const LEVEL_SELECT_SCENE: PackedScene = preload("res://scenes/ui/level_select.ts
 const SETTINGS_SCENE: PackedScene = preload("res://scenes/ui/settings_menu.tscn")
 
 func _on_play_pressed() -> void:
+	var container: Control = get_node_or_null("CenterContainer") as Control
+	if container != null:
+		container.visible = false
 	var lvl_sel: Node = LEVEL_SELECT_SCENE.instantiate()
 	add_child(lvl_sel)
 	if lvl_sel.has_signal("closed"):
 		lvl_sel.connect("closed", func() -> void:
+			if container != null:
+				container.visible = true
 			if play_btn != null and play_btn.is_visible_in_tree():
 				play_btn.grab_focus()
 		)
@@ -73,10 +78,15 @@ func _on_play_pressed() -> void:
 		)
 
 func _on_settings_pressed() -> void:
+	var container: Control = get_node_or_null("CenterContainer") as Control
+	if container != null:
+		container.visible = false
 	var settings: Node = SETTINGS_SCENE.instantiate()
 	add_child(settings)
 	if settings.has_signal("closed"):
 		settings.connect("closed", func() -> void:
+			if container != null:
+				container.visible = true
 			if settings_btn != null and settings_btn.is_visible_in_tree():
 				settings_btn.grab_focus()
 		)

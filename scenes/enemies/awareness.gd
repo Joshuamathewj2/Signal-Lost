@@ -6,6 +6,9 @@ signal awareness_changed(new_val: float, old_val: float)
 @export var profile: EnemyProfile
 
 var value: float = 0.0
+var is_alert: bool:
+	get:
+		return value >= 0.7
 
 func _process(delta: float) -> void:
 	var decay: float = profile.awareness_decay if profile != null else 0.15

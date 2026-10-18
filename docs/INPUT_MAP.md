@@ -67,6 +67,12 @@ Every action below is formatted with physical scan codes and Godot engine input 
      - Facing angle aligns within 60° of target rear (behind target).
      - Target awareness $< 0.35$ (unaware).
    - If prerequisites are satisfied, `attack` locks input for 0.40s and executes the lethal **Assassination**.
+5. **Special Combat Maneuvers**:
+   - **Dash Slash** (`Dash` + `J` or `J` during Dash): Piercing forward dash slash (1 DMG, 20 poise, 180 knockback, 1.2s cooldown, invulnerable dash).
+   - **Plunge Strike** (`Air` + `Down` + `J`): High-speed dive slam into ground shockwave (2 DMG, 50 poise, 64px AoE stun, smash impact particles).
+   - **Rising Slash** (`Up` + `J`): Upward vaulting launch strike (2 DMG, 35 poise, 280 knockback launching enemies upward).
+   - **Counter Strike (Riposte)** (`J` during 0.5s counter window following successful Parry Deflect): Lethal riposte (3 DMG, 60 poise, 360 knockback, visual flash & slow-mo).
+   - **Kunai Toss** (`F` Subweapon): Aerodynamic silent projectile ($v = 600 \text{ px/s}$, 40 px acoustic radius, 1 DMG, 1.5s stun on impact).
 
 ---
 

@@ -14,8 +14,10 @@ func _resume_patrol() -> void:
 	var mover: PlatformMover = actor.get_node_or_null("PlatformMover") as PlatformMover
 	if mover != null:
 		patrol_bounds = mover.patrol_segment()
-		var speed: float = actor.profile.walk_speed if actor.profile != null else 50.0
-		var target_x: float = patrol_bounds.y if actor.facing > 0 else patrol_bounds.x
+		var speed: float = 50.0
+		if "profile" in actor and actor.profile != null:
+			speed = actor.profile.walk_speed
+		var target_x: float = patrol_bounds.y if ("facing" in actor and actor.facing > 0) else patrol_bounds.x
 		mover.move_to(Vector2(target_x, actor.global_position.y), speed)
 
 func update(delta: float) -> void:
@@ -23,11 +25,11 @@ func update(delta: float) -> void:
 		return
 
 	# Check transitions
-	if actor.vision != null and actor.vision.is_spotted:
+	if "vision" in actor and actor.vision != null and actor.vision.is_spotted:
 		transition(&"Chase")
 		return
 
-	if actor.hearing != null and not actor.last_noise.is_empty():
+	if "hearing" in actor and actor.hearing != null and "last_noise" in actor and not actor.last_noise.is_empty():
 		var n_pos: Vector2 = actor.last_noise.get("pos", actor.global_position)
 		actor.last_noise.clear()
 		if machine != null and machine.has_node("Track"):

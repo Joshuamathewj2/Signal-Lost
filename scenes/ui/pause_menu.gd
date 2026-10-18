@@ -7,6 +7,19 @@ extends Control
 @onready var quit_btn: UiButton = $CenterContainer/VBoxContainer/ButtonGroup/QuitButton
 
 var is_paused: bool = false
+var _hold_r_timer: float = 0.0
+
+func _process(delta: float) -> void:
+	if not is_paused:
+		_hold_r_timer = 0.0
+		return
+	if Input.is_key_pressed(KEY_R):
+		_hold_r_timer += delta
+		if _hold_r_timer >= 0.8:
+			_hold_r_timer = 0.0
+			_on_restart_pressed()
+	else:
+		_hold_r_timer = 0.0
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS

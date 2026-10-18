@@ -5,12 +5,52 @@ signal detected
 signal level_completed(stats: Dictionary)
 signal decoy_count_changed(n: int)
 signal keycard_changed(has_it: bool)
+signal difficulty_changed(new_diff: int)
+
+enum Difficulty {
+	SHINOBI = 0, # Normal: Hero HP 5, Evade 25%, Parry 6f, Trap DMG baseline
+	RONIN = 1,   # Hard: Hero HP 4, Evade 40%, Parry 4f, Trap DMG +1
+	ONI = 2      # Nightmare: Hero HP 3, Evade 55%, Parry 3f, Trap DMG +2
+}
+
+var difficulty: Difficulty = Difficulty.SHINOBI:
+	set(val):
+		difficulty = val
+		difficulty_changed.emit(int(difficulty))
 
 var level_index: int = 1
 var has_keycard: bool = false:
 	set(val):
 		has_keycard = val
 		keycard_changed.emit(has_keycard)
+
+func get_enemy_evade_chance() -> float:
+	match difficulty:
+		Difficulty.SHINOBI: return 0.25
+		Difficulty.RONIN: return 0.40
+		Difficulty.ONI: return 0.55
+		_: return 0.25
+
+func get_trap_damage_modifier() -> int:
+	match difficulty:
+		Difficulty.SHINOBI: return 0
+		Difficulty.RONIN: return 1
+		Difficulty.ONI: return 2
+		_: return 0
+
+func get_player_max_hp() -> int:
+	match difficulty:
+		Difficulty.SHINOBI: return 5
+		Difficulty.RONIN: return 4
+		Difficulty.ONI: return 3
+		_: return 5
+
+func get_parry_window_frames() -> int:
+	match difficulty:
+		Difficulty.SHINOBI: return 6
+		Difficulty.RONIN: return 4
+		Difficulty.ONI: return 3
+		_: return 6
 
 var decoy_count: int = 0:
 	set(val):

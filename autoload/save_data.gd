@@ -28,7 +28,7 @@ func has_save() -> bool:
 
 func get_highest_unlocked_level() -> int:
 	var highest := 1
-	for i in range(1, 9):
+	for i in range(1, 10):
 		if is_level_unlocked(i):
 			highest = i
 	return highest
@@ -109,7 +109,7 @@ func save_level_result(level_index: int, run_stats: Dictionary) -> Dictionary:
 	_config.set_value(next_sec, "unlocked", true)
 
 	var current_cont: int = get_continue_level()
-	if level_index + 1 > current_cont and level_index + 1 <= 8:
+	if level_index + 1 > current_cont and level_index + 1 <= 9:
 		set_continue_level(level_index + 1)
 
 	_config.save(SAVE_PATH)

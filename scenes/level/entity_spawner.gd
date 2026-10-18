@@ -10,6 +10,15 @@ const ASHIGARU_SCENE: PackedScene = preload("res://scenes/enemies/ashigaru.tscn"
 const KENSHI_SCENE: PackedScene = preload("res://scenes/enemies/kenshi.tscn")
 const YUMI_SCENE: PackedScene = preload("res://scenes/enemies/yumi.tscn")
 const BOSS_SHOGUN_SCENE: PackedScene = preload("res://scenes/enemies/boss_shogun.tscn")
+const SHIELD_BEARER_SCENE: PackedScene = preload("res://scenes/enemies/shield_bearer.tscn")
+const BOMBER_SCENE: PackedScene = preload("res://scenes/enemies/bomber.tscn")
+const DRONE_SCENE: PackedScene = preload("res://scenes/enemies/drone.tscn")
+const ASSASSIN_SCENE: PackedScene = preload("res://scenes/enemies/shadow_assassin.tscn")
+const CHAIN_REAPER_SCENE: PackedScene = preload("res://scenes/enemies/chain_reaper.tscn")
+const JAMMER_TOWER_SCENE: PackedScene = preload("res://scenes/enemies/jammer_tower.tscn")
+const BANSHEE_SCENE: PackedScene = preload("res://scenes/enemies/banshee.tscn")
+const MIRROR_DUELIST_SCENE: PackedScene = preload("res://scenes/enemies/mirror_duelist.tscn")
+const ONI_ENFORCER_SCENE: PackedScene = preload("res://scenes/enemies/oni_enforcer.tscn")
 
 static var _warned_stubs: Dictionary = {}
 
@@ -37,6 +46,12 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 
 	# 2. Spawn Interactables via InteractableSpawner
 	InteractableSpawner.spawn_interactables(data, interactables_node, graph)
+
+	# 2.5 Spawn Traps via TrapSpawner
+	var traps_node: Node2D = root.get_node_or_null("Traps") as Node2D
+	if traps_node == null:
+		traps_node = interactables_node
+	TrapSpawner.spawn_traps(data, traps_node)
 
 	# 3. Extract bounds for patrol enemies
 	var bounds_per_row: Dictionary = {}
@@ -144,9 +159,115 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 			enemies_node.add_child(shogun_inst)
 			(result["enemies"] as Array).append(shogun_inst)
 
-	# 12. Stub warnings for unimplemented entities
+	# 12. Spawn Shield Bearer (U)
+	if data.cells.has("U"):
+		for cell in data.cells["U"]:
+			var cell_vec: Vector2i = cell
+			var pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, (float(cell_vec.y) + 1.0) * 32.0)
+			var inst: Node2D = SHIELD_BEARER_SCENE.instantiate() as Node2D
+			inst.position = pos
+			inst.set_meta("spawn_pos", pos)
+			_setup_mover(inst, graph, bounds_per_row, cell_vec.y)
+			enemies_node.add_child(inst)
+			(result["enemies"] as Array).append(inst)
+
+	# 13. Spawn Bomber (o)
+	if data.cells.has("o"):
+		for cell in data.cells["o"]:
+			var cell_vec: Vector2i = cell
+			var pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, (float(cell_vec.y) + 1.0) * 32.0)
+			var inst: Node2D = BOMBER_SCENE.instantiate() as Node2D
+			inst.position = pos
+			inst.set_meta("spawn_pos", pos)
+			_setup_mover(inst, graph, bounds_per_row, cell_vec.y)
+			enemies_node.add_child(inst)
+			(result["enemies"] as Array).append(inst)
+
+	# 14. Spawn Drone (d)
+	if data.cells.has("d"):
+		for cell in data.cells["d"]:
+			var cell_vec: Vector2i = cell
+			var pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, (float(cell_vec.y) + 1.0) * 32.0)
+			var inst: Node2D = DRONE_SCENE.instantiate() as Node2D
+			inst.position = pos
+			inst.set_meta("spawn_pos", pos)
+			enemies_node.add_child(inst)
+			(result["enemies"] as Array).append(inst)
+
+	# 15. Spawn Shadow Assassin (a)
+	if data.cells.has("a"):
+		for cell in data.cells["a"]:
+			var cell_vec: Vector2i = cell
+			var pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, (float(cell_vec.y) + 1.0) * 32.0)
+			var inst: Node2D = ASSASSIN_SCENE.instantiate() as Node2D
+			inst.position = pos
+			inst.set_meta("spawn_pos", pos)
+			_setup_mover(inst, graph, bounds_per_row, cell_vec.y)
+			enemies_node.add_child(inst)
+			(result["enemies"] as Array).append(inst)
+
+	# 16. Spawn Chain Reaper (c)
+	if data.cells.has("c"):
+		for cell in data.cells["c"]:
+			var cell_vec: Vector2i = cell
+			var pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, (float(cell_vec.y) + 1.0) * 32.0)
+			var inst: Node2D = CHAIN_REAPER_SCENE.instantiate() as Node2D
+			inst.position = pos
+			inst.set_meta("spawn_pos", pos)
+			_setup_mover(inst, graph, bounds_per_row, cell_vec.y)
+			enemies_node.add_child(inst)
+			(result["enemies"] as Array).append(inst)
+
+	# 17. Spawn Jammer Tower (j)
+	if data.cells.has("j"):
+		for cell in data.cells["j"]:
+			var cell_vec: Vector2i = cell
+			var pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, (float(cell_vec.y) + 1.0) * 32.0)
+			var inst: Node2D = JAMMER_TOWER_SCENE.instantiate() as Node2D
+			inst.position = pos
+			inst.set_meta("spawn_pos", pos)
+			enemies_node.add_child(inst)
+			(result["enemies"] as Array).append(inst)
+
+	# 18. Spawn Banshee (w)
+	if data.cells.has("w"):
+		for cell in data.cells["w"]:
+			var cell_vec: Vector2i = cell
+			var pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, (float(cell_vec.y) + 1.0) * 32.0)
+			var inst: Node2D = BANSHEE_SCENE.instantiate() as Node2D
+			inst.position = pos
+			inst.set_meta("spawn_pos", pos)
+			enemies_node.add_child(inst)
+			(result["enemies"] as Array).append(inst)
+
+	# 19. Spawn Mirror Duelist (m)
+	if data.cells.has("m"):
+		for cell in data.cells["m"]:
+			var cell_vec: Vector2i = cell
+			var pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, (float(cell_vec.y) + 1.0) * 32.0)
+			var inst: Node2D = MIRROR_DUELIST_SCENE.instantiate() as Node2D
+			inst.position = pos
+			inst.set_meta("spawn_pos", pos)
+			_setup_mover(inst, graph, bounds_per_row, cell_vec.y)
+			enemies_node.add_child(inst)
+			(result["enemies"] as Array).append(inst)
+
+	# 20. Spawn Oni Enforcer (O)
+	if data.cells.has("O"):
+		for cell in data.cells["O"]:
+			var cell_vec: Vector2i = cell
+			var pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, (float(cell_vec.y) + 1.0) * 32.0)
+			var inst: Node2D = ONI_ENFORCER_SCENE.instantiate() as Node2D
+			inst.position = pos
+			inst.set_meta("spawn_pos", pos)
+			_setup_mover(inst, graph, bounds_per_row, cell_vec.y)
+			enemies_node.add_child(inst)
+			(result["enemies"] as Array).append(inst)
+
+	# 21. Stub warnings for unimplemented entities
+	var known_chars: String = "#=PL.FKEDR_><G~VvMSHBAkYC?WUodacjwmO^*)}!\"@Q%$"
 	for ch in data.cells.keys():
-		if ch != "#" and ch != "=" and ch != "P" and ch != "L" and ch != "|" and ch != "." and ch != "F" and ch != "K" and ch != "E" and ch != "D" and ch != "R" and ch != "_" and ch != ">" and ch != "<" and ch != "G" and ch != "~" and ch != "V" and ch != "v" and ch != "M" and ch != "S" and ch != "H" and ch != "B" and ch != "A" and ch != "k" and ch != "Y" and ch != "C" and ch != "?" and ch != "W":
+		if known_chars.find(ch) == -1:
 			if not _warned_stubs.has(ch):
 				_warned_stubs[ch] = true
 				push_warning("STUB: spawn " + ch)

@@ -1,0 +1,45 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/fire_trap/fire_trap_charge_0.png" id="1_mr4fv"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/fire_trap/fire_trap_flame_0.png" id="2_42vus"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/fire_trap/fire_trap_flame_1.png" id="3_g4qo6"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/fire_trap/fire_trap_idle_0.png" id="4_nro7h"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/fire_trap/fire_trap_off_0.png" id="5_5r7h4"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_mr4fv")
+}],
+"loop": 0,
+"name": &"charge",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_42vus")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_g4qo6")
+}],
+"loop": 1,
+"name": &"flame",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_nro7h")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_5r7h4")
+}],
+"loop": 0,
+"name": &"off",
+"speed": 8.0
+}]

@@ -22,6 +22,10 @@ func _ready() -> void:
 	add_to_group(&"interactable")
 	add_to_group(&"wave_reactive")
 
+	var mat := CanvasItemMaterial.new()
+	mat.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	material = mat
+
 	collision_layer = 0
 	collision_mask = 0
 	set_collision_layer_value(5, true) # interactable layer
@@ -40,6 +44,11 @@ func _ready() -> void:
 
 func on_hit(_hitbox: HitboxComponent) -> void:
 	ring()
+
+
+func receive_hit(_hitbox: HitboxComponent) -> bool:
+	ring()
+	return true
 
 
 func on_wavefront(_profile: PulseProfile, origin: Vector2) -> void:

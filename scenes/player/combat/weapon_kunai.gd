@@ -9,6 +9,7 @@ const REACH_HORIZONTAL: float = 20.0
 
 static func get_attack_data(combo_index: int) -> AttackData:
 	var data := AttackData.new()
+	data.reach = REACH_HORIZONTAL
 	match combo_index:
 		0:
 			data.attack_name = &"kunai_flurry_1"
@@ -70,14 +71,15 @@ static func get_attack_data(combo_index: int) -> AttackData:
 
 static func get_heavy_attack_data() -> AttackData:
 	var data := AttackData.new()
-	data.attack_name = &"kunai_heavy_cross_slice"
+	data.attack_name = &"kunai_heavy_cross"
+	data.reach = 24.0
 	data.damage = 2
 	data.poise_damage = 30.0
 	data.knockback_force = 220.0
-	data.hitstop_duration = 0.08
-	data.noise_radius = 120.0
-	data.noise_loudness = 1.1
+	data.hitstop_duration = 0.10
+	data.noise_radius = 140.0
+	data.noise_loudness = 1.5
 	data.startup_frames = 8
-	data.active_frames = 4
+	data.active_frames = 3
 	data.recovery_frames = 18
 	return data

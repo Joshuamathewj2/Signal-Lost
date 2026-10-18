@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://x7m1q2w3swingingblade"]
+
+[ext_resource type="Script" path="res://scenes/traps/swinging_blade.gd" id="1_script"]
+[ext_resource type="SpriteFrames" path="res://resources/sprites/swinging_blade_frames.tres" id="2_frames"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_damage"]
+radius = 16.0
+
+[node name="SwingingBlade" type="Node2D" groups=["traps"]]
+script = ExtResource("1_script")
+
+[node name="Pivot" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Pivot"]
+position = Vector2(0, 48)
+sprite_frames = ExtResource("2_frames")
+animation = &"idle"
+centered = true
+
+[node name="DamageArea" type="Area2D" parent="Pivot"]
+position = Vector2(0, 56)
+collision_layer = 128
+collision_mask = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pivot/DamageArea"]
+shape = SubResource("CircleShape2D_damage")
+
+[node name="DangerMarker" type="Line2D" parent="."]
+points = PackedVector2Array(-50, 42, -26, 62, 0, 66, 26, 62, 50, 42)
+width = 1.5
+default_color = Color(1, 0.15, 0.15, 0.5)

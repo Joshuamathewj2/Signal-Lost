@@ -18,6 +18,9 @@ var hit_targets: Array[Area2D] = []
 
 
 func _ready() -> void:
+	# Ensure mask includes layer 4 (enemies) and layer 5 (interactables)
+	set_collision_mask_value(4, true)
+	set_collision_mask_value(5, true)
 	monitoring = is_active
 	monitorable = is_active
 	area_entered.connect(_on_area_entered)
@@ -47,3 +50,7 @@ func _on_area_entered(area: Area2D) -> void:
 		var applied: bool = area.receive_hit(self)
 		if applied:
 			hit_landed.emit(area)
+	elif area.has_method("on_hit"):
+		hit_targets.append(area)
+		area.on_hit(self)
+		hit_landed.emit(area)

@@ -28,7 +28,9 @@ static func can_assassinate(player: Node2D, target: Node2D) -> bool:
 	var aw_comp: Node = target.get_node_or_null("Awareness")
 	if aw_comp == null:
 		aw_comp = target.get_node_or_null("AwarenessComponent")
-	if aw_comp != null and aw_comp.get("awareness") != null:
+	if aw_comp != null and aw_comp.get("value") != null:
+		awareness_val = float(aw_comp.get("value"))
+	elif aw_comp != null and aw_comp.get("awareness") != null:
 		awareness_val = float(aw_comp.get("awareness"))
 	elif target.get("awareness") != null:
 		awareness_val = float(target.get("awareness"))
@@ -59,6 +61,27 @@ static func can_assassinate(player: Node2D, target: Node2D) -> bool:
 	if dot < cos(half_cone_rad):
 		return false
 
+	return true
+
+## Static helper to execute stealth takedown on target
+static func execute_assassination(player: CharacterBody2D, target: Node2D) -> bool:
+	if not can_assassinate(player, target):
+		return false
+	if NoiseBus != null:
+		var ev := NoiseEvent.make(target.global_position, 60.0, 0.6, NoiseEvent.NoiseType.COMBAT, player)
+		NoiseBus.emit_noise(ev)
+	var hc: Node = target.get_node_or_null("HealthComponent")
+	if hc == null:
+		for c in target.get_children():
+			if c is HealthComponent or c.get_script() == HealthComponent:
+				hc = c
+				break
+	if hc != null and hc.has_method("take_damage"):
+		hc.call("take_damage", 999, Vector2.ZERO, &"assassination")
+	elif target.has_method("die"):
+		target.call("die")
+	elif target.has_method("take_damage"):
+		target.call("take_damage", 999)
 	return true
 
 

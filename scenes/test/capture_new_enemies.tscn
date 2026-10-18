@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://capt_new_enemies"]
+
+[ext_resource type="Script" path="res://tests/capture_new_enemies.gd" id="1_cne"]
+
+[node name="CaptureNewEnemies" type="Node2D"]
+script = ExtResource("1_cne")

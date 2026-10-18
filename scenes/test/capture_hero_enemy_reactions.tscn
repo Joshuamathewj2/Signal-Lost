@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://capt_hero_enemy_reactions"]
+
+[ext_resource type="Script" path="res://tests/capture_hero_enemy_reactions.gd" id="1_cher"]
+
+[node name="CaptureHeroEnemyReactions" type="Node2D"]
+script = ExtResource("1_cher")

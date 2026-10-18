@@ -1,0 +1,35 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/rolling_boulder/rolling_boulder_idle_0.png" id="1_clp3r"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/rolling_boulder/rolling_boulder_roll_0.png" id="2_p8hs1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/rolling_boulder/rolling_boulder_roll_1.png" id="3_35ll1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/rolling_boulder/rolling_boulder_roll_2.png" id="4_2odp2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/rolling_boulder/rolling_boulder_roll_3.png" id="5_3jvld"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_clp3r")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_p8hs1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_35ll1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_2odp2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_3jvld")
+}],
+"loop": 1,
+"name": &"roll",
+"speed": 10.0
+}]

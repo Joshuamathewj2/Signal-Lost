@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://cbanshee_enemy_01"]
+
+[ext_resource type="PackedScene" path="res://scenes/enemies/enemy_base.tscn" id="1_eb01"]
+[ext_resource type="Script" path="res://scenes/enemies/banshee.gd" id="2_bsh02"]
+[ext_resource type="Resource" path="res://resources/enemies/enemy_banshee.tres" id="3_prof03"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/visuals/banshee_visual.tscn" id="4_bvis04"]
+
+[node name="Banshee" instance=ExtResource("1_eb01")]
+collision_mask = 0
+script = ExtResource("2_bsh02")
+profile = ExtResource("3_prof03")
+kind = &"banshee"
+has_gravity = false
+
+[node name="Visual" parent="." index="2" instance=ExtResource("4_bvis04")]
+
+[node name="HealthComponent" parent="." index="8"]
+max_health = 1
+current_health = 1
+
+[node name="PoiseComponent" parent="." index="9"]
+max_poise = 10.0
+current_poise = 10.0

@@ -1,0 +1,50 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/spear_launcher/spear_launcher_charge_0.png" id="1_0li0h"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/spear_launcher/spear_launcher_idle_0.png" id="2_aqtck"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/spear_launcher/spear_launcher_launch_0.png" id="3_67xn1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/spear_launcher/spear_launcher_retract_0.png" id="4_05jku"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/spear_launcher/spear_launcher_spear_proj_0.png" id="5_acepi"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_0li0h")
+}],
+"loop": 0,
+"name": &"charge",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_aqtck")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_67xn1")
+}],
+"loop": 0,
+"name": &"launch",
+"speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_05jku")
+}],
+"loop": 0,
+"name": &"retract",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_acepi")
+}],
+"loop": 0,
+"name": &"spear_proj",
+"speed": 8.0
+}]

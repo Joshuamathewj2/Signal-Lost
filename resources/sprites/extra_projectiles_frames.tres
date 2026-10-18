@@ -1,0 +1,59 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/extra/projectiles_chain_blade_0.png" id="1_naive"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/extra/projectiles_dart_0.png" id="2_8bvj7"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/extra/projectiles_fireball_0.png" id="3_vkac5"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/extra/projectiles_knife_0.png" id="4_u45df"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/extra/projectiles_spear_0.png" id="5_2wlg4"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/extra/projectiles_spike_ball_0.png" id="6_4q8fb"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_naive")
+}],
+"loop": 0,
+"name": &"chain_blade",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_8bvj7")
+}],
+"loop": 0,
+"name": &"dart",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_vkac5")
+}],
+"loop": 0,
+"name": &"fireball",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_u45df")
+}],
+"loop": 0,
+"name": &"knife",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_2wlg4")
+}],
+"loop": 0,
+"name": &"spear",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_4q8fb")
+}],
+"loop": 0,
+"name": &"spike_ball",
+"speed": 8.0
+}]

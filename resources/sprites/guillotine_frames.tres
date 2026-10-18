@@ -1,0 +1,45 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/guillotine/guillotine_drop_0.png" id="1_xs5wl"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/guillotine/guillotine_drop_1.png" id="2_lygaq"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/guillotine/guillotine_full_0.png" id="3_v6mfi"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/guillotine/guillotine_idle_0.png" id="4_p4xs1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/guillotine/guillotine_reset_0.png" id="5_cfk2a"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_xs5wl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_lygaq")
+}],
+"loop": 0,
+"name": &"drop",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_v6mfi")
+}],
+"loop": 0,
+"name": &"full",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_p4xs1")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_cfk2a")
+}],
+"loop": 0,
+"name": &"reset",
+"speed": 8.0
+}]

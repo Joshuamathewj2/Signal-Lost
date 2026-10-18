@@ -66,6 +66,9 @@ func load_level(path: String) -> void:
 		if camera_rig != null:
 			camera_rig.target = player_inst
 			camera_rig.set_limits(Rect2i(0, 0, int(map_px.size.x), int(map_px.size.y)))
+			var dust_scene: PackedScene = load("res://scenes/props/dust_particles.tscn")
+			if dust_scene != null:
+				camera_rig.add_child(dust_scene.instantiate())
 
 	# 7. Initialize level state & Notify SceneRouter
 	if GameState != null:

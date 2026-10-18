@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://cdrone_enemy_01"]
+
+[ext_resource type="PackedScene" path="res://scenes/enemies/enemy_base.tscn" id="1_eb01"]
+[ext_resource type="Script" path="res://scenes/enemies/drone.gd" id="2_drn02"]
+[ext_resource type="Resource" path="res://resources/enemies/enemy_drone.tres" id="3_prof03"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/visuals/drone_visual.tscn" id="4_dvis04"]
+
+[node name="Drone" instance=ExtResource("1_eb01")]
+script = ExtResource("2_drn02")
+profile = ExtResource("3_prof03")
+kind = &"drone"
+has_gravity = false
+
+[node name="Visual" parent="." index="2" instance=ExtResource("4_dvis04")]
+
+[node name="HealthComponent" parent="." index="8"]
+max_health = 1
+current_health = 1
+
+[node name="PoiseComponent" parent="." index="9"]
+max_poise = 20.0
+current_poise = 20.0

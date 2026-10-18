@@ -87,6 +87,16 @@ func _release_pulse() -> void:
 		pulse_failed.emit()
 		return
 
+	# Jammer interference
+	if player != null and is_inside_tree():
+		var jammers := get_tree().get_nodes_in_group(&"jammers")
+		for j in jammers:
+			if is_instance_valid(j) and j is Node2D:
+				var rad: float = float(j.get("jam_radius")) if j.get("jam_radius") != null else 240.0
+				if (j as Node2D).global_position.distance_to(player.global_position) <= rad:
+					pulse_failed.emit()
+					return
+
 	var chosen_profile: PulseProfile = GameConfig.pulse_for_tier(affordable)
 	if chosen_profile == null:
 		pulse_failed.emit()

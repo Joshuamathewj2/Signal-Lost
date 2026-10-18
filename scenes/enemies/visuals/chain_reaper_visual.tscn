@@ -1,0 +1,38 @@
+[gd_scene load_steps=3 format=3 uid="uid://creaper_vis_01"]
+
+[ext_resource type="Script" path="res://scenes/enemies/visuals/chain_reaper_visual.gd" id="1_rvis"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_unshaded"]
+light_mode = 1
+
+[node name="ChainReaperVisual" type="Node2D"]
+script = ExtResource("1_rvis")
+
+[node name="Silhouette" type="Polygon2D" parent="."]
+material = SubResource("CanvasItemMaterial_unshaded")
+color = Color(0.2, 0.22, 0.24, 1)
+polygon = PackedVector2Array(-8, -26, 0, -30, 8, -26, 7, -12, 10, 0, -10, 0, -7, -12)
+
+[node name="Hood" type="Polygon2D" parent="."]
+material = SubResource("CanvasItemMaterial_unshaded")
+color = Color(0.12, 0.13, 0.15, 1)
+polygon = PackedVector2Array(-10, -28, 0, -32, 10, -28, 6, -18, -6, -18)
+
+[node name="Scythe" type="Line2D" parent="."]
+points = PackedVector2Array(6, -8, 8, -26, 16, -24, 18, -16)
+width = 2.5
+default_color = Color(0.7, 0.75, 0.82, 1)
+
+[node name="ChainLine" type="Line2D" parent="."]
+width = 2.0
+default_color = Color(0.9, 0.9, 0.95, 1)
+
+[node name="TellLabel" type="Label" parent="."]
+offset_left = -10.0
+offset_top = -44.0
+offset_right = 10.0
+offset_bottom = -24.0
+theme_override_font_sizes/font_size = 14
+text = "!"
+horizontal_alignment = 1
+vertical_alignment = 1

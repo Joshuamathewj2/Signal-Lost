@@ -1,0 +1,67 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/floor_spikes/floor_spikes_full_0.png" id="1_e0ovd"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/floor_spikes/floor_spikes_hidden_0.png" id="2_v3a4k"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/floor_spikes/floor_spikes_idle_0.png" id="3_0olrf"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/floor_spikes/floor_spikes_reset_0.png" id="4_t1fn3"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/floor_spikes/floor_spikes_reset_1.png" id="5_5qj5x"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/floor_spikes/floor_spikes_rising_0.png" id="6_px1fu"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/floor_spikes/floor_spikes_rising_1.png" id="7_5ftff"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/floor_spikes/floor_spikes_trigger_0.png" id="8_kia4r"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_e0ovd")
+}],
+"loop": 0,
+"name": &"full",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_v3a4k")
+}],
+"loop": 0,
+"name": &"hidden",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_0olrf")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_t1fn3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_5qj5x")
+}],
+"loop": 0,
+"name": &"reset",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_px1fu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_5ftff")
+}],
+"loop": 0,
+"name": &"rising",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_kia4r")
+}],
+"loop": 0,
+"name": &"trigger",
+"speed": 10.0
+}]

@@ -91,8 +91,9 @@ func _draw_medal_glyph(center: Vector2, col: Color) -> void:
 	var r: float = 7.0
 	match medal:
 		&"ghost":
-			# Hollow circle
-			draw_arc(center, r, 0.0, TAU, 24, col, 1.2, true)
+			# Ghost Master: Solid filled circle with radiant acoustic halo ring
+			draw_circle(center, r - 1.5, col)
+			draw_arc(center, r + 2.5, 0.0, TAU, 24, col, 1.2, true)
 		&"quiet":
 			# Half filled circle: left filled, right hollow
 			var pts: PackedVector2Array = [center]
@@ -104,8 +105,8 @@ func _draw_medal_glyph(center: Vector2, col: Color) -> void:
 			draw_colored_polygon(pts, col)
 			draw_arc(center, r, -PI * 0.5, PI * 0.5, 12, col, 1.2, true)
 		&"loud":
-			# Filled circle
-			draw_circle(center, r, col)
+			# Hollow circle
+			draw_arc(center, r, 0.0, TAU, 24, col, 1.2, true)
 		_:
-			# Empty placeholder dot
-			draw_circle(center, 1.5, Color(col.r, col.g, col.b, 0.3))
+			# Unplayed clean dash
+			draw_line(center + Vector2(-4.0, 0.0), center + Vector2(4.0, 0.0), Color(col.r, col.g, col.b, 0.35), 1.2)

@@ -36,6 +36,16 @@ func line(a: Vector2, b: Vector2, color: Color, ttl: float = 0.0) -> void:
 	_items.append(it)
 	queue_redraw()
 
+func rect(r: Rect2, color: Color, ttl: float = 0.0) -> void:
+	var it := DrawItem.new()
+	it.type = &"rect"
+	it.a = r.position
+	it.b = r.size
+	it.color = color
+	it.ttl = ttl
+	_items.append(it)
+	queue_redraw()
+
 func text(pos: Vector2, s: String, ttl: float = 0.0) -> void:
 	var it := DrawItem.new()
 	it.type = &"text"
@@ -89,6 +99,8 @@ func _draw() -> void:
 				draw_arc(it.a, it.radius, 0.0, TAU, 32, it.color, 1.0)
 			&"line":
 				draw_line(it.a, it.b, it.color, 1.0)
+			&"rect":
+				draw_rect(Rect2(it.a, it.b), it.color, false, 1.5)
 			&"polyline":
 				if it.points.size() >= 2:
 					draw_polyline(it.points, it.color, 1.0)

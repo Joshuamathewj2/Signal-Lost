@@ -1,0 +1,54 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/falling_rock/falling_rock_crack_0.png" id="1_qidfc"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/falling_rock/falling_rock_fall_0.png" id="2_ndq6v"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/falling_rock/falling_rock_fall_1.png" id="3_w2smg"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/falling_rock/falling_rock_idle_0.png" id="4_rhkx8"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/falling_rock/falling_rock_impact_0.png" id="5_joqrk"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/falling_rock/falling_rock_reset_0.png" id="6_w6kex"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_qidfc")
+}],
+"loop": 0,
+"name": &"crack",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_ndq6v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_w2smg")
+}],
+"loop": 0,
+"name": &"fall",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_rhkx8")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_joqrk")
+}],
+"loop": 0,
+"name": &"impact",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_w6kex")
+}],
+"loop": 0,
+"name": &"reset",
+"speed": 8.0
+}]

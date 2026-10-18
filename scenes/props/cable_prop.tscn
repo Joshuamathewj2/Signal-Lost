@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://ccable_prop_01"]
+
+[ext_resource type="Script" path="res://scenes/props/cable_prop.gd" id="1_cbl01"]
+
+[node name="CableProp" type="Node2D"]
+script = ExtResource("1_cbl01")

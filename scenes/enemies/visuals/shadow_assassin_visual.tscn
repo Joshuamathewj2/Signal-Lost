@@ -1,0 +1,39 @@
+[gd_scene load_steps=3 format=3 uid="uid://cassassin_vis_01"]
+
+[ext_resource type="Script" path="res://scenes/enemies/visuals/shadow_assassin_visual.gd" id="1_avis"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_unshaded"]
+light_mode = 1
+
+[node name="ShadowAssassinVisual" type="Node2D"]
+script = ExtResource("1_avis")
+
+[node name="Silhouette" type="Polygon2D" parent="."]
+material = SubResource("CanvasItemMaterial_unshaded")
+color = Color(0.15, 0.16, 0.18, 1)
+polygon = PackedVector2Array(-6, -24, 0, -28, 6, -24, 5, -12, 7, 0, -7, 0, -5, -12)
+
+[node name="Cloak" type="Polygon2D" parent="."]
+material = SubResource("CanvasItemMaterial_unshaded")
+color = Color(0.25, 0.12, 0.18, 1)
+polygon = PackedVector2Array(-8, -20, 0, -14, 8, -20, 10, -6, 2, -2, -10, -6)
+
+[node name="DaggerL" type="Line2D" parent="."]
+points = PackedVector2Array(-4, -10, -10, -6)
+width = 2.0
+default_color = Color(0.85, 0.9, 0.95, 1)
+
+[node name="DaggerR" type="Line2D" parent="."]
+points = PackedVector2Array(4, -10, 12, -8)
+width = 2.0
+default_color = Color(0.85, 0.9, 0.95, 1)
+
+[node name="TellLabel" type="Label" parent="."]
+offset_left = -10.0
+offset_top = -42.0
+offset_right = 10.0
+offset_bottom = -22.0
+theme_override_font_sizes/font_size = 14
+text = "!"
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -54,11 +54,19 @@ func _ready() -> void:
 
 const DECOY_BEACON_SCENE: PackedScene = preload("res://scenes/interactables/decoy_beacon.tscn")
 
+var _still_anchor_pos: Vector2 = Vector2.ZERO
+var _still_timer: float = 0.0
+var _showing_softlock_prompt: bool = false
+
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_alive:
 		return
 	if event.is_action_pressed("ability_primary"):
 		throw_decoy()
+	elif event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_R:
+		if _still_timer >= 20.0 or _showing_softlock_prompt:
+			if SceneRouter != null and SceneRouter.has_method("restart_level"):
+				SceneRouter.restart_level()
 
 func throw_decoy() -> void:
 	if GameState == null or GameState.decoy_count <= 0:
@@ -70,7 +78,7 @@ func throw_decoy() -> void:
 	beacon.velocity = Vector2(facing_dir * 380.0 * 0.7071, -380.0 * 0.7071)
 	get_parent().add_child(beacon)
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if not is_alive:
 		return
 
@@ -82,6 +90,26 @@ func _physics_process(_delta: float) -> void:
 		battery.is_still = absf(velocity.x) < 5.0 and is_on_floor()
 		battery.is_charging = pulse_charger.is_charging
 		motor.is_charging = pulse_charger.is_charging
+
+	# Anti-softlock safety net: unmoved > 1 tile for 20s while grounded and unaware
+	if is_on_floor():
+		if _still_anchor_pos == Vector2.ZERO:
+			_still_anchor_pos = global_position
+		elif global_position.distance_to(_still_anchor_pos) > 32.0:
+			_still_anchor_pos = global_position
+			_still_timer = 0.0
+			_showing_softlock_prompt = false
+		else:
+			var alert_low: bool = (GameState != null and GameState.alert_level < 0.35 and not GameState.is_any_enemy_chasing)
+			if alert_low:
+				_still_timer += delta
+				if _still_timer >= 20.0 and not _showing_softlock_prompt:
+					_showing_softlock_prompt = true
+					var hud: Node = get_tree().get_first_node_in_group(&"hud")
+					if hud != null and hud.has_method("show_tutorial_prompt"):
+						hud.show_tutorial_prompt("PRESS [R] TO RETURN TO CHECKPOINT")
+	else:
+		_still_timer = 0.0
 
 func die(cause: StringName) -> void:
 	if not is_alive:

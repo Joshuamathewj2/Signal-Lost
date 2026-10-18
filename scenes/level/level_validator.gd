@@ -67,13 +67,39 @@ static func validate(data: LevelData) -> Dictionary:
 	# 5. Enemy distance from P >= 5 Manhattan
 	if p_cells.size() == 1:
 		var p_pos: Vector2i = data.player_spawn
-		for e_char in ["L", "S", "H", "B"]:
+		for e_char in ["L", "S", "H", "B", "A", "K", "Y"]:
 			for e_cell in data.cells.get(e_char, []):
 				var manhattan: int = abs(e_cell.x - p_pos.x) + abs(e_cell.y - p_pos.y)
 				if manhattan < 5:
 					errors.append("Enemy '%s' at %s too close to player spawn %s (dist %d < 5)" % [e_char, str(e_cell), str(p_pos), manhattan])
 
-	# 6. Exit & Keycard reachability on PlatformGraph
+	# 6. Check all pickups and enemy spawns are NOT inside solid geometry
+	for cat in ["F", "K", "C", "E", "L", "S", "H", "B", "A", "K", "Y"]:
+		for cell in data.cells.get(cat, []):
+			if cell.y < 0 or cell.y >= h or cell.x < 0 or cell.x >= w:
+				errors.append("Entity '%s' at %s is out of level bounds" % [cat, str(cell)])
+			elif data.grid[cell.y][cell.x] == "#":
+				errors.append("Entity '%s' at %s is embedded inside solid geometry '#'" % [cat, str(cell)])
+
+	# 6.5. Trap Safety & Placement Rules
+	var trap_chars: Array[String] = ["^", "*", ")", "}", "\"", "!", "@", "Q", "%", "$"]
+	if p_cells.size() == 1:
+		var p_pos: Vector2i = data.player_spawn
+		for t_char in trap_chars:
+			for t_cell in data.cells.get(t_char, []):
+				if t_cell == p_pos:
+					errors.append("Trap '%s' at %s spawns directly on player spawn %s" % [t_char, str(t_cell), str(p_pos)])
+				if t_cell == data.exit_cell:
+					errors.append("Trap '%s' at %s spawns directly on exit terminal %s" % [t_char, str(t_cell), str(data.exit_cell)])
+				var dist: int = abs(t_cell.x - p_pos.x) + abs(t_cell.y - p_pos.y)
+				if dist < 2:
+					errors.append("Trap '%s' at %s is too close to player spawn (dist %d < 2)" % [t_char, str(t_cell), dist])
+				if t_cell.y < 0 or t_cell.y >= h or t_cell.x < 0 or t_cell.x >= w:
+					errors.append("Trap '%s' at %s is out of level bounds" % [t_char, str(t_cell)])
+				elif data.grid[t_cell.y][t_cell.x] == "#":
+					errors.append("Trap '%s' at %s is embedded inside solid geometry '#'" % [t_char, str(t_cell)])
+
+	# 7. Exit, Keycard & Fragment reachability on PlatformGraph
 	if p_cells.size() == 1 and e_cells.size() == 1 and errors.is_empty():
 		var graph: PlatformGraph = PlatformGraph.new()
 		graph.build(data)
@@ -108,9 +134,60 @@ static func validate(data: LevelData) -> Dictionary:
 				if (res_exit_from_k.get("points", PackedVector2Array()) as PackedVector2Array).is_empty():
 					errors.append("Exit cell at %s is not reachable from keycard %s (soft-lock)" % [str(data.exit_cell), str(k_cell)])
 
+		# Validate Fragment reachability
+		for f_cell in data.cells.get("F", []):
+			var p_frag := Vector2((float(f_cell.x) + 0.5) * 32.0, (float(f_cell.y) + 1.0) * 32.0)
+			var res_f: Dictionary = graph.find_path(p_start, p_frag, true)
+			if (res_f.get("points", PackedVector2Array()) as PackedVector2Array).is_empty():
+				errors.append("Fragment at %s is not reachable from player spawn %s" % [str(f_cell), str(data.player_spawn)])
+
 		# Validate path to exit
 		var res: Dictionary = graph.find_path(p_start, p_exit, true)
 		if (res.get("points", PackedVector2Array()) as PackedVector2Array).is_empty():
 			errors.append("Exit cell at %s is not reachable from player spawn %s" % [str(data.exit_cell), str(data.player_spawn)])
+
+		# Anti-Pocket Trap Check: Verify landing cell at spawn has open exit
+		var sp_ground_y: int = data.player_spawn.y
+		while sp_ground_y < h - 1:
+			var ch_below: String = data.grid[sp_ground_y + 1][data.player_spawn.x]
+			if ch_below == "#" or ch_below == "=" or ch_below == "G":
+				break
+			sp_ground_y += 1
+		
+		var left_wall_h: int = 0
+		var lx: int = data.player_spawn.x
+		while lx > 0 and data.grid[sp_ground_y][lx] != "#":
+			lx -= 1
+		if data.grid[sp_ground_y][lx] == "#":
+			var wy: int = sp_ground_y
+			while wy >= 0 and data.grid[wy][lx] == "#":
+				left_wall_h += 1
+				wy -= 1
+
+		var right_wall_h: int = 0
+		var rx: int = data.player_spawn.x
+		while rx < w - 1 and data.grid[sp_ground_y][rx] != "#":
+			rx += 1
+		if data.grid[sp_ground_y][rx] == "#":
+			var wy: int = sp_ground_y
+			while wy >= 0 and data.grid[wy][rx] == "#":
+				right_wall_h += 1
+				wy -= 1
+
+		var pocket_w: int = (rx - 1) - (lx + 1) + 1
+		var has_ladder_or_plat: bool = false
+		for check_x in range(lx + 1, rx):
+			for check_y in range(maxi(0, sp_ground_y - 4), sp_ground_y + 1):
+				var pch: String = data.grid[check_y][check_x]
+				if pch == "H" or pch == "=":
+					has_ladder_or_plat = true
+					break
+			if has_ladder_or_plat:
+				break
+
+		if pocket_w < 12 and left_wall_h >= 3 and right_wall_h >= 3 and not has_ladder_or_plat:
+			errors.append("Enclosed pocket trap at spawn (landing %s, w=%d, left_wall=%d, right_wall=%d > 2.7 max jump)" % [
+				str(Vector2i(data.player_spawn.x, sp_ground_y)), pocket_w, left_wall_h, right_wall_h
+			])
 
 	return { "errors": errors, "warnings": warnings }

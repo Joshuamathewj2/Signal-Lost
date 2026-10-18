@@ -1,0 +1,45 @@
+[gd_scene load_steps=8 format=3 uid="uid://cjammer_tower_01"]
+
+[ext_resource type="Script" path="res://scenes/enemies/jammer_tower.gd" id="1_jt01"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/visuals/jammer_tower_visual.tscn" id="2_jvis02"]
+[ext_resource type="Script" path="res://scenes/combat/health_component.gd" id="3_hlt03"]
+[ext_resource type="Script" path="res://scenes/combat/poise_component.gd" id="4_poi04"]
+[ext_resource type="Script" path="res://scenes/combat/hurtbox_component.gd" id="5_hrt05"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(20, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hurt"]
+size = Vector2(22, 50)
+
+[node name="JammerTower" type="StaticBody2D"]
+collision_layer = 8
+collision_mask = 7
+script = ExtResource("1_jt01")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -24)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="Visual" parent="." instance=ExtResource("2_jvis02")]
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("3_hlt03")
+max_health = 3
+current_health = 3
+
+[node name="PoiseComponent" type="Node" parent="."]
+script = ExtResource("4_poi04")
+max_poise = 999.0
+current_poise = 999.0
+
+[node name="HurtboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("health_component", "poise_component")]
+collision_layer = 8
+collision_mask = 4
+script = ExtResource("5_hrt05")
+health_component = NodePath("../HealthComponent")
+poise_component = NodePath("../PoiseComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+position = Vector2(0, -24)
+shape = SubResource("RectangleShape2D_hurt")

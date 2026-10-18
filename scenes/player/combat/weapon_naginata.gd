@@ -11,6 +11,7 @@ const MAX_PIERCE_TARGETS: int = 2
 
 static func get_attack_data(combo_index: int) -> AttackData:
 	var data := AttackData.new()
+	data.reach = REACH_HORIZONTAL
 	match combo_index:
 		0:
 			data.attack_name = &"naginata_thrust_1"
@@ -51,6 +52,7 @@ static func get_attack_data(combo_index: int) -> AttackData:
 static func get_heavy_attack_data() -> AttackData:
 	var data := AttackData.new()
 	data.attack_name = &"naginata_heavy_impale"
+	data.reach = 58.0
 	data.damage = 3
 	data.poise_damage = 60.0
 	data.knockback_force = 450.0
@@ -59,5 +61,5 @@ static func get_heavy_attack_data() -> AttackData:
 	data.noise_loudness = 2.8
 	data.startup_frames = 16
 	data.active_frames = 5
-	data.recovery_frames = 26
+	data.recovery_frames = 28
 	return data

@@ -58,6 +58,11 @@ func on_hit(_hitbox: HitboxComponent) -> void:
 		activate()
 
 
+func receive_hit(hitbox: HitboxComponent) -> bool:
+	on_hit(hitbox)
+	return true
+
+
 func activate() -> void:
 	is_active = true
 	reed_vibration = 1.0

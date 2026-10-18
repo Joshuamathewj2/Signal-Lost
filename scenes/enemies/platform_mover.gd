@@ -88,14 +88,20 @@ func _process_graph_mode() -> void:
 	body.velocity.x = float(move_dir) * current_speed
 
 	if edge_type == 1: # JUMP
-		if body.is_on_floor() and absf(dx) < 32.0:
+		if body.is_on_floor() and absf(dx) < 48.0:
 			var g: float = GameConfig.data.gravity if (GameConfig != null and GameConfig.data != null) else 1800.0
-			var rise_px: float = maxf(dy, 0.0) + 20.0
-			body.velocity.y = -sqrt(2.0 * g * rise_px)
+			var rise_px: float = maxf(dy, 0.0) + 24.0
+			var v_y: float = -sqrt(2.0 * g * rise_px)
+			body.velocity.y = v_y
+			var t_up: float = -v_y / g
+			var fall_dist: float = maxf(rise_px - dy, 0.0)
+			var t_dn: float = sqrt(2.0 * fall_dist / g)
+			var total_t: float = maxf(t_up + t_dn, 0.25)
+			body.velocity.x = dx / total_t
 	elif edge_type == 2: # DROP
-		if body.is_on_floor() and absf(dx) < 12.0:
+		if body.is_on_floor() and absf(dx) < 16.0:
 			body.set_collision_mask_value(2, false)
-			get_tree().create_timer(0.2).timeout.connect(func() -> void:
+			get_tree().create_timer(0.25).timeout.connect(func() -> void:
 				if is_instance_valid(body):
 					body.set_collision_mask_value(2, true)
 			)
@@ -187,3 +193,16 @@ func patrol_segment() -> Vector2:
 			max_x = cur_x
 
 	return Vector2(min_x, max_x)
+
+
+static func calculate_jump_velocity(from_pos: Vector2, to_pos: Vector2, gravity: float = 980.0, apex_margin: float = 24.0) -> Vector2:
+	var highest_y: float = minf(from_pos.y, to_pos.y) - apex_margin
+	var h1: float = from_pos.y - highest_y
+	var h2: float = to_pos.y - highest_y
+	var vy0: float = -sqrt(2.0 * gravity * maxf(h1, 10.0))
+	var t_up: float = absf(vy0) / gravity
+	var t_down: float = sqrt(2.0 * maxf(h2, 10.0) / gravity)
+	var total_t: float = maxf(t_up + t_down, 0.1)
+	var vx: float = (to_pos.x - from_pos.x) / total_t
+	return Vector2(vx, vy0)
+

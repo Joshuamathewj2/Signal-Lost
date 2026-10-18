@@ -1,0 +1,45 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/ceiling_spikes/ceiling_spikes_drop_0.png" id="1_8d25u"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/ceiling_spikes/ceiling_spikes_drop_1.png" id="2_ackgv"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/ceiling_spikes/ceiling_spikes_full_0.png" id="3_r1vls"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/ceiling_spikes/ceiling_spikes_idle_0.png" id="4_mf11p"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/ceiling_spikes/ceiling_spikes_reset_0.png" id="5_ylabs"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_8d25u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_ackgv")
+}],
+"loop": 0,
+"name": &"drop",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_r1vls")
+}],
+"loop": 0,
+"name": &"full",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_mf11p")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_ylabs")
+}],
+"loop": 0,
+"name": &"reset",
+"speed": 8.0
+}]

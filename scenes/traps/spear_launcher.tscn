@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://d9p2v8x1spearlauncher"]
+
+[ext_resource type="Script" path="res://scenes/traps/spear_launcher.gd" id="1_script"]
+[ext_resource type="SpriteFrames" path="res://resources/sprites/spear_launcher_frames.tres" id="2_frames"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_trigger"]
+size = Vector2(24, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_damage"]
+size = Vector2(18, 56)
+
+[node name="SpearLauncher" type="Node2D" groups=["traps"]]
+script = ExtResource("1_script")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("2_frames")
+animation = &"idle"
+centered = true
+offset = Vector2(0, -20)
+
+[node name="TriggerArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerArea"]
+position = Vector2(0, -32)
+shape = SubResource("RectangleShape2D_trigger")
+
+[node name="DamageArea" type="Area2D" parent="."]
+collision_layer = 128
+collision_mask = 6
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea"]
+position = Vector2(0, -28)
+shape = SubResource("RectangleShape2D_damage")
+
+[node name="DangerMarker" type="Line2D" parent="."]
+visible = false
+points = PackedVector2Array(0, 0, 0, -56)
+width = 1.5
+default_color = Color(1, 0.15, 0.15, 0.8)

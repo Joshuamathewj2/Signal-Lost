@@ -1,0 +1,57 @@
+[gd_scene load_steps=12 format=3 uid="uid://coni_enemy_01"]
+
+[ext_resource type="PackedScene" path="res://scenes/enemies/enemy_base.tscn" id="1_eb01"]
+[ext_resource type="Script" path="res://scenes/enemies/oni_enforcer.gd" id="2_oni02"]
+[ext_resource type="Resource" path="res://resources/enemies/enemy_oni_enforcer.tres" id="3_prof03"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/visuals/oni_enforcer_visual.tscn" id="4_ovis04"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_patrol.gd" id="5_pat05"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_investigate.gd" id="6_inv06"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_search.gd" id="7_src07"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_chase.gd" id="8_chs08"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_return.gd" id="9_ret09"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_stunned.gd" id="10_stn10"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hb"]
+size = Vector2(32, 32)
+
+[node name="OniEnforcer" instance=ExtResource("1_eb01")]
+script = ExtResource("2_oni02")
+profile = ExtResource("3_prof03")
+kind = &"oni_enforcer"
+
+[node name="Visual" parent="." index="2" instance=ExtResource("4_ovis04")]
+
+[node name="Hitbox" parent="." index="5"]
+collision_mask = 4
+
+[node name="CollisionShape2D" parent="Hitbox" index="0"]
+shape = SubResource("RectangleShape2D_hb")
+
+[node name="StateMachine" parent="." index="7" node_paths=PackedStringArray("initial")]
+initial = NodePath("Patrol")
+
+[node name="Patrol" type="Node" parent="StateMachine" index="0"]
+script = ExtResource("5_pat05")
+
+[node name="Investigate" type="Node" parent="StateMachine" index="1"]
+script = ExtResource("6_inv06")
+
+[node name="Search" type="Node" parent="StateMachine" index="2"]
+script = ExtResource("7_src07")
+
+[node name="Chase" type="Node" parent="StateMachine" index="3"]
+script = ExtResource("8_chs08")
+
+[node name="Return" type="Node" parent="StateMachine" index="4"]
+script = ExtResource("9_ret09")
+
+[node name="Stagger" type="Node" parent="StateMachine" index="5"]
+script = ExtResource("10_stn10")
+
+[node name="HealthComponent" parent="." index="8"]
+max_health = 12
+current_health = 12
+
+[node name="PoiseComponent" parent="." index="9"]
+max_poise = 120.0
+current_poise = 120.0

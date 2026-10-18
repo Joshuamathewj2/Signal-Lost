@@ -15,6 +15,10 @@ var noise_timer: float = 0.0
 var is_active: bool = true
 var enemy_ref: Node2D = null
 
+func _ready() -> void:
+	if not is_active:
+		visible = false
+
 func setup_noise(target_pos: Vector2, enemy: Node2D = null) -> void:
 	reticle_type = Type.NOISE_ORIGIN
 	global_position = target_pos
@@ -28,10 +32,11 @@ func deactivate() -> void:
 	visible = false
 
 func _process(delta: float) -> void:
+	if not is_active:
+		visible = false
+		return
+
 	if reticle_type == Type.NOISE_ORIGIN:
-		if not is_active:
-			visible = false
-			return
 
 		pulse_time += delta
 		noise_timer = maxf(0.0, noise_timer - delta)
@@ -52,6 +57,9 @@ func _process(delta: float) -> void:
 	queue_redraw()
 
 func _draw() -> void:
+	if not is_active or not visible:
+		return
+
 	var white_col: Color = Palette.color(&"white")
 	var danger_col: Color = Palette.color(&"danger")
 	var tick_col: Color = danger_col if reticle_type == Type.PROJECTILE else white_col

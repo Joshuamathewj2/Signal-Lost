@@ -129,7 +129,8 @@ func _on_draw_medal_glyph() -> void:
 
 	match medal:
 		&"ghost":
-			medal_glyph_control.draw_arc(center, r, 0.0, TAU, 32, col, 2.5, true)
+			medal_glyph_control.draw_circle(center, r - 3.0, col)
+			medal_glyph_control.draw_arc(center, r + 4.0, 0.0, TAU, 32, col, 2.5, true)
 		&"quiet":
 			var pts: PackedVector2Array = [center]
 			var steps: int = 16
@@ -140,7 +141,7 @@ func _on_draw_medal_glyph() -> void:
 			medal_glyph_control.draw_colored_polygon(pts, col)
 			medal_glyph_control.draw_arc(center, r, -PI * 0.5, PI * 0.5, 16, col, 2.5, true)
 		&"loud":
-			medal_glyph_control.draw_circle(center, r, col)
+			medal_glyph_control.draw_arc(center, r, 0.0, TAU, 32, col, 2.5, true)
 
 func _populate_lore(stats: Dictionary) -> void:
 	if lore_container == null:

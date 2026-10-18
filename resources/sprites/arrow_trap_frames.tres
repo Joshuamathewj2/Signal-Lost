@@ -1,0 +1,50 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/arrow_trap/arrow_trap_aim_0.png" id="1_n2pir"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/arrow_trap/arrow_trap_arrow_proj_0.png" id="2_kbutn"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/arrow_trap/arrow_trap_idle_0.png" id="3_ctylo"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/arrow_trap/arrow_trap_retract_0.png" id="4_yxh1k"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/arrow_trap/arrow_trap_shoot_0.png" id="5_7ibvk"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_n2pir")
+}],
+"loop": 0,
+"name": &"aim",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_kbutn")
+}],
+"loop": 0,
+"name": &"arrow_proj",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_ctylo")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_yxh1k")
+}],
+"loop": 0,
+"name": &"retract",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_7ibvk")
+}],
+"loop": 0,
+"name": &"shoot",
+"speed": 10.0
+}]

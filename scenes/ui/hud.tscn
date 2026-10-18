@@ -107,9 +107,9 @@ script = ExtResource("7_lvl01")
 
 [node name="ControlsHint" type="Label" parent="Root/SafeArea/BottomCentre"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 15
-theme_override_colors/font_color = Color(0.85, 0.85, 0.85, 1)
-text = "[A][D] MOVE   [SPACE] JUMP   [SHIFT] SNEAK   [K] / LMB PULSE"
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+text = "[A][D] MOVE   [SPACE] JUMP   [J] SLASH   [SHIFT+J] DASH SLASH   [K] PARRY   [F] KUNAI"
 horizontal_alignment = 1
 
 [node name="LevelName" type="Label" parent="Root/SafeArea/BottomCentre"]

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://capt_locked_term"]
+
+[ext_resource type="Script" path="res://tests/capture_locked_terminal.gd" id="1_lt"]
+
+[node name="CaptureLockedTerminal" type="Node2D"]
+script = ExtResource("1_lt")

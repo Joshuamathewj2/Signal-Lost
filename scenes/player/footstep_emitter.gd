@@ -27,10 +27,16 @@ func _process(delta: float) -> void:
 func _emit_step() -> void:
 	var cfg: GameConfigData = GameConfig.data
 	var origin: Vector2 = player.global_position
+	var speed_x: float = absf(player.velocity.x)
+	var radius: float = cfg.footstep_radius
+	var loudness: float = cfg.footstep_loudness
+	if speed_x > 110.0:
+		radius = 80.0
+		loudness = 1.0
 	var ev: NoiseEvent = NoiseEvent.make(
 		origin,
-		cfg.footstep_radius,
-		cfg.footstep_loudness,
+		radius,
+		loudness,
 		NoiseEvent.NoiseType.FOOTSTEP,
 		player
 	)

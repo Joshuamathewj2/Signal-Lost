@@ -76,3 +76,24 @@ layout_mode = 2
 theme_type_variation = &"MenuButton"
 text = "QUIT TO MENU"
 script = ExtResource("3_btn03")
+
+[node name="ControlsPanel" type="PanelContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ControlsVBox" type="VBoxContainer" parent="CenterContainer/VBoxContainer/ControlsPanel"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="ControlsTitle" type="Label" parent="CenterContainer/VBoxContainer/ControlsPanel/ControlsVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.7, 0.85, 1, 1)
+text = "COMBAT & MANEUVER REFERENCE"
+horizontal_alignment = 1
+
+[node name="ControlsText" type="Label" parent="CenterContainer/VBoxContainer/ControlsPanel/ControlsVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 0.9)
+text = "[J / LMB] Light Slash Combo (1-2-3)   •   [Hold J] Heavy Strike Breaker\n[Shift + J] Dash Slash (Invulnerable)   •   [Air + Down + J] Plunge Strike\n[Up + J] Rising Slash Launcher   •   [K / RMB] Parry (Deflects Arrows)\n[Attack after Parry] Counter Strike Riposte   •   [F] Kunai Toss (Stun)"
+horizontal_alignment = 1

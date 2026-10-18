@@ -1,0 +1,34 @@
+[gd_scene load_steps=3 format=3 uid="uid://sb_vis_01"]
+
+[ext_resource type="Script" path="res://scenes/enemies/visuals/shield_bearer_visual.gd" id="1_vis"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_unshaded"]
+light_mode = 1
+
+[node name="ShieldBearerVisual" type="Node2D"]
+script = ExtResource("1_vis")
+
+[node name="Silhouette" type="Polygon2D" parent="."]
+material = SubResource("CanvasItemMaterial_unshaded")
+color = Color(0.2, 0.22, 0.26, 1)
+polygon = PackedVector2Array(-8, -24, 0, -28, 8, -24, 6, -12, 10, 0, -10, 0, -6, -12)
+
+[node name="Shield" type="Polygon2D" parent="."]
+material = SubResource("CanvasItemMaterial_unshaded")
+color = Color(0.65, 0.7, 0.78, 1)
+polygon = PackedVector2Array(6, -26, 12, -26, 14, -14, 14, 2, 6, 2, 8, -14)
+
+[node name="ShieldCrest" type="Polygon2D" parent="."]
+material = SubResource("CanvasItemMaterial_unshaded")
+color = Color(0.9, 0.15, 0.15, 1)
+polygon = PackedVector2Array(9, -18, 12, -14, 9, -10, 8, -14)
+
+[node name="TellLabel" type="Label" parent="."]
+offset_left = -10.0
+offset_top = -42.0
+offset_right = 10.0
+offset_bottom = -22.0
+theme_override_font_sizes/font_size = 14
+text = "!"
+horizontal_alignment = 1
+vertical_alignment = 1

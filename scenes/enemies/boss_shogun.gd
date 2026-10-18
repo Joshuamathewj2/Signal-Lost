@@ -53,6 +53,8 @@ var successful_parry_count: int = 0
 func _ready() -> void:
 	add_to_group(&"enemies")
 	add_to_group(&"boss")
+	if EnemyRegistry != null:
+		EnemyRegistry.register_enemy(self)
 
 	collision_layer = 8
 	collision_mask = 3

@@ -1,0 +1,184 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/hero/hero_attack_heavy_0.png" id="1_b1yoi"]
+[ext_resource type="Texture2D" path="res://assets/sprites/hero/hero_attack_thrust_0.png" id="2_rmqcf"]
+[ext_resource type="Texture2D" path="res://assets/sprites/hero/hero_crouch_0.png" id="3_e46el"]
+[ext_resource type="Texture2D" path="res://assets/sprites/hero/hero_hurt_0.png" id="4_i3m03"]
+[ext_resource type="Texture2D" path="res://assets/sprites/hero/hero_idle_0.png" id="5_38n8s"]
+[ext_resource type="Texture2D" path="res://assets/sprites/hero/hero_jump_0.png" id="6_853ki"]
+[ext_resource type="Texture2D" path="res://assets/sprites/hero/hero_run_0.png" id="7_d2hns"]
+[ext_resource type="Texture2D" path="res://assets/sprites/hero/hero_run_1.png" id="8_vepvm"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_b1yoi")
+}],
+"loop": 0,
+"name": &"air_attack",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_b1yoi")
+}],
+"loop": 0,
+"name": &"attack_heavy",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_rmqcf")
+}],
+"loop": 0,
+"name": &"attack_thrust",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_rmqcf")
+}],
+"loop": 0,
+"name": &"counter_strike",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_e46el")
+}],
+"loop": 1,
+"name": &"crouch",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_rmqcf")
+}],
+"loop": 0,
+"name": &"dash",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_rmqcf")
+}],
+"loop": 0,
+"name": &"dash_slash",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_i3m03")
+}],
+"loop": 0,
+"name": &"dead",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_rmqcf")
+}],
+"loop": 0,
+"name": &"guard",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_b1yoi")
+}],
+"loop": 0,
+"name": &"heavy",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_i3m03")
+}],
+"loop": 0,
+"name": &"hurt",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_38n8s")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_853ki")
+}],
+"loop": 0,
+"name": &"jump",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_rmqcf")
+}],
+"loop": 0,
+"name": &"kunai_toss",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_rmqcf")
+}],
+"loop": 0,
+"name": &"parry",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_853ki")
+}],
+"loop": 0,
+"name": &"plunge",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_b1yoi")
+}],
+"loop": 0,
+"name": &"rising_slash",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_d2hns")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_vepvm")
+}],
+"loop": 1,
+"name": &"run",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_rmqcf")
+}],
+"loop": 0,
+"name": &"shuriken",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_b1yoi")
+}],
+"loop": 0,
+"name": &"takedown",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_e46el")
+}],
+"loop": 0,
+"name": &"wall_slide",
+"speed": 8.0
+}]

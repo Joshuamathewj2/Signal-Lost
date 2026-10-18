@@ -1,0 +1,58 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/wall_blade/wall_blade_attack_0.png" id="1_eyttd"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/wall_blade/wall_blade_extend_0.png" id="2_exili"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/wall_blade/wall_blade_extend_1.png" id="3_is1f8"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/wall_blade/wall_blade_hidden_0.png" id="4_pw5u5"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/wall_blade/wall_blade_idle_0.png" id="5_f5yc2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/wall_blade/wall_blade_retract_0.png" id="6_vmqh3"]
+[ext_resource type="Texture2D" path="res://assets/sprites/traps/wall_blade/wall_blade_retract_1.png" id="7_01o0w"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_eyttd")
+}],
+"loop": 0,
+"name": &"attack",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_exili")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_is1f8")
+}],
+"loop": 0,
+"name": &"extend",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_pw5u5")
+}],
+"loop": 0,
+"name": &"hidden",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_f5yc2")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_vmqh3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_01o0w")
+}],
+"loop": 0,
+"name": &"retract",
+"speed": 10.0
+}]

@@ -12,13 +12,46 @@ const K_SPRING: float = 18.0
 const C_DAMPING: float = 1.6
 
 var clink_cooldown: float = 0.0
+var light: PointLight2D = null
+var base_energy: float = 0.75
+var flicker_phase: float = 0.0
 
 func _ready() -> void:
 	add_to_group(&"wave_reactive")
+	flicker_phase = randf_range(0.0, TAU)
+
+	# Ensure Lamp is unshaded so its warm core is always visible
+	if lamp != null:
+		var unshaded_mat := CanvasItemMaterial.new()
+		unshaded_mat.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+		lamp.material = unshaded_mat
+
+	# Create atmospheric PointLight2D on Lamp
+	light = PointLight2D.new()
+	light.name = "LanternGlow"
+	light.texture = RevealTextureFactory.get_texture()
+	light.texture_scale = 0.625 # ~160 px radius
+	light.color = Color(1.0, 0.92, 0.8, 1.0)
+	light.energy = base_energy
+	light.range_item_cull_mask = 7
+	light.shadow_enabled = true
+	light.shadow_filter = PointLight2D.SHADOW_FILTER_PCF5
+	light.shadow_filter_smooth = 1.5
+	light.shadow_item_cull_mask = 1
+	if lamp != null:
+		lamp.add_child(light)
+	else:
+		add_child(light)
 
 func _physics_process(delta: float) -> void:
 	if clink_cooldown > 0.0:
 		clink_cooldown -= delta
+
+	# Atmospheric light flicker
+	if light != null:
+		flicker_phase += delta * 7.5
+		var flicker: float = sin(flicker_phase) * 0.04 + randf_range(-0.02, 0.02)
+		light.energy = maxf(0.3, base_energy + flicker)
 
 	# Damped angular spring: alpha = -k * theta - c * omega
 	var alpha: float = -K_SPRING * theta - C_DAMPING * omega

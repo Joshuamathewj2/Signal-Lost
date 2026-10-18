@@ -1,0 +1,2534 @@
+{
+  "sprites": [
+    {
+      "name": "hero_idle_0",
+      "file": "assets/sprites/hero/hero_idle_0.png",
+      "category": "hero",
+      "animation": "idle",
+      "frame": 0,
+      "sheet": "hero",
+      "source_rect": [
+        40,
+        85,
+        245,
+        245
+      ],
+      "size": [
+        200,
+        158
+      ],
+      "pivot": [
+        100,
+        158
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "hero_run_0",
+      "file": "assets/sprites/hero/hero_run_0.png",
+      "category": "hero",
+      "animation": "run",
+      "frame": 0,
+      "sheet": "hero",
+      "source_rect": [
+        250,
+        100,
+        420,
+        245
+      ],
+      "size": [
+        166,
+        144
+      ],
+      "pivot": [
+        83,
+        144
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "hero_run_1",
+      "file": "assets/sprites/hero/hero_run_1.png",
+      "category": "hero",
+      "animation": "run",
+      "frame": 1,
+      "sheet": "hero",
+      "source_rect": [
+        505,
+        100,
+        680,
+        245
+      ],
+      "size": [
+        171,
+        144
+      ],
+      "pivot": [
+        85,
+        144
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "hero_jump_0",
+      "file": "assets/sprites/hero/hero_jump_0.png",
+      "category": "hero",
+      "animation": "jump",
+      "frame": 0,
+      "sheet": "hero",
+      "source_rect": [
+        745,
+        75,
+        1000,
+        240
+      ],
+      "size": [
+        254,
+        161
+      ],
+      "pivot": [
+        127,
+        161
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "hero_attack_heavy_0",
+      "file": "assets/sprites/hero/hero_attack_heavy_0.png",
+      "category": "hero",
+      "animation": "attack_heavy",
+      "frame": 0,
+      "sheet": "hero",
+      "source_rect": [
+        35,
+        280,
+        200,
+        455
+      ],
+      "size": [
+        160,
+        173
+      ],
+      "pivot": [
+        80,
+        173
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "hero_attack_thrust_0",
+      "file": "assets/sprites/hero/hero_attack_thrust_0.png",
+      "category": "hero",
+      "animation": "attack_thrust",
+      "frame": 0,
+      "sheet": "hero",
+      "source_rect": [
+        240,
+        325,
+        515,
+        455
+      ],
+      "size": [
+        275,
+        126
+      ],
+      "pivot": [
+        137,
+        126
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "hero_crouch_0",
+      "file": "assets/sprites/hero/hero_crouch_0.png",
+      "category": "hero",
+      "animation": "crouch",
+      "frame": 0,
+      "sheet": "hero",
+      "source_rect": [
+        520,
+        350,
+        695,
+        455
+      ],
+      "size": [
+        169,
+        104
+      ],
+      "pivot": [
+        84,
+        104
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "hero_hurt_0",
+      "file": "assets/sprites/hero/hero_hurt_0.png",
+      "category": "hero",
+      "animation": "hurt",
+      "frame": 0,
+      "sheet": "hero",
+      "source_rect": [
+        750,
+        305,
+        1005,
+        455
+      ],
+      "size": [
+        252,
+        150
+      ],
+      "pivot": [
+        126,
+        150
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "ronin_idle_0",
+      "file": "assets/sprites/enemies/ronin/ronin_idle_0.png",
+      "category": "ronin",
+      "animation": "idle",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        20,
+        20,
+        85,
+        110
+      ],
+      "size": [
+        58,
+        83
+      ],
+      "pivot": [
+        29,
+        83
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "ronin_walk_0",
+      "file": "assets/sprites/enemies/ronin/ronin_walk_0.png",
+      "category": "ronin",
+      "animation": "walk",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        125,
+        20,
+        215,
+        110
+      ],
+      "size": [
+        82,
+        90
+      ],
+      "pivot": [
+        41,
+        90
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "ronin_run_0",
+      "file": "assets/sprites/enemies/ronin/ronin_run_0.png",
+      "category": "ronin",
+      "animation": "run",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        220,
+        20,
+        315,
+        110
+      ],
+      "size": [
+        87,
+        78
+      ],
+      "pivot": [
+        43,
+        78
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "ronin_attack1_0",
+      "file": "assets/sprites/enemies/ronin/ronin_attack1_0.png",
+      "category": "ronin",
+      "animation": "attack1",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        350,
+        20,
+        450,
+        110
+      ],
+      "size": [
+        94,
+        76
+      ],
+      "pivot": [
+        47,
+        76
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "ronin_attack2_0",
+      "file": "assets/sprites/enemies/ronin/ronin_attack2_0.png",
+      "category": "ronin",
+      "animation": "attack2",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        460,
+        20,
+        570,
+        110
+      ],
+      "size": [
+        108,
+        74
+      ],
+      "pivot": [
+        54,
+        74
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "ronin_attack3_0",
+      "file": "assets/sprites/enemies/ronin/ronin_attack3_0.png",
+      "category": "ronin",
+      "animation": "attack3",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        570,
+        20,
+        735,
+        110
+      ],
+      "size": [
+        165,
+        90
+      ],
+      "pivot": [
+        82,
+        90
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "ronin_hurt_0",
+      "file": "assets/sprites/enemies/ronin/ronin_hurt_0.png",
+      "category": "ronin",
+      "animation": "hurt",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        755,
+        20,
+        840,
+        110
+      ],
+      "size": [
+        81,
+        84
+      ],
+      "pivot": [
+        40,
+        84
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "ronin_die_0",
+      "file": "assets/sprites/enemies/ronin/ronin_die_0.png",
+      "category": "ronin",
+      "animation": "die",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        840,
+        20,
+        1015,
+        110
+      ],
+      "size": [
+        171,
+        81
+      ],
+      "pivot": [
+        85,
+        81
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "archer_idle_0",
+      "file": "assets/sprites/enemies/archer/archer_idle_0.png",
+      "category": "archer",
+      "animation": "idle",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        25,
+        130,
+        95,
+        228
+      ],
+      "size": [
+        70,
+        96
+      ],
+      "pivot": [
+        35,
+        96
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "archer_walk_0",
+      "file": "assets/sprites/enemies/archer/archer_walk_0.png",
+      "category": "archer",
+      "animation": "walk",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        130,
+        130,
+        205,
+        228
+      ],
+      "size": [
+        60,
+        73
+      ],
+      "pivot": [
+        30,
+        73
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "archer_run_0",
+      "file": "assets/sprites/enemies/archer/archer_run_0.png",
+      "category": "archer",
+      "animation": "run",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        240,
+        130,
+        325,
+        228
+      ],
+      "size": [
+        68,
+        76
+      ],
+      "pivot": [
+        34,
+        76
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "archer_aim_0",
+      "file": "assets/sprites/enemies/archer/archer_aim_0.png",
+      "category": "archer",
+      "animation": "aim",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        370,
+        130,
+        450,
+        228
+      ],
+      "size": [
+        69,
+        85
+      ],
+      "pivot": [
+        34,
+        85
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "archer_shoot_0",
+      "file": "assets/sprites/enemies/archer/archer_shoot_0.png",
+      "category": "archer",
+      "animation": "shoot",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        470,
+        130,
+        560,
+        228
+      ],
+      "size": [
+        81,
+        84
+      ],
+      "pivot": [
+        40,
+        84
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "archer_shoot_release_0",
+      "file": "assets/sprites/enemies/archer/archer_shoot_release_0.png",
+      "category": "archer",
+      "animation": "shoot_release",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        590,
+        130,
+        675,
+        228
+      ],
+      "size": [
+        73,
+        85
+      ],
+      "pivot": [
+        36,
+        85
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "archer_arrow_in_flight_0",
+      "file": "assets/sprites/enemies/archer/archer_arrow_in_flight_0.png",
+      "category": "archer",
+      "animation": "arrow_in_flight",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        675,
+        160,
+        765,
+        210
+      ],
+      "size": [
+        75,
+        15
+      ],
+      "pivot": [
+        37,
+        7
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "archer_hurt_0",
+      "file": "assets/sprites/enemies/archer/archer_hurt_0.png",
+      "category": "archer",
+      "animation": "hurt",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        785,
+        130,
+        860,
+        228
+      ],
+      "size": [
+        65,
+        67
+      ],
+      "pivot": [
+        32,
+        67
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "archer_die_0",
+      "file": "assets/sprites/enemies/archer/archer_die_0.png",
+      "category": "archer",
+      "animation": "die",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        865,
+        130,
+        1015,
+        228
+      ],
+      "size": [
+        132,
+        33
+      ],
+      "pivot": [
+        66,
+        33
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "spear_idle_0",
+      "file": "assets/sprites/enemies/spear/spear_idle_0.png",
+      "category": "spear",
+      "animation": "idle",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        15,
+        260,
+        80,
+        360
+      ],
+      "size": [
+        65,
+        98
+      ],
+      "pivot": [
+        32,
+        98
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "spear_walk_0",
+      "file": "assets/sprites/enemies/spear/spear_walk_0.png",
+      "category": "spear",
+      "animation": "walk",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        105,
+        260,
+        215,
+        360
+      ],
+      "size": [
+        99,
+        69
+      ],
+      "pivot": [
+        49,
+        69
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "spear_run_0",
+      "file": "assets/sprites/enemies/spear/spear_run_0.png",
+      "category": "spear",
+      "animation": "run",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        230,
+        260,
+        340,
+        360
+      ],
+      "size": [
+        103,
+        68
+      ],
+      "pivot": [
+        51,
+        68
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "spear_thrust_0",
+      "file": "assets/sprites/enemies/spear/spear_thrust_0.png",
+      "category": "spear",
+      "animation": "thrust",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        360,
+        260,
+        540,
+        360
+      ],
+      "size": [
+        169,
+        67
+      ],
+      "pivot": [
+        84,
+        67
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "spear_sweep_0",
+      "file": "assets/sprites/enemies/spear/spear_sweep_0.png",
+      "category": "spear",
+      "animation": "sweep",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        545,
+        260,
+        730,
+        360
+      ],
+      "size": [
+        171,
+        81
+      ],
+      "pivot": [
+        85,
+        81
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "spear_hurt_0",
+      "file": "assets/sprites/enemies/spear/spear_hurt_0.png",
+      "category": "spear",
+      "animation": "hurt",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        755,
+        260,
+        840,
+        360
+      ],
+      "size": [
+        75,
+        70
+      ],
+      "pivot": [
+        37,
+        70
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "spear_die_0",
+      "file": "assets/sprites/enemies/spear/spear_die_0.png",
+      "category": "spear",
+      "animation": "die",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        845,
+        260,
+        1015,
+        360
+      ],
+      "size": [
+        166,
+        36
+      ],
+      "pivot": [
+        83,
+        36
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "brute_idle_0",
+      "file": "assets/sprites/enemies/brute/brute_idle_0.png",
+      "category": "brute",
+      "animation": "idle",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        10,
+        380,
+        105,
+        510
+      ],
+      "size": [
+        95,
+        120
+      ],
+      "pivot": [
+        47,
+        120
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "brute_walk_0",
+      "file": "assets/sprites/enemies/brute/brute_walk_0.png",
+      "category": "brute",
+      "animation": "walk",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        130,
+        380,
+        240,
+        510
+      ],
+      "size": [
+        110,
+        120
+      ],
+      "pivot": [
+        55,
+        120
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "brute_run_0",
+      "file": "assets/sprites/enemies/brute/brute_run_0.png",
+      "category": "brute",
+      "animation": "run",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        265,
+        380,
+        360,
+        510
+      ],
+      "size": [
+        95,
+        121
+      ],
+      "pivot": [
+        47,
+        121
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "brute_smash_0",
+      "file": "assets/sprites/enemies/brute/brute_smash_0.png",
+      "category": "brute",
+      "animation": "smash",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        395,
+        380,
+        540,
+        510
+      ],
+      "size": [
+        145,
+        120
+      ],
+      "pivot": [
+        72,
+        120
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "brute_swing_0",
+      "file": "assets/sprites/enemies/brute/brute_swing_0.png",
+      "category": "brute",
+      "animation": "swing",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        550,
+        380,
+        735,
+        510
+      ],
+      "size": [
+        185,
+        121
+      ],
+      "pivot": [
+        92,
+        121
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "brute_hurt_0",
+      "file": "assets/sprites/enemies/brute/brute_hurt_0.png",
+      "category": "brute",
+      "animation": "hurt",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        750,
+        380,
+        835,
+        510
+      ],
+      "size": [
+        85,
+        121
+      ],
+      "pivot": [
+        42,
+        121
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "brute_die_0",
+      "file": "assets/sprites/enemies/brute/brute_die_0.png",
+      "category": "brute",
+      "animation": "die",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        845,
+        380,
+        1015,
+        510
+      ],
+      "size": [
+        169,
+        117
+      ],
+      "pivot": [
+        84,
+        117
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "fx_arrow_0",
+      "file": "assets/sprites/fx/fx_arrow_0.png",
+      "category": "fx",
+      "animation": "arrow",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        20,
+        560,
+        95,
+        620
+      ],
+      "size": [
+        70,
+        14
+      ],
+      "pivot": [
+        35,
+        7
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "fx_arrow_trail_0",
+      "file": "assets/sprites/fx/fx_arrow_trail_0.png",
+      "category": "fx",
+      "animation": "arrow_trail",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        110,
+        560,
+        180,
+        620
+      ],
+      "size": [
+        70,
+        15
+      ],
+      "pivot": [
+        35,
+        7
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "fx_slash1_0",
+      "file": "assets/sprites/fx/fx_slash1_0.png",
+      "category": "fx",
+      "animation": "slash1",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        195,
+        545,
+        315,
+        620
+      ],
+      "size": [
+        115,
+        48
+      ],
+      "pivot": [
+        57,
+        24
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "fx_slash2_0",
+      "file": "assets/sprites/fx/fx_slash2_0.png",
+      "category": "fx",
+      "animation": "slash2",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        335,
+        550,
+        410,
+        620
+      ],
+      "size": [
+        72,
+        45
+      ],
+      "pivot": [
+        36,
+        22
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "fx_spear_trail_0",
+      "file": "assets/sprites/fx/fx_spear_trail_0.png",
+      "category": "fx",
+      "animation": "spear_trail",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        420,
+        560,
+        535,
+        620
+      ],
+      "size": [
+        114,
+        24
+      ],
+      "pivot": [
+        57,
+        12
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "fx_smash_impact_0",
+      "file": "assets/sprites/fx/fx_smash_impact_0.png",
+      "category": "fx",
+      "animation": "smash_impact",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        550,
+        540,
+        685,
+        625
+      ],
+      "size": [
+        135,
+        83
+      ],
+      "pivot": [
+        67,
+        83
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "fx_hit_spark_0",
+      "file": "assets/sprites/fx/fx_hit_spark_0.png",
+      "category": "fx",
+      "animation": "hit_spark",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        735,
+        540,
+        795,
+        620
+      ],
+      "size": [
+        60,
+        80
+      ],
+      "pivot": [
+        30,
+        40
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "fx_blood_splat_0",
+      "file": "assets/sprites/fx/fx_blood_splat_0.png",
+      "category": "fx",
+      "animation": "blood_splat",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        810,
+        540,
+        895,
+        620
+      ],
+      "size": [
+        85,
+        80
+      ],
+      "pivot": [
+        42,
+        40
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "fx_dust_0",
+      "file": "assets/sprites/fx/fx_dust_0.png",
+      "category": "fx",
+      "animation": "dust",
+      "frame": 0,
+      "sheet": "enemy",
+      "source_rect": [
+        910,
+        560,
+        1015,
+        620
+      ],
+      "size": [
+        101,
+        60
+      ],
+      "pivot": [
+        50,
+        60
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "floor_spikes_idle_0",
+      "file": "assets/sprites/traps/floor_spikes/floor_spikes_idle_0.png",
+      "category": "floor_spikes",
+      "animation": "idle",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        15,
+        25,
+        80,
+        95
+      ],
+      "size": [
+        64,
+        23
+      ],
+      "pivot": [
+        32,
+        23
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "floor_spikes_trigger_0",
+      "file": "assets/sprites/traps/floor_spikes/floor_spikes_trigger_0.png",
+      "category": "floor_spikes",
+      "animation": "trigger",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        85,
+        25,
+        152,
+        95
+      ],
+      "size": [
+        64,
+        15
+      ],
+      "pivot": [
+        32,
+        15
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "floor_spikes_rising_0",
+      "file": "assets/sprites/traps/floor_spikes/floor_spikes_rising_0.png",
+      "category": "floor_spikes",
+      "animation": "rising",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        158,
+        25,
+        225,
+        95
+      ],
+      "size": [
+        63,
+        33
+      ],
+      "pivot": [
+        31,
+        33
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "floor_spikes_rising_1",
+      "file": "assets/sprites/traps/floor_spikes/floor_spikes_rising_1.png",
+      "category": "floor_spikes",
+      "animation": "rising",
+      "frame": 1,
+      "sheet": "trap",
+      "source_rect": [
+        230,
+        25,
+        296,
+        95
+      ],
+      "size": [
+        62,
+        48
+      ],
+      "pivot": [
+        31,
+        48
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "floor_spikes_full_0",
+      "file": "assets/sprites/traps/floor_spikes/floor_spikes_full_0.png",
+      "category": "floor_spikes",
+      "animation": "full",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        300,
+        25,
+        370,
+        95
+      ],
+      "size": [
+        63,
+        62
+      ],
+      "pivot": [
+        31,
+        62
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "floor_spikes_reset_0",
+      "file": "assets/sprites/traps/floor_spikes/floor_spikes_reset_0.png",
+      "category": "floor_spikes",
+      "animation": "reset",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        378,
+        25,
+        446,
+        95
+      ],
+      "size": [
+        62,
+        33
+      ],
+      "pivot": [
+        31,
+        33
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "floor_spikes_reset_1",
+      "file": "assets/sprites/traps/floor_spikes/floor_spikes_reset_1.png",
+      "category": "floor_spikes",
+      "animation": "reset",
+      "frame": 1,
+      "sheet": "trap",
+      "source_rect": [
+        450,
+        25,
+        516,
+        95
+      ],
+      "size": [
+        62,
+        28
+      ],
+      "pivot": [
+        31,
+        28
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "floor_spikes_hidden_0",
+      "file": "assets/sprites/traps/floor_spikes/floor_spikes_hidden_0.png",
+      "category": "floor_spikes",
+      "animation": "hidden",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        520,
+        25,
+        588,
+        95
+      ],
+      "size": [
+        63,
+        16
+      ],
+      "pivot": [
+        31,
+        16
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "ceiling_spikes_idle_0",
+      "file": "assets/sprites/traps/ceiling_spikes/ceiling_spikes_idle_0.png",
+      "category": "ceiling_spikes",
+      "animation": "idle",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        600,
+        25,
+        680,
+        95
+      ],
+      "size": [
+        73,
+        61
+      ],
+      "pivot": [
+        36,
+        0
+      ],
+      "alignment": "top"
+    },
+    {
+      "name": "ceiling_spikes_drop_0",
+      "file": "assets/sprites/traps/ceiling_spikes/ceiling_spikes_drop_0.png",
+      "category": "ceiling_spikes",
+      "animation": "drop",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        682,
+        25,
+        760,
+        95
+      ],
+      "size": [
+        74,
+        49
+      ],
+      "pivot": [
+        37,
+        0
+      ],
+      "alignment": "top"
+    },
+    {
+      "name": "ceiling_spikes_drop_1",
+      "file": "assets/sprites/traps/ceiling_spikes/ceiling_spikes_drop_1.png",
+      "category": "ceiling_spikes",
+      "animation": "drop",
+      "frame": 1,
+      "sheet": "trap",
+      "source_rect": [
+        764,
+        25,
+        842,
+        95
+      ],
+      "size": [
+        73,
+        54
+      ],
+      "pivot": [
+        36,
+        0
+      ],
+      "alignment": "top"
+    },
+    {
+      "name": "ceiling_spikes_full_0",
+      "file": "assets/sprites/traps/ceiling_spikes/ceiling_spikes_full_0.png",
+      "category": "ceiling_spikes",
+      "animation": "full",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        846,
+        25,
+        926,
+        95
+      ],
+      "size": [
+        73,
+        61
+      ],
+      "pivot": [
+        36,
+        0
+      ],
+      "alignment": "top"
+    },
+    {
+      "name": "ceiling_spikes_reset_0",
+      "file": "assets/sprites/traps/ceiling_spikes/ceiling_spikes_reset_0.png",
+      "category": "ceiling_spikes",
+      "animation": "reset",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        930,
+        25,
+        1010,
+        95
+      ],
+      "size": [
+        73,
+        37
+      ],
+      "pivot": [
+        36,
+        0
+      ],
+      "alignment": "top"
+    },
+    {
+      "name": "swinging_blade_idle_0",
+      "file": "assets/sprites/traps/swinging_blade/swinging_blade_idle_0.png",
+      "category": "swinging_blade",
+      "animation": "idle",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        15,
+        138,
+        85,
+        235
+      ],
+      "size": [
+        66,
+        91
+      ],
+      "pivot": [
+        33,
+        0
+      ],
+      "alignment": "top"
+    },
+    {
+      "name": "swinging_blade_swing_left_0",
+      "file": "assets/sprites/traps/swinging_blade/swinging_blade_swing_left_0.png",
+      "category": "swinging_blade",
+      "animation": "swing_left",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        100,
+        138,
+        185,
+        235
+      ],
+      "size": [
+        80,
+        91
+      ],
+      "pivot": [
+        40,
+        0
+      ],
+      "alignment": "top"
+    },
+    {
+      "name": "swinging_blade_swing_center_0",
+      "file": "assets/sprites/traps/swinging_blade/swinging_blade_swing_center_0.png",
+      "category": "swinging_blade",
+      "animation": "swing_center",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        200,
+        138,
+        275,
+        235
+      ],
+      "size": [
+        66,
+        91
+      ],
+      "pivot": [
+        33,
+        0
+      ],
+      "alignment": "top"
+    },
+    {
+      "name": "swinging_blade_swing_right_0",
+      "file": "assets/sprites/traps/swinging_blade/swinging_blade_swing_right_0.png",
+      "category": "swinging_blade",
+      "animation": "swing_right",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        295,
+        138,
+        380,
+        235
+      ],
+      "size": [
+        76,
+        91
+      ],
+      "pivot": [
+        38,
+        0
+      ],
+      "alignment": "top"
+    },
+    {
+      "name": "swinging_blade_back_left_0",
+      "file": "assets/sprites/traps/swinging_blade/swinging_blade_back_left_0.png",
+      "category": "swinging_blade",
+      "animation": "back_left",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        388,
+        138,
+        470,
+        235
+      ],
+      "size": [
+        77,
+        91
+      ],
+      "pivot": [
+        38,
+        0
+      ],
+      "alignment": "top"
+    },
+    {
+      "name": "wall_blade_idle_0",
+      "file": "assets/sprites/traps/wall_blade/wall_blade_idle_0.png",
+      "category": "wall_blade",
+      "animation": "idle",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        500,
+        138,
+        560,
+        235
+      ],
+      "size": [
+        56,
+        87
+      ],
+      "pivot": [
+        28,
+        43
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "wall_blade_extend_0",
+      "file": "assets/sprites/traps/wall_blade/wall_blade_extend_0.png",
+      "category": "wall_blade",
+      "animation": "extend",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        570,
+        138,
+        635,
+        235
+      ],
+      "size": [
+        57,
+        97
+      ],
+      "pivot": [
+        28,
+        48
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "wall_blade_extend_1",
+      "file": "assets/sprites/traps/wall_blade/wall_blade_extend_1.png",
+      "category": "wall_blade",
+      "animation": "extend",
+      "frame": 1,
+      "sheet": "trap",
+      "source_rect": [
+        640,
+        138,
+        700,
+        235
+      ],
+      "size": [
+        57,
+        97
+      ],
+      "pivot": [
+        28,
+        48
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "wall_blade_attack_0",
+      "file": "assets/sprites/traps/wall_blade/wall_blade_attack_0.png",
+      "category": "wall_blade",
+      "animation": "attack",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        705,
+        138,
+        800,
+        235
+      ],
+      "size": [
+        85,
+        87
+      ],
+      "pivot": [
+        42,
+        43
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "wall_blade_retract_0",
+      "file": "assets/sprites/traps/wall_blade/wall_blade_retract_0.png",
+      "category": "wall_blade",
+      "animation": "retract",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        805,
+        138,
+        870,
+        235
+      ],
+      "size": [
+        61,
+        87
+      ],
+      "pivot": [
+        30,
+        43
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "wall_blade_retract_1",
+      "file": "assets/sprites/traps/wall_blade/wall_blade_retract_1.png",
+      "category": "wall_blade",
+      "animation": "retract",
+      "frame": 1,
+      "sheet": "trap",
+      "source_rect": [
+        880,
+        138,
+        945,
+        235
+      ],
+      "size": [
+        62,
+        86
+      ],
+      "pivot": [
+        31,
+        43
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "wall_blade_hidden_0",
+      "file": "assets/sprites/traps/wall_blade/wall_blade_hidden_0.png",
+      "category": "wall_blade",
+      "animation": "hidden",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        955,
+        138,
+        1015,
+        235
+      ],
+      "size": [
+        46,
+        87
+      ],
+      "pivot": [
+        23,
+        43
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "arrow_trap_idle_0",
+      "file": "assets/sprites/traps/arrow_trap/arrow_trap_idle_0.png",
+      "category": "arrow_trap",
+      "animation": "idle",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        15,
+        275,
+        80,
+        350
+      ],
+      "size": [
+        62,
+        70
+      ],
+      "pivot": [
+        31,
+        35
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "arrow_trap_aim_0",
+      "file": "assets/sprites/traps/arrow_trap/arrow_trap_aim_0.png",
+      "category": "arrow_trap",
+      "animation": "aim",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        100,
+        275,
+        175,
+        350
+      ],
+      "size": [
+        67,
+        75
+      ],
+      "pivot": [
+        33,
+        37
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "arrow_trap_shoot_0",
+      "file": "assets/sprites/traps/arrow_trap/arrow_trap_shoot_0.png",
+      "category": "arrow_trap",
+      "animation": "shoot",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        190,
+        275,
+        265,
+        350
+      ],
+      "size": [
+        67,
+        70
+      ],
+      "pivot": [
+        33,
+        35
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "arrow_trap_arrow_proj_0",
+      "file": "assets/sprites/traps/arrow_trap/arrow_trap_arrow_proj_0.png",
+      "category": "arrow_trap",
+      "animation": "arrow_proj",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        280,
+        275,
+        375,
+        350
+      ],
+      "size": [
+        92,
+        52
+      ],
+      "pivot": [
+        46,
+        26
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "arrow_trap_retract_0",
+      "file": "assets/sprites/traps/arrow_trap/arrow_trap_retract_0.png",
+      "category": "arrow_trap",
+      "animation": "retract",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        390,
+        275,
+        460,
+        350
+      ],
+      "size": [
+        62,
+        70
+      ],
+      "pivot": [
+        31,
+        35
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "spear_launcher_idle_0",
+      "file": "assets/sprites/traps/spear_launcher/spear_launcher_idle_0.png",
+      "category": "spear_launcher",
+      "animation": "idle",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        485,
+        275,
+        575,
+        350
+      ],
+      "size": [
+        84,
+        65
+      ],
+      "pivot": [
+        42,
+        32
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "spear_launcher_charge_0",
+      "file": "assets/sprites/traps/spear_launcher/spear_launcher_charge_0.png",
+      "category": "spear_launcher",
+      "animation": "charge",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        585,
+        275,
+        685,
+        350
+      ],
+      "size": [
+        91,
+        75
+      ],
+      "pivot": [
+        45,
+        37
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "spear_launcher_launch_0",
+      "file": "assets/sprites/traps/spear_launcher/spear_launcher_launch_0.png",
+      "category": "spear_launcher",
+      "animation": "launch",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        695,
+        275,
+        795,
+        350
+      ],
+      "size": [
+        92,
+        64
+      ],
+      "pivot": [
+        46,
+        32
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "spear_launcher_spear_proj_0",
+      "file": "assets/sprites/traps/spear_launcher/spear_launcher_spear_proj_0.png",
+      "category": "spear_launcher",
+      "animation": "spear_proj",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        805,
+        275,
+        925,
+        350
+      ],
+      "size": [
+        113,
+        51
+      ],
+      "pivot": [
+        56,
+        25
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "spear_launcher_retract_0",
+      "file": "assets/sprites/traps/spear_launcher/spear_launcher_retract_0.png",
+      "category": "spear_launcher",
+      "animation": "retract",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        935,
+        275,
+        1010,
+        350
+      ],
+      "size": [
+        63,
+        65
+      ],
+      "pivot": [
+        31,
+        32
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "falling_rock_idle_0",
+      "file": "assets/sprites/traps/falling_rock/falling_rock_idle_0.png",
+      "category": "falling_rock",
+      "animation": "idle",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        15,
+        388,
+        80,
+        495
+      ],
+      "size": [
+        63,
+        101
+      ],
+      "pivot": [
+        31,
+        0
+      ],
+      "alignment": "top"
+    },
+    {
+      "name": "falling_rock_crack_0",
+      "file": "assets/sprites/traps/falling_rock/falling_rock_crack_0.png",
+      "category": "falling_rock",
+      "animation": "crack",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        88,
+        388,
+        155,
+        495
+      ],
+      "size": [
+        62,
+        107
+      ],
+      "pivot": [
+        31,
+        0
+      ],
+      "alignment": "top"
+    },
+    {
+      "name": "falling_rock_fall_0",
+      "file": "assets/sprites/traps/falling_rock/falling_rock_fall_0.png",
+      "category": "falling_rock",
+      "animation": "fall",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        162,
+        388,
+        230,
+        495
+      ],
+      "size": [
+        62,
+        101
+      ],
+      "pivot": [
+        31,
+        0
+      ],
+      "alignment": "top"
+    },
+    {
+      "name": "falling_rock_fall_1",
+      "file": "assets/sprites/traps/falling_rock/falling_rock_fall_1.png",
+      "category": "falling_rock",
+      "animation": "fall",
+      "frame": 1,
+      "sheet": "trap",
+      "source_rect": [
+        235,
+        388,
+        300,
+        495
+      ],
+      "size": [
+        62,
+        101
+      ],
+      "pivot": [
+        31,
+        0
+      ],
+      "alignment": "top"
+    },
+    {
+      "name": "falling_rock_impact_0",
+      "file": "assets/sprites/traps/falling_rock/falling_rock_impact_0.png",
+      "category": "falling_rock",
+      "animation": "impact",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        302,
+        388,
+        380,
+        495
+      ],
+      "size": [
+        76,
+        101
+      ],
+      "pivot": [
+        38,
+        101
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "falling_rock_reset_0",
+      "file": "assets/sprites/traps/falling_rock/falling_rock_reset_0.png",
+      "category": "falling_rock",
+      "animation": "reset",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        382,
+        388,
+        450,
+        495
+      ],
+      "size": [
+        63,
+        101
+      ],
+      "pivot": [
+        31,
+        0
+      ],
+      "alignment": "top"
+    },
+    {
+      "name": "rolling_boulder_idle_0",
+      "file": "assets/sprites/traps/rolling_boulder/rolling_boulder_idle_0.png",
+      "category": "rolling_boulder",
+      "animation": "idle",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        480,
+        388,
+        585,
+        495
+      ],
+      "size": [
+        105,
+        107
+      ],
+      "pivot": [
+        52,
+        107
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "rolling_boulder_roll_0",
+      "file": "assets/sprites/traps/rolling_boulder/rolling_boulder_roll_0.png",
+      "category": "rolling_boulder",
+      "animation": "roll",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        588,
+        388,
+        690,
+        495
+      ],
+      "size": [
+        102,
+        107
+      ],
+      "pivot": [
+        51,
+        107
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "rolling_boulder_roll_1",
+      "file": "assets/sprites/traps/rolling_boulder/rolling_boulder_roll_1.png",
+      "category": "rolling_boulder",
+      "animation": "roll",
+      "frame": 1,
+      "sheet": "trap",
+      "source_rect": [
+        693,
+        388,
+        795,
+        495
+      ],
+      "size": [
+        102,
+        81
+      ],
+      "pivot": [
+        51,
+        81
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "rolling_boulder_roll_2",
+      "file": "assets/sprites/traps/rolling_boulder/rolling_boulder_roll_2.png",
+      "category": "rolling_boulder",
+      "animation": "roll",
+      "frame": 2,
+      "sheet": "trap",
+      "source_rect": [
+        798,
+        388,
+        900,
+        495
+      ],
+      "size": [
+        102,
+        84
+      ],
+      "pivot": [
+        51,
+        84
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "rolling_boulder_roll_3",
+      "file": "assets/sprites/traps/rolling_boulder/rolling_boulder_roll_3.png",
+      "category": "rolling_boulder",
+      "animation": "roll",
+      "frame": 3,
+      "sheet": "trap",
+      "source_rect": [
+        903,
+        388,
+        1005,
+        495
+      ],
+      "size": [
+        101,
+        84
+      ],
+      "pivot": [
+        50,
+        84
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "guillotine_idle_0",
+      "file": "assets/sprites/traps/guillotine/guillotine_idle_0.png",
+      "category": "guillotine",
+      "animation": "idle",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        15,
+        535,
+        80,
+        650
+      ],
+      "size": [
+        65,
+        115
+      ],
+      "pivot": [
+        32,
+        0
+      ],
+      "alignment": "top"
+    },
+    {
+      "name": "guillotine_drop_0",
+      "file": "assets/sprites/traps/guillotine/guillotine_drop_0.png",
+      "category": "guillotine",
+      "animation": "drop",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        85,
+        535,
+        145,
+        650
+      ],
+      "size": [
+        57,
+        115
+      ],
+      "pivot": [
+        28,
+        0
+      ],
+      "alignment": "top"
+    },
+    {
+      "name": "guillotine_drop_1",
+      "file": "assets/sprites/traps/guillotine/guillotine_drop_1.png",
+      "category": "guillotine",
+      "animation": "drop",
+      "frame": 1,
+      "sheet": "trap",
+      "source_rect": [
+        150,
+        535,
+        210,
+        650
+      ],
+      "size": [
+        56,
+        102
+      ],
+      "pivot": [
+        28,
+        0
+      ],
+      "alignment": "top"
+    },
+    {
+      "name": "guillotine_full_0",
+      "file": "assets/sprites/traps/guillotine/guillotine_full_0.png",
+      "category": "guillotine",
+      "animation": "full",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        218,
+        535,
+        272,
+        650
+      ],
+      "size": [
+        51,
+        102
+      ],
+      "pivot": [
+        25,
+        0
+      ],
+      "alignment": "top"
+    },
+    {
+      "name": "guillotine_reset_0",
+      "file": "assets/sprites/traps/guillotine/guillotine_reset_0.png",
+      "category": "guillotine",
+      "animation": "reset",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        280,
+        535,
+        340,
+        650
+      ],
+      "size": [
+        54,
+        102
+      ],
+      "pivot": [
+        27,
+        0
+      ],
+      "alignment": "top"
+    },
+    {
+      "name": "fire_trap_idle_0",
+      "file": "assets/sprites/traps/fire_trap/fire_trap_idle_0.png",
+      "category": "fire_trap",
+      "animation": "idle",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        360,
+        535,
+        422,
+        650
+      ],
+      "size": [
+        62,
+        115
+      ],
+      "pivot": [
+        31,
+        57
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "fire_trap_charge_0",
+      "file": "assets/sprites/traps/fire_trap/fire_trap_charge_0.png",
+      "category": "fire_trap",
+      "animation": "charge",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        425,
+        535,
+        480,
+        650
+      ],
+      "size": [
+        54,
+        115
+      ],
+      "pivot": [
+        27,
+        57
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "fire_trap_flame_0",
+      "file": "assets/sprites/traps/fire_trap/fire_trap_flame_0.png",
+      "category": "fire_trap",
+      "animation": "flame",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        485,
+        535,
+        538,
+        650
+      ],
+      "size": [
+        50,
+        115
+      ],
+      "pivot": [
+        25,
+        115
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "fire_trap_flame_1",
+      "file": "assets/sprites/traps/fire_trap/fire_trap_flame_1.png",
+      "category": "fire_trap",
+      "animation": "flame",
+      "frame": 1,
+      "sheet": "trap",
+      "source_rect": [
+        545,
+        535,
+        598,
+        650
+      ],
+      "size": [
+        47,
+        100
+      ],
+      "pivot": [
+        23,
+        100
+      ],
+      "alignment": "bottom"
+    },
+    {
+      "name": "fire_trap_off_0",
+      "file": "assets/sprites/traps/fire_trap/fire_trap_off_0.png",
+      "category": "fire_trap",
+      "animation": "off",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        602,
+        535,
+        645,
+        650
+      ],
+      "size": [
+        33,
+        57
+      ],
+      "pivot": [
+        16,
+        28
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "projectiles_knife_0",
+      "file": "assets/sprites/traps/extra/projectiles_knife_0.png",
+      "category": "projectiles",
+      "animation": "knife",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        660,
+        535,
+        708,
+        645
+      ],
+      "size": [
+        46,
+        110
+      ],
+      "pivot": [
+        23,
+        55
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "projectiles_spear_0",
+      "file": "assets/sprites/traps/extra/projectiles_spear_0.png",
+      "category": "projectiles",
+      "animation": "spear",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        715,
+        535,
+        750,
+        645
+      ],
+      "size": [
+        35,
+        110
+      ],
+      "pivot": [
+        17,
+        55
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "projectiles_fireball_0",
+      "file": "assets/sprites/traps/extra/projectiles_fireball_0.png",
+      "category": "projectiles",
+      "animation": "fireball",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        755,
+        535,
+        825,
+        645
+      ],
+      "size": [
+        70,
+        110
+      ],
+      "pivot": [
+        35,
+        55
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "projectiles_dart_0",
+      "file": "assets/sprites/traps/extra/projectiles_dart_0.png",
+      "category": "projectiles",
+      "animation": "dart",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        830,
+        535,
+        865,
+        645
+      ],
+      "size": [
+        34,
+        110
+      ],
+      "pivot": [
+        17,
+        55
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "projectiles_spike_ball_0",
+      "file": "assets/sprites/traps/extra/projectiles_spike_ball_0.png",
+      "category": "projectiles",
+      "animation": "spike_ball",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        870,
+        535,
+        922,
+        645
+      ],
+      "size": [
+        47,
+        71
+      ],
+      "pivot": [
+        23,
+        35
+      ],
+      "alignment": "center"
+    },
+    {
+      "name": "projectiles_chain_blade_0",
+      "file": "assets/sprites/traps/extra/projectiles_chain_blade_0.png",
+      "category": "projectiles",
+      "animation": "chain_blade",
+      "frame": 0,
+      "sheet": "trap",
+      "source_rect": [
+        928,
+        535,
+        1005,
+        645
+      ],
+      "size": [
+        74,
+        85
+      ],
+      "pivot": [
+        37,
+        42
+      ],
+      "alignment": "center"
+    }
+  ]
+}
