@@ -4,12 +4,19 @@ extends LevelRoot
 const DOOR_TRANSITION_SCRIPT: Script = preload("res://scenes/level/door_transition.gd")
 
 signal room_transition_requested(target_room: String, target_spawn: String)
+## Every villain listed for this room in level.json is dead.
+signal room_cleared(room_id: String)
+signal boss_defeated(room_id: String)
 
 @export var room_id: String = "room_01_hub"
 @export var level_json_path: String = "res://data/level.json"
 
 var room_data: Dictionary = {}
 var doors_node: Node2D = null
+## Set by the host before entering: a cleared room stays empty.
+var skip_enemies: bool = false
+var spawned_enemies: Array[Node2D] = []
+var _alive: int = 0
 
 func _ready() -> void:
 	_load_room_config()
@@ -17,6 +24,7 @@ func _ready() -> void:
 		level_path = str(room_data["txt_file"])
 	super._ready()
 	_setup_doors()
+	_spawn_room_enemies()
 
 func _load_room_config() -> void:
 	if not FileAccess.file_exists(level_json_path):
@@ -55,6 +63,9 @@ func _setup_doors() -> void:
 		door_inst.set("target_room", str(door_info.get("target_room", "")))
 		door_inst.set("target_spawn", str(door_info.get("target_spawn", "default")))
 		door_inst.set("label", str(door_info.get("label", "")))
+		door_inst.set("required_seals", int(door_info.get("requires_seals", 0)))
+		door_inst.set("rect_size", Vector2(rw, rh))
+		door_inst.set("outer_side", -1 if rx < 64.0 else 1)
 
 		var col := CollisionShape2D.new()
 		var shape := RectangleShape2D.new()
@@ -69,6 +80,48 @@ func _setup_doors() -> void:
 		)
 
 		doors_node.add_child(door_inst)
+
+## Spawns room_data.enemies ([{type, position: [tile_x, tile_y]}]) and counts
+## them down; the last death emits room_cleared (and boss_defeated for bosses).
+func _spawn_room_enemies() -> void:
+	if skip_enemies or not room_data.has("enemies"):
+		return
+	for e in room_data["enemies"]:
+		if not (e is Dictionary):
+			continue
+		var info: Dictionary = e as Dictionary
+		var tile: Array = info.get("position", [0, 0])
+		var inst: Node2D = EntitySpawner.spawn_villain(str(info.get("type", "")), Vector2i(int(tile[0]), int(tile[1])), enemies, platform_graph)
+		if inst == null:
+			continue
+		spawned_enemies.append(inst)
+		_alive += 1
+		if inst.has_signal("boss_defeated"):
+			inst.connect("boss_defeated", func() -> void:
+				boss_defeated.emit(room_id)
+				_on_enemy_down(inst)
+			)
+		else:
+			var hc: Node = inst.get_node_or_null("HealthComponent")
+			if hc != null:
+				hc.connect("died", func(_cause: StringName) -> void: _on_enemy_down(inst))
+		# Lost to a pit / out-of-bounds cleanup without dying still counts.
+		inst.tree_exiting.connect(func() -> void:
+			if is_inside_tree() and not is_queued_for_deletion():
+				_on_enemy_down(inst)
+		)
+
+
+var _downed: Dictionary = {}
+
+func _on_enemy_down(inst: Node) -> void:
+	if _downed.has(inst):
+		return
+	_downed[inst] = true
+	_alive -= 1
+	if _alive == 0:
+		room_cleared.emit(room_id)
+
 
 func get_spawn_pixel_position(spawn_id: String) -> Vector2:
 	if room_data.has("spawns"):

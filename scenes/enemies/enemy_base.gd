@@ -378,7 +378,8 @@ func _on_damaged(amount: int, knockback: Vector2) -> void:
 	_register_hit_for_dodge()
 
 	# Statistical evasion check (chance by type and cooldown)
-	if not is_evading and evade_cooldown <= 0.0 and health_component != null and health_component.current_health > 0:
+	# Hyper-armored enemies shrug the hit off instead of hopping away.
+	if not armored and not is_evading and evade_cooldown <= 0.0 and health_component != null and health_component.current_health > 0:
 		var chance: float = profile.evade_chance if profile != null else 0.35
 		_try_evade()
 
@@ -402,11 +403,16 @@ func try_evade() -> bool:
 	evade_timer = 0.22 # ~13 frames
 	evade_cooldown = 1.2
 
-	# Backstep opposite to facing
+	# Backstep away from the hero (never into the blade that just landed);
+	# opposite to facing when there is no hero.
+	var away: float = float(-facing)
+	var hero: Node2D = get_tree().get_first_node_in_group(&"player") as Node2D if is_inside_tree() else null
+	if hero != null and absf(hero.global_position.x - global_position.x) > 1.0:
+		away = signf(global_position.x - hero.global_position.x)
 	if fighter != null:
-		fighter.apply_knockback(Vector2(float(-facing) * 220.0, -60.0 if is_on_floor() else velocity.y), evade_timer)
+		fighter.apply_knockback(Vector2(away * 220.0, -60.0 if is_on_floor() else velocity.y), evade_timer)
 	else:
-		velocity.x = float(-facing) * 220.0
+		velocity.x = away * 220.0
 		if is_on_floor():
 			velocity.y = -60.0 # slight side-hop
 

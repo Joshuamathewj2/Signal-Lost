@@ -24,6 +24,8 @@ func _ready() -> void:
 		play_btn.pressed.connect(_on_play_pressed)
 	if playground_btn != null:
 		playground_btn.pressed.connect(_on_playground_pressed)
+		if SaveData != null and SaveData.has_method("get_chapter_data") and bool(SaveData.get_chapter_data(2).get("completed", false)):
+			playground_btn.text = "CHAPTER II: UNDERCROFT  [CLEARED]"
 	if atlas_btn != null:
 		atlas_btn.pressed.connect(_on_atlas_pressed)
 	if arena_btn != null:

@@ -4,8 +4,8 @@ extends Node
 ## Verifies:
 ## 1. PlaygroundHost loads room_01_hub
 ## 2. Player spawns at correct coordinate
-## 3. Room 05 spawns test_fighter enemy
-## 4. Room 06 spawns test_fighter and ExitTerminal
+## 3. Room 05 spawns its Chapter II villains (executioner)
+## 4. Room 06 spawns the Leviathan boss
 ## 5. Seamless transitions across all 6 rooms
 ## 6. Camera limits update correctly per room
 ## Exit 0 = all checks pass.
@@ -59,19 +59,16 @@ func _run() -> void:
 	var enemies: Array[Node] = get_tree().get_nodes_in_group(&"enemies")
 	var has_fighter: bool = false
 	for e in enemies:
-		if e.get("kind") == &"test_fighter" or e.name.begins_with("TestFighter"):
+		if e.get("kind") == &"executioner":
 			has_fighter = true
 			break
-	_check(has_fighter, "Test Fighter enemy spawned in Room 05 Enemy Pit")
+	_check(has_fighter, "Executioner spawned in Room 05 Enemy Pit")
 
 	# 5. Transition to Room 06 (Arena)
 	host.load_room("room_06_arena", "from_enemy_pit")
 	await _frames(5)
 	_check(host.current_room_id == "room_06_arena", "Transition to Room 06 Arena")
-	var exit_term = host.find_child("ExitTerminal*", true, false)
-	if exit_term == null:
-		exit_term = get_tree().get_first_node_in_group(&"interactables")
-	_check(exit_term != null, "Exit Terminal present in Room 06 Arena")
+	_check(get_tree().get_first_node_in_group(&"boss") != null, "Leviathan boss present in Room 06 Arena")
 
 	# 6. Transition to Room 03 (Vertical Shaft)
 	host.load_room("room_03_shaft", "from_arena")

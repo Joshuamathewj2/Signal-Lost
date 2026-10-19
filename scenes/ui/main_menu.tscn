@@ -101,7 +101,7 @@ script = ExtResource("4_btn01")
 custom_minimum_size = Vector2(240, 48)
 layout_mode = 2
 theme_type_variation = &"MenuButton"
-text = "PLAYGROUND (STEP 0D)"
+text = "CHAPTER II: UNDERCROFT"
 script = ExtResource("4_btn01")
 
 [node name="AtlasButton" type="Button" parent="CenterContainer/VBoxContainer/ButtonGroup"]

@@ -47,6 +47,26 @@ A 2D stealth-platformer exploration puzzle game built in **Godot Engine 4.4+** u
 
 ---
 
+## 2b. Chapter II — The Undercroft
+
+Pick **CHAPTER II: UNDERCROFT** on the main menu. Six connected rooms, seven new sprite-drawn villains and a finale boss:
+
+- **Break the five seals.** Kill every villain in a room to break its seal (and recover 1 HP). Cleared rooms stay empty.
+- **The Sanctum is sealed** until all five are broken; then face **the Leviathan** (three phases: slams and sweeps → floor fractures and energy pillars → shadow clones and sword rain). Break its poise to stagger it; staggered hits deal double damage.
+- Red flashing wind-ups mark every attack. A **!** over a villain means the hit is unblockable: dodge it instead of guarding.
+- Dying respawns you at the door you entered by. Time, deaths and best time are recorded.
+
+| Villain | Watch for |
+|---|---|
+| Phantom | dashes in from mid-range after a red tell |
+| Warden | shield blocks frontal light hits — strike from behind, or break through with a heavy strike or parry riposte |
+| Executioner | cannot be flinched mid-swing; bait the slam, punish the recovery |
+| Iron Monk | flail spin hits both sides; lobs the flail at range |
+| Blood Archer / Archer | keep their distance; charged arrows are unblockable |
+| Acoustic Hunter | hears footsteps — sneak, then strike first |
+
+---
+
 ## 3. Project Structure
 
 ```
@@ -80,6 +100,12 @@ vibe-game/
 Run all 17 automated test suites from the command line:
 ```powershell
 godot --headless --path . -s res://tests/run_tests.gd
+```
+
+Chapter II live tests (each exits 0 on pass):
+```powershell
+godot --headless --path . res://tests/live/test_villains.tscn
+godot --headless --path . res://tests/live/test_chapter2.tscn
 ```
 
 Run static headless syntax & scene check:

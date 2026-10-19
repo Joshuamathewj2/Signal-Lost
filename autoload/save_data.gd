@@ -122,6 +122,34 @@ func save_level_result(level_index: int, run_stats: Dictionary) -> Dictionary:
 		"medal": new_medal,
 	}
 
+## Chapter records (Chapter II and later): completion, best time, fewest deaths.
+func get_chapter_data(chapter: int) -> Dictionary:
+	var sec := "chapter_%d" % chapter
+	return {
+		"completed": bool(_config.get_value(sec, "completed", false)),
+		"best_time": float(_config.get_value(sec, "best_time", 999999.0)),
+		"best_deaths": int(_config.get_value(sec, "best_deaths", 999)),
+		"clears": int(_config.get_value(sec, "clears", 0)),
+	}
+
+func save_chapter_result(chapter: int, run_stats: Dictionary) -> Dictionary:
+	var sec := "chapter_%d" % chapter
+	var old: Dictionary = get_chapter_data(chapter)
+	var t: float = float(run_stats.get("time", 0.0))
+	var d: int = int(run_stats.get("deaths", 0))
+	var is_new_best_time: bool = t < float(old["best_time"])
+	_config.set_value(sec, "completed", true)
+	_config.set_value(sec, "best_time", minf(t, float(old["best_time"])))
+	_config.set_value(sec, "best_deaths", mini(d, int(old["best_deaths"])))
+	_config.set_value(sec, "clears", int(old["clears"]) + 1)
+	_config.save(SAVE_PATH)
+	return {
+		"is_new_best_time": is_new_best_time,
+		"best_time": minf(t, float(old["best_time"])),
+		"best_deaths": mini(d, int(old["best_deaths"])),
+		"clears": int(old["clears"]) + 1,
+	}
+
 func apply_all_settings() -> void:
 	var m_vol: float = float(get_setting("master_volume", 80))
 	var m_idx: int = AudioServer.get_bus_index(&"Master")

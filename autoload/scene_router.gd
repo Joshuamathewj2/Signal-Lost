@@ -63,6 +63,10 @@ func load_level(index: int) -> void:
 		_spawn_level_instant(path)
 
 func restart_level() -> void:
+	# Chapter II rooms respawn in place instead of reloading a campaign level.
+	if current_level_root != null and is_instance_valid(current_level_root) and current_level_root.has_method("respawn"):
+		current_level_root.call("respawn")
+		return
 	var path := "res://levels/level_%02d.txt" % current_level_index
 	if not FileAccess.file_exists(path):
 		path = "res://levels/level_test.txt"

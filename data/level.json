@@ -1,174 +1,435 @@
 {
-  "name": "Acoustic Bay Playground",
+  "name": "Chapter II: The Undercroft",
   "start_room": "room_01_hub",
   "rooms": {
     "room_01_hub": {
-      "name": "R01 Hub",
+      "name": "The Gatehouse",
       "txt_file": "res://levels/rooms/room_01_hub.txt",
       "scene_file": "res://rooms/Room_01_Hub.tscn",
-      "grid_size": [40, 20],
+      "grid_size": [
+        40,
+        20
+      ],
       "spawns": {
-        "default": [6, 17],
-        "from_corridor": [37, 17],
-        "from_shaft": [36, 9]
+        "default": [
+          6,
+          17
+        ],
+        "from_corridor": [
+          37,
+          17
+        ],
+        "from_shaft": [
+          36,
+          9
+        ]
       },
       "doors": [
         {
           "name": "to_corridor",
-          "trigger_rect": [38, 15, 2, 3],
+          "trigger_rect": [
+            38,
+            15,
+            2,
+            3
+          ],
           "target_room": "room_02_corridor",
           "target_spawn": "from_hub",
           "label": "To Corridor"
         },
         {
           "name": "to_shaft",
-          "trigger_rect": [38, 7, 2, 3],
+          "trigger_rect": [
+            38,
+            7,
+            2,
+            3
+          ],
           "target_room": "room_03_shaft",
           "target_spawn": "from_hub",
           "label": "To Vertical Shaft"
         }
       ],
-      "checkpoint": [6, 17]
+      "checkpoint": [
+        6,
+        17
+      ],
+      "seal": true,
+      "intro": "THE GATEHOUSE - a Warden bars the way. Strike its back, or break the shield.",
+      "enemies": [
+        {
+          "type": "warden",
+          "position": [
+            28,
+            17
+          ]
+        },
+        {
+          "type": "blood_archer",
+          "position": [
+            24,
+            11
+          ]
+        }
+      ]
     },
     "room_02_corridor": {
-      "name": "R02 Long Corridor",
+      "name": "Blood Gallery",
       "txt_file": "res://levels/rooms/room_02_corridor.txt",
       "scene_file": "res://rooms/Room_02_Corridor.tscn",
-      "grid_size": [48, 16],
+      "grid_size": [
+        48,
+        16
+      ],
       "spawns": {
-        "default": [4, 11],
-        "from_hub": [2, 11],
-        "from_catwalks": [45, 11]
+        "default": [
+          4,
+          11
+        ],
+        "from_hub": [
+          2,
+          11
+        ],
+        "from_catwalks": [
+          45,
+          11
+        ]
       },
       "doors": [
         {
           "name": "to_hub",
-          "trigger_rect": [0, 9, 2, 3],
+          "trigger_rect": [
+            0,
+            9,
+            2,
+            3
+          ],
           "target_room": "room_01_hub",
           "target_spawn": "from_corridor",
           "label": "To Hub"
         },
         {
           "name": "to_catwalks",
-          "trigger_rect": [46, 9, 2, 3],
+          "trigger_rect": [
+            46,
+            9,
+            2,
+            3
+          ],
           "target_room": "room_04_catwalks",
           "target_spawn": "from_corridor",
           "label": "To Catwalks"
         }
       ],
-      "checkpoint": [4, 11]
+      "checkpoint": [
+        4,
+        11
+      ],
+      "seal": true,
+      "intro": "BLOOD GALLERY - Phantoms dash when they see you. Parry, then punish.",
+      "enemies": [
+        {
+          "type": "phantom",
+          "position": [
+            16,
+            11
+          ]
+        },
+        {
+          "type": "blood_archer",
+          "position": [
+            23,
+            9
+          ]
+        },
+        {
+          "type": "phantom",
+          "position": [
+            41,
+            11
+          ]
+        }
+      ]
     },
     "room_03_shaft": {
-      "name": "R03 Vertical Shaft",
+      "name": "The Listening Shaft",
       "txt_file": "res://levels/rooms/room_03_shaft.txt",
       "scene_file": "res://rooms/Room_03_Shaft.tscn",
-      "grid_size": [24, 32],
+      "grid_size": [
+        24,
+        32
+      ],
       "spawns": {
-        "default": [4, 29],
-        "from_hub": [3, 29],
-        "from_arena": [18, 3]
+        "default": [
+          4,
+          29
+        ],
+        "from_hub": [
+          3,
+          29
+        ],
+        "from_arena": [
+          18,
+          3
+        ]
       },
       "doors": [
         {
           "name": "to_hub",
-          "trigger_rect": [0, 27, 2, 3],
+          "trigger_rect": [
+            0,
+            27,
+            2,
+            3
+          ],
           "target_room": "room_01_hub",
           "target_spawn": "from_shaft",
           "label": "To Hub"
         },
         {
           "name": "to_arena",
-          "trigger_rect": [22, 1, 2, 3],
+          "trigger_rect": [
+            22,
+            1,
+            2,
+            3
+          ],
           "target_room": "room_06_arena",
           "target_spawn": "from_shaft",
-          "label": "To Arena"
+          "label": "Sanctum (5 seals)",
+          "requires_seals": 5
         }
       ],
-      "checkpoint": [4, 29]
+      "checkpoint": [
+        4,
+        29
+      ],
+      "seal": true,
+      "intro": "THE LISTENING SHAFT - the Hunter hears footsteps. Sneak, or strike first.",
+      "enemies": [
+        {
+          "type": "acoustic_hunter",
+          "position": [
+            18,
+            29
+          ]
+        },
+        {
+          "type": "blood_archer",
+          "position": [
+            16,
+            13
+          ]
+        },
+        {
+          "type": "archer",
+          "position": [
+            6,
+            7
+          ]
+        }
+      ]
     },
     "room_04_catwalks": {
-      "name": "R04 Catwalks",
+      "name": "Archers' Catwalks",
       "txt_file": "res://levels/rooms/room_04_catwalks.txt",
       "scene_file": "res://rooms/Room_04_Catwalks.tscn",
-      "grid_size": [44, 22],
+      "grid_size": [
+        44,
+        22
+      ],
       "spawns": {
-        "default": [4, 7],
-        "from_corridor": [3, 7],
-        "from_enemy_pit": [40, 7]
+        "default": [
+          4,
+          7
+        ],
+        "from_corridor": [
+          3,
+          7
+        ],
+        "from_enemy_pit": [
+          40,
+          7
+        ]
       },
       "doors": [
         {
           "name": "to_corridor",
-          "trigger_rect": [0, 5, 2, 3],
+          "trigger_rect": [
+            0,
+            5,
+            2,
+            3
+          ],
           "target_room": "room_02_corridor",
           "target_spawn": "from_catwalks",
           "label": "To Corridor"
         },
         {
           "name": "to_enemy_pit",
-          "trigger_rect": [42, 5, 2, 3],
+          "trigger_rect": [
+            42,
+            5,
+            2,
+            3
+          ],
           "target_room": "room_05_enemy_pit",
           "target_spawn": "from_catwalks",
           "label": "To Enemy Pit"
         }
       ],
-      "checkpoint": [4, 7]
+      "checkpoint": [
+        4,
+        7
+      ],
+      "seal": true,
+      "intro": "ARCHERS' CATWALKS - charged arrows (!) cannot be blocked. Dodge them.",
+      "enemies": [
+        {
+          "type": "archer",
+          "position": [
+            28,
+            7
+          ]
+        },
+        {
+          "type": "archer",
+          "position": [
+            19,
+            9
+          ]
+        },
+        {
+          "type": "iron_monk",
+          "position": [
+            24,
+            19
+          ]
+        }
+      ]
     },
     "room_05_enemy_pit": {
-      "name": "R05 Enemy Pit",
+      "name": "The Execution Pit",
       "txt_file": "res://levels/rooms/room_05_enemy_pit.txt",
       "scene_file": "res://rooms/Room_05_EnemyPit.tscn",
-      "grid_size": [40, 18],
+      "grid_size": [
+        40,
+        18
+      ],
       "spawns": {
-        "default": [4, 15],
-        "from_catwalks": [2, 15],
-        "from_arena": [36, 13]
+        "default": [
+          4,
+          15
+        ],
+        "from_catwalks": [
+          2,
+          15
+        ],
+        "from_arena": [
+          36,
+          13
+        ]
       },
       "doors": [
         {
           "name": "to_catwalks",
-          "trigger_rect": [0, 13, 2, 3],
+          "trigger_rect": [
+            0,
+            13,
+            2,
+            3
+          ],
           "target_room": "room_04_catwalks",
           "target_spawn": "from_enemy_pit",
           "label": "To Catwalks"
         },
         {
           "name": "to_arena",
-          "trigger_rect": [38, 11, 2, 3],
+          "trigger_rect": [
+            38,
+            11,
+            2,
+            3
+          ],
           "target_room": "room_06_arena",
           "target_spawn": "from_enemy_pit",
-          "label": "To Arena"
+          "label": "Sanctum (5 seals)",
+          "requires_seals": 5
         }
       ],
       "enemies": [
         {
-          "type": "test_fighter",
-          "position": [30, 13]
+          "type": "executioner",
+          "position": [
+            21,
+            15
+          ]
+        },
+        {
+          "type": "warden",
+          "position": [
+            31,
+            13
+          ]
+        },
+        {
+          "type": "phantom",
+          "position": [
+            37,
+            13
+          ]
         }
       ],
-      "checkpoint": [4, 15]
+      "checkpoint": [
+        4,
+        15
+      ],
+      "seal": true,
+      "intro": "THE EXECUTION PIT - the Executioner cannot be flinched mid-swing. Bait the slam."
     },
     "room_06_arena": {
-      "name": "R06 Arena",
+      "name": "Leviathan's Sanctum",
       "txt_file": "res://levels/rooms/room_06_arena.txt",
       "scene_file": "res://rooms/Room_06_Arena.tscn",
-      "grid_size": [48, 22],
+      "grid_size": [
+        48,
+        22
+      ],
       "spawns": {
-        "default": [4, 19],
-        "from_enemy_pit": [2, 19],
-        "from_shaft": [3, 7]
+        "default": [
+          4,
+          19
+        ],
+        "from_enemy_pit": [
+          2,
+          19
+        ],
+        "from_shaft": [
+          3,
+          7
+        ]
       },
       "doors": [
         {
           "name": "to_shaft",
-          "trigger_rect": [0, 5, 2, 3],
+          "trigger_rect": [
+            0,
+            5,
+            2,
+            3
+          ],
           "target_room": "room_03_shaft",
           "target_spawn": "from_arena",
           "label": "To Vertical Shaft"
         },
         {
           "name": "to_enemy_pit",
-          "trigger_rect": [0, 17, 2, 3],
+          "trigger_rect": [
+            0,
+            17,
+            2,
+            3
+          ],
           "target_room": "room_05_enemy_pit",
           "target_spawn": "from_arena",
           "label": "To Enemy Pit"
@@ -176,11 +437,23 @@
       ],
       "enemies": [
         {
-          "type": "test_fighter",
-          "position": [24, 17]
+          "type": "boss_leviathan",
+          "position": [
+            36,
+            19
+          ]
         }
       ],
-      "checkpoint": [4, 19]
+      "checkpoint": [
+        4,
+        19
+      ],
+      "seal": false,
+      "boss": true,
+      "intro": "LEVIATHAN'S SANCTUM"
     }
-  }
+  },
+  "chapter": 2,
+  "seals_required": 5,
+  "intro": "CHAPTER II - THE UNDERCROFT\nBreak the five seals. Slay the Leviathan."
 }

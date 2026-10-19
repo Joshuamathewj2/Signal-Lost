@@ -110,7 +110,7 @@ r.fill(0, 14, 0, 15, '.')                  # West door to Catwalks
 r.fill(39, 12, 39, 13, '.')                # East door to Arena
 r.put(9, 1, '~'); r.put(30, 1, '~')
 r.put(4, 15, 'P')
-r.put(30, 13, 'T')                         # Test Fighter on east ledge!
+# Chapter II: villains come from data/level.json "enemies" (no T marker)
 r.write('room_05_enemy_pit.txt', [('name', 'R05 Enemy Pit'), ('room', 'R05'), ('seed', '505'), ('music', 'tense')])
 
 # R06 ARENA 48x22: boss arena / gauntlet: big floor, central dais, floating one-ways
@@ -126,6 +126,6 @@ r.fill(0, 6, 0, 7, '.')                    # Upper West door to Shaft
 r.fill(0, 18, 0, 19, '.')                  # Lower West door to Enemy Pit
 r.put(12, 1, '~'); r.put(24, 1, '~'); r.put(36, 1, '~')
 r.put(4, 19, 'P')
-r.put(24, 17, 'T')                         # Test Fighter on dais!
-r.put(44, 19, 'E')                         # Exit Terminal
+# Chapter II: the Leviathan spawns from data/level.json
+# No exit terminal: defeating the boss ends the chapter
 r.write('room_06_arena.txt', [('name', 'R06 Arena'), ('room', 'R06'), ('seed', '606'), ('music', 'tense')])
