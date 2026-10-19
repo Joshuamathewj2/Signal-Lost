@@ -3,9 +3,12 @@ extends Node
 signal level_loaded(level_root: Node)
 
 const LEVEL_ROOT_SCENE: PackedScene = preload("res://scenes/level/level_root.tscn")
+const PLAYGROUND_HOST_SCENE: PackedScene = preload("res://scenes/level/playground_host.tscn")
+const ATLAS_PREVIEW_SCENE: PackedScene = preload("res://tools/AtlasPreview.tscn")
+const COMBAT_ARENA_SCENE: PackedScene = preload("res://scenes/test/combat_test_arena.tscn")
 
 var current_level_index: int = 1
-var current_level_root: Node2D = null
+var current_level_root: Node = null
 var is_transitioning: bool = false
 var fade_rect: ColorRect = null
 
@@ -76,6 +79,58 @@ func return_to_main_menu() -> void:
 	var main_node: Node = get_tree().root.get_node_or_null("Main")
 	if main_node != null and main_node.has_method("show_main_menu"):
 		main_node.call("show_main_menu")
+
+func load_playground(room_id: String = "room_01_hub") -> void:
+	if is_transitioning:
+		return
+	var f_rect: ColorRect = _ensure_fade_rect()
+	if f_rect != null:
+		is_transitioning = true
+		var tween := create_tween()
+		tween.tween_property(f_rect, "color:a", 1.0, 0.12)
+		tween.tween_callback(func() -> void:
+			_spawn_scene_instant(PLAYGROUND_HOST_SCENE, {"initial_room": room_id})
+		)
+		tween.tween_property(f_rect, "color:a", 0.0, 0.13)
+		tween.tween_callback(func() -> void:
+			is_transitioning = false
+		)
+	else:
+		_spawn_scene_instant(PLAYGROUND_HOST_SCENE, {"initial_room": room_id})
+
+func load_atlas_preview() -> void:
+	_spawn_scene_instant(ATLAS_PREVIEW_SCENE)
+
+func load_combat_arena() -> void:
+	_spawn_scene_instant(COMBAT_ARENA_SCENE)
+
+func _spawn_scene_instant(scene: PackedScene, props: Dictionary = {}) -> void:
+	var host: Node = get_tree().root.get_node_or_null("Main/LevelHost")
+	if host == null:
+		host = get_tree().current_scene
+	if host == null:
+		host = get_tree().root
+	if host == null:
+		return
+
+	if current_level_root != null and is_instance_valid(current_level_root):
+		current_level_root.queue_free()
+		current_level_root = null
+
+	var menus: Node = get_tree().root.get_node_or_null("Main/Menus")
+	if menus != null:
+		for child in menus.get_children():
+			if child != null and child != fade_rect and child.name != "PauseMenu" and not (child is PauseMenu):
+				child.queue_free()
+
+	var new_root: Node = scene.instantiate()
+	for k in props.keys():
+		if k in new_root:
+			new_root.set(k, props[k])
+	host.add_child(new_root)
+	current_level_root = new_root
+	if new_root.has_signal("level_loaded"):
+		level_loaded.emit(new_root)
 
 func _spawn_level_instant(path: String) -> void:
 	var host: Node = get_tree().root.get_node_or_null("Main/LevelHost")

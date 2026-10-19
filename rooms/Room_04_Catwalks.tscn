@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://room_room_04_catwalks"]
+
+[ext_resource type="PackedScene" path="res://scenes/level/level_root.tscn" id="1_lr"]
+[ext_resource type="Script" path="res://scripts/level/playground_room.gd" id="2_pr"]
+
+[node name="Room_04_Catwalks" instance=ExtResource("1_lr")]
+script = ExtResource("2_pr")
+level_path = "res://levels/rooms/room_04_catwalks.txt"
+room_id = "room_04_catwalks"

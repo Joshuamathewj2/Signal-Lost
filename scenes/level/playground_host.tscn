@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://playground_host_01"]
+
+[ext_resource type="Script" path="res://scenes/level/playground_host.gd" id="1_ph"]
+
+[node name="PlaygroundHost" type="Node2D"]
+script = ExtResource("1_ph")

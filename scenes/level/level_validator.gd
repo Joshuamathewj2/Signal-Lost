@@ -22,29 +22,36 @@ static func validate(data: LevelData) -> Dictionary:
 		if data.grid[r].length() != w:
 			errors.append("Row %d has length %d, expected %d" % [r, data.grid[r].length(), w])
 
-	# Border check
-	if not data.grid.is_empty() and data.grid[0].length() == w:
-		for c in range(w):
-			if data.grid[0][c] != "#":
-				errors.append("Top border not solid at col %d" % c)
-			if data.grid[h - 1].length() == w and data.grid[h - 1][c] != "#":
-				errors.append("Bottom border not solid at col %d" % c)
+	var is_room: bool = data.headers.has("room")
 
-	for r in range(h):
-		if data.grid[r].length() == w:
-			if data.grid[r][0] != "#":
-				errors.append("Left border not solid at row %d" % r)
-			if data.grid[r][w - 1] != "#":
-				errors.append("Right border not solid at row %d" % r)
+	# Border check (campaign levels must have closed borders; rooms can have door passages)
+	if not is_room:
+		if not data.grid.is_empty() and data.grid[0].length() == w:
+			for c in range(w):
+				if data.grid[0][c] != "#":
+					errors.append("Top border not solid at col %d" % c)
+				if data.grid[h - 1].length() == w and data.grid[h - 1][c] != "#":
+					errors.append("Bottom border not solid at col %d" % c)
 
-	# 2. Exactly one P and one E
+		for r in range(h):
+			if data.grid[r].length() == w:
+				if data.grid[r][0] != "#":
+					errors.append("Left border not solid at row %d" % r)
+				if data.grid[r][w - 1] != "#":
+					errors.append("Right border not solid at row %d" % r)
+
+	# 2. Player and Exit checks
 	var p_cells: Array = data.cells.get("P", [])
 	if p_cells.size() != 1:
 		errors.append("Expected exactly 1 'P', found %d" % p_cells.size())
 
 	var e_cells: Array = data.cells.get("E", [])
-	if e_cells.size() != 1:
-		errors.append("Expected exactly 1 'E', found %d" % e_cells.size())
+	if is_room:
+		if e_cells.size() > 1:
+			errors.append("Expected at most 1 'E' in room, found %d" % e_cells.size())
+	else:
+		if e_cells.size() != 1:
+			errors.append("Expected exactly 1 'E', found %d" % e_cells.size())
 
 	# 3. Vertical runs of 2 for doors (D, R, >, <)
 	for d_char in ["D", "R", ">", "<"]:

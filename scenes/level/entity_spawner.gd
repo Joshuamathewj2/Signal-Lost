@@ -19,6 +19,7 @@ const JAMMER_TOWER_SCENE: PackedScene = preload("res://scenes/enemies/jammer_tow
 const BANSHEE_SCENE: PackedScene = preload("res://scenes/enemies/banshee.tscn")
 const MIRROR_DUELIST_SCENE: PackedScene = preload("res://scenes/enemies/mirror_duelist.tscn")
 const ONI_ENFORCER_SCENE: PackedScene = preload("res://scenes/enemies/oni_enforcer.tscn")
+const TEST_FIGHTER_SCENE: PackedScene = preload("res://scenes/enemies/test_fighter.tscn")
 
 static var _warned_stubs: Dictionary = {}
 
@@ -264,8 +265,20 @@ static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) 
 			enemies_node.add_child(inst)
 			(result["enemies"] as Array).append(inst)
 
+	# 20.5 Spawn Test Fighter (T)
+	if data.cells.has("T"):
+		for cell in data.cells["T"]:
+			var cell_vec: Vector2i = cell
+			var pos := Vector2((float(cell_vec.x) + 0.5) * 32.0, (float(cell_vec.y) + 1.0) * 32.0)
+			var inst: Node2D = TEST_FIGHTER_SCENE.instantiate() as Node2D
+			inst.position = pos
+			inst.set_meta("spawn_pos", pos)
+			_setup_mover(inst, graph, bounds_per_row, cell_vec.y)
+			enemies_node.add_child(inst)
+			(result["enemies"] as Array).append(inst)
+
 	# 21. Stub warnings for unimplemented entities
-	var known_chars: String = "#=PL.FKEDR_><G~VvMSHBAkYC?WUodacjwmO^*)}!\"@Q%$"
+	var known_chars: String = "#=PL.FKEDR_><G~VvMSHBAkYC?WUodacjwmOT^*)}!\"@Q%$"
 	for ch in data.cells.keys():
 		if known_chars.find(ch) == -1:
 			if not _warned_stubs.has(ch):

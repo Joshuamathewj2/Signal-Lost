@@ -94,7 +94,28 @@ script = ExtResource("4_btn01")
 custom_minimum_size = Vector2(240, 48)
 layout_mode = 2
 theme_type_variation = &"MenuButton"
-text = "PLAY"
+text = "PLAY CAMPAIGN"
+script = ExtResource("4_btn01")
+
+[node name="PlaygroundButton" type="Button" parent="CenterContainer/VBoxContainer/ButtonGroup"]
+custom_minimum_size = Vector2(240, 48)
+layout_mode = 2
+theme_type_variation = &"MenuButton"
+text = "PLAYGROUND (STEP 0D)"
+script = ExtResource("4_btn01")
+
+[node name="AtlasButton" type="Button" parent="CenterContainer/VBoxContainer/ButtonGroup"]
+custom_minimum_size = Vector2(240, 48)
+layout_mode = 2
+theme_type_variation = &"MenuButton"
+text = "SPRITE ATLAS PREVIEW"
+script = ExtResource("4_btn01")
+
+[node name="ArenaButton" type="Button" parent="CenterContainer/VBoxContainer/ButtonGroup"]
+custom_minimum_size = Vector2(240, 48)
+layout_mode = 2
+theme_type_variation = &"MenuButton"
+text = "COMBAT ARENA"
 script = ExtResource("4_btn01")
 
 [node name="SettingsButton" type="Button" parent="CenterContainer/VBoxContainer/ButtonGroup"]

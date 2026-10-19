@@ -3,6 +3,9 @@ extends Control
 
 @onready var continue_btn: UiButton = $CenterContainer/VBoxContainer/ButtonGroup/ContinueButton
 @onready var play_btn: UiButton = $CenterContainer/VBoxContainer/ButtonGroup/PlayButton
+@onready var playground_btn: UiButton = get_node_or_null("CenterContainer/VBoxContainer/ButtonGroup/PlaygroundButton") as UiButton
+@onready var atlas_btn: UiButton = get_node_or_null("CenterContainer/VBoxContainer/ButtonGroup/AtlasButton") as UiButton
+@onready var arena_btn: UiButton = get_node_or_null("CenterContainer/VBoxContainer/ButtonGroup/ArenaButton") as UiButton
 @onready var settings_btn: UiButton = $CenterContainer/VBoxContainer/ButtonGroup/SettingsButton
 @onready var quit_btn: UiButton = $CenterContainer/VBoxContainer/ButtonGroup/QuitButton
 @onready var title_logo: TitleLogo = $CenterContainer/VBoxContainer/TitleLogo
@@ -19,6 +22,12 @@ func _ready() -> void:
 
 	if play_btn != null:
 		play_btn.pressed.connect(_on_play_pressed)
+	if playground_btn != null:
+		playground_btn.pressed.connect(_on_playground_pressed)
+	if atlas_btn != null:
+		atlas_btn.pressed.connect(_on_atlas_pressed)
+	if arena_btn != null:
+		arena_btn.pressed.connect(_on_arena_pressed)
 	if settings_btn != null:
 		settings_btn.pressed.connect(_on_settings_pressed)
 	if quit_btn != null:
@@ -35,6 +44,12 @@ func _setup_focus_wrap() -> void:
 		buttons.append(continue_btn)
 	if play_btn != null:
 		buttons.append(play_btn)
+	if playground_btn != null:
+		buttons.append(playground_btn)
+	if atlas_btn != null:
+		buttons.append(atlas_btn)
+	if arena_btn != null:
+		buttons.append(arena_btn)
 	if settings_btn != null:
 		buttons.append(settings_btn)
 	if quit_btn != null:
@@ -49,6 +64,24 @@ func _setup_focus_wrap() -> void:
 
 	if not buttons.is_empty():
 		buttons[0].grab_focus()
+
+func _on_playground_pressed() -> void:
+	visible = false
+	if SceneRouter != null and SceneRouter.has_method("load_playground"):
+		SceneRouter.load_playground("room_01_hub")
+	queue_free()
+
+func _on_atlas_pressed() -> void:
+	visible = false
+	if SceneRouter != null and SceneRouter.has_method("load_atlas_preview"):
+		SceneRouter.load_atlas_preview()
+	queue_free()
+
+func _on_arena_pressed() -> void:
+	visible = false
+	if SceneRouter != null and SceneRouter.has_method("load_combat_arena"):
+		SceneRouter.load_combat_arena()
+	queue_free()
 
 func _on_continue_pressed() -> void:
 	var lvl: int = 1
