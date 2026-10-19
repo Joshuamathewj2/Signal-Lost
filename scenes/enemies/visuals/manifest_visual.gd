@@ -46,6 +46,11 @@ func _ready() -> void:
 	_body = get_parent() as CharacterBody2D
 	if _body != null:
 		var data: Dictionary = _body.get("enemy_data") if _body.get("enemy_data") != null else {}
+		if data.is_empty() and _body.get("kind") != null:
+			# Children are ready before the body fills enemy_data: read the JSON directly.
+			var path: String = "res://data/enemies/%s.json" % String(_body.get("kind"))
+			if FileAccess.file_exists(path):
+				data = DataLoader.load_json(path)
 		if unit.is_empty():
 			unit = String(data.get("manifest", ""))
 		var m: Dictionary = data.get("anim_map", {})
@@ -58,6 +63,11 @@ func _ready() -> void:
 	add_child(sprite)
 	sprite.unit = unit
 	sprite.animation_finished.connect(_on_anim_finished)
+	# Manifest frames are feet-anchored; the body origin is the capsule centre.
+	if _body != null:
+		var cs: CollisionShape2D = _body.get_node_or_null("CollisionShape2D") as CollisionShape2D
+		if cs != null and cs.shape != null:
+			sprite.set_anchor_position(Vector2(0.0, cs.position.y + cs.shape.get_rect().end.y))
 
 	tell_label = Label.new()
 	tell_label.visible = false

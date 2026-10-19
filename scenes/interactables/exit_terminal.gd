@@ -52,7 +52,8 @@ func _on_all_enemies_cleared() -> void:
 
 	# Slow motion beat
 	Engine.time_scale = 0.35
-	var slow_tween := create_tween()
+	# Tree-owned tween: if the level is freed mid slow-mo, time still returns to 1.0.
+	var slow_tween := get_tree().create_tween()
 	slow_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
 	slow_tween.tween_interval(0.15)
 	slow_tween.tween_property(Engine, "time_scale", 1.0, 0.3).set_ease(Tween.EASE_OUT)

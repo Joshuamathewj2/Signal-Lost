@@ -1,0 +1,111 @@
+{
+ "manifest": "acoustic_hunter",
+ "_doc": "Blind tracker with acute hearing. Crawls toward sounds, answers with an arrow volley.",
+ "weight_class": "medium",
+ "health": 4,
+ "poise": 50,
+ "bar_y": -42,
+ "keep_distance": 150,
+ "locomotion": {
+  "run_speed": 140.0,
+  "sneak_speed": 70.0,
+  "ground_accel": 1400.0,
+  "ground_friction": 1800.0,
+  "air_accel": 900.0,
+  "gravity": 1800.0,
+  "fall_gravity_mult": 1.35,
+  "jump_cut_mult": 0.45,
+  "max_fall_speed": 900.0,
+  "coyote_time": 0.1,
+  "jump_buffer": 0.1,
+  "drop_through_time": 0.2
+ },
+ "jump": {
+  "can_jump": true,
+  "jump_height": 84.0,
+  "cooldown": 0.4,
+  "max_gap": 96.0
+ },
+ "dash": {
+  "speed": 360.0,
+  "time": 0.2,
+  "cooldown": 1.6,
+  "telegraph": 0.4
+ },
+ "nav": {
+  "stuck_time": 1.5,
+  "launch_distance": 40.0,
+  "home_teleport": true
+ },
+ "anim_map": {
+  "idle": [
+   "crouch_idle"
+  ],
+  "walk": [
+   "crawl"
+  ],
+  "attack": [
+   "release"
+  ],
+  "telegraph": [
+   "aim"
+  ]
+ },
+ "attacks": [
+  {
+   "name": "volley",
+   "type": "projectile",
+   "range": 340,
+   "min_range": 50,
+   "max_dy": 160,
+   "telegraph": 0.7,
+   "active": 0.15,
+   "recovery": 0.7,
+   "cooldown": 2.2,
+   "weight": 2,
+   "count": 3,
+   "spread": 22,
+   "damage": 1,
+   "poise": 20,
+   "speed": 440,
+   "projectile_anim": "arrow",
+   "anim_telegraph": "aim",
+   "anim_strike": "release",
+   "tell": "!"
+  },
+  {
+   "name": "snap_shot",
+   "type": "projectile",
+   "range": 300,
+   "min_range": 50,
+   "max_dy": 160,
+   "telegraph": 0.45,
+   "active": 0.15,
+   "recovery": 0.4,
+   "cooldown": 1.1,
+   "weight": 3,
+   "damage": 1,
+   "poise": 20,
+   "speed": 500,
+   "projectile_anim": "arrow",
+   "anim_telegraph": "aim",
+   "anim_strike": "release"
+  },
+  {
+   "name": "pounce",
+   "type": "dash",
+   "range": 56,
+   "telegraph": 0.4,
+   "active": 0.2,
+   "recovery": 0.5,
+   "cooldown": 2.0,
+   "weight": 2,
+   "damage": 1,
+   "poise": 25,
+   "knockback": 200,
+   "contact": 24,
+   "anim_telegraph": "alert",
+   "anim_strike": "run"
+  }
+ ]
+}

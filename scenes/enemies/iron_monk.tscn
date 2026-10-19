@@ -1,0 +1,65 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/enemies/enemy_base.tscn" id="1_eb"]
+[ext_resource type="Resource" path="res://resources/enemies/enemy_kenshi.tres" id="2_prof"]
+[ext_resource type="Script" path="res://scenes/enemies/visuals/manifest_visual.gd" id="3_mv"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_patrol.gd" id="4_pat"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_investigate.gd" id="5_inv"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_search.gd" id="6_src"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_chase.gd" id="7_chs"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_villain_attack.gd" id="8_atk"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_return.gd" id="9_ret"]
+[ext_resource type="Script" path="res://scenes/enemies/states/st_stunned.gd" id="10_stn"]
+[ext_resource type="Script" path="res://scripts/fighter/fighter.gd" id="11_ftr"]
+[ext_resource type="Script" path="res://scenes/enemies/villain_hitbox.gd" id="12_vhb"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_body"]
+radius = 10.0
+height = 34.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hurt"]
+radius = 11.0
+height = 36.0
+
+[node name="IronMonk" instance=ExtResource("1_eb")]
+profile = ExtResource("2_prof")
+kind = &"iron_monk"
+
+[node name="CollisionShape2D" parent="." index="0"]
+shape = SubResource("CapsuleShape2D_body")
+
+[node name="Visual" type="Node2D" parent="." index="2"]
+script = ExtResource("3_mv")
+
+[node name="Hitbox" parent="." index="6"]
+script = ExtResource("12_vhb")
+
+[node name="StateMachine" parent="." index="7" node_paths=PackedStringArray("initial")]
+initial = NodePath("Patrol")
+
+[node name="Patrol" type="Node" parent="StateMachine" index="0"]
+script = ExtResource("4_pat")
+
+[node name="Investigate" type="Node" parent="StateMachine" index="1"]
+script = ExtResource("5_inv")
+
+[node name="Search" type="Node" parent="StateMachine" index="2"]
+script = ExtResource("6_src")
+
+[node name="Chase" type="Node" parent="StateMachine" index="3"]
+script = ExtResource("7_chs")
+
+[node name="Attack" type="Node" parent="StateMachine" index="4"]
+script = ExtResource("8_atk")
+
+[node name="Return" type="Node" parent="StateMachine" index="5"]
+script = ExtResource("9_ret")
+
+[node name="Stagger" type="Node" parent="StateMachine" index="6"]
+script = ExtResource("10_stn")
+
+[node name="CollisionShape2D" parent="HurtboxComponent" index="0"]
+shape = SubResource("CapsuleShape2D_hurt")
+
+[node name="Fighter" type="Node" parent="."]
+script = ExtResource("11_ftr")

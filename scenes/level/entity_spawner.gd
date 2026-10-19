@@ -21,7 +21,41 @@ const MIRROR_DUELIST_SCENE: PackedScene = preload("res://scenes/enemies/mirror_d
 const ONI_ENFORCER_SCENE: PackedScene = preload("res://scenes/enemies/oni_enforcer.tscn")
 const TEST_FIGHTER_SCENE: PackedScene = preload("res://scenes/enemies/test_fighter.tscn")
 
+## Chapter II manifest villains, spawned by name from room JSON (data/level.json).
+const VILLAIN_SCENES: Dictionary = {
+	"test_fighter": "res://scenes/enemies/test_fighter.tscn",
+	"phantom": "res://scenes/enemies/phantom.tscn",
+	"warden": "res://scenes/enemies/warden.tscn",
+	"executioner": "res://scenes/enemies/executioner.tscn",
+	"iron_monk": "res://scenes/enemies/iron_monk.tscn",
+	"blood_archer": "res://scenes/enemies/blood_archer.tscn",
+	"archer": "res://scenes/enemies/archer.tscn",
+	"acoustic_hunter": "res://scenes/enemies/acoustic_hunter.tscn",
+	"boss_leviathan": "res://scenes/enemies/boss_leviathan.tscn",
+}
+
 static var _warned_stubs: Dictionary = {}
+
+
+## Spawns one named villain standing on tile `cell` (feet on the tile's floor).
+static func spawn_villain(kind: String, cell: Vector2i, parent: Node2D, graph: PlatformGraph) -> Node2D:
+	if not VILLAIN_SCENES.has(kind):
+		push_warning("EntitySpawner: unknown villain '%s'" % kind)
+		return null
+	var scene: PackedScene = load(VILLAIN_SCENES[kind]) as PackedScene
+	if scene == null:
+		return null
+	var pos := Vector2((float(cell.x) + 0.5) * 32.0, (float(cell.y) + 1.0) * 32.0)
+	var inst: Node2D = scene.instantiate() as Node2D
+	# Stand the body on the floor instead of embedding its capsule in it.
+	var cs: CollisionShape2D = inst.get_node_or_null("CollisionShape2D") as CollisionShape2D
+	if cs != null and cs.shape != null:
+		pos.y -= cs.position.y + cs.shape.get_rect().end.y
+	inst.position = pos
+	inst.set_meta("spawn_pos", pos)
+	_setup_mover(inst, graph, {}, cell.y)
+	parent.add_child(inst)
+	return inst
 
 static func spawn_entities(data: LevelData, root: Node2D, graph: PlatformGraph) -> Dictionary:
 	var result: Dictionary = {

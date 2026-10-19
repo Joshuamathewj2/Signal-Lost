@@ -1,0 +1,114 @@
+{
+ "manifest": "archer",
+ "_doc": "Concealed sniper. Waits crouched, rolls away when rushed, mixes quick shots with a charged unblockable arrow.",
+ "weight_class": "light",
+ "health": 3,
+ "poise": 35,
+ "bar_y": -42,
+ "keep_distance": 200,
+ "locomotion": {
+  "run_speed": 135.0,
+  "sneak_speed": 60.0,
+  "ground_accel": 1400.0,
+  "ground_friction": 1800.0,
+  "air_accel": 900.0,
+  "gravity": 1800.0,
+  "fall_gravity_mult": 1.35,
+  "jump_cut_mult": 0.45,
+  "max_fall_speed": 900.0,
+  "coyote_time": 0.1,
+  "jump_buffer": 0.1,
+  "drop_through_time": 0.2
+ },
+ "jump": {
+  "can_jump": true,
+  "jump_height": 84.0,
+  "cooldown": 0.35,
+  "max_gap": 96.0
+ },
+ "dash": {
+  "speed": 360.0,
+  "time": 0.2,
+  "cooldown": 1.4,
+  "telegraph": 0.0
+ },
+ "nav": {
+  "stuck_time": 1.5,
+  "launch_distance": 40.0,
+  "home_teleport": true
+ },
+ "anim_map": {
+  "idle": [
+   "idle_concealed"
+  ],
+  "attack": [
+   "release"
+  ],
+  "telegraph": [
+   "draw"
+  ],
+  "evade": [
+   "roll"
+  ],
+  "hurt": [
+   "hit_flash",
+   "hit"
+  ],
+  "stun": [
+   "knockdown"
+  ]
+ },
+ "attacks": [
+  {
+   "name": "quick_shot",
+   "type": "projectile",
+   "range": 400,
+   "min_range": 60,
+   "max_dy": 180,
+   "telegraph": 0.55,
+   "active": 0.15,
+   "recovery": 0.4,
+   "cooldown": 1.2,
+   "weight": 3,
+   "damage": 1,
+   "poise": 20,
+   "speed": 520,
+   "projectile_anim": "arrow",
+   "anim_telegraph": "draw",
+   "anim_strike": "release"
+  },
+  {
+   "name": "charged_shot",
+   "type": "projectile",
+   "range": 420,
+   "min_range": 120,
+   "max_dy": 180,
+   "telegraph": 1.0,
+   "active": 0.15,
+   "recovery": 0.6,
+   "cooldown": 4.0,
+   "weight": 1,
+   "damage": 2,
+   "poise": 50,
+   "speed": 700,
+   "projectile_anim": "arrow_charged",
+   "anim_telegraph": "aim",
+   "anim_strike": "release",
+   "tell": "!"
+  },
+  {
+   "name": "roll_away",
+   "type": "reposition",
+   "range": 70,
+   "telegraph": 0.1,
+   "active": 0.3,
+   "recovery": 0.2,
+   "cooldown": 2.2,
+   "weight": 4,
+   "distance": 128,
+   "tint": false,
+   "anim_telegraph": "alert",
+   "anim_strike": "roll"
+  }
+ ]
+}

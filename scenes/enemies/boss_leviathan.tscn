@@ -1,0 +1,51 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/enemies/boss_leviathan.gd" id="1_lev"]
+[ext_resource type="Script" path="res://scenes/combat/health_component.gd" id="2_hlt"]
+[ext_resource type="Script" path="res://scenes/combat/poise_component.gd" id="3_poi"]
+[ext_resource type="Script" path="res://scenes/combat/hurtbox_component.gd" id="4_hrt"]
+[ext_resource type="Script" path="res://scenes/enemies/villain_hitbox.gd" id="5_vhb"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_body"]
+radius = 16.0
+height = 64.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hurt"]
+radius = 20.0
+height = 70.0
+
+[node name="BossLeviathan" type="CharacterBody2D"]
+collision_layer = 8
+collision_mask = 3
+script = ExtResource("1_lev")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_body")
+
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+script = ExtResource("5_vhb")
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("2_hlt")
+max_health = 24
+current_health = 24
+
+[node name="PoiseComponent" type="Node" parent="."]
+script = ExtResource("3_poi")
+max_poise = 260.0
+current_poise = 260.0
+
+[node name="HurtboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("health_component", "poise_component")]
+collision_layer = 8
+collision_mask = 4
+script = ExtResource("4_hrt")
+health_component = NodePath("../HealthComponent")
+poise_component = NodePath("../PoiseComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+shape = SubResource("CapsuleShape2D_hurt")

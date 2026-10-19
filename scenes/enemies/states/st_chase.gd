@@ -5,10 +5,13 @@ var lost_timer: float = 0.0
 var repath_timer: float = 0.0
 var ping_timer: float = 0.0
 
-func enter(_msg: Dictionary = {}) -> void:
+func enter(msg: Dictionary = {}) -> void:
 	lost_timer = 0.0
 	repath_timer = 0.0
 	ping_timer = 0.0
+
+	if msg.get("resume", false):
+		return  # back from an attack: already alerted, no new tell / detection
 
 	if GameState != null:
 		GameState.register_detection(actor)
@@ -41,7 +44,10 @@ func update(delta: float) -> void:
 		lost_timer = 0.0
 
 		# Attack range check
-		if machine != null and machine.has_node("Thrust"):
+		if machine != null and machine.has_node("Attack"):
+			if _try_villain_attack():
+				return
+		elif machine != null and machine.has_node("Thrust"):
 			var player: Node2D = get_tree().get_first_node_in_group(&"player") as Node2D
 			if player != null and actor.global_position.distance_to(player.global_position) <= 44.0:
 				if AttackTokenManager == null or AttackTokenManager.request_token(actor):
@@ -64,7 +70,9 @@ func update(delta: float) -> void:
 		if repath_timer <= 0.0:
 			repath_timer = 0.25
 			var mover: PlatformMover = actor.get_node_or_null("PlatformMover") as PlatformMover
-			if mover != null:
+			if mover != null and _holding_range():
+				mover.stop()
+			elif mover != null:
 				var speed: float = actor.profile.run_speed if actor.profile != null else 120.0
 				mover.move_to(actor.vision.last_known_pos, speed)
 	else:
@@ -80,3 +88,37 @@ func update(delta: float) -> void:
 				transition(&"Track")
 			else:
 				transition(&"Investigate", {"pos": actor.last_seen})
+
+
+## Manifest villains (StVillainAttack): pick an in-range attack from JSON.
+## Melee swings need an attack token; ranged shots and repositions do not.
+func _try_villain_attack() -> bool:
+	var atk_state: StVillainAttack = machine.get_node("Attack") as StVillainAttack
+	var player: Node2D = get_tree().get_first_node_in_group(&"player") as Node2D
+	if atk_state == null or player == null:
+		return false
+	var atk: Dictionary = atk_state.pick_attack(player)
+	if atk.is_empty():
+		return false
+	var token: bool = false
+	if atk_state.is_melee(atk) and AttackTokenManager != null:
+		token = AttackTokenManager.request_token(actor)
+		if not token:
+			return false
+	transition(&"Attack", {"attack": atk, "has_token": token})
+	return true
+
+
+## Ranged villains (enemy_data.keep_distance) hold position once close enough.
+func _holding_range() -> bool:
+	if not ("enemy_data" in actor):
+		return false
+	var keep: float = float((actor.get("enemy_data") as Dictionary).get("keep_distance", 0.0))
+	if keep <= 0.0:
+		return false
+	var player: Node2D = get_tree().get_first_node_in_group(&"player") as Node2D
+	if player == null:
+		return false
+	if actor.has_method("face"):
+		actor.call("face", 1 if player.global_position.x >= actor.global_position.x else -1)
+	return absf(player.global_position.x - actor.global_position.x) <= keep

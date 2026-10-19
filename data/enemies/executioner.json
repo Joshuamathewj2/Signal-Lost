@@ -1,0 +1,110 @@
+{
+ "manifest": "executioner",
+ "_doc": "Hulking cleaver. Hyper-armored while attacking; slam shockwave also crushes nearby allies.",
+ "weight_class": "heavy",
+ "health": 8,
+ "poise": 140,
+ "bar_y": -60,
+ "hyper_armor_states": [
+  "Attack"
+ ],
+ "locomotion": {
+  "run_speed": 85.0,
+  "sneak_speed": 40.0,
+  "ground_accel": 900.0,
+  "ground_friction": 1800.0,
+  "air_accel": 900.0,
+  "gravity": 1800.0,
+  "fall_gravity_mult": 1.35,
+  "jump_cut_mult": 0.45,
+  "max_fall_speed": 900.0,
+  "coyote_time": 0.1,
+  "jump_buffer": 0.1,
+  "drop_through_time": 0.2
+ },
+ "jump": {
+  "can_jump": true,
+  "jump_height": 60.0,
+  "cooldown": 0.8,
+  "max_gap": 64.0
+ },
+ "dash": {
+  "speed": 260.0,
+  "time": 0.2,
+  "cooldown": 2.5,
+  "telegraph": 0.5
+ },
+ "nav": {
+  "stuck_time": 2.0,
+  "launch_distance": 40.0,
+  "home_teleport": true
+ },
+ "anim_map": {
+  "attack": [
+   "slam"
+  ],
+  "telegraph": [
+   "windup"
+  ],
+  "evade": [
+   "drag"
+  ]
+ },
+ "attacks": [
+  {
+   "name": "cleaver_slam",
+   "type": "shockwave",
+   "range": 62,
+   "reach": 60,
+   "telegraph": 0.75,
+   "active": 0.18,
+   "recovery": 0.75,
+   "cooldown": 1.4,
+   "weight": 3,
+   "damage": 2,
+   "poise": 55,
+   "knockback": 300,
+   "radius": 92,
+   "shake": 0.45,
+   "fx": "shockwave",
+   "fx_y": 20,
+   "anim_telegraph": "windup",
+   "anim_strike": "slam"
+  },
+  {
+   "name": "sweep",
+   "type": "melee",
+   "range": 76,
+   "reach": 74,
+   "telegraph": 0.6,
+   "active": 0.16,
+   "recovery": 0.6,
+   "cooldown": 2.4,
+   "weight": 2,
+   "damage": 2,
+   "poise": 45,
+   "knockback": 320,
+   "anim_telegraph": "windup",
+   "anim_strike": "sweep",
+   "then": "drag_finish"
+  },
+  {
+   "name": "drag_finish",
+   "type": "lunge",
+   "range": 0,
+   "reach": 50,
+   "telegraph": 0.1,
+   "active": 0.25,
+   "recovery": 0.7,
+   "cooldown": 0.0,
+   "weight": 0,
+   "damage": 1,
+   "poise": 30,
+   "knockback": 200,
+   "lunge_speed": 120,
+   "tint": false,
+   "anim_telegraph": "drag",
+   "anim_strike": "drag"
+  }
+ ]
+}

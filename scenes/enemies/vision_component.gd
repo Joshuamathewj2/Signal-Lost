@@ -5,6 +5,9 @@ signal player_spotted(pos: Vector2)
 signal player_lost()
 
 @export var profile: EnemyProfile
+## Px within which the hero is sensed even in darkness (line of sight still
+## required). 0 = sight only. Set from data/enemies/<kind>.json "close_sense".
+@export var close_sense: float = 0.0
 
 var facing_direction: Vector2 = Vector2.ZERO
 var is_spotted: bool = false
@@ -30,13 +33,15 @@ func _check_vision() -> void:
 	var p2d: Node2D = player as Node2D
 	var p_pos: Vector2 = p2d.global_position
 
+	var dist: float = global_position.distance_to(p_pos)
+	var sensed: bool = close_sense > 0.0 and dist <= close_sense
+
 	# Check reveal status
-	if PulseRegistry != null and not PulseRegistry.player_revealed(p_pos):
+	if not sensed and PulseRegistry != null and not PulseRegistry.player_revealed(p_pos):
 		_handle_lost()
 		return
 
 	# Check distance
-	var dist: float = global_position.distance_to(p_pos)
 	if dist > profile.sight_range:
 		_handle_lost()
 		return
@@ -54,7 +59,7 @@ func _check_vision() -> void:
 
 	var to_target: Vector2 = (p_pos - global_position).normalized()
 	var ang_deg: float = rad_to_deg(absf(forward.angle_to(to_target)))
-	if ang_deg > profile.sight_angle_deg * 0.5:
+	if not sensed and ang_deg > profile.sight_angle_deg * 0.5:
 		_handle_lost()
 		return
 

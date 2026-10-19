@@ -1,0 +1,101 @@
+{
+ "manifest": "phantom",
+ "_doc": "Crimson duelist. Quick slash at close range, telegraphed dash-slash from mid range.",
+ "weight_class": "light",
+ "health": 3,
+ "poise": 35,
+ "bar_y": -40,
+ "locomotion": {
+  "run_speed": 165.0,
+  "sneak_speed": 60.0,
+  "ground_accel": 1400.0,
+  "ground_friction": 1800.0,
+  "air_accel": 900.0,
+  "gravity": 1800.0,
+  "fall_gravity_mult": 1.35,
+  "jump_cut_mult": 0.45,
+  "max_fall_speed": 900.0,
+  "coyote_time": 0.1,
+  "jump_buffer": 0.1,
+  "drop_through_time": 0.2
+ },
+ "jump": {
+  "can_jump": true,
+  "jump_height": 84.0,
+  "cooldown": 0.35,
+  "max_gap": 96.0
+ },
+ "dash": {
+  "speed": 420.0,
+  "time": 0.22,
+  "cooldown": 1.2,
+  "telegraph": 0.0
+ },
+ "nav": {
+  "stuck_time": 1.5,
+  "launch_distance": 40.0,
+  "home_teleport": true
+ },
+ "anim_map": {
+  "attack": [
+   "slash",
+   "double_slash"
+  ],
+  "telegraph": [
+   "ready"
+  ]
+ },
+ "attacks": [
+  {
+   "name": "slash",
+   "type": "lunge",
+   "range": 40,
+   "reach": 38,
+   "telegraph": 0.4,
+   "active": 0.12,
+   "recovery": 0.4,
+   "cooldown": 0.6,
+   "weight": 3,
+   "damage": 1,
+   "poise": 20,
+   "knockback": 160,
+   "lunge_speed": 150,
+   "anim_telegraph": "ready",
+   "anim_strike": "slash"
+  },
+  {
+   "name": "double_slash",
+   "type": "spin",
+   "range": 44,
+   "reach": 42,
+   "telegraph": 0.5,
+   "active": 0.24,
+   "recovery": 0.45,
+   "cooldown": 2.0,
+   "weight": 1,
+   "hits": 2,
+   "damage": 1,
+   "poise": 15,
+   "knockback": 120,
+   "anim_telegraph": "ready",
+   "anim_strike": "double_slash"
+  },
+  {
+   "name": "dash_slash",
+   "type": "dash",
+   "range": 170,
+   "min_range": 70,
+   "telegraph": 0.45,
+   "active": 0.22,
+   "recovery": 0.55,
+   "cooldown": 2.8,
+   "weight": 2,
+   "damage": 1,
+   "poise": 25,
+   "knockback": 220,
+   "contact": 26,
+   "anim_telegraph": "ready",
+   "anim_strike": "dash"
+  }
+ ]
+}

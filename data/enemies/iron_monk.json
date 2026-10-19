@@ -1,0 +1,87 @@
+{
+ "manifest": "iron_monk",
+ "_doc": "Flail monk. Spins the flail to hit both sides up close; lobs the flail ball at range.",
+ "weight_class": "medium",
+ "health": 6,
+ "poise": 90,
+ "bar_y": -52,
+ "locomotion": {
+  "run_speed": 100.0,
+  "sneak_speed": 45.0,
+  "ground_accel": 1400.0,
+  "ground_friction": 1800.0,
+  "air_accel": 900.0,
+  "gravity": 1800.0,
+  "fall_gravity_mult": 1.35,
+  "jump_cut_mult": 0.45,
+  "max_fall_speed": 900.0,
+  "coyote_time": 0.1,
+  "jump_buffer": 0.1,
+  "drop_through_time": 0.2
+ },
+ "jump": {
+  "can_jump": true,
+  "jump_height": 70.0,
+  "cooldown": 0.6,
+  "max_gap": 72.0
+ },
+ "dash": {
+  "speed": 280.0,
+  "time": 0.2,
+  "cooldown": 2.0,
+  "telegraph": 0.45
+ },
+ "nav": {
+  "stuck_time": 1.8,
+  "launch_distance": 40.0,
+  "home_teleport": true
+ },
+ "anim_map": {
+  "attack": [
+   "spin"
+  ],
+  "telegraph": [
+   "walk"
+  ]
+ },
+ "attacks": [
+  {
+   "name": "flail_spin",
+   "type": "spin",
+   "range": 58,
+   "reach": 60,
+   "telegraph": 0.55,
+   "active": 0.8,
+   "recovery": 0.5,
+   "cooldown": 2.0,
+   "weight": 3,
+   "hits": 3,
+   "damage": 1,
+   "poise": 20,
+   "knockback": 220,
+   "anim_telegraph": "idle",
+   "anim_strike": "spin",
+   "tell": "!"
+  },
+  {
+   "name": "chain_throw",
+   "type": "projectile",
+   "range": 260,
+   "min_range": 70,
+   "max_dy": 120,
+   "telegraph": 0.6,
+   "active": 0.2,
+   "recovery": 0.6,
+   "cooldown": 2.6,
+   "weight": 2,
+   "damage": 1,
+   "poise": 35,
+   "speed": 300,
+   "gravity": 700,
+   "projectile_anim": "flail_ball",
+   "projectile_spin": 12.0,
+   "anim_telegraph": "idle",
+   "anim_strike": "chain_throw"
+  }
+ ]
+}

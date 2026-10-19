@@ -1,0 +1,101 @@
+{
+ "manifest": "warden",
+ "_doc": "Shield + spear jailer. Shield blocks frontal light hits (heavy / >=50 poise breaks through; strike from behind).",
+ "weight_class": "medium",
+ "health": 5,
+ "poise": 70,
+ "bar_y": -48,
+ "frontal_guard": true,
+ "locomotion": {
+  "run_speed": 110.0,
+  "sneak_speed": 50.0,
+  "ground_accel": 1400.0,
+  "ground_friction": 1800.0,
+  "air_accel": 900.0,
+  "gravity": 1800.0,
+  "fall_gravity_mult": 1.35,
+  "jump_cut_mult": 0.45,
+  "max_fall_speed": 900.0,
+  "coyote_time": 0.1,
+  "jump_buffer": 0.1,
+  "drop_through_time": 0.2
+ },
+ "jump": {
+  "can_jump": true,
+  "jump_height": 72.0,
+  "cooldown": 0.5,
+  "max_gap": 72.0
+ },
+ "dash": {
+  "speed": 300.0,
+  "time": 0.18,
+  "cooldown": 2.0,
+  "telegraph": 0.45
+ },
+ "nav": {
+  "stuck_time": 1.8,
+  "launch_distance": 40.0,
+  "home_teleport": true
+ },
+ "anim_map": {
+  "attack": [
+   "thrust"
+  ],
+  "telegraph": [
+   "spear_ready"
+  ]
+ },
+ "attacks": [
+  {
+   "name": "thrust",
+   "type": "lunge",
+   "range": 60,
+   "reach": 58,
+   "telegraph": 0.5,
+   "active": 0.14,
+   "recovery": 0.45,
+   "cooldown": 0.9,
+   "weight": 3,
+   "damage": 1,
+   "poise": 25,
+   "knockback": 200,
+   "lunge_speed": 180,
+   "anim_telegraph": "spear_ready",
+   "anim_strike": "thrust"
+  },
+  {
+   "name": "skewer",
+   "type": "lunge",
+   "range": 64,
+   "reach": 60,
+   "telegraph": 0.7,
+   "active": 0.16,
+   "recovery": 0.55,
+   "cooldown": 3.0,
+   "weight": 1,
+   "damage": 2,
+   "poise": 40,
+   "knockback": 260,
+   "lunge_speed": 260,
+   "anim_telegraph": "spear_raise",
+   "anim_strike": "thrust",
+   "tell": "!"
+  },
+  {
+   "name": "shield_bash",
+   "type": "melee",
+   "range": 30,
+   "reach": 32,
+   "telegraph": 0.35,
+   "active": 0.12,
+   "recovery": 0.4,
+   "cooldown": 2.2,
+   "weight": 2,
+   "damage": 1,
+   "poise": 45,
+   "knockback": 340,
+   "anim_telegraph": "idle",
+   "anim_strike": "shield_bash"
+  }
+ ]
+}

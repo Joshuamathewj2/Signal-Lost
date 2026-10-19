@@ -139,7 +139,7 @@ func _ready() -> void:
 	# Setup floating health and poise bar
 	floating_hp_bar = FloatingEnemyBar.new()
 	floating_hp_bar.name = "FloatingEnemyBar"
-	floating_hp_bar.position = Vector2(0.0, -32.0 if kind != &"brute" else -46.0)
+	floating_hp_bar.position = Vector2(0.0, float(enemy_data.get("bar_y", -32.0 if kind != &"brute" else -46.0)))
 	add_child(floating_hp_bar)
 	floating_hp_bar.setup(self)
 
@@ -153,12 +153,25 @@ func _setup_fighter() -> void:
 		fighter.stats = FighterStats.new().apply_dict(enemy_data, path)
 		if mover != null:
 			mover.configure_nav(enemy_data.get("nav", {}))
+		_apply_vitals(enemy_data)
+		if vision != null:
+			vision.close_sense = float(enemy_data.get("close_sense", 80.0 if enemy_data.has("attacks") else 0.0))
 	else:
 		push_warning("[EnemyBase] %s has a Fighter but no %s; using default stats" % [name, path])
 	fighter.landed.connect(func(impact: float) -> void:
 		if impact > 300.0:
 			ParticlesFactory.spawn_landing_dust(get_parent(), global_position)
 	)
+
+
+## JSON "health" / "poise" for data-driven villains.
+func _apply_vitals(d: Dictionary) -> void:
+	if d.has("health") and health_component != null:
+		health_component.max_health = int(d["health"])
+		health_component.current_health = int(d["health"])
+	if d.has("poise") and poise_component != null:
+		poise_component.max_poise = float(d["poise"])
+		poise_component.current_poise = float(d["poise"])
 
 
 ## Velocity change routed through the Fighter when present (keeps one owner of
@@ -492,7 +505,7 @@ func intercept_hit(hitbox_area: Area2D) -> bool:
 		_execute_finisher(hitbox_area)
 		return true
 
-	if is_in_group(&"brute"):
+	if is_in_group(&"brute") or _shield_raised():
 		var facing_dir: float = float(facing)
 		var is_frontal: bool = (hitbox_area.global_position.x - global_position.x) * facing_dir >= -6.0
 		if is_frontal:
@@ -507,6 +520,11 @@ func intercept_hit(hitbox_area: Area2D) -> bool:
 				var vis: Node = get_node_or_null("Visual")
 				if vis != null and vis.has_method("flash"):
 					vis.call("flash")
+				if enemy_data.has("manifest"):
+					ManifestFx.spawn(get_parent(), String(enemy_data["manifest"]), &"guard_spark",
+							global_position + Vector2(facing_dir * 12.0, -14.0), facing, 0.25)
+					if AudioManager != null:
+						AudioManager.play_sfx(&"sfx_blade_clash", global_position, 1.2)
 				if NoiseBus != null:
 					var ev := NoiseEvent.make(global_position, 120.0, 1.2, NoiseEvent.NoiseType.COMBAT, self)
 					NoiseBus.emit_noise(ev)
@@ -517,6 +535,13 @@ func intercept_hit(hitbox_area: Area2D) -> bool:
 	if sm != null and sm.current != null and sm.current.has_method("intercept_hit"):
 		return bool(sm.current.call("intercept_hit", hitbox_area))
 	return false
+
+
+## JSON "frontal_guard": a shield blocks frontal light hits except mid-attack.
+func _shield_raised() -> bool:
+	if not bool(enemy_data.get("frontal_guard", false)):
+		return false
+	return state_machine == null or state_machine.current == null or state_machine.current.name != &"Attack"
 
 
 # --- Step 0C: weight classes, execution, dodge, wall slam, noise reactions ---
@@ -667,6 +692,14 @@ func _on_died(_cause: StringName) -> void:
 
 	if AttackTokenManager != null:
 		AttackTokenManager.release_token(self)
+
+	# A corpse never thinks again: no late swings or shots from a mid-attack state.
+	if state_machine != null:
+		if state_machine.current != null:
+			state_machine.current.exit()
+		state_machine.process_mode = Node.PROCESS_MODE_DISABLED
+	if mover != null:
+		mover.stop()
 
 	# Disable collision layers so corpse does not obstruct player or pathfinding
 	collision_layer = 0
